@@ -1,0 +1,28 @@
+version: "3.1"
+
+services:
+  sng-server:
+    container_name: sng-server
+    build: ./server
+    env_file: ./server/.env
+    command: "uvicorn app.main:app --reload --host 0.0.0.0 --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/code
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  sng-client:
+    container_name: sng-client
+    build: ./client
+    env_file: ./client/.env
+    command: "npm run dev:docker"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/code
+    deploy:
+      restart_policy:
+        condition: on-failure

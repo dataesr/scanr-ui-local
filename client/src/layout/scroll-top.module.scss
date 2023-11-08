@@ -1,0 +1,16 @@
+.scroll-top {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 10001;
+
+  @media only screen and (min-width: 1440px) {
+    bottom: 3em;
+    right: calc(((100vw - 78rem) / 2) - 2rem);
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,1 @@
+export const MAX_PAGE_BEFORE_USER_CLICK = 3;

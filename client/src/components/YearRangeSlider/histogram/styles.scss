@@ -1,0 +1,19 @@
+.histogram {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  max-height: 100%;
+
+  .bar {
+    margin: 0 0.125rem;
+  }
+
+  &:after {
+    content: '';
+    background-color: lightgrey;
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+  }
+}

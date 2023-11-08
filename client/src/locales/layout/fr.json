@@ -1,0 +1,11 @@
+{
+  "app.layout.header.nav.home": "Accueil",
+  "app.layout.header.nav.search": "Rechercher",
+  "app.layout.header.nav.focus": "Focus",
+  "app.layout.header.nav.faq": "Foire aux questions",
+  "app.layout.header.nav.team": "L'équipe et son projet",
+  "app.layout.header.nav.sources": "Les sources de scanR",
+  "app.layout.header.nav.tutorial": "Tutoriels",
+  "app.layout.header.nav.opendata": "Open Data & API",
+  "app.layout.header.nav.press": "Ils parlent de scanR"
+}

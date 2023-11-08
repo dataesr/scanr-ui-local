@@ -1,0 +1,12 @@
+.histogram {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  max-height: 15px;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
