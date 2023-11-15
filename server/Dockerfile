@@ -1,10 +1,13 @@
-FROM python:3.10
+FROM python:3.9-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  g++
 
 WORKDIR /code
 
 COPY ./requirements.txt ./requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip3 install --upgrade pip setuptools && pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY . /code
 

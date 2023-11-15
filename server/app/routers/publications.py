@@ -1,5 +1,7 @@
+from typing import Union
 from app.services import es
 from app.models import PublicationsSearchResponse, Publication
+from app.utils.scibert import get_scibert_embeddings
 from fastapi import APIRouter, HTTPException, status as statuscode
 
 publications_routes = APIRouter(
@@ -17,12 +19,15 @@ publications_routes = APIRouter(
     description="Rechercher des publications",
 )
 def search_publication(
-    query: str | None = '*',
-    filters: str | None = None,
-    cursor: str | None = None,
-    groupby: str | None = None,
+    query: Union[str, None] = '*',
+    filters: Union[str, None] = None,
+    cursor: Union[str, None] = None,
+    groupby: Union[str, None] = None,
     size: int = 10
 ):
+    test_query = get_scibert_embeddings(query)
+    print(query, flush=True)
+    print(test_query, flush=True)
     data = es.search(
         index="scanr-publications-dev-20230912",
         query={

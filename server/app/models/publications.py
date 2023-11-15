@@ -1,16 +1,17 @@
+from typing import Union
 from pydantic import BaseModel, Field
 from .commons import Lang
 
 
 class Authorship(BaseModel):
-    fullName: str | None = None
-    firstName: str | None = None
-    lastName: str | None = None
+    fullName: Union[str, None] = None
+    firstName: Union[str, None] = None
+    lastName: Union[str, None] = None
 
 
 class Publication(BaseModel):
-    title: Lang | None = {}
-    summary: Lang | None = Field(default_factory=Lang)
+    title: Union[Lang, None] = {}
+    summary: Union[Lang, None] = Field(default_factory=Lang)
     authors: list[Authorship] = []
 
 
