@@ -25,9 +25,9 @@ def search_publication(
     groupby: Union[str, None] = None,
     size: int = 10
 ):
-    test_query = get_scibert_embeddings(query)
+    query_embeddings = get_scibert_embeddings(query)
     print(query, flush=True)
-    print(test_query, flush=True)
+    print(query_embeddings, flush=True)
     data = es.search(
         index="scanr-publications-dev-20230912",
         query={
@@ -41,6 +41,13 @@ def search_publication(
                     }
                 ]
             }
+        },
+        knn={
+            "field": "vector_text",
+            "query_vector": query_embeddings,
+            "k": 5,
+            "num_candidates": 50,
+            "boost": 1-0.5
         },
         size=size,
     )

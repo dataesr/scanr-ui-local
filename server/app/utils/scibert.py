@@ -18,4 +18,4 @@ def get_scibert_embeddings(text, normalize=True):
         tokvecs = preprocessing.normalize(tokvecs, norm='l2')
     assert (len(tokvecs[0]) == 768)
     # converting to float for json serialization
-    return {'embeddings': [float(e) for e in tokvecs[0]]}
+    return [float(e) for e in tokvecs[0]]
