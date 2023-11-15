@@ -7,5 +7,5 @@ es = Elasticsearch(
         'host': os.environ.get('ELASTIC_HOST', 'localhost'),
         'port': 443,
     }],
-    http_auth=(os.environ.get('ELASTIC_USER'), os.environ.get('ELASTIC_PWD')),
+    basic_auth=(os.environ.get('ELASTIC_USER'), os.environ.get('ELASTIC_PWD')),
 )

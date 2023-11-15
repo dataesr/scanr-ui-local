@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocation, Link as RouterLink } from 'react-router-dom';
 import {
   Badge,
   Header as HeaderWrapper,
@@ -7,6 +8,9 @@ import {
   Service,
   Tool,
   ToolItemGroup,
+  HeaderNav,
+  NavItem,
+  NavSubItem,
 } from '@dataesr/react-dsfr';
 
 const {
@@ -18,6 +22,7 @@ const {
 } = import.meta.env;
 
 export default function Header({ switchTheme }) {
+  const { pathname } = useLocation();
   const { isOpen, setIsOpen } = switchTheme;
 
   return (
@@ -56,58 +61,63 @@ export default function Header({ switchTheme }) {
           </ToolItemGroup>
         </Tool>
       </HeaderBody>
-      {/* <HeaderNav path={pathname}>
-          <NavItem
-            title={<FormattedMessage id="app.layout.header.nav.home" />}
-            asLink={<RouterLink to="/" />}
-            current={pathname === '/'}
+      <HeaderNav path={pathname}>
+        <NavItem
+          title="Accueil"
+          asLink={<RouterLink to="/" />}
+          current={pathname === '/'}
+        />
+        <NavItem
+          title="Rechercher"
+          current={pathname.startsWith('/search')}
+        >
+          <NavSubItem
+            title="Structures"
+            asLink={<RouterLink to="/search/organizations" />}
+            current={pathname.split('/').includes('organizations')}
           />
-          <NavItem
-            title={<FormattedMessage id="app.layout.header.nav.search" />}
-            asLink={<RouterLink to="/search" />}
-            current={pathname.startsWith('/search')}
+          <NavSubItem
+            title="Auteurs"
+            asLink={<RouterLink to="/search/authors" />}
+            current={pathname.split('/').includes('authors')}
           />
-          <NavItem
-            title={<FormattedMessage id="app.layout.header.nav.focus" />}
-            asLink={<RouterLink to="/focus" />}
-            current={pathname === '/focus'}
+          <NavSubItem
+            title="Financements"
+            asLink={<RouterLink to="/search/projects" />}
+            current={pathname.split('/').includes('projects')}
           />
-          <NavItem
-            title="A propos"
-            current={aboutPath.includes(pathname.split('/')?.[1])}
-          >
-            <NavSubItem
-              asLink={<RouterLink to="/faq" />}
-              title={<FormattedMessage id="app.layout.header.nav.faq" />}
-              current={pathname === '/faq'}
-            />
-            <NavSubItem
-              asLink={<RouterLink to="/team" />}
-              title={<FormattedMessage id="app.layout.header.nav.team" />}
-              current={pathname === '/team'}
-            />
-            <NavSubItem
-              asLink={<RouterLink to="/sources" />}
-              title={<FormattedMessage id="app.layout.header.nav.sources" />}
-              current={pathname === '/sources'}
-            />
-            <NavSubItem
-              asLink={<RouterLink to="/tutorial" />}
-              title={<FormattedMessage id="app.layout.header.nav.tutorial" />}
-              current={pathname === '/tutorial'}
-            />
-            <NavSubItem
-              asLink={<RouterLink to="/opendata" />}
-              title={<FormattedMessage id="app.layout.header.nav.opendata" />}
-              current={pathname === '/opendata'}
-            />
-            <NavSubItem
-              asLink={<RouterLink to="/press" />}
-              title={<FormattedMessage id="app.layout.header.nav.press" />}
-              current={pathname === '/press'}
-            />
-          </NavItem>
-        </HeaderNav> */}
+          <NavSubItem
+            title="Publications"
+            asLink={<RouterLink to="/search/publications" />}
+            current={pathname.split('/').includes('publications')}
+          />
+          <NavSubItem
+            title="Brevets"
+            asLink={<RouterLink to="/search/patents" />}
+            current={pathname.split('/').includes('patents')}
+          />
+        </NavItem>
+        <NavItem
+          title="Focus sur..."
+          asLink={<RouterLink to="/focus" />}
+          current={pathname === '/focus'}
+        />
+        <NavItem
+          title="A propos"
+          current={pathname.startsWith('/about')}
+        >
+          <NavSubItem
+            title="FAQ"
+            asLink={<RouterLink to="/about/faq" />}
+            current={pathname === '/about/faq'}
+          />
+          <NavSubItem
+            title="L'équipe"
+            asLink={<RouterLink to="/about/team" />}
+            current={pathname === '/about/team'}
+          />
+        </NavItem>
+      </HeaderNav>
     </HeaderWrapper>
   );
 }

@@ -10,9 +10,6 @@ services:
       - "5000:5000"
     volumes:
       - ./server:/code
-    deploy:
-      restart_policy:
-        condition: on-failure
 
   sng-client:
     container_name: sng-client
@@ -23,6 +20,3 @@ services:
       - "5173:5173"
     volumes:
       - ./client:/code
-    deploy:
-      restart_policy:
-        condition: on-failure

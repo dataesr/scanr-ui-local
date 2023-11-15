@@ -24,21 +24,18 @@ def search_publication(
     size: int = 10
 ):
     data = es.search(
-        index="scanr-publications-20230912",
-        body={
-            "query":
-                {
-                    "bool": {
-                        "must": [
-                            {
-                                "query_string": {
-                                    "query": query,
-                                    "fields": ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"],
-                                },
-                            }
-                        ]
+        index="scanr-publications-dev-20230912",
+        query={
+            "bool": {
+                "must": [
+                    {
+                        "query_string": {
+                            "query": query,
+                            "fields": ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"],
+                        },
                     }
-                }
+                ]
+            }
         },
         size=size,
     )
