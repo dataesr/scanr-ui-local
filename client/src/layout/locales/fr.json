@@ -1,0 +1,13 @@
+{
+  "layout.header.nav.home": "Accueil",
+  "layout.header.nav.search": "Rechercher",
+  "layout.header.nav.search.organizations": "Structures",
+  "layout.header.nav.search.publications": "Publications",
+  "layout.header.nav.search.projects": "Financements",
+  "layout.header.nav.search.authors": "Auteurs",
+  "layout.header.nav.search.patents": "Brevets",
+  "layout.header.nav.about": "A propos",
+  "layout.header.nav.about.faq": "FAQ",
+  "layout.header.nav.about.team": "L'équipe",
+  "layout.switch-theme": "Paramètres d'affichage"
+}

@@ -1,0 +1,77 @@
+ul.cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  animation: createCloud 0.5s ease-in-out;
+
+  li a[href]:hover {
+    background-color: var(--hover-tint);
+  }
+
+  li a[href]:active {
+    background-color: var(--active-tint);
+  }
+}
+
+ul.cloud li:nth-child(2n+1) a {
+  color: var(--text-label-yellow-tournesol);
+  background-color: var(--background-contrast-yellow-tournesol);
+  --idle: transparent;
+  --hover: var(--background-contrast-yellow-tournesol-hover);
+  --active: var(--background-contrast-yellow-tournesol-active);
+}
+
+ul.cloud li:nth-child(3n+1) a {
+  color: var(--text-label-green-archipel);
+  background-color: var(--background-contrast-green-archipel);
+  --idle: transparent;
+  --hover: var(--background-contrast-green-archipel-hover);
+  --active: var(--background-contrast-green-archipel-active);
+}
+
+ul.cloud li:nth-child(4n+1) a {
+  color: var(--text-label-pink-macaron);
+  background-color: var(--background-contrast-pink-macaron);
+  --idle: transparent;
+  --hover: var(--background-contrast-pink-macaron-hover);
+  --active: var(--background-contrast-pink-macaron-active);
+}
+
+.tag-cloud {
+  --size: 4;
+  padding: calc(var(--size) * 0.125rem + 0.125rem) !important;
+  font-size: calc(var(--size) * 0.125rem + 0.5rem);
+  // opacity: calc((10 - (4 - var(--size))) / 10);
+  text-align: center;
+}
+
+.tag-cloud[data-weight="1"] {
+  --size: 0.3;
+}
+
+.tag-cloud[data-weight="2"] {
+  --size: 1;
+}
+
+.tag-cloud[data-weight="3"] {
+  --size: 3.5;
+}
+
+.tag-cloud[data-weight="4"] {
+  --size: 5;
+}
+
+.tag-cloud[data-weight="5"] {
+  --size: 7;
+}
+
+@keyframes createCloud {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}

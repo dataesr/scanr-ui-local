@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Checkbox, CheckboxGroup, TextInput } from "@dataesr/react-dsfr";
+import { Checkbox, Fieldset, TextInput } from "@dataesr/dsfr-plus";
 
 export function KeywordFacet({ data, label, value = [], onChange, isSearchable = false }) {
   const [selected, setSelected] = useState(value);
@@ -22,7 +22,7 @@ export function KeywordFacet({ data, label, value = [], onChange, isSearchable =
           onChange={(e) => setSearch(e.target.value)}
         />
       )}
-      <CheckboxGroup legend={label}>
+      <Fieldset legend={label}>
         {filteredData.sort((a, b) => b.count - a.count).map((element) => (
           <Checkbox
             size="sm"
@@ -33,7 +33,7 @@ export function KeywordFacet({ data, label, value = [], onChange, isSearchable =
             onChange={(e) => (!e.target.checked) ? setSelected(selected.filter((value) => value !== e.target.value)) : setSelected([...selected, e.target.value])}
           />
         ))}
-      </CheckboxGroup>
+      </Fieldset>
     </div >
   );
 }

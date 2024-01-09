@@ -3,10 +3,22 @@
   display: flex;
   flex-wrap: nowrap;
   max-height: 15px;
+  animation: createBar 0.5s ease-in-out;
 }
 
 .ellipsis {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+
+@keyframes createBar {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
 }

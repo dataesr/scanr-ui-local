@@ -55,7 +55,7 @@ export function DropdownButton({
           tertiary
           borderless
           rounded
-          icon="ri-more-2-fill"
+          icon="more-2-fill"
           aria-controls={id.current}
           aria-expanded={!!isExpanded}
           title={title}

@@ -26,10 +26,10 @@ export default function OaDonut({ height = 200, percent = 15 }) {
           stroke-dashoffset="25"
         />
         <g class="chart-text">
-          <text x="50%" y="50%" class="chart-label">
+          <text x="50%" y="50%" class="chart-label" fill='var(--text-mention-grey)'>
             Accès ouvert
           </text>
-          <text x="50%" y="50%" class="chart-number">
+          <text x="50%" y="50%" class="chart-number" fill='var(--text-mention-grey)'>
             {percent}%
           </text>
         </g>

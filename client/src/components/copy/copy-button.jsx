@@ -8,7 +8,7 @@ export default function CopyButton({ copyText, title, size }) {
     <Button
       tertiary
       borderless
-      icon={copyStatus ? 'ri-check-double-line' : 'ri-file-copy-line'}
+      icon={copyStatus ? 'check-double-line' : 'file-copy-line'}
       rounded
       color="text"
       title={title}

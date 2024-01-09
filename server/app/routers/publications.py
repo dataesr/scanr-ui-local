@@ -1,8 +1,9 @@
 from typing import Union
+from typing_extensions import Annotated
 from app.services import es
-from app.models import PublicationsSearchResponse, Publication
+from app.models.publications import PublicationsSearchResponse, Publication, PublicationsFilters, PublicationsGroupBys
 from app.utils.scibert import get_scibert_embeddings
-from fastapi import APIRouter, HTTPException, status as statuscode
+from fastapi import APIRouter, HTTPException, status as statuscode, Depends
 
 publications_routes = APIRouter(
     prefix="/api/publications",
@@ -19,11 +20,12 @@ publications_routes = APIRouter(
     description="Rechercher des publications",
 )
 def search_publication(
+
     query: Union[str, None] = '*',
-    filters: Union[str, None] = None,
-    cursor: Union[str, None] = None,
-    groupby: Union[str, None] = None,
-    size: int = 10
+    filters: Annotated[str, Depends(PublicationsFilters)] = None,
+    groupby: Annotated[str, Depends(PublicationsGroupBys)] = None,
+    pageSize: int = 10,
+    page: int = 1
 ):
     query_embeddings = get_scibert_embeddings(query)
     print(query, flush=True)
@@ -49,7 +51,7 @@ def search_publication(
             "num_candidates": 50,
             "boost": 1-0.5
         },
-        size=size,
+        size=pageSize,
     )
     count = data.get('hits').get('total').get('value')
     publications = [Publication(**hit.get('_source'))

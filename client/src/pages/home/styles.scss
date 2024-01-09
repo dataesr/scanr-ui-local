@@ -1,0 +1,37 @@
+.main-banner {
+  background-image: url('/img/bg-poudre.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 33vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  H1 {
+    color: black;
+    text-align: center;
+  }
+}
+
+.search-object {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.search-object-link {
+  background: none;
+  text-decoration-line: unset;
+}
+
+.search-object-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}

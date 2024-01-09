@@ -1,4 +1,4 @@
-import { Link, Row, Text } from '@dataesr/react-dsfr';
+import { Col, Link, Row, Text } from '@dataesr/dsfr-plus';
 import styles from './styles.module.scss';
 import cs from 'classnames';
 
@@ -8,7 +8,7 @@ function HistogramBar({ width }) {
       xmlns="http://www.w3.org/2000/svg"
       style={{ cursor: 'pointer' }}
     >
-      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+      <g fill="#222222" fillRule="evenodd" stroke="none" strokeWidth="1">
         <g>
           <rect
             height="10px"
@@ -32,9 +32,11 @@ export default function BarLink({ name, href, width, count }) {
         {href ? <Link href={href}>{name}</Link> : name}
       </Text>
       <Text as="span" size="xs" className="fr-mb-1v">({count})</Text>
-      <div className={cs(styles.histogram)}>
-        <svg className="bar"><HistogramBar width={width} /></svg>
-      </div>
+      <Col xs="12">
+        <div className={cs(styles.histogram)}>
+          <svg width="100%" className="bar"><HistogramBar width={width} /></svg>
+        </div>
+      </Col>
     </Row>
   )
 }

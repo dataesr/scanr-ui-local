@@ -1,4 +1,4 @@
-import { Share, ShareButton } from "@dataesr/react-dsfr";
+import { Share, ShareLink } from "./Share";
 
 export default function SharePage() {
   const onClickFacebook = () => {
@@ -26,19 +26,19 @@ export default function SharePage() {
   };
   return (
     <Share className="fr-text--bold" title="Partager la page">
-      <ShareButton
+      <ShareLink
         onClick={onClickFacebook}
         type="facebook"
         label="Partager sur facebook"
         href="https://www.facebook.com/sharer.php"
       />
-      <ShareButton
+      <ShareLink
         onClick={onClickTwitter}
         type="twitter"
         label="Partager sur twitter"
         href="https://twitter.com/intent/tweet"
       />
-      <ShareButton
+      <ShareLink
         onClick={onClickLinkedin}
         type="linkedin"
         label="Partager sur linkedin"

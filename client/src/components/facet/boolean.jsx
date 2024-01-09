@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Checkbox, CheckboxGroup, TextInput } from "@dataesr/react-dsfr";
+import { Toggle } from "@dataesr/dsfr-plus";
 
 export default function KeywordFacet({ key, label, data }) {
   const [bool, setBool] = useState(defaultValue);
