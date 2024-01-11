@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, useEffect, useId } from 'react';
+import { cloneElement, isValidElement, useId } from 'react';
 import cn, { Argument } from 'classnames';
 import { getChildrenOfType } from '../../utils/children';
 import { TabProps, Tab } from './Tab';
@@ -27,16 +27,11 @@ export const Tabs = ({
   const _id = useId();
   const id = props.id || _id;
   const tabsPanel = getChildrenOfType(children, Tab).filter((child) => isValidElement(child)).map(
-    (child, index) => cloneElement(child as React.ReactElement<TabProps>, { index: `${id}-${index}` })
+    (child, index) => cloneElement(
+      child as React.ReactElement<TabProps>,
+      { index: `${id}-${index}` }
+    )
   );
-
-  useEffect(() => {
-    const { dsfr } = window as any;
-    setTimeout(() => {
-      const element = document.getElementById("publications-tabs-group");
-      dsfr(element).tabsGroup.members[defaultActiveIndex].disclose();
-    }, 400);
-  }, [defaultActiveIndex]);
 
   return (
     <div
@@ -57,9 +52,9 @@ export const Tabs = ({
                 },
                 css.button
               )}
-              tabIndex={0}
+              tabIndex={(defaultActiveIndex === index) ? 0 : -1}
               role="tab"
-              aria-selected="true"
+              aria-selected={(defaultActiveIndex === index) ? "true" : "false"}
               aria-controls={`${id}-${index}-panel`}
             >
               {isValidElement(tab) && tab.props.label}

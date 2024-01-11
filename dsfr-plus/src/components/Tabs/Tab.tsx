@@ -18,7 +18,7 @@ export const Tab = ({
     className={cn("fr-tabs__panel", className)}
     role="tabpanel"
     aria-labelledby={`${index}-button`}
-    tabIndex={0}
+    tabIndex={props['aria-selected'] ? -1 : 0}
     {...props}
   />
 );
