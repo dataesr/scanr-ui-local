@@ -46,12 +46,12 @@ export const Notice = ({
       <div className={cn("fr-container", css["fr-container"])}>
         <div className={cn("fr-notice__body", css["fr-notice__body"])}>
           <p className={cn("fr-notice__title", css["fr-notice__title"])}>{children}</p>
-          <button
+          {closeMode !== "disallow" && (<button
             onClick={(closeMode === "uncontrolled") ? handleClose : onClose}
             className={cn("fr-btn--close", "fr-btn", css["fr-btn--close"])}
           >
             Masquer le message
-          </button>
+          </button>)}
         </div>
       </div>
     </div>

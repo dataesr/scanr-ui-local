@@ -6,8 +6,9 @@
   "layout.header.nav.search.projects": "Financements",
   "layout.header.nav.search.authors": "Auteurs",
   "layout.header.nav.search.patents": "Brevets",
-  "layout.header.nav.about": "A propos",
-  "layout.header.nav.about.faq": "FAQ",
-  "layout.header.nav.about.team": "L'équipe",
-  "layout.switch-theme": "Paramètres d'affichage"
+  "layout.footer.top.about": "A propos",
+  "layout.footer.top.about.faq": "FAQ",
+  "layout.footer.top.about.team": "L'équipe",
+  "layout.switch-theme": "Paramètres d'affichage",
+  "layout.header.nav.networks": "Explorer les réseaux"
 }

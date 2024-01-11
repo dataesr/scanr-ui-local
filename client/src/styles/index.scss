@@ -143,6 +143,10 @@
   margin-right: .5rem;
 }
 
+.fr-text--lg[class*=" fr-icon-"]::before {
+  margin-right: .5rem;
+}
+
 
 .structure-badge-list li:not(:first-child)::before {
   flex: 0 0 auto;
@@ -157,8 +161,7 @@
   mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJtMTMuMTcyIDEyLTQuOTUtNC45NSAxLjQxNC0xLjQxNEwxNiAxMmwtNi4zNjQgNi4zNjQtMS40MTQtMS40MTQgNC45NS00Ljk1WiIvPjwvc3ZnPg==);
   --icon-size: 1.25rem;
   content: "";
-  margin-left: .0625rem;
-  margin-right: .0625rem;
+
 }
 
 .author-avatar {

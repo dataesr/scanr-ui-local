@@ -21,7 +21,7 @@ export default function PublicationItem({ data: publication, highlight }: ItemPr
     <Fragment key={publication.id}>
       <div className="result-item" key={publication.id}>
         <BadgeGroup className="fr-mt-1v">
-          <Badge size="sm" variant="info" noIcon>{publicationTypeMapping[publication.type] || "Autre"}</Badge>
+          <Badge size="sm" color="purple-glycine" noIcon>{publicationTypeMapping[publication.type] || "Autre"}</Badge>
           <Badge size="sm" color={publication.isOa ? 'green-emeraude' : 'pink-macaron'} icon={publication.isOa ? 'lock-unlock-fill' : 'lock-fill'}>
             {publication.isOa ? 'Accès ouvert' : 'Accès fermé'}
           </Badge>

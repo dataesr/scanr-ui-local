@@ -1,7 +1,7 @@
 import { Link, Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Text, Title } from "@dataesr/dsfr-plus";
 import Map from "../../../../components/map";
 import { getMarkers } from "../../../../utils/map";
-import SharePage from "../../../../components/share";
+import Share from "../../../../components/share";
 
 export default function These({ data }) {
   const author = data.authors?.filter((author) => author.role === "author")?.[0] || {};
@@ -127,7 +127,7 @@ export default function These({ data }) {
             </Col>
             <Col xs="12">
               <hr />
-              <SharePage />
+              <Share />
             </Col>
           </Row>
         </Col>

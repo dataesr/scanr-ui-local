@@ -1,15 +1,20 @@
-import { Link, Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Tab, Tabs, Text, Title } from "@dataesr/dsfr-plus";
-import { encode } from "../../../../utils/string";
+import { Link, Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Text } from "@dataesr/dsfr-plus";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
 import { useQuery } from "@tanstack/react-query";
 import { getMorePublicationsLikeThis } from "../../../../api/publications";
-import { publicationTypeMapping } from "../../../../utils/string";
-import SharePage from "../../../../components/share";
+import Share from "../../../../components/share";
 import Skeleton from "../../../../components/skeleton/search-result-list-skeleton";
 import PublicationItem from "../../../search/components/publications/publication-item";
+import PublicationsHeader from "./header";
+import { useIntl } from "react-intl";
+import { PageContent, PageSection } from "../../../../components/page-content";
+import useScreenSize from "../../../../hooks/useScreenSize";
 
 
 export default function Publication({ data }) {
+  const intl = useIntl();
+  const { screen } = useScreenSize();
+
   const { data: moreLikeThis, isLoading, isError } = useQuery({
     queryKey: ["morePublicationLike", data._id],
     queryFn: () => getMorePublicationsLikeThis(data._id),
@@ -18,7 +23,7 @@ export default function Publication({ data }) {
     refetchOnWindowFocus: false,
   });
   const authors = data.authors?.filter((author) => author.role === "author") || [];
-  const keywords = data?.domains?.filter((domain) => domain.type === "keyword").map((domain) => domain.label?.default) || [];
+  // const keywords = data?.domains?.filter((domain) => domain.type === "keyword").map((domain) => domain.label?.default) || [];
   const wikis = data?.domains?.filter((domain) => domain.type === "wikidata").map((domain) => domain.label?.default) || [];
   const affiliations = data?.authors
     ?.flatMap(({ affiliations }) => affiliations?.filter((affiliation) => affiliation.name))
@@ -47,55 +52,19 @@ export default function Publication({ data }) {
 
   return (
     <Container fluid>
-      <Row gutters>
-        <Col xs="12" lg="8">
-          <Row gutters>
-            <Col xs="12">
-              <BadgeGroup>
-                <Badge variant="info" noIcon>Publication</Badge>
-                <Badge variant="new" noIcon>{publicationTypeMapping[data.type]}</Badge>
-              </BadgeGroup>
-              <Title className="fr-mb-1v" as="h1" look="h4">{data.title.default}</Title>
-              <Text bold size="sm" className="fr-mb-1v">
-                {authors.map((author, i) => (
-                  <>
-                    {(i > 0) ? ', ' : ''}
-                    {(author?.person) ? <Link href={`/authors/${encode(author.person)}`}>{author.fullName}</Link> : author.fullName}
-                    {affiliations
-                      ?.filter((affiliation) => affiliation.authors.includes(author.fullName))
-                      .map((affiliation, i) => (
-                        <>
-                          <sup>
-                            {(i > 0) ? ', ' : ''}
-                            {affiliation.index + 1}
-                          </sup>
-                        </>
-                      )
-                      )}
-                  </>
-                ))}
-              </Text>
-              <Text bold size="md" className="fr-card__detail">
-                {data?.source?.title && `${data.source.title}`}
-                {data?.source?.volume && `, ${data.source.volume}`}
-                {data?.source?.issue && ` (${data.source.issue})`}
-                {(data?.year && data.source.title) && ", "}
-                {data?.year && `${data.year}`}
-                {data?.source?.publisher && `, ${data.source.publisher}`}
-              </Text>
-
-            </Col>
-            <Col xs="12">
-              <Text bold size="lead">Résumé</Text>
-              {(data?.summary?.default || data?.summary?.fr || data?.summary?.en)
-                ? <Text size="sm">{data?.summary.default || data?.summary.fr || data?.summary.en}</Text>
-                : <Text size="sm"><i>Aucun résumé disponible</i></Text>
-              }
-            </Col>
-            {affiliations?.length > 0 ? (<Col xs="12">
-              <Text bold size="lead">Affiliations des auteurs</Text>
-              <Row gutters>
-                <Col xs="12">
+      <Row gutters={!["sm", "xs"].includes(screen)}>
+        <Col xs="12" md="8">
+          <Container fluid className="fr-mb-6w">
+            <PublicationsHeader data={data} authors={authors} affiliations={affiliations} />
+          </Container>
+          <Container fluid>
+            <PageContent>
+              <PageSection
+                title={intl.formatMessage({ id: "publications.section.affiliations" })}
+                icon="building-line"
+                show={!!affiliations?.length}
+              >
+                <div className="fr-mb-6w">
                   {affiliations.map((affiliation, i) => (
                     <div style={{ display: 'inline-flex' }} key={i}>
                       <sup>{affiliation.index + 1}</sup>
@@ -106,13 +75,14 @@ export default function Publication({ data }) {
                     </div>
                   )
                   )}
-                </Col>
-              </Row>
-            </Col>) : null}
-            {data.projects?.length > 0 ? (
-              <Col xs="12">
-                <Text bold size="lead">Financements</Text>
-                {data?.projects.map((project) => (
+                </div>
+              </PageSection>
+              <PageSection
+                title={intl.formatMessage({ id: "publications.section.fundings" })}
+                icon="money-euro-circle-line"
+                show={!!data?.projects?.length}
+              >
+                {data?.projects?.map((project) => (
                   <>
                     <Link className="fr-link fr-text--md" href={`/projects/${project?.id}`}>
                       {project?.label?.fr || project?.label?.en || project?.label?.default}
@@ -129,12 +99,12 @@ export default function Publication({ data }) {
                     <br />
                   </>
                 ))}
-              </Col>
-            ) : null}
-          </Row>
-          <Row className="fr-my-5w">
-            <Tabs index="None">
-              <Tab index="1" className='more-like-this' label="Publications similaires" icon="link">
+              </PageSection>
+              <PageSection
+                title={intl.formatMessage({ id: "publications.section.more-like-this" })}
+                icon="shopping-cart-2-line"
+                show
+              >
                 {isLoading && <Skeleton />}
                 {isError && <div>Une erreur est survenue au chargement des données</div>}
                 <div className="result-list">
@@ -142,99 +112,61 @@ export default function Publication({ data }) {
                     <PublicationItem data={like} key={like.id} />
                   ))}
                 </div>
-              </Tab>
-              <Tab index="2" label="Références de l'article" icon="link">
-                <h3>Références opencitations</h3>
-              </Tab>
-              <Tab index="3" label="Citations de l'article" icon="link">
-                <h3>Citations opencitations</h3>
-              </Tab>
-            </Tabs>
-          </Row>
+              </PageSection>
+            </PageContent>
+          </Container>
         </Col>
         <Col md="4" lg="3" offsetLg="1">
-          <Row gutters>
-            <Col xs="12">
-              <Text bold className="fr-mb-1w">
-                Accéder à la publication
-              </Text>
-              <Badge variant={data.isOa ? 'success' : 'error'} icon={data.isOa ? 'ri-lock-unlock-line' : 'ri-lock-line'}>{data.isOa ? 'Accès ouvert' : 'Accès fermé'}</Badge>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Publication en accès {data.isOa ? 'ouvert' : 'fermé'}
-                {' '}
-                {data.isOa ? ` sur ${data.oaEvidence?.hostType} dans sa version ${data.oaEvidence?.version}` : ''}
-              </Text>
+          <PageContent>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.access" })}
+              size="lg"
+              show
+            >
               <ButtonGroup size="sm">
-                {data.isOa && <Button icon="ri-file-download-line" iconPosition="right">Télécharger la publication</Button>}
-                <Button variant="tertiary" icon="ri-external-link-line" iconPosition="right">
-                  Voir sur le site de
-                  {' '}
-                  {data.oaEvidence?.hostType}
+                {data.isOa && <Button icon="file-download-line" iconPosition="right">Télécharger la publication</Button>}
+                <Button variant="tertiary" icon="external-link-line" iconPosition="right">
+                  Voir sur le site de l'éditeur
                 </Button>
               </ButtonGroup>
-              <hr />
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Publication en accès {data.source.isOa ? 'ouvert' : 'fermé'}
-                {' '}
-                sur le site de l'éditeur
-              </Text>
-              <ButtonGroup size="sm">
-                <Button variant="tertiary" icon="ri-external-link-line" iconPosition="right">
-                  Voir sur la page de l'éditeur
-                </Button>
-              </ButtonGroup>
-            </Col>
+            </PageSection>
 
-            <Col xs="12">
-              <hr />
-              <Text bold className="fr-mb-1v">
-                Identifiants de la publication
-              </Text>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Cliquez pour copier l'identifiant dans le press-papier
-              </Text>
-              <BadgeGroup>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.identifiers" })}
+              description={intl.formatMessage({ id: "publications.section.identifiers-description" })}
+              size="lg"
+              show
+            >
+              <div className="fr-badge-group">
                 {data.externalIds
                   ?.filter((ext) => ext?.type !== 'scanr')
                   .map((ext) => <CopyBadgeButton key={ext.id} lowercase size="sm" text={ext.id} />)
                 }
-              </BadgeGroup>
-            </Col>
-            <Col xs="12">
-              <hr />
-              <Text bold className="fr-mb-1v">
-                Mots-clés
-              </Text>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Cliquez pour rechercher d'autres publications contenant le mot-clé
-              </Text>
-              <BadgeGroup>
-                {keywords?.map((keyword) => (
-                  <Badge key={keyword} size="sm">{keyword}</Badge>
-                ))}
-              </BadgeGroup>
-            </Col>
-            <Col xs="12">
-              <hr />
-              <Text bold className="fr-mb-1v">
-                Concepts wikidata
-              </Text>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Cliquez pour voir la page wikipédia
-              </Text>
+              </div>
+            </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.wikis" })}
+              show={!!data?.domains?.length}
+              description={intl.formatMessage({ id: "publications.section.wikis-description" })}
+              size="lg"
+            >
               <BadgeGroup>
                 {wikis?.map((keyword) => (
                   <Badge key={keyword} size="sm">{keyword}</Badge>
                 ))}
               </BadgeGroup>
-            </Col>
-            <Col xs="12">
-              <hr />
-              <SharePage />
-            </Col>
-          </Row>
+            </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.share" })}
+              size="lg"
+              show
+            >
+              <Share />
+            </PageSection>
+          </PageContent>
         </Col>
-      </Row>
-    </Container>
+      </Row >
+    </Container >
   )
 }
+

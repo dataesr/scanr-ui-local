@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, useId } from 'react';
+import { cloneElement, isValidElement, useEffect, useId } from 'react';
 import cn, { Argument } from 'classnames';
 import { getChildrenOfType } from '../../utils/children';
 import { TabProps, Tab } from './Tab';
@@ -13,23 +13,34 @@ type TabsCss = {
 export type TabsProps = Merge<React.HTMLAttributes<HTMLDivElement>, {
   children: React.ReactNode[] | React.ReactNode;
   className?: Argument;
+  defaultActiveIndex?: number;
   css?: TabsCss;
-  readonly index: string;
 }>
 
 export const Tabs = ({
   className,
   children,
+  defaultActiveIndex = 0,
   css = {},
   ...props
 }: TabsProps) => {
-  const id = useId();
+  const _id = useId();
+  const id = props.id || _id;
   const tabsPanel = getChildrenOfType(children, Tab).filter((child) => isValidElement(child)).map(
     (child, index) => cloneElement(child as React.ReactElement<TabProps>, { index: `${id}-${index}` })
   );
 
+  useEffect(() => {
+    const { dsfr } = window as any;
+    setTimeout(() => {
+      const element = document.getElementById("publications-tabs-group");
+      dsfr(element).tabsGroup.members[defaultActiveIndex].disclose();
+    }, 400);
+  }, [defaultActiveIndex]);
+
   return (
     <div
+      id={id}
       className={cn('fr-tabs', className)}
       {...props}
     >

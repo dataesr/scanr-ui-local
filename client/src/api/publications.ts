@@ -173,6 +173,7 @@ export async function getPublicationFilters(
 export async function getMorePublicationsLikeThis(id: string) {
   const body = JSON.stringify({
     _source: SEARCH_SOURCE,
+    size: 3,
     query: {
       more_like_this: {
         fields: ["title.*", "summary.*", "authors.fullName", "domains.label.*"],

@@ -1,5 +1,5 @@
 import { publicationTypeMapping } from '../utils/string'
-import { organizationsIndex, postHeaders, projectsIndex, publicationsIndex } from './config'
+import { organizationsIndex, patentsIndex, postHeaders, projectsIndex, publicationsIndex } from './config'
 import { ElasticResult, SearchArgs, SearchResponse } from './types/commons'
 import { Organization, OrganizationAggregations } from './types/organization'
 
@@ -78,12 +78,13 @@ export async function getOrganizationById(id: string): Promise<Organization> {
     .then(r => r.json())
   const publicationsQuery = getStructurePublicationsById(id)
   const projectsQuery = getStructureProjectsById(id)
-  const [structure, publications, projects] = await Promise.all([structureQuery, publicationsQuery, projectsQuery])
+  const patentsQuery = getStructurePatentsById(id)
+  const [structure, publications, projects, patents] = await Promise.all([structureQuery, publicationsQuery, projectsQuery, patentsQuery])
   
   const structureData = structure?.hits?.hits?.[0]?._source || {}
   const { _id } = structure?.hits?.hits?.[0] || {}
   
-  return { ...structureData, _id, publications, projects }
+  return { ...structureData, _id, publications, projects, patents }
 }
 
 export async function getStructurePublicationsById(id: string): Promise<any> {
@@ -256,6 +257,36 @@ export async function getStructureProjectsById(id: string): Promise<any> {
     }
   }).filter(el => el).sort((a, b) => a.count - b.count).slice(0, 30) || [];
   return { byYear, byType, byKeywords, projectsCount }
+}
+
+export async function getStructurePatentsById(id: string): Promise<any> {
+  const body: any = {
+    size: 0,
+    query: { bool: { filter: [{ term: { "affiliations.id.keyword": id } }] } },
+    aggs: {
+      byYear: {
+        terms: {
+          field: "year",
+        }
+      }
+    }
+  }
+  const res = await fetch(
+    `${patentsIndex}/_search`,
+    { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
+  const result = await res.json()
+  
+  const { aggregations: data} = result;
+  const patentsCount = result?.hits?.total?.value || 0
+  const _100Year = data?.byYear?.buckets && Math.max(...data.byYear.buckets.map((el) => el.doc_count));
+  const byYear = data?.byYear?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count * 100 / _100Year,
+    }
+  }) || [];
+  return { byYear, patentsCount }
 }
 
 export async function getOrganizationFilters(

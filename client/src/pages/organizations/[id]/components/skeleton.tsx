@@ -1,5 +1,4 @@
-import { Col, Container, Row, Tab, Tabs } from "@dataesr/dsfr-plus";
-import Skeleton from "../../../../components/skeleton/search-result-list-skeleton";
+import { Col, Container, Row } from "@dataesr/dsfr-plus";
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton";
 
 export default function OrganizationSkeleton() {
@@ -22,16 +21,17 @@ export default function OrganizationSkeleton() {
               <BaseSkeleton width="40%" height="2rem" className="fr-my-3w" />
               <BaseSkeleton width="100%" height="6rem" className="fr-my-3w" />
             </Col>
-          </Row>
-          <Row className="fr-my-5w">
-            <Tabs index="more">
-              <Tab index="1" className='more-like-this' label="Publications" icon="ri-link">
-                <Skeleton />
-              </Tab>
-            </Tabs>
+            <Col xs="12">
+              <BaseSkeleton width="40%" height="2rem" className="fr-my-3w" />
+              <BaseSkeleton width="100%" height="6rem" className="fr-my-3w" />
+            </Col>
+            <Col xs="12">
+              <BaseSkeleton width="40%" height="2rem" className="fr-my-3w" />
+              <BaseSkeleton width="100%" height="6rem" className="fr-my-3w" />
+            </Col>
           </Row>
         </Col>
-        <Col xs="12" offsetLg="1" md="4" lg="3">
+        <Col xs="12" md="4" lg="3" offsetLg="1">
           <Row gutters>
             <Col xs="12">
               <div className="skeleton-sm fr-mb-2w" />

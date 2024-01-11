@@ -2,7 +2,7 @@ import cs from "classnames";
 import { Badge, BadgeGroup, Col, Container, Link, Notice, Row, Tab, Tabs, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { Project } from "../../../../api/types/project";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
-import { PageSidebar, PageSidebarItem } from "../../../../components/page-sidebar";
+import { PageContent, PageSection } from "../../../../components/page-content";
 import Map from "../../../../components/map";
 
 function calculateAccomplishment(startDate, endDate) {
@@ -47,6 +47,8 @@ export default function ProjectPresentation({ data }: { data: Project }) {
 
 
   const logoUrl = typeLogoMapping[data.type?.toLowerCase()] || null;
+
+  const coordinator = data?.participants?.find((part) => part.role === 'coordinator');
 
 
   return (
@@ -101,12 +103,12 @@ export default function ProjectPresentation({ data }: { data: Project }) {
             </Container>
             <Container fluid className="fr-mb-8w">
               <Row className="fr-my-3w">
-                <Title className="fr-mb-0" as="h2" look="h4">Participants</Title>
+                <Title className="fr-mb-0" as="h2" look="h4">Participants français</Title>
               </Row>
               <Row gutters>
                 <Col xs="12" md={markers.length ? "6" : "12"}>
                   <Row>
-                    {data.participants?.map((part) => (
+                    {data.participants?.filter((e) => e.structure?.address?.[0]?.country === 'France')?.map((part) => (
                       <Col xs="12">
                         <div style={{ display: "flex", borderRadius: "0.5rem" }} className={cs("fr-p-1w", { "fr-enlarge-link": !!part.structure?.id })}>
                           <div className="structure-avatar fr-mr-2w fr-icon-building-line" />
@@ -149,7 +151,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
               </Row>
               <Row>
                 <Col className="fr-mt-5w" xs="12">
-                  <Tabs index="t">
+                  <Tabs>
                     <Tab index="1" className="authors-publications-tabs" label="Publications (0)">
                       <Notice type="info" closeMode="disallow">
                         Liste des publications
@@ -164,8 +166,8 @@ export default function ProjectPresentation({ data }: { data: Project }) {
             </Container>
 
           </Col>
-          <PageSidebar>
-            <PageSidebarItem title="Etat du projet" description={state
+          <PageContent>
+            <PageSection show title="Etat du projet" description={state
               ? `Ce projet est ${state} depuis le ${state === ' terminé' ? new Date(data.endDate).toLocaleDateString() : new Date(data.startDate).toLocaleDateString()}`
               : 'Aucune information disponible'}>
               {accomplishment && (<div style={{ padding: "1rem .5rem" }}>
@@ -234,13 +236,17 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   </g>
                 </svg>
               </div>)}
-            </PageSidebarItem>
-            <PageSidebarItem title="Financement du projet" description={(<Text className="fr-mb-0" size="xs">
-              {(!data.budgetTotal && !data.budgetFinanced) && 'Aucune information disponible'}
-              {data.budgetTotal && (<>Budget global: <b>{Math.floor(Number(data.budgetTotal)).toLocaleString()} €</b></>)}
-              <br />
-              {data.budgetFinanced && (<>Contribution du financeur: <b>{Math.floor(Number(data.budgetFinanced)).toLocaleString()} €</b></>)}
-            </Text>)} >
+            </PageSection>
+            <PageSection
+              title="Financement du projet"
+              description={(<Text className="fr-mb-0" size="xs">
+                {(!data.budgetTotal && !data.budgetFinanced) && 'Aucune information disponible'}
+                {data.budgetTotal && (<>Budget global: <b>{Math.floor(Number(data.budgetTotal)).toLocaleString()} €</b></>)}
+                <br />
+                {data.budgetFinanced && (<>Contribution du financeur: <b>{Math.floor(Number(data.budgetFinanced)).toLocaleString()} €</b></>)}
+              </Text>)}
+              show
+            >
               {fundingPercent && (<div style={{ padding: "1rem .5rem" }}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -288,15 +294,41 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   </g>
                 </svg>
               </div>)}
-            </PageSidebarItem>
-            <PageSidebarItem title="Identifiants du projet" description="Cliquez pour copier l'identifiant dans le press-papier">
+            </PageSection>
+            <PageSection
+              title="Coordinateur du projet"
+              description=""
+              show={!!coordinator}
+            >
+              <Col xs="12">
+                <div style={{ display: "flex", borderRadius: "0.5rem" }} className={cs("fr-p-1w", { "fr-enlarge-link": !!coordinator.structure?.id })}>
+                  <div className="structure-avatar fr-mr-2w fr-icon-building-line" />
+                  <div style={{ flexGrow: 1, display: "block" }}>
+                    <Text className="fr-m-0">
+                      {
+                        coordinator.structure?.id ? (
+                          <Link href={`/organizations/${coordinator.structure?.id}`}>
+                            {coordinator.structure?.label?.default}
+                          </Link>
+                        ) : coordinator.label?.default?.split('__')[0]
+                      }
+                    </Text>
+                  </div>
+                </div>
+              </Col>
+            </PageSection>
+            <PageSection
+              title="Identifiants du projet"
+              description="Cliquez pour copier l'identifiant dans le press-papier"
+              show={!!data?.id}
+            >
               <div>
                 <div className="fr-badge-group">
                   <CopyBadgeButton lowercase size="sm" text={data.id} />
                 </div>
               </div>
-            </PageSidebarItem>
-            {data.url && (<PageSidebarItem title="Sur le web" description="">
+            </PageSection>
+            {data.url && (<PageSection title="Sur le web" description="" show={!!data?.url}>
               <div className="fr-follow">
                 <div className="fr-container">
                   <div className="fr-grid-row">
@@ -319,8 +351,8 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   </div>
                 </div>
               </div>
-            </PageSidebarItem>)}
-          </PageSidebar>
+            </PageSection>)}
+          </PageContent>
         </Row >
         <pre>{JSON.stringify(data, null, 2)}</pre>
       </Container >

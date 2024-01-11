@@ -1,125 +1,81 @@
-import { Aggregation } from "./commons"
+import { Aggregation, Address, LangField } from "./commons"
+
+export type OrganizationPublicationsData = {
+  byIsOa: Aggregation[],
+  byYear: Aggregation[],
+  byPublicationType: Aggregation[],
+  byAuthors: Aggregation[],
+  byWiki: Aggregation[],
+  bySource: Aggregation[],
+  publicationsCount: number,
+}
+export type OrganizationProjectsData = {
+  byYear: Aggregation[],
+  byType: Aggregation[],
+  byKeywords: Aggregation[],
+  projectsCount: number,
+}
+
+export type OrganizationPatentsData = {
+  byYear: Aggregation[],
+  patentsCount: number,
+}
+
+type BaseLink = {
+  type?: string,
+  url?: string,
+  language?: string
+}
+type BaseSocialMedia = BaseLink & { account?: string,}
+export type OrganizationLinksData = BaseLink[]
+export type OrganizationSocialMediasData = BaseSocialMedia[]
+
+export type RelatedOrganizationData = {
+  structure: string,
+  relationType?: string,
+  type?: string,
+  fromDate: string,
+  label: string,
+  denormalized: {
+    id: string,
+    label: LangField,
+    address?: Address[],
+  }
+}
+
+export type OrganizationLeaderData = {
+  person?: string,
+  role?: string,
+  fromDate?: string,
+  firstName?: string,
+  lastName?: string,
+}
+
+export type ExternalIdsData = {
+  id: string,
+  type: string,
+}
 
 export type Organization = {
   _id: string,
   id: string,
-  label: {
-    default: string,
-    en?: string,
-    fr?: string,
-  },
+  label: LangField,
   creationYear?: number,
-  acronym: {
-    default: string,
-    en?: string,
-    fr?: string,
-  },
-  description: {
-    default: string,
-    en?: string,
-    fr?: string,
-  },
-  externalIds: {
-    id: string,
-    type: string,
-  }[],
+  acronym: LangField,
+  description: LangField,
+  externalIds: ExternalIdsData[],
   kind: string[],
   nature?: string,
   level?: string,
-  address?: {
-    main: boolean,
-    city?: string,
-    address?: string,
-    postcode?: string,
-    country?: string,
-    gps?: {
-      lat: number,
-      lon: number,
-    },
-  }[],
-  leaders?: {
-      person: string,
-      role: string,
-      fromDate: string,
-      firstName: string,
-      lastName: string,
-  }[],
-  institutions?: {
-    structure: string,
-    relationType: string,
-    fromDate: string,
-    label: string,
-    denormalized: {
-      id: string,
-      label: {
-        default: string,
-        en?: string,
-        fr?: string,
-      },
-      address?: {
-        main: boolean,
-        city?: string,
-        address?: string,
-        postcode?: string,
-        country?: string,
-        gps?: {
-          lat: number,
-          lon: number,
-        },
-      }[],
-    }
-  }[],
-  relations?: {
-    structure: string,
-    type: string,
-    fromDate: string,
-    label: string,
-    denormalized: {
-      id: string,
-      label: {
-        default: string,
-        en?: string,
-        fr?: string,
-      },
-      address?: {
-        main: boolean,
-        city?: string,
-        address?: string,
-        postcode?: string,
-        country?: string,
-        gps?: {
-          lat: number,
-          lon: number,
-        },
-      },
-    }
-  }[],
-  socialMedias: {
-    account?: string,
-    type?: string,
-    url?: string,
-    language?: string
-  }[],
-  links: {
-    type?: string,
-    url?: string,
-    language?: string
-  }[],
-  publications: {
-    byIsOa: Aggregation[],
-    byYear: Aggregation[],
-    byPublicationType: Aggregation[],
-    byAuthors: Aggregation[],
-    byWiki: Aggregation[],
-    bySource: Aggregation[],
-    publicationsCount: number,
-  }
-  projects: {
-    byYear: Aggregation[],
-    byType: Aggregation[],
-    byKeywords: Aggregation[],
-    projectsCount: number,
-  }
+  address?: Address[],
+  leaders?: OrganizationLeaderData[],
+  institutions?: RelatedOrganizationData[],
+  relations?: RelatedOrganizationData[],
+  socialMedias: OrganizationSocialMediasData,
+  links: OrganizationLinksData,
+  publications: OrganizationPublicationsData,
+  projects: OrganizationProjectsData,
+  patents: OrganizationPatentsData,
 }
 
 

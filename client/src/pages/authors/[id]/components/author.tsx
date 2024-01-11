@@ -1,9 +1,9 @@
 import { Badge, BadgeGroup, Col, Container, Row, Text, Title, Tab, Tabs } from "@dataesr/dsfr-plus";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
-import SharePage from "../../../../components/share";
+import Share from "../../../../components/share";
 import OaDonut from "../../../../components/oa-donut";
 import BarLink from "../../../../components/bar-link";
-import { PageSidebar, PageSidebarItem } from "../../../../components/page-sidebar";
+import { PageContent, PageSection } from "../../../../components/page-content";
 import useScreenSize from "../../../../hooks/useScreenSize";
 import PublicationItem from "../../../search/components/publications/publication-item";
 import TagCloud from "../../../../components/tag-cloud";
@@ -83,7 +83,7 @@ export default function Author({ data }) {
               <TagCloud data={data.wikis} order="random" />
             </Col>)}
             {!isMobile ? (<Col className="fr-mt-5w" xs="12">
-              <Tabs index="t">
+              <Tabs>
                 {(publications.length > 0) ? (
                   <Tab index="1" className="authors-publications-tabs" label={`Publications (${publications.length || 0})`}>
                     <div className="result-list">
@@ -109,53 +109,53 @@ export default function Author({ data }) {
             </Col>) : null}
           </Row>
         </Col>
-        <PageSidebar>
+        <PageContent>
           {(isMobile && thesis) && (
-            <PageSidebarItem title="Thèse de l'auteur">
+            <PageSection show title="Thèse de l'auteur">
               <div className="result-list">
                 <PublicationItem data={thesis} />
               </div>
-            </PageSidebarItem>
+            </PageSection>
           )}
           {(isMobile && publications.length) && (
-            <PageSidebarItem title={`Liste des publications (${publications.length || 0})`}>
+            <PageSection show title={`Liste des publications (${publications.length || 0})`}>
               <div className="result-list">
                 {publications?.map((publi) => (
                   <PublicationItem data={publi} key={publi.id} />
                 ))}
               </div>
-            </PageSidebarItem>
+            </PageSection>
           )}
           {(isMobile && thesisParticipations.length) ? (
-            <PageSidebarItem title={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
+            <PageSection show title={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
               <div className="result-list">
                 {thesisParticipations?.map((publi) => (
                   <PublicationItem data={publi} key={publi.id} />
                 ))}
               </div>
-            </PageSidebarItem>
+            </PageSection>
           ) : null}
-          <PageSidebarItem title="Identifiants de l'auteur" description="Cliquez pour copier l'identifiant dans le press-papier">
+          <PageSection show title="Identifiants de l'auteur" description="Cliquez pour copier l'identifiant dans le press-papier">
             <div className="fr-badge-group">
               {data.externalIds
                 ?.filter((ext) => ext?.type !== 'scanr')
                 .map((ext, i) => <CopyBadgeButton key={i} lowercase size="sm" text={ext.id} />)
               }
             </div>
-          </PageSidebarItem>
-          <PageSidebarItem title={"Publications par année"} description="Nombre de publication par an depuis 2013">
+          </PageSection>
+          <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
             <Histogram data={data.byYear.map((year) => year.count)} />
-          </PageSidebarItem>
+          </PageSection>
           {isMobile && (
-            <PageSidebarItem title={"Publications par année"} description="Nombre de publication par an depuis 2013">
+            <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
               <TagCloud data={data.wikis} order="random" />
-            </PageSidebarItem>
+            </PageSection>
           )}
-          <PageSidebarItem title={`Publications en accès ouvert ${oaPercent}%`} description="Calculé">
+          <PageSection show title={`Publications en accès ouvert ${oaPercent}%`} description="Calculé">
             <OaDonut percent={oaPercent} />
-          </PageSidebarItem>
+          </PageSection>
 
-          <PageSidebarItem title="Principaux co-auteurs" description="Cliquez pour accèder la page du co-auteur">
+          <PageSection show title="Principaux co-auteurs" description="Cliquez pour accèder la page du co-auteur">
             {data.coAuthors?.slice(0, 6)?.map((coAuthor, i) => (
               <BarLink
                 key={i}
@@ -165,8 +165,8 @@ export default function Author({ data }) {
                 href={`/authors/${coAuthor.value}`}
               />
             ))}
-          </PageSidebarItem>
-          <PageSidebarItem title="Principales revues" description="Cliquez pour rechercher des publications de la revue">
+          </PageSection>
+          <PageSection show title="Principales revues" description="Cliquez pour rechercher des publications de la revue">
             {data.reviews?.slice(0, 6)?.map((review, i) => (
               <BarLink
                 key={i}
@@ -176,11 +176,11 @@ export default function Author({ data }) {
                 href={`/authors/${review.sourceTitle}`}
               />
             ))}
-          </PageSidebarItem>
-        </PageSidebar>
+          </PageSection>
+        </PageContent>
         <Col xs="12">
           <hr />
-          <SharePage />
+          <Share />
         </Col>
       </Row>
     </Container>

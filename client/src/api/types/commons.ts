@@ -27,3 +27,21 @@ export type Aggregation = {
   href?: string,
   normalizedCount?: number,
 }
+
+export type Address = {
+  main: boolean,
+  city?: string,
+  address?: string,
+  postcode?: string,
+  country?: string,
+  gps?: {
+    lat: number,
+    lon: number,
+  },
+}
+
+export type LangField = {
+  default?: string,
+  en?: string,
+  fr?: string,
+}

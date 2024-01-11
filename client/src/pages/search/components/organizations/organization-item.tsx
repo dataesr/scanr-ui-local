@@ -6,6 +6,7 @@ import { ItemProps } from "../../types";
 import { getOrganizationById } from "../../../../api/organizations";
 import { Organization } from "../../../../api/types/organization";
 
+
 export default function OrganizationItem({ data: organization, highlight }: ItemProps<Organization>) {
   const queryClient = useQueryClient();
 
@@ -20,10 +21,9 @@ export default function OrganizationItem({ data: organization, highlight }: Item
   return (
     <Fragment key={organization.id}>
       <div className="result-item" key={organization.id}>
-        <BadgeGroup className="fr-mt-1v">
-          {organization.kind?.map((k) => <Badge key={k} size="sm" variant="info" noIcon>{k}</Badge>)}
-          {organization.level && <Badge size="sm" color='green-emeraude'>{organization.level}</Badge>}
-          {organization.nature && <Badge size="sm" color='green-emeraude'>{organization.nature}</Badge>}
+        <BadgeGroup className="structure-badge-list fr-mt-1v">
+          {organization.kind?.map((k) => <Badge key={k} size="sm" color="yellow-tournesol" noIcon>{k}</Badge>)}
+          {organization.level && <Badge size="sm" color='yellow-tournesol'>{organization.level?.match(/\((.*?)\)/)?.[1] || organization.level}</Badge>}
         </BadgeGroup>
         <span onMouseEnter={() => prefetchAuthor(organization.id)}><Link href={`/organizations/${encode(organization.id)}`} className="fr-link">
           {highlight?.["label.default"]

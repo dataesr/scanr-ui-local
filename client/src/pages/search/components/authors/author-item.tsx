@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Text, Link } from "@dataesr/dsfr-plus";
+import { Text, Link, BadgeGroup, Badge } from "@dataesr/dsfr-plus";
 import { encode } from "../../../../utils/string";
 import { Author } from "../../../../api/types/author";
 import { getAuthorById } from "../../../../api/authors";
@@ -22,6 +22,9 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<Author
   return (
     <Fragment key={author.id}>
       <div className="result-item" key={author.id}>
+        <BadgeGroup className="structure-badge-list fr-mt-1v">
+          <Badge size="sm" color='orange-terre-battue'>Auteur</Badge>
+        </BadgeGroup>
         <span onMouseEnter={() => prefetchAuthor(author.id)}><Link href={`/authors/${encode(author.id)}`} className="fr-link">
           {author.fullName}
         </Link>
@@ -35,7 +38,7 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<Author
               </Fragment>)
           ))}
         </Text>
-        <div>
+        <div className="fr-mt-1w fr-badge-group">
           {[author.id.replace("idref", ""), author.orcid]
             ?.filter((id) => id)
             .map((id) => <CopyBadgeButton key={id} lowercase size="sm" text={id} />)

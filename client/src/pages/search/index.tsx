@@ -3,7 +3,7 @@ import AuthorItem from "./components/authors/author-item";
 import SearchResultListSkeleton from "../../components/skeleton/search-result-list-skeleton";
 import useSearchData from "./hooks/useSearchData";
 import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
-import { FormattedMessage, useIntl, IntlProvider } from "react-intl";
+import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
 import { useEffect } from "react";
 import { MAX_RESULTS_BEFORE_USER_CLICK } from "../../config";
@@ -14,17 +14,19 @@ import ProjectItem from "./components/projects/project-item";
 import BaseSkeleton from "../../components/skeleton/base-skeleton";
 import PublicationFilters from "./components/publications/publication-filters";
 
-import messagesFr from "./locales/fr.json";
-import messagesEn from "./locales/en.json";
 import OrganizationFilters from "./components/organizations/organization-filters";
 import Error500 from "../../components/errors/error-500";
 import ProjectFilters from "./components/projects/projects-filters";
 import AuthorFilters from "./components/authors/author-filters";
 
-const messages = {
-  fr: messagesFr,
-  en: messagesEn,
-};
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
 
 const API_MAPPING = {
   publications: {
@@ -49,8 +51,9 @@ const API_MAPPING = {
   }
 }
 
-function SearchPage() {
-  const intl = useIntl();
+export default function Search() {
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] })
   const [ref, inView] = useInView();
   const { api, search, currentQuery, total, handleQueryChange } = useSearchData();
   const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search;
@@ -74,7 +77,7 @@ function SearchPage() {
   }
 
   return (
-    <>
+    <RawIntlProvider value={intl}>
       <Container className={`bg-${api}`} fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
@@ -162,16 +165,7 @@ function SearchPage() {
           </Col>
         </Row>
       </Container>
-    </>
-  )
-}
-
-export default function Search() {
-  const { locale } = useDSFRConfig();
-  return (
-    <IntlProvider messages={messages[locale]} locale={locale}>
-      <SearchPage />
-    </IntlProvider>
+    </RawIntlProvider>
   )
 }
 

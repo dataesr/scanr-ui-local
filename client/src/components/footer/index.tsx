@@ -3,7 +3,65 @@ import { Container, Link, Logo } from '@dataesr/dsfr-plus';
 
 export function Footer({ children, fluid = false }: { children?: React.ReactNode, fluid?: boolean }) {
   return (
-    <footer className="fr-footer" role="contentinfo" id="footer">
+    <footer className="fr-footer fr-mt-8w" role="contentinfo" id="footer">
+      <div className="fr-footer__top">
+        <div className="fr-container">
+          <div className="fr-grid-row fr-grid-row--start fr-grid-row--gutters">
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Aide</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">FAQ</Link>
+                </li>
+                <li>
+                  <Link className="fr-footer__top-link" href="#">Glossaire</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                </li>
+
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
       <Container fluid={fluid}>
         {children}
       </Container>

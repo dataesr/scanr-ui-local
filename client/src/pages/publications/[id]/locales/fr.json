@@ -1,0 +1,17 @@
+{
+  "publications.breadcrumb.home": "Accueil",
+  "publications.breadcrumb.search": "Publications",
+  "publications.section.affiliations": "Affiliations des auteurs",
+  "publications.section.fundings": "Financements",
+  "publications.section.more-like-this": "Publications similaires",
+  "publications.section.access": "Accéder à la publication",
+  "publications.section.identifiers": "Identifiants de la publication",
+  "publications.section.identifiers-description": "Cliquez pour copier dans le press-papier",
+  "publications.section.wikis": "Concepts wikipedia",
+  "publications.section.wikis-description": "Cliquez pour copier dans le press-papier",
+  "publications.section.share": "Partager la page",
+  "publications.header.summary": "Résumé",
+  "publications.header.no-summary": "Aucun résumé disponible",
+  "publications.header.oa.true": "Accès ouvert",
+  "publications.header.oa.false": "Accès fermé"
+}
