@@ -15,6 +15,7 @@ export type TabsProps = Merge<React.HTMLAttributes<HTMLDivElement>, {
   className?: Argument;
   defaultActiveIndex?: number;
   css?: TabsCss;
+  onTabChange?: (i: number) => void;
 }>
 
 export const Tabs = ({
@@ -22,6 +23,7 @@ export const Tabs = ({
   children,
   defaultActiveIndex = 0,
   css = {},
+  onTabChange,
   ...props
 }: TabsProps) => {
   const _id = useId();
@@ -43,6 +45,12 @@ export const Tabs = ({
         {tabsPanel.map((tab, index) => (
           <li key={`${id}-${index}`} className={cn(css.li)} role="presentation">
             <button
+              onClick={(e) => {
+                if (onTabChange) {
+                  onTabChange(index);
+                  e.preventDefault();
+                }
+              }}
               id={`${id}-${index}-button`}
               className={cn(
                 "fr-tabs__tab",

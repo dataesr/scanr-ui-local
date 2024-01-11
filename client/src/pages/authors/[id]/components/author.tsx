@@ -8,6 +8,7 @@ import useScreenSize from "../../../../hooks/useScreenSize";
 import PublicationItem from "../../../search/components/publications/publication-item";
 import TagCloud from "../../../../components/tag-cloud";
 import Histogram from "../../../../components/YearRangeSlider/histogram";
+import { useSearchParams } from "react-router-dom";
 
 
 type Author = {
@@ -56,6 +57,13 @@ export default function Author({ data }) {
   const awards = data?.awards?.map((award) => award.label) || [];
 
 
+  // Example For victor
+  const tabs = ["publications", "thesis", "thesisParticipations"];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urltab = searchParams.get("tab") || "thesis";
+
+
+
   return (
     <Container fluid>
       <Row gutters>
@@ -83,22 +91,23 @@ export default function Author({ data }) {
               <TagCloud data={data.wikis} order="random" />
             </Col>)}
             {!isMobile ? (<Col className="fr-mt-5w" xs="12">
-              <Tabs>
+              {/* Example for victor */}
+              <Tabs defaultActiveIndex={tabs.indexOf(urltab)} onTabChange={(i) => setSearchParams({ tab: tabs[i] })}>
                 {(publications.length > 0) ? (
-                  <Tab index="1" className="authors-publications-tabs" label={`Publications (${publications.length || 0})`}>
+                  <Tab className="authors-publications-tabs" label={`Publications (${publications.length || 0})`}>
                     <div className="result-list">
                       {publications?.map((publi) => (
                         <PublicationItem data={publi} key={publi.id} />
                       ))}
                     </div>
                   </Tab>) : null}
-                {thesis && <Tab index="2" className="authors-publications-tabs" label="Thèse de l'auteur" icon="link">
+                {thesis && <Tab className="authors-publications-tabs" label="Thèse de l'auteur" icon="link">
                   <div className="result-list">
                     <PublicationItem data={thesis} />
                   </div>
                 </Tab>}
                 {(thesisParticipations.length > 0) ? (
-                  <Tab index="3" className="authors-publications-tabs" label={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
+                  <Tab className="authors-publications-tabs" label={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
                     <div className="result-list">
                       {thesisParticipations?.map((publi) => (
                         <PublicationItem data={publi} key={publi.id} />
