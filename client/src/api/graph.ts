@@ -26,7 +26,7 @@ export function aggToGraphology(aggregation: Array<any>): Network {
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
-    const maxYear = item?.max_year && item.max_year?.value
+    const maxYear = item.max_year?.value
     const bucketDomains = item?.agg_domains && (item.agg_domains.buckets.length ? item.agg_domains.buckets : undefined)
     const nodes = key.split("---")
 
@@ -59,7 +59,7 @@ export function aggToGraphology(aggregation: Array<any>): Network {
   let nodeWeightThresh = 1
   while (graph.order > GRAPH_MAX_ORDER) {
     nodeWeightThresh += 1
-    graph = subgraph(graph, (node, attr) => attr?.weight >= nodeWeightThresh) // eslint-disable-line no-loop-func
+    graph = subgraph(graph, (_, attr) => attr?.weight >= nodeWeightThresh) // eslint-disable-line no-loop-func
   }
 
   // Filter with minimal number of edges
@@ -90,7 +90,7 @@ export function aggToGraphology(aggregation: Array<any>): Network {
       []
     ),
     links: graph.reduceEdges(
-      (acc, key, attr, source, target) => [...acc, { source_id: source, target_id: target, strength: attr?.weight }],
+      (acc, _, attr, source, target) => [...acc, { source_id: source, target_id: target, strength: attr?.weight }],
       []
     ),
   }

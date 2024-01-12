@@ -82,7 +82,7 @@ function NetworksPage() {
           onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
         >
           {networkTabs.map(({ label, icon }) => (
-            <Tab index={label} label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
+            <Tab label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
               <Graph network={search?.data} />
             </Tab>
           ))}

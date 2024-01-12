@@ -24,7 +24,7 @@ export default function PublicationSkeleton() {
             </Col>
           </Row>
           <Row className="fr-my-5w">
-            <Tabs index="more">
+            <Tabs>
               <Tab index="1" className='more-like-this' label="Publications" icon="ri-link">
                 <Skeleton />
               </Tab>
