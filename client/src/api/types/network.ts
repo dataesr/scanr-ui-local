@@ -11,7 +11,7 @@ export type NetworkSearchBody = {
   aggs: any
 }
 export type NetworkSearchArgs = {
-  aggBy: string
+  agg: string
   query?: string | unknown
   filters?: Record<string, unknown>[]
 }

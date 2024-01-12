@@ -7,7 +7,7 @@ import { aggToGraphology } from "./graph"
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
 
-const networkSearchBody = (aggBy: string, query?: string | unknown): NetworkSearchBody => ({
+const networkSearchBody = (agg: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,
   // _source: SEARCH_SOURCE,
   query: {
@@ -23,18 +23,18 @@ const networkSearchBody = (aggBy: string, query?: string | unknown): NetworkSear
     },
   },
   aggs: {
-    [`byCo${aggBy}`]: {
-      terms: { field: `co_${aggBy}.keyword`, size: DEFAULT_SIZE },
+    [`byCo${agg}`]: {
+      terms: { field: `co_${agg}.keyword`, size: DEFAULT_SIZE },
       aggs: {
         max_year: { max: { field: "year" } },
-        ...(aggBy === "authors" && { agg_domains: { terms: { field: "co_domains.keyword", size: 10 } } }),
+        ...(agg === "authors" && { agg_domains: { terms: { field: "co_domains.keyword", size: 10 } } }),
       },
     },
   },
 })
 
-export async function networkSearch({ aggBy, query, filters }: NetworkSearchArgs): Promise<Network> {
-  const body = networkSearchBody(aggBy, query)
+export async function networkSearch({ agg, query, filters }: NetworkSearchArgs): Promise<Network> {
+  const body = networkSearchBody(agg, query)
   console.log("body", body)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
@@ -48,7 +48,7 @@ export async function networkSearch({ aggBy, query, filters }: NetworkSearchArgs
   console.log("headers", postHeaders, publicationsIndex)
   console.log("response", res)
 
-  const aggregation = res.aggregations?.[`byCo${aggBy}`].buckets
+  const aggregation = res.aggregations?.[`byCo${agg}`].buckets
 
   const network = aggToGraphology(aggregation)
 

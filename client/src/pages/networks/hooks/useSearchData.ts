@@ -9,11 +9,12 @@ import { useCallback, useMemo } from "react"
 import { PublicationAggregations } from "../../../api/types/publication"
 import { networkFilter, networkSearch } from "../../../api/network"
 
-export default function useSearchData(networkTab = "authors") {
+export default function useSearchData() {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
+  const currentTab = searchParams.get("tab") || "authors"
   console.log("currentQuery", currentQuery)
-  console.log("currentTab", networkTab)
+  console.log("currentTab", currentTab)
 
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"))
   const filters = filtersFromUrlToElasticQuery(searchParams.get("filters"))
@@ -22,7 +23,7 @@ export default function useSearchData(networkTab = "authors") {
     isLoading: isLoadingFilters,
     isError: isErrorFilters,
   } = useQuery<PublicationAggregations, unknown, PublicationAggregations>({
-    queryKey: ["network", "filters", currentQuery],
+    queryKey: ["network", "filters", currentTab, currentQuery],
     queryFn: () => networkFilter(currentQuery),
   })
   console.log("filters", filters)
@@ -34,9 +35,16 @@ export default function useSearchData(networkTab = "authors") {
     [setSearchParams]
   )
 
+  const handleTabChange = useCallback(
+    (tab) => {
+      setSearchParams({ tab: tab })
+    },
+    [setSearchParams]
+  )
+
   const { data, error, isFetching } = useQuery({
-    queryKey: ["network", networkTab, currentQuery, filters],
-    queryFn: () => networkSearch({ aggBy: networkTab, query: currentQuery, filters }),
+    queryKey: ["network", currentTab, currentQuery, filters],
+    queryFn: () => networkSearch({ agg: currentTab, query: currentQuery, filters }),
   })
   console.log("networkSearch", data)
 
@@ -65,18 +73,22 @@ export default function useSearchData(networkTab = "authors") {
   const values = useMemo(() => {
     return {
       handleQueryChange,
+      handleTabChange,
       handleFilterChange,
       clearFilters,
       currentQuery,
+      currentTab,
       currentFilters,
       search: { data: data, isFetching, error },
       filters: { data: dataFilters, isLoading: isLoadingFilters, isError: isErrorFilters },
     }
   }, [
     handleQueryChange,
+    handleTabChange,
     handleFilterChange,
     clearFilters,
     currentQuery,
+    currentTab,
     currentFilters,
     data,
     isFetching,

@@ -13,10 +13,34 @@ const messages = {
   en: messagesEn,
 }
 
-function NetworkTab({ networkTab }: { networkTab: string }) {
-  console.log("NetworkTab", networkTab)
+const NETWORK_TABS_MAPPING = {
+  authors: {
+    index: 0,
+    label: "authors",
+    icon: "user-line",
+  },
+  institutions: {
+    index: 1,
+    label: "institutions",
+    icon: "building-line",
+  },
+  structures: {
+    index: 2,
+    label: "structures",
+    icon: "microscope-line",
+  },
+  domains: {
+    index: 3,
+    label: "domains",
+    icon: "trophy-line",
+  },
+}
+const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
+const networkTabFindIndex = (label) => networkTabs.findIndex((tab) => tab.label === label)
+const networkTabFindLabel = (index) => networkTabs[index].label
 
-  const { search, currentFilters } = useSearchData(networkTab)
+function NetworkTab() {
+  const { search, currentTab, currentFilters } = useSearchData()
   const { data, error, isFetching } = search
 
   if (error) {
@@ -31,7 +55,7 @@ function NetworkTab({ networkTab }: { networkTab: string }) {
 
   return (
     <>
-      <div> {`Graph by co-${networkTab}`}</div>
+      <div> {`Graph by co-${currentTab}`}</div>
       {!isFetching ? <Graph network={data} /> : <div> currently fetching</div>}
     </>
   )
@@ -39,7 +63,7 @@ function NetworkTab({ networkTab }: { networkTab: string }) {
 
 function NetworksPage() {
   const intl = useIntl()
-  const { currentQuery, handleQueryChange } = useSearchData()
+  const { currentQuery, currentTab, handleQueryChange, handleTabChange } = useSearchData()
 
   return (
     <>
@@ -69,23 +93,15 @@ function NetworksPage() {
         </Container>
       </Container>
       <Container className="fr-mt-2w">
-        <Tabs index="network-tabs">
-          <Tab index="authors" label={intl.formatMessage({ id: "network.header.nav.authors" })} icon="user-line">
-            <NetworkTab networkTab="authors" />
-          </Tab>
-          <Tab
-            index="institutions"
-            label={intl.formatMessage({ id: "network.header.nav.institutions" })}
-            icon="building-line"
-          >
-            <NetworkTab networkTab="institutions" />
-          </Tab>
-          <Tab index="structures" label={intl.formatMessage({ id: "network.header.nav.structures" })} icon="microscope-line">
-            <NetworkTab networkTab="structures" />
-          </Tab>
-          <Tab index="domains" label={intl.formatMessage({ id: "network.header.nav.domains" })} icon="trophy-line">
-            <NetworkTab networkTab="domains" />
-          </Tab>
+        <Tabs
+          defaultActiveIndex={networkTabFindIndex(currentTab)}
+          onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
+        >
+          {networkTabs.map(({ label, icon }) => (
+            <Tab index={label} label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
+              <NetworkTab />
+            </Tab>
+          ))}
         </Tabs>
       </Container>
       <Container>
