@@ -11,6 +11,8 @@ import FAQ from './pages/about/faq';
 import Error404 from './components/errors/error-404';
 import Organization from './pages/organizations/[id]';
 import Project from './pages/projects/[id]';
+import Networks from './pages/networks';
+
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -46,8 +48,7 @@ export default function Router() {
             <Route path="publications" element={<Search />} />
             <Route path="patents" element={<h1 className="fr-mt-5w">Patents</h1>} />
           </Route>
-          <Route path="/networks" element={<h1 className="fr-mt-5w">Networks explorer</h1>}>
-          </Route>
+          <Route path="/networks" element={<Networks />} />
           <Route path="*" element={<Error404 />} />
         </Route>
       </Routes>

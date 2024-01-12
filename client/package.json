@@ -16,13 +16,19 @@
     "@tanstack/react-query": "^5.8.4",
     "@tanstack/react-query-devtools": "^5.8.4",
     "classnames": "^2.3.2",
+    "graphology": "^0.25.4",
+    "graphology-communities-louvain": "^2.0.1",
+    "graphology-components": "^1.5.4",
+    "graphology-operators": "^1.6.0",
+    "graphology-types": "^0.24.7",
     "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.3",
     "react-intl": "^6.5.5",
     "react-leaflet": "^4.2.1",
-    "react-router-dom": "^6.20.0"
+    "react-router-dom": "^6.20.0",
+    "vosviewer-online": "^1.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
