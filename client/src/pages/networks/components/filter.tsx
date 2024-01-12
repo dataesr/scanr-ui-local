@@ -1,6 +1,6 @@
 import { Button, Container, SelectableTag, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
 import { FormattedMessage, useIntl } from "react-intl"
-import useSearchData from "../hooks/useSearchData"
+import useSearchFilter from "../hooks/useSearchFilter"
 import Histogram from "../../../components/YearRangeSlider/histogram"
 import Modal from "../../../components/modal"
 import BaseSkeleton from "../../../components/skeleton/base-skeleton"
@@ -10,12 +10,11 @@ export default function NetworkFilters() {
   const intl = useIntl()
   const {
     total,
-    search: { isFetching },
     currentFilters,
     handleFilterChange,
     clearFilters,
-    filters: { data = { byYear: [], byType: [], byFunder: [] } },
-  } = useSearchData()
+    filters: { data = { byYear: [], byType: [], byFunder: [] }, isLoading },
+  } = useSearchFilter()
 
   const { byYear, byType, byFunder } = data as PublicationAggregations
 
@@ -144,7 +143,7 @@ export default function NetworkFilters() {
             )}
           </div>
           <Button
-            disabled={isFetching}
+            disabled={isLoading}
             onClick={() => {
               const element = document.getElementById("publication-filters")
               // @ts-expect-error dsfr does not have types

@@ -35,7 +35,6 @@ const networkSearchBody = (agg: string, query?: string | unknown): NetworkSearch
 
 export async function networkSearch({ agg, query, filters }: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(agg, query)
-  console.log("body", body)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
@@ -45,8 +44,6 @@ export async function networkSearch({ agg, query, filters }: NetworkSearchArgs):
     body: JSON.stringify(body),
     headers: postHeaders,
   }).then((response) => response.json())
-  console.log("headers", postHeaders, publicationsIndex)
-  console.log("response", res)
 
   const aggregation = res.aggregations?.[`byCo${agg}`].buckets
 

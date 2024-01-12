@@ -1,7 +1,6 @@
 import { FormattedMessage, useIntl, IntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
-import Error500 from "../../components/errors/error-500"
-import useSearchData from "./hooks/useSearchData";
+import useSearchFilter from "./hooks/useSearchFilter";
 
 import messagesFr from "./locales/fr.json";
 import messagesEn from "./locales/en.json";
@@ -42,12 +41,8 @@ const networkTabFindLabel = (index) => networkTabs[index].label
 
 function NetworksPage() {
   const intl = useIntl()
-  const currentTab = useTab();
-  const { search, currentQuery, handleQueryChange, handleTabChange } = useSearchData(currentTab);
-
-  if (search.error) {
-    return <Error500 />
-  }
+  const { currentTab, handleTabChange} = useTab();
+  const { currentQuery, handleQueryChange } = useSearchFilter();
 
   return (
     <>
@@ -82,8 +77,8 @@ function NetworksPage() {
           onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
         >
           {networkTabs.map(({ label, icon }) => (
-            <Tab label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
-              <Graph network={search?.data} />
+            <Tab index={label} label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
+              <Graph currentTab={label} />
             </Tab>
           ))}
         </Tabs>

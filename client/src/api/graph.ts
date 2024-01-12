@@ -20,7 +20,6 @@ const objectMerge = (obj1: object, obj2: object): object =>
   Object.entries(obj2).reduce((acc, [key, value]) => ({ ...acc, [key]: (acc[key] || 0) + value }), { ...obj1 })
 
 export function aggToGraphology(aggregation: Array<any>): Network {
-  console.log("aggregation", aggregation)
   // Create Graph object
   let graph = new UndirectedGraph()
 
@@ -95,7 +94,7 @@ export function aggToGraphology(aggregation: Array<any>): Network {
     ),
   }
 
-  console.log("network", network)
+  // console.log("network", network)
 
   return network
 }
