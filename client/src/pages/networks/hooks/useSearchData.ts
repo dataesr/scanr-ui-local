@@ -9,12 +9,10 @@ import { useCallback, useMemo } from "react"
 import { PublicationAggregations } from "../../../api/types/publication"
 import { networkFilter, networkSearch } from "../../../api/network"
 
-export default function useSearchData() {
+export default function useSearchData(currentTab?: string) {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
-  const currentTab = searchParams.get("tab") || "authors"
   console.log("currentQuery", currentQuery)
-  console.log("currentTab", currentTab)
 
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"))
   const filters = filtersFromUrlToElasticQuery(searchParams.get("filters"))
@@ -72,12 +70,13 @@ export default function useSearchData() {
 
   const values = useMemo(() => {
     return {
+      // TODO: Set to zero for know to make build pass
+      total: 0,
       handleQueryChange,
       handleTabChange,
       handleFilterChange,
       clearFilters,
       currentQuery,
-      currentTab,
       currentFilters,
       search: { data: data, isFetching, error },
       filters: { data: dataFilters, isLoading: isLoadingFilters, isError: isErrorFilters },
@@ -88,7 +87,6 @@ export default function useSearchData() {
     handleFilterChange,
     clearFilters,
     currentQuery,
-    currentTab,
     currentFilters,
     data,
     isFetching,

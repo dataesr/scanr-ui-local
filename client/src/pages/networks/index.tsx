@@ -1,12 +1,13 @@
 import { FormattedMessage, useIntl, IntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
 import Error500 from "../../components/errors/error-500"
-import { Graph } from "./components/graph"
-import useSearchData from "./hooks/useSearchData"
+import useSearchData from "./hooks/useSearchData";
 
-import messagesFr from "./locales/fr.json"
-import messagesEn from "./locales/en.json"
-import NetworkFilters from "./components/filter"
+import messagesFr from "./locales/fr.json";
+import messagesEn from "./locales/en.json";
+import NetworkFilters from "./components/filter";
+import useTab from "./hooks/useTab";
+import { Graph } from "./components/graph";
 
 const messages = {
   fr: messagesFr,
@@ -39,35 +40,18 @@ const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index -
 const networkTabFindIndex = (label) => networkTabs.findIndex((tab) => tab.label === label)
 const networkTabFindLabel = (index) => networkTabs[index].label
 
-function NetworkTab() {
-  const { search, currentTab, currentFilters } = useSearchData()
-  const { data, error, isFetching } = search
+function NetworksPage() {
+  const intl = useIntl()
+  const currentTab = useTab();
+  const { search, currentQuery, handleQueryChange, handleTabChange } = useSearchData(currentTab);
 
-  if (error) {
-    console.log("error", error)
-
-    if (currentFilters.length > 0) {
-      return <div> {`No results with filters ${JSON.stringify(currentFilters)}`} </div>
-    }
-
+  if (search.error) {
     return <Error500 />
   }
 
   return (
     <>
-      <div> {`Graph by co-${currentTab}`}</div>
-      {!isFetching ? <Graph network={data} /> : <div> currently fetching</div>}
-    </>
-  )
-}
-
-function NetworksPage() {
-  const intl = useIntl()
-  const { currentQuery, currentTab, handleQueryChange, handleTabChange } = useSearchData()
-
-  return (
-    <>
-      <Container className={`bg-network`} fluid>
+      <Container className={"bg-network"} fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
             <Link href="/">
@@ -99,13 +83,13 @@ function NetworksPage() {
         >
           {networkTabs.map(({ label, icon }) => (
             <Tab index={label} label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
-              <NetworkTab />
+              <Graph network={search?.data} />
             </Tab>
           ))}
         </Tabs>
       </Container>
       <Container>
-        <div className="fr-mb-2w"> Clusters under construction...</div>
+        <div className="fr-mb-2w">Clusters under construction...</div>
       </Container>
     </>
   )
