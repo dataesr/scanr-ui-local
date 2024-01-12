@@ -17,7 +17,7 @@ export default function useSearchFilter() {
     isError: isErrorFilters,
   } = useQuery<PublicationAggregations, unknown, PublicationAggregations>({
     queryKey: ["network", "filters", currentTab, currentQuery],
-    queryFn: () => networkFilter(currentQuery),
+    queryFn: () => networkFilter({ agg: currentTab, query: currentQuery }),
   })
 
   const handleQueryChange = useCallback(
