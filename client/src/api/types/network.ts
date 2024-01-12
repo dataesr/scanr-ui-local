@@ -15,6 +15,10 @@ export type NetworkSearchArgs = {
   query?: string | unknown
   filters?: Record<string, unknown>[]
 }
+export type NetworkFilterArgs = {
+  agg: string
+  query?: string | unknown
+}
 
 export type NetworkAggregation = {
   byCoAuthors: Aggregation[]

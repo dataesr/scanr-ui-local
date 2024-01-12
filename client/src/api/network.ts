@@ -1,6 +1,6 @@
 import { publicationTypeMapping } from "../utils/string"
 import { publicationsIndex, postHeaders } from "./config"
-import { Network, NetworkSearchBody, NetworkSearchArgs } from "./types/network"
+import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "./types/network"
 import { PublicationAggregations } from "./types/publication"
 import { aggToGraphology } from "./graph"
 
@@ -55,10 +55,7 @@ export async function networkSearch({ agg, query, filters }: NetworkSearchArgs):
   return network
 }
 
-export async function networkFilter(
-  query: string,
-  filters: Record<string, unknown>[] = []
-): Promise<PublicationAggregations> {
+export async function networkFilter({ agg, query }: NetworkFilterArgs): Promise<PublicationAggregations> {
   const body: any = {
     size: 0,
     query: {
@@ -69,6 +66,9 @@ export async function networkFilter(
               query: query || "*",
               fields: SEARCH_FIELDS,
             },
+          },
+          {
+            exists: { field: `co_${agg}` },
           },
         ],
       },
@@ -101,9 +101,6 @@ export async function networkFilter(
         },
       },
     },
-  }
-  if (filters.length > 0) {
-    body.query.bool.filter = filters
   }
 
   const res = await fetch(`${publicationsIndex}/_search`, {

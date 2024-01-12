@@ -6,7 +6,6 @@ import {
 } from "../../search/utils/filters"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
-import { PublicationAggregations } from "../../../api/types/publication"
 import { networkFilter, networkSearch } from "../../../api/network"
 
 export default function useSearchData(currentTab?: string) {
@@ -20,11 +19,12 @@ export default function useSearchData(currentTab?: string) {
     data: dataFilters,
     isLoading: isLoadingFilters,
     isError: isErrorFilters,
-  } = useQuery<PublicationAggregations, unknown, PublicationAggregations>({
+  } = useQuery({
     queryKey: ["network", "filters", currentTab, currentQuery],
-    queryFn: () => networkFilter(currentQuery),
+    queryFn: () => networkFilter({ agg: currentTab, query: currentQuery }),
   })
   console.log("filters", filters)
+  console.log("networkFilter", dataFilters, isLoadingFilters, isErrorFilters)
 
   const handleQueryChange = useCallback(
     (query) => {

@@ -2,9 +2,9 @@
     "network.top.breadcrumb.home": "Home",
     "network.top.breadcrumb.explore": "Explore network",
     "network.top.main-search-bar": "Search",
-    "network.top.filters-button-label": "Filter",
     "network.header.tab.authors": "Authors",
     "network.header.tab.institutions": "Institutions",
     "network.header.tab.structures": "Structures",
-    "network.header.tab.domains": "Domains"
+    "network.header.tab.domains": "Domains",
+    "network.top.filters-button-label": "Filter"
 }
