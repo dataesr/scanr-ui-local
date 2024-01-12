@@ -56,6 +56,11 @@ export type ExternalIdsData = {
   type: string,
 }
 
+export type OrganizationBadgesData = {
+  code: string,
+  label: LangField,
+}
+
 export type Organization = {
   _id: string,
   id: string,
@@ -68,6 +73,7 @@ export type Organization = {
   nature?: string,
   level?: string,
   address?: Address[],
+  badges?: OrganizationBadgesData[],
   leaders?: OrganizationLeaderData[],
   institutions?: RelatedOrganizationData[],
   relations?: RelatedOrganizationData[],

@@ -10,15 +10,31 @@ import SocialMedias from "../../../../components/social-medias";
 import Share from "../../../../components/share";
 import OrganizationLocalizations from "./localizations";
 import OrganizationLeaders from "./leaders";
-import OrganizationNetworks from "./networks";
+import { OrganizationNetworks, OrganizationNetworksBadges } from "./networks";
 import useScreenSize from "../../../../hooks/useScreenSize";
 import OrganizationHeader from "./header";
 import OrganizationIdentifiers from "./identifiers";
+
+const NETWORK_BADGES_CODES = [
+  'carnot',
+  'gican',
+  'gifas',
+  'gicat',
+  'rescurie',
+  'allenvi',
+  'itagricole',
+  'irt',
+  'polecompetitivite',
+  'satt'
+]
 
 export default function OrganizationPresentation({ data }: { data: Organization }) {
   const intl = useIntl();
   const { publications, projects, patents } = data
   const { screen } = useScreenSize();
+  const networkBadges = data.badges
+    ?.filter(b => NETWORK_BADGES_CODES.includes(b.code.toLowerCase()));
+
   return (
     <>
       <Container fluid>
@@ -41,12 +57,18 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                   show={!!data?.institutions?.length || !!data?.relations?.length}
                 >
                   <OrganizationNetworks
-                    data={data.institutions?.filter((e) => ["établissement tutelle", "primary"].includes(e.relationType))}
+                    data={data.institutions
+                      ?.filter((institution) => ["établissement tutelle", "primary"]
+                        .includes(institution.relationType))
+                    }
                     title={intl.formatMessage({ id: "organizations.section.networks.supervisors.title" })}
                     icon="building-line"
                   />
                   <OrganizationNetworks
-                    data={data.institutions?.filter((e) => !["établissement tutelle", "primary"].includes(e.relationType))}
+                    data={data.institutions
+                      ?.filter((institution) => !["établissement tutelle", "primary"]
+                        .includes(institution.relationType))
+                    }
                     title={intl.formatMessage({ id: "organizations.section.networks.participants.title" })}
                     icon="building-line"
                   />
@@ -54,6 +76,36 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     data={data.relations?.filter(((e) => e.type === "DS_LABS"))}
                     title={intl.formatMessage({ id: "organizations.section.networks.doctoral-schools.title" })}
                     icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relations?.filter(((e) => e.type === "satt_actionnaire"))}
+                    title={intl.formatMessage({ id: "organizations.section.networks.satt.title" })}
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relations?.filter(((e) => e.type === "incubateur_public"))}
+                    title={intl.formatMessage({ id: "organizations.section.networks.incubateur.title" })}
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relations?.filter(((e) => e.type === "membre_carnot"))}
+                    title={intl.formatMessage({ id: "organizations.section.networks.carnot.title" })}
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relations?.filter(((e) => e.type === "rachete_par"))}
+                    title={intl.formatMessage({ id: "organizations.section.networks.eaten.title" })}
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relations?.filter(item => ((item.type || '').indexOf('spinoff') !== -1) || false)}
+                    title={intl.formatMessage({ id: "organizations.section.networks.spinnof.title" })}
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworksBadges
+                    data={networkBadges}
+                    title={intl.formatMessage({ id: "organizations.section.networks.badges.title" })}
+                    icon="links-fill"
                   />
                 </PageSection>
                 <PageSection

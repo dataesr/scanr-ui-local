@@ -8,7 +8,6 @@ import useScreenSize from "../../../../hooks/useScreenSize";
 import PublicationItem from "../../../search/components/publications/publication-item";
 import TagCloud from "../../../../components/tag-cloud";
 import Histogram from "../../../../components/YearRangeSlider/histogram";
-import { useSearchParams } from "react-router-dom";
 
 
 type Author = {
@@ -57,12 +56,6 @@ export default function Author({ data }) {
   const awards = data?.awards?.map((award) => award.label) || [];
 
 
-  // Example For victor
-  const tabs = ["publications", "thesis", "thesisParticipations"];
-  const [searchParams, setSearchParams] = useSearchParams();
-  const urltab = searchParams.get("tab") || "thesis";
-
-
 
   return (
     <Container fluid>
@@ -91,8 +84,7 @@ export default function Author({ data }) {
               <TagCloud data={data.wikis} order="random" />
             </Col>)}
             {!isMobile ? (<Col className="fr-mt-5w" xs="12">
-              {/* Example for victor */}
-              <Tabs defaultActiveIndex={tabs.indexOf(urltab)} onTabChange={(i) => setSearchParams({ tab: tabs[i] })}>
+              <Tabs>
                 {(publications.length > 0) ? (
                   <Tab className="authors-publications-tabs" label={`Publications (${publications.length || 0})`}>
                     <div className="result-list">
@@ -118,78 +110,79 @@ export default function Author({ data }) {
             </Col>) : null}
           </Row>
         </Col>
-        <PageContent>
-          {(isMobile && thesis) && (
-            <PageSection show title="Thèse de l'auteur">
-              <div className="result-list">
-                <PublicationItem data={thesis} />
+        <Col xs="12" md="4" xl="3" offsetXl="1">
+          <PageContent>
+            {(isMobile && thesis) && (
+              <PageSection show title="Thèse de l'auteur">
+                <div className="result-list">
+                  <PublicationItem data={thesis} />
+                </div>
+              </PageSection>
+            )}
+            {(isMobile && publications.length) && (
+              <PageSection show title={`Liste des publications (${publications.length || 0})`}>
+                <div className="result-list">
+                  {publications?.map((publi) => (
+                    <PublicationItem data={publi} key={publi.id} />
+                  ))}
+                </div>
+              </PageSection>
+            )}
+            {(isMobile && thesisParticipations.length) ? (
+              <PageSection show title={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
+                <div className="result-list">
+                  {thesisParticipations?.map((publi) => (
+                    <PublicationItem data={publi} key={publi.id} />
+                  ))}
+                </div>
+              </PageSection>
+            ) : null}
+            <PageSection show title="Identifiants de l'auteur" description="Cliquez pour copier l'identifiant dans le press-papier">
+              <div className="fr-badge-group">
+                {data.externalIds
+                  ?.filter((ext) => ext?.type !== 'scanr')
+                  .map((ext, i) => <CopyBadgeButton key={i} lowercase size="sm" text={ext.id} />)
+                }
               </div>
             </PageSection>
-          )}
-          {(isMobile && publications.length) && (
-            <PageSection show title={`Liste des publications (${publications.length || 0})`}>
-              <div className="result-list">
-                {publications?.map((publi) => (
-                  <PublicationItem data={publi} key={publi.id} />
-                ))}
-              </div>
-            </PageSection>
-          )}
-          {(isMobile && thesisParticipations.length) ? (
-            <PageSection show title={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
-              <div className="result-list">
-                {thesisParticipations?.map((publi) => (
-                  <PublicationItem data={publi} key={publi.id} />
-                ))}
-              </div>
-            </PageSection>
-          ) : null}
-          <PageSection show title="Identifiants de l'auteur" description="Cliquez pour copier l'identifiant dans le press-papier">
-            <div className="fr-badge-group">
-              {data.externalIds
-                ?.filter((ext) => ext?.type !== 'scanr')
-                .map((ext, i) => <CopyBadgeButton key={i} lowercase size="sm" text={ext.id} />)
-              }
-            </div>
-          </PageSection>
-          <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
-            <Histogram data={data.byYear.map((year) => year.count)} />
-          </PageSection>
-          {isMobile && (
             <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
-              <TagCloud data={data.wikis} order="random" />
+              <Histogram data={data.byYear.map((year) => year.count)} />
             </PageSection>
-          )}
-          <PageSection show title={`Publications en accès ouvert ${oaPercent}%`} description="Calculé">
-            <OaDonut percent={oaPercent} />
-          </PageSection>
+            {isMobile && (
+              <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
+                <TagCloud data={data.wikis} order="random" />
+              </PageSection>
+            )}
+            <PageSection show title={`Publications en accès ouvert ${oaPercent}%`} description="Calculé">
+              <OaDonut percent={oaPercent} />
+            </PageSection>
 
-          <PageSection show title="Principaux co-auteurs" description="Cliquez pour accèder la page du co-auteur">
-            {data.coAuthors?.slice(0, 6)?.map((coAuthor, i) => (
-              <BarLink
-                key={i}
-                name={coAuthor.label}
-                count={coAuthor.count}
-                width={coAuthor.count * 100 / maxCommonPublications}
-                href={`/authors/${coAuthor.value}`}
-              />
-            ))}
-          </PageSection>
-          <PageSection show title="Principales revues" description="Cliquez pour rechercher des publications de la revue">
-            {data.reviews?.slice(0, 6)?.map((review, i) => (
-              <BarLink
-                key={i}
-                name={review.sourceTitle}
-                count={review.count}
-                width={review.count * 100 / maxReviews}
-                href={`/authors/${review.sourceTitle}`}
-              />
-            ))}
-          </PageSection>
-        </PageContent>
-        <Col xs="12">
-          <hr />
-          <Share />
+            <PageSection show title="Principaux co-auteurs" description="Cliquez pour accèder la page du co-auteur">
+              {data.coAuthors?.slice(0, 6)?.map((coAuthor, i) => (
+                <BarLink
+                  key={i}
+                  name={coAuthor.label}
+                  count={coAuthor.count}
+                  width={coAuthor.count * 100 / maxCommonPublications}
+                  href={`/authors/${coAuthor.value}`}
+                />
+              ))}
+            </PageSection>
+            <PageSection show title="Principales revues" description="Cliquez pour rechercher des publications de la revue">
+              {data.reviews?.slice(0, 6)?.map((review, i) => (
+                <BarLink
+                  key={i}
+                  name={review.sourceTitle}
+                  count={review.count}
+                  width={review.count * 100 / maxReviews}
+                  href={`/authors/${review.sourceTitle}`}
+                />
+              ))}
+            </PageSection>
+            <PageSection show title="Partager la page">
+              <Share />
+            </PageSection>
+          </PageContent>
         </Col>
       </Row>
     </Container>

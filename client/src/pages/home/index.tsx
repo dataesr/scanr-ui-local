@@ -1,14 +1,15 @@
 import { Container, Col, Title, Row, Link, Button, ButtonGroup, useDSFRConfig } from '@dataesr/dsfr-plus';
-import { IntlProvider, useIntl } from 'react-intl';
-import messagesFr from "./locales/fr.json";
-import messagesEn from "./locales/en.json";
-
+import { RawIntlProvider, createIntl, useIntl } from 'react-intl';
 import "./styles.scss";
 
-const messages = {
-  fr: messagesFr,
-  en: messagesEn,
-};
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
 
 function MainBanner() {
   const intl = useIntl()
@@ -28,7 +29,7 @@ function ObjectsBanner() {
   return (
     <Container className="bg-grey" fluid>
       <Container className="fr-py-10w">
-        <Row horitontalAlign="center">
+        <Row horizontalAlign="center">
           <Title as="h3" look="h5">
             {intl.formatMessage({ id: "home.objects.title" })}
           </Title>
@@ -293,13 +294,17 @@ function OpendataBanner() {
 
 export default function Home() {
   const { locale } = useDSFRConfig();
+  const intl = createIntl({
+    locale,
+    messages: messages[locale]
+  });
   return (
-    <IntlProvider messages={messages[locale]} locale={locale}>
+    <RawIntlProvider value={intl}>
       <MainBanner />
       <ObjectsBanner />
       <NetworksBanner />
       <ServicesBanner />
       <OpendataBanner />
-    </IntlProvider>
+    </RawIntlProvider>
   );
 }

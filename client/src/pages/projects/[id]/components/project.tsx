@@ -4,6 +4,7 @@ import { Project } from "../../../../api/types/project";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import Map from "../../../../components/map";
+import Truncate from "../../../../components/truncate";
 
 function calculateAccomplishment(startDate, endDate) {
   if (!startDate || !endDate) return null;
@@ -85,11 +86,11 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     className="fr-mr-1v" />
                 </div>)}
               </div>
-              <Row>
-                <Text className="fr-m-0" size="sm">
+              <Truncate lines={4} className="fr-mt-2w">
+                <Text size="sm" className="fr-mb-0">
                   {data.description?.[locale] || data.description?.default || data.description?.fr || data.description?.en}
                 </Text>
-              </Row>
+              </Truncate>
             </Container>
             <Container fluid className="fr-mb-8w">
               <Row className="fr-my-3w">
@@ -166,196 +167,198 @@ export default function ProjectPresentation({ data }: { data: Project }) {
             </Container>
 
           </Col>
-          <PageContent>
-            <PageSection show title="Etat du projet" description={state
-              ? `Ce projet est ${state} depuis le ${state === ' terminé' ? new Date(data.endDate).toLocaleDateString() : new Date(data.startDate).toLocaleDateString()}`
-              : 'Aucune information disponible'}>
-              {accomplishment && (<div style={{ padding: "1rem .5rem" }}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  style={{ overflow: 'visible' }}
-                  width="100%"
-                  height="10px"
-                >
-                  <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-                    <g>
-                      <text
-                        x="0"
-                        y="-10"
-                        fill='var(--text-mention-grey)'
-                        stroke="none"
-                        text-anchor="start"
-                        font-size=".75rem"
-                      >
-                        {new Date(data.startDate).toLocaleDateString()}
-                      </text>
-                      <text
-                        x="100%"
-                        y="-10"
-                        fill='var(--text-mention-grey)'
-                        stroke="none"
-                        text-anchor="end"
-                        font-size=".75rem"
-                      >
-                        {new Date(data.endDate).toLocaleDateString()}
-                      </text>
-                      {data.duration && (<text
-                        x="50%"
-                        y="-10"
-                        fill='var(--text-mention-grey)'
-                        stroke="none"
-                        text-anchor="middle"
-                        font-size=".75rem"
-                      >
-                        {data.duration}
-                        {' '}
-                        mois
-                      </text>)}
-                      <rect
-                        height="10px"
-                        width="100%"
-                        x="0"
-                        y="0"
-                        fill='var(--background-contrast-grey)'
-                        rx="4"
-                        ry="4"
-                      />
-                      <rect
-                        height="10px"
-                        width={`${accomplishment}%`}
-                        x="0"
-                        y="0"
-                        fill='var(--background-contrast-pink-macaron-active)'
-                        rx="4"
-                        ry="4"
-                      />
-                      <circle r="2" cx="100%" cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
-                      <circle r="2" cx="5" cy="5" fill='var(--text-mention-grey)' stroke='none' />
-                      <circle r="4" cx={`${accomplishment}%`} cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
+          <Col xs="12" md="4" xl="3" offsetXl="1">
+            <PageContent>
+              <PageSection show title="Etat du projet" description={state
+                ? `Ce projet est ${state} depuis le ${state === ' terminé' ? new Date(data.endDate).toLocaleDateString() : new Date(data.startDate).toLocaleDateString()}`
+                : 'Aucune information disponible'}>
+                {accomplishment && (<div style={{ padding: "1rem .5rem" }}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ overflow: 'visible' }}
+                    width="100%"
+                    height="10px"
+                  >
+                    <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+                      <g>
+                        <text
+                          x="0"
+                          y="-10"
+                          fill='var(--text-mention-grey)'
+                          stroke="none"
+                          text-anchor="start"
+                          font-size=".75rem"
+                        >
+                          {new Date(data.startDate).toLocaleDateString()}
+                        </text>
+                        <text
+                          x="100%"
+                          y="-10"
+                          fill='var(--text-mention-grey)'
+                          stroke="none"
+                          text-anchor="end"
+                          font-size=".75rem"
+                        >
+                          {new Date(data.endDate).toLocaleDateString()}
+                        </text>
+                        {data.duration && (<text
+                          x="50%"
+                          y="-10"
+                          fill='var(--text-mention-grey)'
+                          stroke="none"
+                          text-anchor="middle"
+                          font-size=".75rem"
+                        >
+                          {data.duration}
+                          {' '}
+                          mois
+                        </text>)}
+                        <rect
+                          height="10px"
+                          width="100%"
+                          x="0"
+                          y="0"
+                          fill='var(--background-contrast-grey)'
+                          rx="4"
+                          ry="4"
+                        />
+                        <rect
+                          height="10px"
+                          width={`${accomplishment}%`}
+                          x="0"
+                          y="0"
+                          fill='var(--background-contrast-pink-macaron-active)'
+                          rx="4"
+                          ry="4"
+                        />
+                        <circle r="2" cx="100%" cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
+                        <circle r="2" cx="5" cy="5" fill='var(--text-mention-grey)' stroke='none' />
+                        <circle r="4" cx={`${accomplishment}%`} cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
+                      </g>
                     </g>
-                  </g>
-                </svg>
-              </div>)}
-            </PageSection>
-            <PageSection
-              title="Financement du projet"
-              description={(<Text className="fr-mb-0" size="xs">
-                {(!data.budgetTotal && !data.budgetFinanced) && 'Aucune information disponible'}
-                {data.budgetTotal && (<>Budget global: <b>{Math.floor(Number(data.budgetTotal)).toLocaleString()} €</b></>)}
-                <br />
-                {data.budgetFinanced && (<>Contribution du financeur: <b>{Math.floor(Number(data.budgetFinanced)).toLocaleString()} €</b></>)}
-              </Text>)}
-              show
-            >
-              {fundingPercent && (<div style={{ padding: "1rem .5rem" }}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  style={{ overflow: 'visible' }}
-                  width="100%"
-                  height="10px"
-                >
-                  <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-                    <g>
-                      {fundingPercent && (<text
-                        x={`${fundingPercent}%`}
-                        y="-10"
-                        fill='var(--text-mention-grey)'
-                        stroke="none"
-                        text-anchor={(fundingPercent > 80) ? "end" : (fundingPercent < 20) ? "start" : "middle"}
-                        font-size=".75rem"
-                      >
-                        Financé à
-                        {' '}
-                        {fundingPercent.toLocaleString()}
-                        {' '}
-                        %
-                      </text>)}
-                      <rect
-                        height="10px"
-                        width="100%"
-                        x="0"
-                        y="0"
-                        fill='var(--background-contrast-grey)'
-                        rx="4"
-                        ry="4"
-                      />
-                      <rect
-                        height="10px"
-                        width={`${fundingPercent}%`}
-                        x="0"
-                        y="0"
-                        fill='var(--background-contrast-green-emeraude-active)'
-                        rx="4"
-                        ry="4"
-                      />
-                      <circle r="2" cx="100%" cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
-                      <circle r="4" cx={`${fundingPercent}%`} cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
+                  </svg>
+                </div>)}
+              </PageSection>
+              <PageSection
+                title="Financement du projet"
+                description={(<Text className="fr-mb-0" size="xs">
+                  {(!data.budgetTotal && !data.budgetFinanced) && 'Aucune information disponible'}
+                  {data.budgetTotal && (<>Budget global: <b>{Math.floor(Number(data.budgetTotal)).toLocaleString()} €</b></>)}
+                  <br />
+                  {data.budgetFinanced && (<>Contribution du financeur: <b>{Math.floor(Number(data.budgetFinanced)).toLocaleString()} €</b></>)}
+                </Text>)}
+                show
+              >
+                {fundingPercent && (<div style={{ padding: "1rem .5rem" }}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ overflow: 'visible' }}
+                    width="100%"
+                    height="10px"
+                  >
+                    <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+                      <g>
+                        {fundingPercent && (<text
+                          x={`${fundingPercent}%`}
+                          y="-10"
+                          fill='var(--text-mention-grey)'
+                          stroke="none"
+                          text-anchor={(fundingPercent > 80) ? "end" : (fundingPercent < 20) ? "start" : "middle"}
+                          font-size=".75rem"
+                        >
+                          Financé à
+                          {' '}
+                          {fundingPercent.toLocaleString()}
+                          {' '}
+                          %
+                        </text>)}
+                        <rect
+                          height="10px"
+                          width="100%"
+                          x="0"
+                          y="0"
+                          fill='var(--background-contrast-grey)'
+                          rx="4"
+                          ry="4"
+                        />
+                        <rect
+                          height="10px"
+                          width={`${fundingPercent}%`}
+                          x="0"
+                          y="0"
+                          fill='var(--background-contrast-green-emeraude-active)'
+                          rx="4"
+                          ry="4"
+                        />
+                        <circle r="2" cx="100%" cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
+                        <circle r="4" cx={`${fundingPercent}%`} cy="5" fill='var(--text-mention-grey)' stroke='none' transform="translate(-4,0)" />
+                      </g>
                     </g>
-                  </g>
-                </svg>
-              </div>)}
-            </PageSection>
-            <PageSection
-              title="Coordinateur du projet"
-              description=""
-              show={!!coordinator}
-            >
-              <Col xs="12">
-                <div style={{ display: "flex", borderRadius: "0.5rem" }} className={cs("fr-p-1w", { "fr-enlarge-link": !!coordinator.structure?.id })}>
-                  <div className="structure-avatar fr-mr-2w fr-icon-building-line" />
-                  <div style={{ flexGrow: 1, display: "block" }}>
-                    <Text className="fr-m-0">
-                      {
-                        coordinator.structure?.id ? (
-                          <Link href={`/organizations/${coordinator.structure?.id}`}>
-                            {coordinator.structure?.label?.default}
-                          </Link>
-                        ) : coordinator.label?.default?.split('__')[0]
-                      }
-                    </Text>
+                  </svg>
+                </div>)}
+              </PageSection>
+              <PageSection
+                title="Coordinateur du projet"
+                description=""
+                show={!!coordinator}
+              >
+                <Col xs="12">
+                  <div style={{ display: "flex", borderRadius: "0.5rem" }} className={cs("fr-p-1w", { "fr-enlarge-link": !!coordinator?.structure?.id })}>
+                    <div className="structure-avatar fr-mr-2w fr-icon-building-line" />
+                    <div style={{ flexGrow: 1, display: "block" }}>
+                      <Text className="fr-m-0">
+                        {
+                          coordinator?.structure?.id ? (
+                            <Link href={`/organizations/${coordinator.structure?.id}`}>
+                              {coordinator?.structure?.label?.default}
+                            </Link>
+                          ) : coordinator?.label?.default?.split('__')[0]
+                        }
+                      </Text>
+                    </div>
+                  </div>
+                </Col>
+              </PageSection>
+              <PageSection
+                title="Identifiants du projet"
+                description="Cliquez pour copier l'identifiant dans le press-papier"
+                show={!!data?.id}
+              >
+                <div>
+                  <div className="fr-badge-group">
+                    <CopyBadgeButton lowercase size="sm" text={data.id} />
                   </div>
                 </div>
-              </Col>
-            </PageSection>
-            <PageSection
-              title="Identifiants du projet"
-              description="Cliquez pour copier l'identifiant dans le press-papier"
-              show={!!data?.id}
-            >
-              <div>
-                <div className="fr-badge-group">
-                  <CopyBadgeButton lowercase size="sm" text={data.id} />
-                </div>
-              </div>
-            </PageSection>
-            {data.url && (<PageSection title="Sur le web" description="" show={!!data?.url}>
-              <div className="fr-follow">
-                <div className="fr-container">
-                  <div className="fr-grid-row">
-                    <div className="fr-col-12">
-                      <div className="fr-follow__social">
-                        <ul className="fr-btns-group">
-                          <li style={{ width: "100%" }}>
-                            <a
-                              className="fr-btn--links fr-btn social-btn"
-                              href={data.url}
-                              target="_blank"
-                              rel="noreferrer noopener external"
-                            >
-                              Site web du projet
-                            </a>
-                          </li>
-                        </ul>
+              </PageSection>
+              {data.url && (<PageSection title="Sur le web" description="" show={!!data?.url}>
+                <div className="fr-follow">
+                  <div className="fr-container">
+                    <div className="fr-grid-row">
+                      <div className="fr-col-12">
+                        <div className="fr-follow__social">
+                          <ul className="fr-btns-group">
+                            <li style={{ width: "100%" }}>
+                              <a
+                                className="fr-btn--links fr-btn social-btn"
+                                href={data.url}
+                                target="_blank"
+                                rel="noreferrer noopener external"
+                              >
+                                Site web du projet
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </PageSection>)}
-          </PageContent>
+              </PageSection>)}
+            </PageContent>
+          </Col>
         </Row >
-        <pre>{JSON.stringify(data, null, 2)}</pre>
       </Container >
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   )
 }

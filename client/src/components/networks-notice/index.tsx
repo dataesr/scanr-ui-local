@@ -1,10 +1,16 @@
 import { createIntl } from 'react-intl';
 import { Link, Notice, useDSFRConfig } from '@dataesr/dsfr-plus';
-import messageFr from './locales/fr.json';
-import messageEn from './locales/en.json';
 import './styles.scss';
 
-const messages = { fr: messageFr, en: messageEn };
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
+
 
 export default function NetworksNotice({ url }: { url: string }) {
   const { locale } = useDSFRConfig();
@@ -17,7 +23,7 @@ export default function NetworksNotice({ url }: { url: string }) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ flexGrow: 1 }}>
           <Link href={url} className="network-notice">
-            {intl.formatMessage({ id: "organizations.networks.notice" })}
+            {intl.formatMessage({ id: "networks.notice" })}
           </Link>
         </div>
         <span className="fr-icon-arrow-right-s-line" />

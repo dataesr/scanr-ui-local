@@ -2,6 +2,7 @@ import { BadgeGroup, Badge, Title, Text, Row, useDSFRConfig } from "@dataesr/dsf
 import getLangFieldValue from "../../../../../utils/lang";
 import { Organization } from "../../../../../api/types/organization";
 import { useIntl } from "react-intl";
+import Truncate from "../../../../../components/truncate";
 
 
 export default function OrganizationHeader({ data }: { data: Organization }) {
@@ -42,7 +43,9 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
         </div>
       </div>
       <Row>
-        {<Text className="fr-m-0" size="sm">{getLangFieldValue(locale)(data?.description)}</Text>}
+        <Truncate lines={8} className="fr-mt-2w">
+          <Text className="fr-m-0" size="sm">{getLangFieldValue(locale)(data?.description)}</Text>
+        </Truncate>
       </Row>
     </>
   )
