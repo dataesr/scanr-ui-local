@@ -54,14 +54,30 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                 <PageSection
                   icon="git-branch-line"
                   title={intl.formatMessage({ id: "organizations.section.networks.title" })}
-                  show={!!data?.institutions?.length || !!data?.relations?.length}
+                  show={
+                    !!(data?.institutions?.length
+                      || data?.relations?.length
+                      || data?.institutionOf?.length
+                      || data?.relationOf?.length
+                      || data.parents?.length
+                      || data.parentOf?.length
+                      || networkBadges?.length)
+                  }
                 >
                   <OrganizationNetworks
                     data={data.institutions
                       ?.filter((institution) => ["établissement tutelle", "primary"]
                         .includes(institution.relationType))
                     }
-                    title={intl.formatMessage({ id: "organizations.section.networks.supervisors.title" })}
+                    titleKey="organizations.section.networks.supervisors.title"
+                    icon="building-line"
+                  />
+                  <OrganizationNetworks
+                    data={data.institutionOf
+                      ?.filter((institution) => ["établissement tutelle", "primary"]
+                        .includes(institution.relationType))
+                    }
+                    titleKey="organizations.section.networks.supervise.title"
                     icon="building-line"
                   />
                   <OrganizationNetworks
@@ -69,48 +85,91 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                       ?.filter((institution) => !["établissement tutelle", "primary"]
                         .includes(institution.relationType))
                     }
-                    title={intl.formatMessage({ id: "organizations.section.networks.participants.title" })}
+                    titleKey="organizations.section.networks.participants.title"
                     icon="building-line"
                   />
                   <OrganizationNetworks
+                    data={data.institutionOf
+                      ?.filter((institution) => !["établissement tutelle", "primary"]
+                        .includes(institution.relationType))
+                    }
+                    titleKey="organizations.section.networks.participate-to.title"
+                    icon="building-line"
+                  />
+                  <OrganizationNetworks
+                    data={data.parents}
+                    titleKey="organizations.section.networks.groups.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.parentOf}
+                    titleKey="organizations.section.networks.is-grouped.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
                     data={data.relations?.filter(((e) => e.type === "DS_LABS"))}
-                    title={intl.formatMessage({ id: "organizations.section.networks.doctoral-schools.title" })}
+                    titleKey="organizations.section.networks.doctoral-schools.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relationOf?.filter(((e) => e.type === "DS_LABS"))}
+                    titleKey="organizations.section.networks.linked-to.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
                     data={data.relations?.filter(((e) => e.type === "satt_actionnaire"))}
-                    title={intl.formatMessage({ id: "organizations.section.networks.satt.title" })}
+                    titleKey="organizations.section.networks.satt.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relationOf?.filter(((e) => e.type === "satt_actionnaire"))}
+                    titleKey="organizations.section.networks.satt-of.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
                     data={data.relations?.filter(((e) => e.type === "incubateur_public"))}
-                    title={intl.formatMessage({ id: "organizations.section.networks.incubateur.title" })}
+                    titleKey="organizations.section.networks.incubateur.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relationOf?.filter(((e) => e.type === "incubateur_public"))}
+                    titleKey="organizations.section.networks.incubateur-of.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
                     data={data.relations?.filter(((e) => e.type === "membre_carnot"))}
-                    title={intl.formatMessage({ id: "organizations.section.networks.carnot.title" })}
+                    titleKey="organizations.section.networks.carnot.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
                     data={data.relations?.filter(((e) => e.type === "rachete_par"))}
-                    title={intl.formatMessage({ id: "organizations.section.networks.eaten.title" })}
+                    titleKey="organizations.section.networks.eaten.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relationOf?.filter(((e) => e.type === "rachete_par"))}
+                    titleKey="organizations.section.networks.eat.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
                     data={data.relations?.filter(item => ((item.type || '').indexOf('spinoff') !== -1) || false)}
-                    title={intl.formatMessage({ id: "organizations.section.networks.spinnof.title" })}
+                    titleKey="organizations.section.networks.spinnof.title"
+                    icon="community-fill"
+                  />
+                  <OrganizationNetworks
+                    data={data.relationOf?.filter(item => ((item.type || '').indexOf('spinoff') !== -1) || false)}
+                    titleKey="organizations.section.networks.spinnof-of.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworksBadges
                     data={networkBadges}
-                    title={intl.formatMessage({ id: "organizations.section.networks.badges.title" })}
+                    titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
                 </PageSection>
                 <PageSection
                   icon="heart-pulse-line"
-                  title={intl.formatMessage({ id: "organizations.section.activities.title" })}
+                  title="organizations.section.activities.title"
                   show={!!(publications.publicationsCount || projects.projectsCount || patents.patentsCount)}
                 >
                   <OrganizationPublications data={publications} id={data.id} />

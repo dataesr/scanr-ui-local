@@ -13,7 +13,7 @@ function Leader({ leader }: { leader: OrganizationLeaderData }) {
         <Text className="fr-m-0">
           {
             leader.person ? (
-              <Link href={`/authors/${leader.person}`}>
+              <Link className="fr-icon-arrow-right-line fr-link--icon-right" href={`/authors/${leader.person}`}>
                 {leader.firstName}
                 {' '}
                 {leader.lastName}

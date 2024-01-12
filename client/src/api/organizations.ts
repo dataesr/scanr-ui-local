@@ -74,14 +74,15 @@ export async function getOrganizationById(id: string): Promise<Organization> {
       }
     },
   }
-  const structureQuery = fetch(`${organizationsIndex}/_search?q=id:"${id}"`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
+  const structureQuery = fetch(`${organizationsIndex}/_search`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
     .then(r => r.json())
   const publicationsQuery = getStructurePublicationsById(id)
   const projectsQuery = getStructureProjectsById(id)
   const patentsQuery = getStructurePatentsById(id)
   const [structure, publications, projects, patents] = await Promise.all([structureQuery, publicationsQuery, projectsQuery, patentsQuery])
   
-  const structureData = structure?.hits?.hits?.[0]?._source || {}
+  const structureData = structure?.hits?.hits?.[0]?._source
+  if (!structureData) throw new Error('404')
   const { _id } = structure?.hits?.hits?.[0] || {}
   
   return { ...structureData, _id, publications, projects, patents }

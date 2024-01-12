@@ -6,7 +6,6 @@ import OrganizationPresentation from "./components/organization";
 import { getOrganizationById } from "../../../api/organizations";
 import getLangFieldValue from "../../../utils/lang";
 import { FormattedMessage, RawIntlProvider, createIntl } from "react-intl";
-import Error500 from "../../../components/errors/error-500";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 
@@ -23,13 +22,11 @@ export default function Organization() {
   const { locale } = useDSFRConfig();
   const intl = createIntl({ locale, messages: messages[locale] })
   const { id } = useParams();
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["organization", id],
     queryFn: () => getOrganizationById(id),
+    throwOnError: true,
   });
-  if (isError) {
-    return <Container><Error500 /></Container>;
-  }
   return (
     <RawIntlProvider value={intl}>
       <Container>
@@ -44,7 +41,7 @@ export default function Organization() {
             {getLangFieldValue(locale)(data?.label)}
           </Link>
         </Breadcrumb>
-        {(isLoading || !data) && <OrganizationSkeleton />}
+        {(isLoading || !data?.id) && <OrganizationSkeleton />}
         {(data?.id) && <OrganizationPresentation data={data} />}
       </Container>
     </RawIntlProvider>

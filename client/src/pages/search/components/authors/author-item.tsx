@@ -15,7 +15,6 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<Author
     queryClient.prefetchQuery({
       queryKey: ['author', id],
       queryFn: () => getAuthorById(encode(id)),
-      staleTime: Infinity,
     })
   }
 
@@ -30,13 +29,16 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<Author
         </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {author?.domains?.filter((domain) => domain.label.default?.trim()).slice(0, 10).map((domain, k) => (
-            (domain.type === "wikidata") && (
+          {author?.domains
+            ?.filter((domain) => (domain.type === "wikidata"))
+            ?.slice(0, 8)
+            .map((domain, k) => (
               <Fragment key={k}>
                 {(k > 0) ? ', ' : ''}
                 <Link href={`/search/authors?q=${encode(domain?.label.default)}`}>#{domain?.label.default}</Link>
-              </Fragment>)
-          ))}
+              </Fragment>
+            )
+            )}
         </Text>
         <div className="fr-mt-1w fr-badge-group">
           {[author.id.replace("idref", ""), author.orcid]

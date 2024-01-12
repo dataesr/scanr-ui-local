@@ -4,6 +4,7 @@ import Header from './Header';
 import MainFooter from './Footer';
 import { IntlProvider } from 'react-intl';
 import Consent from './consent';
+import ErrorBoundary from '../components/errors/error-boundary';
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 const messages = Object.keys(modules).reduce((acc, key) => {
@@ -21,7 +22,9 @@ export default function Layout() {
       <Consent />
       <Header />
       <Container as="main" role="main" fluid>
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </Container>
       <MainFooter />
     </IntlProvider>
