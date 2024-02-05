@@ -21,6 +21,10 @@
   // }
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .result-item {
   padding-bottom: 1rem !important;
 }
@@ -51,4 +55,14 @@
   -webkit-box-orient: vertical;
   /* truncate to 4 lines */
   -webkit-line-clamp: 8;
+}
+
+.fr-tag--sm[class*="fr-icon-"]::before {
+  --icon-size: 1rem !important;
+  margin-right: .25rem !important;
+}
+
+.fr-tag[class*="fr-icon-"]::before {
+  --icon-size: 1.25rem !important;
+  margin-right: .5rem !important;
 }

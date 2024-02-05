@@ -5,28 +5,22 @@ import { FormattedMessage, useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
 import Modal from "../../../../components/modal";
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton";
-import { AuthorsAggregations } from "../../../../api/types/author";
+import { AuthorsAggregations } from "../../../../types/author";
 import { useState } from "react";
+import useUrl from "../../hooks/useUrl";
+import useAggregateData from "../../hooks/useAggregationData";
 
 const SEE_MORE_AFTER = 8
 
 export default function AuthorFilters() {
   const intl = useIntl()
-  const {
-    total,
-    search: { isFetching },
-    currentFilters,
-    handleFilterChange,
-    clearFilters,
-    filters: { data = { byAward: [] } }
-  } = useSearchData();
+  const { total, search: { isFetching } } = useSearchData();
+  const { currentFilters, handleFilterChange, clearFilters } = useUrl()
+  const { data = { byAward: [] }, isLoading, isError } = useAggregateData('filters')
 
   const { byAward } = data as AuthorsAggregations
 
   const [seeMoreAwards, setSeeMoreAwards] = useState(false)
-
-
-
 
   return (
     <>
@@ -34,6 +28,7 @@ export default function AuthorFilters() {
         className="fr-tag filter-tag-button fr-icon-equalizer-line fr-icon fr-tag--icon-left"
         aria-controls="author-filters"
         data-fr-opened="false"
+        disabled={isLoading || isError}
       >
         <FormattedMessage id={intl.formatMessage({ id: "search.top.filters-button-label" })} />
         {currentFilters.length ? <span className="filter-count-badge">{currentFilters.length}</span> : null}

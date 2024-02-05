@@ -1,4 +1,4 @@
-import { OrganizationSocialMediasData } from "../../api/types/organization";
+import { OrganizationSocialMediasData } from "../../types/organization";
 
 export default function SocialMedias({ data: socialMedias }: { data: OrganizationSocialMediasData }) {
   if (!socialMedias?.length) return null;

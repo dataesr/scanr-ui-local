@@ -1,30 +1,25 @@
-import { Link, Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Text } from "@dataesr/dsfr-plus";
-import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
-import { useQuery } from "@tanstack/react-query";
-import { getMorePublicationsLikeThis } from "../../../../api/publications";
+import { Link, Button, ButtonGroup, Col, Container, Row, TextInput } from "@dataesr/dsfr-plus";
 import Share from "../../../../components/share";
-import Skeleton from "../../../../components/skeleton/search-result-list-skeleton";
-import PublicationItem from "../../../search/components/publications/publication-item";
 import PublicationsHeader from "./header";
 import { useIntl } from "react-intl";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import useScreenSize from "../../../../hooks/useScreenSize";
+import Wiki from "../../../../components/wiki";
+import ProjectItem from "../../../search/components/projects/project-item";
+import Identifiers from "../../../../components/identifiers";
+import Modal from "../../../../components/modal";
+import MoreLikeThis from "../../../../components/more-like-this";
+import { Publication } from "../../../../types/publication";
 
 
-export default function Publication({ data }) {
+export default function PublicationPage({ data }: { data: Publication }) {
   const intl = useIntl();
   const { screen } = useScreenSize();
 
-  const { data: moreLikeThis, isLoading, isError } = useQuery({
-    queryKey: ["morePublicationLike", data._id],
-    queryFn: () => getMorePublicationsLikeThis(data._id),
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
   const authors = data.authors?.filter((author) => author.role === "author") || [];
   // const keywords = data?.domains?.filter((domain) => domain.type === "keyword").map((domain) => domain.label?.default) || [];
-  const wikis = data?.domains?.filter((domain) => domain.type === "wikidata").map((domain) => domain.label?.default) || [];
+  const wikis = data?.domains?.filter((domain) => domain.type === "wikidata");
+
   const affiliations = data?.authors
     ?.flatMap(({ affiliations }) => affiliations?.filter((affiliation) => affiliation.name))
     .reduce((acc, cur) => {
@@ -60,6 +55,7 @@ export default function Publication({ data }) {
           <Container fluid>
             <PageContent>
               <PageSection
+                size="hero"
                 title={intl.formatMessage({ id: "publications.section.affiliations" })}
                 icon="building-line"
                 show={!!affiliations?.length}
@@ -78,39 +74,30 @@ export default function Publication({ data }) {
                 </div>
               </PageSection>
               <PageSection
+                size="hero"
                 title={intl.formatMessage({ id: "publications.section.fundings" })}
                 icon="money-euro-circle-line"
                 show={!!data?.projects?.length}
               >
-                {data?.projects?.map((project) => (
-                  <>
-                    <Link className="fr-link fr-text--md" href={`/projects/${project?.id}`}>
-                      {project?.label?.fr || project?.label?.en || project?.label?.default}
-                    </Link>
-                    <Text as='span' size="md" className="fr-card__detail">
-                      <i>
-                        {project?.id}
-                        {(project?.type || project.year) && " — "}
-                        {project.type && `${project.type}`}
-                        {(project?.year && project.type) && " — "}
-                        {project?.year && `${project.year}`}
-                      </i>
-                    </Text>
-                    <br />
-                  </>
-                ))}
+                <div className="result-list">
+                  {data?.projects?.map((project) => (
+                    <ProjectItem data={project} key={project.id} />
+                  ))}
+                </div>
               </PageSection>
               <PageSection
+                size="hero"
                 title={intl.formatMessage({ id: "publications.section.more-like-this" })}
                 icon="shopping-cart-2-line"
                 show
               >
-                {isLoading && <Skeleton />}
-                {isError && <div>Une erreur est survenue au chargement des données</div>}
-                <div className="result-list">
-                  {moreLikeThis?.map((like) => (
-                    <PublicationItem data={like} key={like.id} />
-                  ))}
+                <MoreLikeThis id={data._id} api="publications" />
+              </PageSection>
+              <PageSection title="Data JSON" description="" show>
+                <div>
+                  <pre>
+                    {JSON.stringify(data || "", null, 2)}
+                  </pre>
                 </div>
               </PageSection>
             </PageContent>
@@ -120,50 +107,59 @@ export default function Publication({ data }) {
           <PageContent>
             <PageSection
               title={intl.formatMessage({ id: "publications.section.access" })}
-              size="lg"
               show
             >
               <ButtonGroup size="sm">
-                {data.isOa && <Button icon="file-download-line" iconPosition="right">Télécharger la publication</Button>}
-                <Button variant="tertiary" icon="external-link-line" iconPosition="right">
-                  Voir sur le site de l'éditeur
+                {data.isOa && <Button as="a" href={data.oaEvidence.url} target="_blank" icon="file-download-line" iconPosition="right">
+                  {intl.formatMessage({ id: "publications.section.access.download" })}
+                </Button>}
+                <Button as="a" href={data.doiUrl} target="_blank" variant="tertiary" icon="external-link-line" iconPosition="right">
+                  {intl.formatMessage({ id: "publications.section.access.visit" })}
                 </Button>
               </ButtonGroup>
             </PageSection>
-
             <PageSection
               title={intl.formatMessage({ id: "publications.section.identifiers" })}
               description={intl.formatMessage({ id: "publications.section.identifiers-description" })}
-              size="lg"
               show
             >
-              <div className="fr-badge-group">
-                {data.externalIds
-                  ?.filter((ext) => ext?.type !== 'scanr')
-                  .map((ext) => <CopyBadgeButton key={ext.id} lowercase size="sm" text={ext.id} />)
-                }
-              </div>
+              <Identifiers data={data?.externalIds} />
             </PageSection>
             <PageSection
               title={intl.formatMessage({ id: "publications.section.wikis" })}
-              show={!!data?.domains?.length}
-              description={intl.formatMessage({ id: "publications.section.wikis-description" })}
-              size="lg"
+              show={!!wikis?.length}
             >
-              <BadgeGroup>
-                {wikis?.map((keyword) => (
-                  <Badge key={keyword} size="sm">{keyword}</Badge>
-                ))}
-              </BadgeGroup>
+              <Wiki wikis={wikis} />
             </PageSection>
             <PageSection
               title={intl.formatMessage({ id: "publications.section.share" })}
-              size="lg"
               show
             >
               <Share />
             </PageSection>
           </PageContent>
+          <hr className='fr-my-3w' />
+          <ButtonGroup>
+            <Button data-fr-opened="false" aria-controls="funding-add" variant="tertiary" icon="links-line" iconPosition="left">
+              {intl.formatMessage({ id: "publications.signals.fundings" })}
+            </Button>
+            <Button data-fr-opened="false" aria-controls="authors-identification" variant="tertiary" icon="links-line" iconPosition="left" >
+              {intl.formatMessage({ id: "publications.signals.author" })}
+            </Button>
+            <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+              {intl.formatMessage({ id: "publications.signals.bug" })}
+            </Button>
+          </ButtonGroup>
+          <Modal id="authors-identification" title={intl.formatMessage({ id: "publications.signals.author" })}>
+            {authors.map((author, i) => (
+              <div className="fr-mb-3w" key={i}>
+                <TextInput label={author.fullName} disableAutoValidation defaultValue={author.person || ""} />
+              </div>
+            ))}
+          </Modal>
+          <Modal id="fundings-add" title={intl.formatMessage({ id: "publications.signals.fundings" })}>
+            <TextInput disableAutoValidation label="Rechercher un financement" />
+          </Modal>
         </Col>
       </Row >
     </Container >

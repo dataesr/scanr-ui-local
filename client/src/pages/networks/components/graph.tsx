@@ -1,7 +1,7 @@
 import { Container, Text } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
-import { Network } from "../../../api/types/network"
+import { Network } from "../../../types/network"
 
 export function Graph({ currentTab }: { currentTab: string }) {
   const { search } = useSearchData(currentTab)

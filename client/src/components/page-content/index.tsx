@@ -1,6 +1,7 @@
 import cs from 'classnames';
 import { Accordion, Col, Row, Text, Title } from "@dataesr/dsfr-plus";
 import useScreenSize from "../../hooks/useScreenSize";
+import './styles.scss';
 
 type PageSectionProps = {
   children: React.ReactNode,
@@ -8,28 +9,29 @@ type PageSectionProps = {
   description?: React.ReactNode,
   show: boolean,
   icon?: string,
-  size?: "lead" | "lg"
+  size?: "hero" | "lead" | "lg" | "md" | "sm" | "xs"
 }
 
-export function PageSection({ children, title, icon, description = "", show = false, size = "lead" }: PageSectionProps) {
+export function PageSection({ children, title, icon, description = "", show = false, size = "md" }: PageSectionProps) {
   const { screen } = useScreenSize();
   if (!show) {
     return null;
   }
-  const titleCSS = cs({
-    [`fr-text--${size}`]: size,
+  const titleCSS = cs("page-section__title", {
+    [`fr-text--${size}`]: size !== "hero",
+    "fr-h5": size === "hero",
     [`fr-icon-${icon}`]: icon,
     "fr-mb-1v": description,
-    "fr-mb-2w": !description,
+    "fr-mb-0": !description,
   });
   const TitlePart = () => (
     <>
       <Title as="h2" className={titleCSS}>
         {title}
       </Title>
-      <Text className="fr-card__detail fr-mb-2w" size="xs">
+      {description && (<Text className="fr-card__detail" size="xs">
         {description}
-      </Text>
+      </Text>)}
     </>
   )
   if (["xs", "sm"].includes(screen)) {
@@ -41,8 +43,12 @@ export function PageSection({ children, title, icon, description = "", show = fa
   }
   return (
     <Col xs="12">
-      <TitlePart />
-      {children}
+      <section>
+        <TitlePart />
+        <div className="fr-py-3w">
+          {children}
+        </div>
+      </section>
     </Col>
   );
 }

@@ -1,61 +1,39 @@
-import { Badge, BadgeGroup, Col, Container, Row, Text, Title, Tab, Tabs } from "@dataesr/dsfr-plus";
-import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
+import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Title } from "@dataesr/dsfr-plus";
 import Share from "../../../../components/share";
-import OaDonut from "../../../../components/oa-donut";
 import BarLink from "../../../../components/bar-link";
 import { PageContent, PageSection } from "../../../../components/page-content";
-import useScreenSize from "../../../../hooks/useScreenSize";
-import PublicationItem from "../../../search/components/publications/publication-item";
 import TagCloud from "../../../../components/tag-cloud";
-import Histogram from "../../../../components/YearRangeSlider/histogram";
+import OpenAccessDonut from "../../../../components/oa-donut/donut";
+import YearBars from "../../../../components/year-bars";
+import AuthorsPublications from "./publications";
+import { useIntl } from "react-intl";
+import AuthorAwards from "./awards";
+import Identifiers from "../../../../components/identifiers";
+import { Author } from "../../../../types/author";
 
 
-type Author = {
-  id: string;
-  fullName: string;
-  externalIds: {
-    id: string;
-    type: string;
-  }[];
-  wikis: {
-    value: string;
-    label: string;
-  }[];
-  awards: {
-    label: string;
-  }[];
-  coAuthors: {
-    value: string;
-    label: string;
-    count: number;
-  }[];
-}
-
-
-function getOaInfo(publications) {
-  const oaCount = publications?.filter((publi) => publi.isOa)?.length;
-  const oaTotal = publications?.length;
+function getOaInfo(publi) {
+  const oaCount = publi?.filter((publi) => publi.isOa)?.length;
+  const oaTotal = publi?.length;
   return { oaPercent: Math.ceil(oaCount / oaTotal * 100), oaCount, oaTotal };
 }
 
-export default function Author({ data }) {
-  const { screen } = useScreenSize();
-  const isMobile = ["xs", "sm"].includes(screen);
-  const maxCommonPublications = data.coAuthors && Math.max(...data.coAuthors.map((el) => el.count));
-  const maxReviews = data.reviews && Math.max(...data.reviews.map((el) => el.count));
-  const thesis = data?.publications?.filter((publi) => {
+export default function AuthorPage({ data }: { data: Author }) {
+  const intl = useIntl();
+  const { publications: publicationsObject, awards } = data;
+  const { wikis, coAuthors, reviews, byYear, publications } = publicationsObject;
+
+  const maxCommonPublications = coAuthors && Math.max(...coAuthors.map((el) => el.count));
+  const maxReviews = reviews && Math.max(...reviews.map((el) => el.count));
+  const thesis = publications?.filter((publi) => {
     return (publi.type === 'these') && publi.authors.find((author) => author.person === data.id)?.role === 'author';
-  })?.[0];
-  const thesisParticipations = data?.publications?.filter((publi) => {
+  });
+  const thesisParticipations = publications?.filter((publi) => {
     return (publi.type === 'these') && publi.authors.find((author) => author.person === data.id)?.role !== 'author';
   });
-  const publications = data?.publications?.filter((publi) => publi.type !== 'these');
+  const others = publications?.filter((publi) => publi.type !== 'these');
 
   const { oaPercent } = getOaInfo(publications);
-
-  const awards = data?.awards?.map((award) => award.label) || [];
-
-
 
   return (
     <Container fluid>
@@ -66,99 +44,92 @@ export default function Author({ data }) {
               <BadgeGroup>
                 <Badge variant="info" noIcon>Auteur</Badge>
               </BadgeGroup>
-              <Title className="fr-mb-1v" as="h1" look="h4">{data?.fullName}</Title>
-              {awards.map((award, i) => (
-                <div key={i} style={{ display: "flex" }}>
-                  <span className="fr-mr-1v fr-icon-award-fill" />
-                  <Text className="fr-mb-0" as="span" size="sm">{award}</Text>
-                </div>
-              ))}
+              <Title className="fr-mb-3w" as="h1" look="h3">{data?.fullName}</Title>
             </Col>
-            {!isMobile && (<Col xs="12">
-              <Text bold className="fr-mb-1v">
-                Concepts wikidata
-              </Text>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Cliquez pour rechercher d'autres publications contenant le mot-clé
-              </Text>
-              <TagCloud data={data.wikis} order="random" />
-            </Col>)}
-            {!isMobile ? (<Col className="fr-mt-5w" xs="12">
-              <Tabs>
-                {(publications.length > 0) ? (
-                  <Tab className="authors-publications-tabs" label={`Publications (${publications.length || 0})`}>
-                    <div className="result-list">
-                      {publications?.map((publi) => (
-                        <PublicationItem data={publi} key={publi.id} />
-                      ))}
-                    </div>
-                  </Tab>) : null}
-                {thesis && <Tab className="authors-publications-tabs" label="Thèse de l'auteur" icon="link">
-                  <div className="result-list">
-                    <PublicationItem data={thesis} />
-                  </div>
-                </Tab>}
-                {(thesisParticipations.length > 0) ? (
-                  <Tab className="authors-publications-tabs" label={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
-                    <div className="result-list">
-                      {thesisParticipations?.map((publi) => (
-                        <PublicationItem data={publi} key={publi.id} />
-                      ))}
-                    </div>
-                  </Tab>) : null}
-              </Tabs>
-            </Col>) : null}
+            <PageContent>
+              <PageSection
+                icon="lightbulb-line"
+                size="hero"
+                show={!!wikis?.length}
+                title={intl.formatMessage({ id: "authors.section.wiki.title" })}
+                description={intl.formatMessage({ id: "authors.section.wiki.desc" })}
+              >
+                <TagCloud data={wikis} order="random" />
+              </PageSection>
+              <PageSection
+                icon="trophy-line"
+                size="hero"
+                show={!!awards?.length}
+                title={intl.formatMessage({ id: "authors.section.prizes" })}
+              >
+                <AuthorAwards data={data?.awards} />
+              </PageSection>
+              <PageSection
+                icon="article-line"
+                size="hero"
+                show={!!thesis?.length}
+                title={intl.formatMessage({ id: "authors.section.activity.thesis" }, { count: thesis.length })}
+              >
+                <AuthorsPublications data={thesis} titleKey="authors.section.activity.thesis" />
+              </PageSection>
+              <PageSection
+                size="hero"
+                show={!!others?.length}
+                title={intl.formatMessage(
+                  { id: "authors.section.activity.publications" },
+                  { count: others.length },
+                )}
+                icon="heart-pulse-line"
+              >
+                <AuthorsPublications data={others} titleKey="authors.section.activity.publications" />
+              </PageSection>
+              <PageSection
+                size="hero"
+                icon="stethoscope-line"
+                show={!!thesisParticipations?.length}
+                title={intl.formatMessage(
+                  { id: "authors.section.activity.thesis-participations" },
+                  { count: thesisParticipations.length },
+                )}
+              >
+                <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
+              </PageSection>
+            </PageContent>
           </Row>
         </Col>
         <Col xs="12" md="4" xl="3" offsetXl="1">
           <PageContent>
-            {(isMobile && thesis) && (
-              <PageSection show title="Thèse de l'auteur">
-                <div className="result-list">
-                  <PublicationItem data={thesis} />
-                </div>
-              </PageSection>
-            )}
-            {(isMobile && publications.length) && (
-              <PageSection show title={`Liste des publications (${publications.length || 0})`}>
-                <div className="result-list">
-                  {publications?.map((publi) => (
-                    <PublicationItem data={publi} key={publi.id} />
-                  ))}
-                </div>
-              </PageSection>
-            )}
-            {(isMobile && thesisParticipations.length) ? (
-              <PageSection show title={`Participations à des jury de thèse (${thesisParticipations.length || 0})`}>
-                <div className="result-list">
-                  {thesisParticipations?.map((publi) => (
-                    <PublicationItem data={publi} key={publi.id} />
-                  ))}
-                </div>
-              </PageSection>
-            ) : null}
-            <PageSection show title="Identifiants de l'auteur" description="Cliquez pour copier l'identifiant dans le press-papier">
-              <div className="fr-badge-group">
-                {data.externalIds
-                  ?.filter((ext) => ext?.type !== 'scanr')
-                  .map((ext, i) => <CopyBadgeButton key={i} lowercase size="sm" text={ext.id} />)
-                }
-              </div>
+            <PageSection
+              show
+              title={intl.formatMessage({ id: "authors.section.identifiers.title" })}
+              description={intl.formatMessage({ id: "authors.section.identifiers.desc" })}
+            >
+              <Identifiers data={data.externalIds} />
             </PageSection>
-            <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
-              <Histogram data={data.byYear.map((year) => year.count)} />
+            <PageSection
+              show={!!byYear?.length}
+              title={intl.formatMessage({ id: "authors.section.by-year.title" })}
+              description={intl.formatMessage({ id: "authors.section.by-year.desc" })}
+            >
+              <YearBars
+                name="Publications"
+                counts={byYear.map((year) => year.count)}
+                years={byYear.map((year) => year.label)}
+              />
             </PageSection>
-            {isMobile && (
-              <PageSection show title={"Publications par année"} description="Nombre de publication par an depuis 2013">
-                <TagCloud data={data.wikis} order="random" />
-              </PageSection>
-            )}
-            <PageSection show title={`Publications en accès ouvert ${oaPercent}%`} description="Calculé">
-              <OaDonut percent={oaPercent} />
+            <PageSection
+              show={!!oaPercent}
+              title={intl.formatMessage({ id: "authors.section.oa.title" })}
+              description={intl.formatMessage({ id: "authors.section.oa.desc" })}
+            >
+              <OpenAccessDonut percentage={oaPercent} />
             </PageSection>
-
-            <PageSection show title="Principaux co-auteurs" description="Cliquez pour accèder la page du co-auteur">
-              {data.coAuthors?.slice(0, 6)?.map((coAuthor, i) => (
+            <PageSection
+              show={!!coAuthors?.length}
+              title={intl.formatMessage({ id: "authors.section.co-authors.title" })}
+              description={intl.formatMessage({ id: "authors.section.co-authors.desc" })}
+            >
+              {coAuthors?.slice(0, 6)?.map((coAuthor, i) => (
                 <BarLink
                   key={i}
                   name={coAuthor.label}
@@ -168,21 +139,34 @@ export default function Author({ data }) {
                 />
               ))}
             </PageSection>
-            <PageSection show title="Principales revues" description="Cliquez pour rechercher des publications de la revue">
-              {data.reviews?.slice(0, 6)?.map((review, i) => (
+            <PageSection
+              show={!!reviews?.length}
+              title={intl.formatMessage({ id: "authors.section.reviews.title" })}
+              description={intl.formatMessage({ id: "authors.section.reviews.desc" })}
+            >
+              {reviews?.slice(0, 6)?.map((review, i) => (
                 <BarLink
                   key={i}
-                  name={review.sourceTitle}
+                  name={review.label}
                   count={review.count}
                   width={review.count * 100 / maxReviews}
-                  href={`/authors/${review.sourceTitle}`}
+                  href={`/search/authors?q=${review.label}`}
                 />
               ))}
             </PageSection>
-            <PageSection show title="Partager la page">
+            <PageSection show title={intl.formatMessage({ id: "authors.section.share" })}>
               <Share />
             </PageSection>
           </PageContent>
+          <hr className='fr-my-3w' />
+          <ButtonGroup>
+            <Button as="a" href={`/suggest/${data.id}?q="${data?.fullName}"`} variant="tertiary" icon="links-line" iconPosition="left" >
+              {intl.formatMessage({ id: "authors.signals.publications" })}
+            </Button>
+            <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+              {intl.formatMessage({ id: "authors.signals.bug" })}
+            </Button>
+          </ButtonGroup>
         </Col>
       </Row>
     </Container>

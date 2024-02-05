@@ -1,5 +1,5 @@
 import { Text } from '@dataesr/dsfr-plus';
-import { Address } from '../../../../../api/types/commons';
+import { Address } from '../../../../../types/commons';
 import Map from '../../../../../components/map';
 import './styles.scss';
 

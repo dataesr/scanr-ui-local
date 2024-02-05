@@ -8,6 +8,6 @@ export default function getLangFieldValue(locale) {
       return field[locale];
     }
 
-    return field.default;
+    return field.default || field.fr || field.en;
   };
 }

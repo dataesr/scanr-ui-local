@@ -2,12 +2,10 @@ import { useIntl } from "react-intl";
 import { useId, useState } from "react";
 import { Button, Row, Col, Text } from "@dataesr/dsfr-plus";
 import TagCloud from "../../../../../components/tag-cloud";
-import Histogram from "../../../../../components/YearRangeSlider/histogram";
 import BarLink from "../../../../../components/bar-link";
-import OaDonut from "../../../../../components/oa-donut";
-import { OrganizationPublicationsData } from "../../../../../api/types/organization";
+import { OrganizationPublicationsData } from "../../../../../types/organization";
 import useScreenSize from "../../../../../hooks/useScreenSize";
-import NetworksNotice from "../../../../../components/networks-notice";
+import YearBars from "../../../../../components/year-bars";
 
 
 export default function OrganizationPublications({ data: publications, id }: { data: OrganizationPublicationsData, id: string }) {
@@ -25,7 +23,6 @@ export default function OrganizationPublications({ data: publications, id }: { d
   if (publications.publicationsCount < 10 || ["xs", "sm"].includes(screen)) {
     return (
       <>
-        <NetworksNotice url="/networks" />
         <div className="fr-mb-3w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ flexGrow: 1 }}>
             <Text className="fr-m-0" bold>
@@ -45,10 +42,9 @@ export default function OrganizationPublications({ data: publications, id }: { d
 
   return (
     <>
-      <NetworksNotice url="/networks" />
       <div className="fr-mb-3w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ flexGrow: 1 }}>
-          <Text className="fr-m-0" bold>
+          <Text size="lg" className="fr-m-0" bold>
             {publications.publicationsCount === 10000 ? "10 000+" : publications.publicationsCount}
             {" "}
             {intl.formatMessage({ id: "organizations.publications.count" })}
@@ -59,9 +55,12 @@ export default function OrganizationPublications({ data: publications, id }: { d
         </Button>
       </div>
       <Row gutters>
-        <Col xs="4">
-          <fieldset id="publication-graph-selector" className="fr-segmented">
-            <div style={{ flexDirection: "column" }} className="fr-segmented__elements">
+        <Col xs="12">
+          <fieldset id="publication-graph-selector" className="fr-segmented fr-segmented--sm">
+            <legend className="fr-segmented__legend">
+              {intl.formatMessage({ id: "organizations.activity.fieldset.legend" })}
+            </legend>
+            <div className="fr-segmented__elements">
               <div className="fr-segmented__element">
                 <input
                   checked={(publicationGraph === "wiki")}
@@ -88,20 +87,6 @@ export default function OrganizationPublications({ data: publications, id }: { d
                   htmlFor={`${segmentId}-year`}
                 >
                   {intl.formatMessage({ id: "organizations.publications.nav.year" })}
-                </label>
-              </div>
-              <div className="fr-segmented__element">
-                <input
-                  checked={(publicationGraph === "oa")}
-                  onClick={() => setPublicationGraph("oa")}
-                  type="radio"
-                  id={`${segmentId}-oa`}
-                />
-                <label
-                  className="fr-label"
-                  htmlFor={`${segmentId}-oa`}
-                >
-                  {intl.formatMessage({ id: "organizations.publications.nav.oa" })}
                 </label>
               </div>
               <div className="fr-segmented__element">
@@ -135,9 +120,13 @@ export default function OrganizationPublications({ data: publications, id }: { d
             </div>
           </fieldset>
         </Col>
-        <Col xs="8" className="fr-pb-6w">
-          {(publicationGraph === "year") && <Histogram data={publications.byYear.map((year) => year.count)} />}
-          {(publicationGraph === "oa") && <OaDonut height="400" percent={publications.byIsOa.find(v => v.label === "true")?.count} />}
+        <Col xs="12" className="fr-pb-6w">
+          {(publicationGraph === "year") && (<YearBars
+            name={intl.formatMessage({ id: "organizations.publications.year-bars.name" })}
+            height="300px"
+            counts={publications.byYear.map((year) => year.count)}
+            years={publications.byYear.map((year) => year.label)}
+          />)}
           {(publicationGraph === "wiki") && <TagCloud data={publications.byWiki} order="random" />}
           {(publicationGraph === "authors") && publications.byAuthors?.map((a) => (
             <BarLink

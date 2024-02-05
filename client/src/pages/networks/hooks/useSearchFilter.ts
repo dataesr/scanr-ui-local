@@ -1,8 +1,8 @@
 import { useSearchParams } from "react-router-dom"
-import { parseSearchFiltersFromURL, stringifySearchFiltersForURL } from "../../search/utils/filters"
+import { parseSearchFiltersFromURL, stringifySearchFiltersForURL } from "../../../utils/filters"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
-import { PublicationAggregations } from "../../../api/types/publication"
+import { PublicationAggregations } from "../../../types/publication"
 import { networkFilter } from "../../../api/network"
 
 export default function useSearchFilter() {

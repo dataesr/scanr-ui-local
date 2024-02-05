@@ -1,39 +1,33 @@
-import { Accordion, Container } from "@dataesr/dsfr-plus";
-
-import Histogram from "../../../../components/YearRangeSlider/histogram";
-
 import BarLink from "../../../../components/bar-link";
-import { FormattedMessage } from "react-intl";
+import { useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
 import AnalyticsSkeleton from "../../../../components/skeleton/analytics-skeleton";
-import { PublicationAggregations } from "../../../../api/types/publication";
+import { PublicationAggregations } from "../../../../types/publication";
+import YearBars from "../../../../components/year-bars";
+import { PageContent, PageSection } from "../../../../components/page-content";
+import useAggregateData from "../../hooks/useAggregationData";
 
 export default function PublicationAnalytics() {
-  const { search: { data: searchData }, analytics: { data = { byYear: [], byType: [], byFunder: [], byAuthors: [] }, isLoading } } = useSearchData();
+  const intl = useIntl();
+  const { data, isLoading, isError } = useAggregateData('analytics');
+  const { search: { data: searchData } } = useSearchData();
+  if (isError) return null;
   if (isLoading || !searchData?.length) return <AnalyticsSkeleton />
+
   const { byYear, byAuthors } = data as PublicationAggregations
 
   const _100TopAuthors = Math.max(...byAuthors.map((el) => el.count | 0));
   return (
-    <>
-      <Accordion defaultExpanded title={<FormattedMessage id="search.publications.analytics.by-year-accordion-name" />}>
-        <Container fluid className="fr-m-2w histogram-filter">
-          <Histogram data={byYear.map((year) => year.count)} />
-        </Container>
-      </Accordion>
-      {/* <Accordion defaultExpanded title={<FormattedMessage id="search.publications.analytics.by-type-accordion-name" />}>
-        <KeywordFacet value={currentFilters.find((el) => el.field === 'type')?.value || []} data={byType} onChange={(value) => setNextFilters((prev) => {
-          if (!value.length) return prev.filter((el) => el.field !== "type");
-          return [...prev.filter((el) => el.field !== "type"), { field: "type", value, type: "terms" }]
-        })} />
-      </Accordion>
-      <Accordion defaultExpanded title={<FormattedMessage id="search.publications.analytics.by-project-accordion-name" />}>
-        <KeywordFacet value={currentFilters.find((el) => el.field === 'projects.type')?.value || []} data={byFunder} onChange={(value) => setNextFilters((prev) => {
-          if (!value.length) return prev.filter((el) => el.field !== "projects.type");
-          return [...prev.filter((el) => el.field !== "projects.type"), { field: "projects.type", value, type: "terms" }]
-        })} />
-      </Accordion> */}
-      <Accordion defaultExpanded title={<FormattedMessage id="search.publications.analytics.by-author-accordion-name" />}>
+    <PageContent>
+      <PageSection size='lg' show title={intl.formatMessage({ id: "search.publications.analytics.by-year.title" })} >
+        <YearBars
+          height="250px"
+          name={intl.formatMessage({ id: "search.publications.analytics.by-year.year-bars.name" })}
+          counts={byYear.map((year) => year.count)}
+          years={byYear.map((year) => year.value)}
+        />
+      </PageSection>
+      <PageSection size='lg' show title={intl.formatMessage({ id: "search.publications.analytics.by-author.title" })}>
         {byAuthors?.slice(0, 10)?.map((coAuthor) => (
           <BarLink
             key={coAuthor.value}
@@ -43,7 +37,7 @@ export default function PublicationAnalytics() {
             href={`/authors/${coAuthor.value}`}
           />
         ))}
-      </Accordion>
-    </>
+      </PageSection>
+    </PageContent >
   )
 }

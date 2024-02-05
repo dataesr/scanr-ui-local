@@ -2,19 +2,19 @@ import { Fragment } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Text, Link, BadgeGroup, Badge } from "@dataesr/dsfr-plus";
 import { encode } from "../../../../utils/string";
-import { Author } from "../../../../api/types/author";
-import { getAuthorById } from "../../../../api/authors";
+import { LightAuthor } from "../../../../types/author";
+import { getAuthorById } from "../../../../api/authors/[id]";
 import { ItemProps } from "../../types";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
 
 
-export default function AuthorItem({ data: author, highlight }: ItemProps<Author>) {
+export default function AuthorItem({ data: author, highlight }: ItemProps<LightAuthor>) {
   const queryClient = useQueryClient();
 
   function prefetchAuthor(id: string) {
     queryClient.prefetchQuery({
       queryKey: ['author', id],
-      queryFn: () => getAuthorById(encode(id)),
+      queryFn: () => getAuthorById(id),
     })
   }
 
@@ -24,12 +24,12 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<Author
         <BadgeGroup className="structure-badge-list fr-mt-1v">
           <Badge size="sm" color='orange-terre-battue'>Auteur</Badge>
         </BadgeGroup>
-        <span onMouseEnter={() => prefetchAuthor(author.id)}><Link href={`/authors/${encode(author.id)}`} className="fr-link">
+        <span onMouseEnter={() => prefetchAuthor(author.id)}><Link href={`/authors/${author.id}`} className="fr-link">
           {author.fullName}
         </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {author?.domains
+          {author?.topDomains
             ?.filter((domain) => (domain.type === "wikidata"))
             ?.slice(0, 8)
             .map((domain, k) => (

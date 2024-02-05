@@ -1,5 +1,5 @@
 import { BadgeGroup, Badge } from "@dataesr/dsfr-plus";
-import { Aggregation } from "../../api/types/commons";
+import { Aggregation } from "../../types/commons";
 import './styles.scss';
 
 export type Order = 'desc' | 'asc' | 'random';

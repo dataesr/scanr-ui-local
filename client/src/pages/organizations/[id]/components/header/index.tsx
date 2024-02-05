@@ -1,6 +1,6 @@
 import { BadgeGroup, Badge, Title, Text, Row, useDSFRConfig } from "@dataesr/dsfr-plus";
 import getLangFieldValue from "../../../../../utils/lang";
-import { Organization } from "../../../../../api/types/organization";
+import { Organization } from "../../../../../types/organization";
 import { useIntl } from "react-intl";
 import Truncate from "../../../../../components/truncate";
 
@@ -9,7 +9,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
   return (
-    <>
+    <section>
       <div style={{ display: "flex", flexWrap: "nowrap" }} className="fr-my-1v">
         <div style={{ flexGrow: 1 }}>
           <BadgeGroup className="structure-badge-list fr-mt-1v">
@@ -47,6 +47,6 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <Text className="fr-m-0" size="sm">{getLangFieldValue(locale)(data?.description)}</Text>
         </Truncate>
       </Row>
-    </>
+    </section>
   )
 }

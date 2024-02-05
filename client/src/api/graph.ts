@@ -2,7 +2,7 @@ import UndirectedGraph from "graphology"
 import louvain from "graphology-communities-louvain"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
-import { Network } from "./types/network"
+import { Network } from "../types/network"
 
 const GRAPH_MAX_ORDER = 300
 const GRAPH_MAX_COMPONENTS = 3

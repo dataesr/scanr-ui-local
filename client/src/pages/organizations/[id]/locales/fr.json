@@ -1,4 +1,5 @@
 {
+  "organizations.notice.not-french": "Attention, cette entité étant une entité étrangère, seuls ses liens avec des organisations, financements et productions françaises seront affichées.",
   "organizations.breadcrumb.home": "Accueil",
   "organizations.breadcrumb.search": "Structures",
   "organizations.section.leaders.title": "Équipe de direction",
@@ -32,11 +33,14 @@
   "organizations.patents.count": "brevets répertoriées par scanR",
   "organizations.patents.search": "Voir la liste des brevets",
   "organizations.patents.nav.year": "Répartition par année",
+  "organizations.patents.year-bars.name": "Brevets",
   "organizations.projects.count": "financements répertoriées par scanR",
   "organizations.projects.search": "Voir la liste des financements",
   "organizations.projects.nav.year": "Répartition par année",
   "organizations.projects.nav.type": "Types de financements",
   "organizations.projects.nav.tag-cloud": "Nuage de mots-clés",
+  "organizations.projects.year-bars.name": "Financements",
+  "organizations.activity.fieldset.legend": "Séléctionnez un type de représentation graphique",
   "organizations.publications.count": "publications répertoriées par scanR",
   "organizations.publications.search": "Voir la liste des publications",
   "organizations.publications.nav.wikis": "Nuage de mot clés",
@@ -44,5 +48,7 @@
   "organizations.publications.nav.oa": "Taux d'accès ouvert",
   "organizations.publications.nav.journals": "Top 10 des journaux",
   "organizations.publications.nav.authors": "Top 10 des authors",
-  "organizations.networks.since": "depuis le"
+  "organizations.publications.year-bars.name": "Publications",
+  "organizations.networks.since": "depuis le",
+  "organizations.section.more-like-this": "Structures similaires"
 }

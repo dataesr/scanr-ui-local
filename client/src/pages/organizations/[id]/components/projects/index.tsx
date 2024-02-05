@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useIntl } from "react-intl";
 import { Button, Row, Col, Text } from "@dataesr/dsfr-plus";
 import TagCloud from "../../../../../components/tag-cloud";
-import Histogram from "../../../../../components/YearRangeSlider/histogram";
 import BarLink from "../../../../../components/bar-link";
-import { OrganizationProjectsData } from "../../../../../api/types/organization";
+import { OrganizationProjectsData } from "../../../../../types/organization";
 import useScreenSize from "../../../../../hooks/useScreenSize";
+import YearBars from "../../../../../components/year-bars";
 
 export default function OrganizationProjects({ data: projects, id }: { data: OrganizationProjectsData, id: string }) {
   const { screen } = useScreenSize();
   const intl = useIntl();
-  const searchFilters = [{ field: 'affiliations.id', value: [id], type: 'terms' }]
+  const searchFilters = [{ field: 'participants.structure.id', value: [id], type: 'terms' }]
   const projectsFilterUrl = `/search/projects?filters=${encodeURIComponent(JSON.stringify(searchFilters))}`;
   const [projectGraph, setProjectGraph] = useState("type");
 
@@ -42,7 +42,7 @@ export default function OrganizationProjects({ data: projects, id }: { data: Org
     <>
       <div className="fr-mb-3w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ flexGrow: 1 }}>
-          <Text className="fr-m-0" bold>
+          <Text size="lg" className="fr-m-0" bold>
             {projects.projectsCount}
             {' '}
             {intl.formatMessage({ id: "organizations.projects.count" })}
@@ -53,9 +53,12 @@ export default function OrganizationProjects({ data: projects, id }: { data: Org
         </Button>
       </div>
       <Row gutters>
-        <Col xs="4">
-          <fieldset id="publication-graph-selector" className="fr-segmented">
-            <div style={{ flexDirection: "column" }} className="fr-segmented__elements">
+        <Col xs="12">
+          <fieldset id="publication-graph-selector" className="fr-segmented fr-segmented--sm">
+            <legend className="fr-segmented__legend">
+              {intl.formatMessage({ id: "organizations.activity.fieldset.legend" })}
+            </legend>
+            <div className="fr-segmented__elements">
               <div className="fr-segmented__element">
                 <input checked={(projectGraph === "type")} onClick={() => setProjectGraph("type")} type="radio" id="segmented-22187-4" />
                 <label className="fr-label" htmlFor="segmented-22187-4">
@@ -77,12 +80,14 @@ export default function OrganizationProjects({ data: projects, id }: { data: Org
             </div>
           </fieldset>
         </Col>
-        <Col xs="8" className="fr-pb-6w">
+        <Col xs="12" className="fr-pb-6w">
           {(projectGraph === "year") && (
-            <>
-              <Text>{intl.formatMessage({ id: "organizations.projects.graph.year.label" })}</Text>
-              <Histogram data={projects.byYear.map((year) => year.count)} />
-            </>
+            <YearBars
+              name={intl.formatMessage({ id: "organizations.projects.year-bars.name" })}
+              height="300px"
+              counts={projects.byYear.map((year) => year.count)}
+              years={projects.byYear.map((year) => year.label)}
+            />
           )}
           {(projectGraph === "keywords") && <TagCloud data={projects.byKeywords} order="random" />}
           {(projectGraph === "type") && projects.byType?.map((a) => (
@@ -91,7 +96,6 @@ export default function OrganizationProjects({ data: projects, id }: { data: Org
               name={a.label}
               count={a.count}
               width={a.normalizedCount}
-              href={`/authors/${a.value}`}
             />
           ))}
         </Col>

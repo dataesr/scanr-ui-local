@@ -2,19 +2,20 @@ import { Fragment } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { BadgeGroup, Badge, Text, Link } from "@dataesr/dsfr-plus";
 import { publicationTypeMapping, encode } from "../../../../utils/string";
-import { getPublicationById } from "../../../../api/publications";
-import { Publication } from "../../../../api/types/publication";
+import { getPublicationById } from "../../../../api/publications/[id]";
+import { LightPublication } from "../../../../types/publication";
 import { ItemProps } from "../../types";
 
 
-export default function PublicationItem({ data: publication, highlight }: ItemProps<Publication>) {
+export default function PublicationItem({ data: publication, highlight }: ItemProps<LightPublication>) {
   const queryClient = useQueryClient();
+  if (!publication.id) { console.log(publication); }
 
-  function prefetchPublication(id: string) {
+  function prefetch(id: string) {
+    if (!id) return;
     queryClient.prefetchQuery({
       queryKey: ['publication', id],
-      queryFn: () => getPublicationById(encode(id)),
-      staleTime: Infinity,
+      queryFn: () => getPublicationById(id),
     })
   }
   return (
@@ -26,7 +27,7 @@ export default function PublicationItem({ data: publication, highlight }: ItemPr
             {publication.isOa ? 'Accès ouvert' : 'Accès fermé'}
           </Badge>
         </BadgeGroup>
-        <span onMouseEnter={() => prefetchPublication(publication.id)}><Link href={`/publications/${encode(publication.id)}`} className="fr-link">
+        <span onMouseEnter={() => prefetch(publication.id)}><Link href={`/publications/${encode(publication.id)}`} className="fr-link">
           {highlight?.["title.default"]
             ? (<span dangerouslySetInnerHTML={{ __html: highlight?.["title.default"] }} />)
             : publication.title.default || publication.title?.fr || publication.title?.en}

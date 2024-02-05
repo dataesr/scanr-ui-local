@@ -6,26 +6,22 @@ import useSearchData from "../../hooks/useSearchData";
 import Modal from "../../../../components/modal";
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton";
 import { useState } from "react";
-import { OrganizationAggregations } from "../../../../api/types/organization";
+import { OrganizationAggregations } from "../../../../types/organization";
+import useAggregateData from "../../hooks/useAggregationData";
+import useUrl from "../../hooks/useUrl";
 
 const SEE_MORE_AFTER = 8
 
 
 export default function OrganizationFilters() {
   const intl = useIntl()
-  const {
-    total,
-    search: { isFetching },
-    currentFilters,
-    handleFilterChange,
-    clearFilters,
-    filters: { data = { byKind: [], byNature: [], byLocalization: [], byLevel: [] } }
-  } = useSearchData();
+  const { total, search: { isFetching } } = useSearchData();
+  const { currentFilters, handleFilterChange, clearFilters } = useUrl()
+  const { data = { byKind: [], byLevel: [] }, isLoading, isError } = useAggregateData('filters')
 
   const { byKind, byLevel } = data as OrganizationAggregations
 
   const [seeMoreNature, setSeeMoreNature] = useState(false)
-
 
   return (
     <>
@@ -33,6 +29,7 @@ export default function OrganizationFilters() {
         className="fr-tag filter-tag-button fr-icon-equalizer-line fr-icon fr-tag--icon-left"
         aria-controls="organization-filters"
         data-fr-opened="false"
+        disabled={isLoading || isError}
       >
         <FormattedMessage id={intl.formatMessage({ id: "search.top.filters-button-label" })} />
         {currentFilters.length ? <span className="filter-count-badge">{currentFilters.length}</span> : null}

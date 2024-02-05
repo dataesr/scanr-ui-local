@@ -1,5 +1,6 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 
+// import { Autocompletes } from './pages/components/Autocomplete';
 import { SideMenus } from './pages/components/SideMenus';
 import { FileUploads } from './pages/components/FileUploads';
 import { Headers } from './pages/components/Headers';
@@ -20,6 +21,7 @@ import { Buttons } from './pages/components/Buttons';
 import { Badges } from './pages/components/Badges';
 import { Side } from './layout/SideMenu';
 import { Layout } from './layout/Layout';
+// import { Listboxes } from './pages/components/Listbox';
 
 export default function Router() {
   return (
@@ -30,6 +32,8 @@ export default function Router() {
           <Route path="demarrage-rapide" element={<QuickStart />} />
         </Route>
         <Route path="/composants" element={<Side />}>
+          {/* <Route path="autocomplete" element={<Autocompletes />} /> */}
+          {/* <Route path="listbox" element={<Listboxes />} /> */}
           <Route path="ajout-de-fichier" element={<FileUploads />} />
           <Route path="badge" element={<Badges />} />
           <Route path="button" element={<Buttons />} />

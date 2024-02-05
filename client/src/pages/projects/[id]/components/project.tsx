@@ -1,10 +1,11 @@
 import cs from "classnames";
 import { Badge, BadgeGroup, Col, Container, Link, Notice, Row, Tab, Tabs, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
-import { Project } from "../../../../api/types/project";
+import { Project } from "../../../../types/project";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import Map from "../../../../components/map";
 import Truncate from "../../../../components/truncate";
+import LinkCard from "../../../../components/link-card";
 
 function calculateAccomplishment(startDate, endDate) {
   if (!startDate || !endDate) return null;
@@ -86,7 +87,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     className="fr-mr-1v" />
                 </div>)}
               </div>
-              <Truncate lines={4} className="fr-mt-2w">
+              <Truncate lines={6} className="fr-mt-2w">
                 <Text size="sm" className="fr-mb-0">
                   {data.description?.[locale] || data.description?.default || data.description?.fr || data.description?.en}
                 </Text>
@@ -302,22 +303,17 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 description=""
                 show={!!coordinator}
               >
-                <Col xs="12">
-                  <div style={{ display: "flex", borderRadius: "0.5rem" }} className={cs("fr-p-1w", { "fr-enlarge-link": !!coordinator?.structure?.id })}>
-                    <div className="structure-avatar fr-mr-2w fr-icon-building-line" />
-                    <div style={{ flexGrow: 1, display: "block" }}>
-                      <Text className="fr-m-0">
-                        {
-                          coordinator?.structure?.id ? (
-                            <Link href={`/organizations/${coordinator.structure?.id}`}>
-                              {coordinator?.structure?.label?.default}
-                            </Link>
-                          ) : coordinator?.label?.default?.split('__')[0]
-                        }
-                      </Text>
-                    </div>
-                  </div>
-                </Col>
+                <LinkCard type="organization" icon="building-line">
+                  <Text className="fr-m-0">
+                    {
+                      coordinator?.structure?.id ? (
+                        <Link href={`/organizations/${coordinator.structure?.id}`}>
+                          {coordinator?.structure?.label?.default}
+                        </Link>
+                      ) : coordinator?.label?.default?.split('__')[0]
+                    }
+                  </Text>
+                </LinkCard>
               </PageSection>
               <PageSection
                 title="Identifiants du projet"

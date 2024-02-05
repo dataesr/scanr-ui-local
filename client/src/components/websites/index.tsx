@@ -1,4 +1,4 @@
-import { OrganizationLinksData } from "../../api/types/organization";
+import { OrganizationLinksData } from "../../types/organization";
 
 export default function Websites({ data: links }: { data: OrganizationLinksData }) {
   if (!links?.length) return null;

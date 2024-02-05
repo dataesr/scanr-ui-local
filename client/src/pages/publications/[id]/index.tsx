@@ -2,12 +2,12 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { RawIntlProvider, createIntl } from "react-intl";
 import { Breadcrumb, Container, Link, useDSFRConfig } from "@dataesr/dsfr-plus";
-import { getPublicationById } from "../../../api/publications";
+import { getPublicationById } from "../../../api/publications/[id]";
 import These from "./components/these";
 import Publication from "./components/publication";
-import PublicationSkeleton from "./components/skeleton";
 import BaseSkeleton from "../../../components/skeleton/base-skeleton";
-import Error500 from "../../../components/errors/error-500";
+import PageSkeleton from "../../../components/skeleton/page-skeleton";
+import getLangFieldValue from "../../../utils/lang";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 
@@ -26,36 +26,35 @@ export default function Production() {
   const intl = createIntl({ locale, messages: messages[locale] })
   const { id } = useParams();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["publication", id],
     queryFn: () => getPublicationById(id),
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    throwOnError: true,
   });
 
-
-  if (isError) return <Error500 />;
+  const title = getLangFieldValue(locale)(data?.title);
 
   return (
     <RawIntlProvider value={intl}>
       <Container>
         <Breadcrumb>
-          <Link href="/">{intl.formatMessage({ id: "publications.breadcrumb.home" })}</Link>
+          <Link href="/">
+            {intl.formatMessage({ id: "publications.breadcrumb.home" })}
+          </Link>
           <Link href="/search/publications">
             {intl.formatMessage({ id: "publications.breadcrumb.search" })}
           </Link>
-          <Link current>
-            {data?.title?.default?.slice(0, 80)}
-            {data?.title?.default?.length > 80 ? " ..." : ""}
-            {!data?.title?.default && (
+          <Link>
+            {title?.slice(0, 80)}
+            {title?.length > 80 ? " ..." : ""}
+            {!title && (
               <BaseSkeleton width="180px" height="1rem" />
             )}
           </Link>
         </Breadcrumb>
         {isLoading || !data ? (
-          <PublicationSkeleton />
-        ) : data?.productionType === "thesis" ? (
+          <PageSkeleton />
+        ) : data?.type === "these" ? (
           <These data={data} />
         ) : (
           <Publication data={data} />

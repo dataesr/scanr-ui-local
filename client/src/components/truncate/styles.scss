@@ -1,9 +1,21 @@
 .truncate {
+  position: relative;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   max-height: var(--truncate-height, auto);
   overflow: hidden;
   transition: max-height 0.5s ease;
+}
+
+.truncate:not(.expanded)::after {
+  content: '';
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 50%;
+  bottom: 0px;
+  background: linear-gradient(180deg, rgba(139, 167, 32, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
 }
 
 .expanded {

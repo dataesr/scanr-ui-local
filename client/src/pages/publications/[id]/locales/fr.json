@@ -5,13 +5,17 @@
   "publications.section.fundings": "Financements",
   "publications.section.more-like-this": "Publications similaires",
   "publications.section.access": "Accéder à la publication",
+  "publications.section.access.download": "Télécharger la publication",
+  "publications.section.access.visit": "Voir sur le site de l'éditeur",
   "publications.section.identifiers": "Identifiants de la publication",
   "publications.section.identifiers-description": "Cliquez pour copier dans le press-papier",
   "publications.section.wikis": "Concepts wikipedia",
-  "publications.section.wikis-description": "Cliquez pour copier dans le press-papier",
   "publications.section.share": "Partager la page",
   "publications.header.summary": "Résumé",
   "publications.header.no-summary": "Aucun résumé disponible",
   "publications.header.oa.true": "Accès ouvert",
-  "publications.header.oa.false": "Accès fermé"
+  "publications.header.oa.false": "Accès fermé",
+  "publications.signals.author": "Identifier un auteur",
+  "publications.signals.fundings": "Ajouter un financement",
+  "publications.signals.bug": "Signaler une erreur"
 }

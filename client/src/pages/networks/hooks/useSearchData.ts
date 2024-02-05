@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom"
-import { filtersFromUrlToElasticQuery, parseSearchFiltersFromURL } from "../../search/utils/filters"
+import { filtersFromUrlToElasticQuery, parseSearchFiltersFromURL } from "../../../utils/filters"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { networkSearch } from "../../../api/network"

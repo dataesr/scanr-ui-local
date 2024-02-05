@@ -6,7 +6,7 @@ import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFR
 import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
 import { useEffect } from "react";
-import { MAX_RESULTS_BEFORE_USER_CLICK } from "../../config";
+import { MAX_RESULTS_BEFORE_USER_CLICK } from "../../config/app";
 import { useInView } from "react-intersection-observer";
 import PublicationAnalytics from "./components/publications/publication-analytics";
 import OrganizationItem from "./components/organizations/organization-item";
@@ -18,6 +18,7 @@ import OrganizationFilters from "./components/organizations/organization-filters
 import Error500 from "../../components/errors/error-500";
 import ProjectFilters from "./components/projects/projects-filters";
 import AuthorFilters from "./components/authors/author-filters";
+import useUrl from "./hooks/useUrl";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 const messages = Object.keys(modules).reduce((acc, key) => {
@@ -55,7 +56,8 @@ export default function Search() {
   const { locale } = useDSFRConfig();
   const intl = createIntl({ locale, messages: messages[locale] })
   const [ref, inView] = useInView();
-  const { api, search, currentQuery, total, handleQueryChange } = useSearchData();
+  const { api, currentQuery, handleQueryChange } = useUrl()
+  const { search, total } = useSearchData();
   const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search;
   const ItemComponent = API_MAPPING[api].item;
   const AnalyticsComponent = API_MAPPING[api].analytics;

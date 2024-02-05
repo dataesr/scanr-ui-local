@@ -3,11 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Text, Link, BadgeGroup, Badge, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { encode } from "../../../../utils/string";
 import { ItemProps } from "../../types";
-import { getOrganizationById } from "../../../../api/organizations";
-import { Project } from "../../../../api/types/project";
+import { getOrganizationById } from "../../../../api/organizations/[id]";
+import { LightProject } from "../../../../types/project";
 
 
-export default function ProjectItem({ data: project, highlight }: ItemProps<Project>) {
+export default function ProjectItem({ data: project, highlight }: ItemProps<LightProject>) {
   const queryClient = useQueryClient();
   const { locale } = useDSFRConfig()
 
@@ -18,6 +18,14 @@ export default function ProjectItem({ data: project, highlight }: ItemProps<Proj
       staleTime: Infinity,
     })
   }
+
+  const frenchParticipants = project?.participants
+    ?.filter((el) => el?.structure?.address?.find(({ country }) => country === 'France'));
+  console.log(frenchParticipants);
+
+  const shouldFilterParticipants = project?.participants?.length > 4;
+  const participants = shouldFilterParticipants ? frenchParticipants : project?.participants;
+
 
   return (
     <Fragment key={project.id}>
@@ -30,7 +38,9 @@ export default function ProjectItem({ data: project, highlight }: ItemProps<Proj
         </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {project?.participants?.map(({ structure }, k) => (
+          {shouldFilterParticipants && `${project.participants?.length} participants dont ${frenchParticipants?.length} français`}
+          {shouldFilterParticipants && <br />}
+          {participants?.map(({ structure }, k) => (
             <Fragment key={k}>
               {(structure && k > 0) ? ', ' : ''}
               {(structure?.label) ? <Link href={`/authors/${encode(structure.id)}`}>{structure.label[locale] || structure.label.default}</Link> : null}

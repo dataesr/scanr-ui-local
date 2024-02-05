@@ -1,7 +1,7 @@
 import { publicationTypeMapping } from "../utils/string"
-import { publicationsIndex, postHeaders } from "./config"
-import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "./types/network"
-import { PublicationAggregations } from "./types/publication"
+import { publicationsIndex, postHeaders } from "../config/api"
+import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../types/network"
+import { PublicationAggregations } from "../types/publication"
 import { aggToGraphology } from "./graph"
 
 const DEFAULT_SIZE = 2000

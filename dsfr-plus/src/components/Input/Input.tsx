@@ -14,7 +14,7 @@ type TextInputCss = {
 export type TextInputBaseProps = {
   className?: Argument;
   css?: TextInputCss;
-  disableAutoValidation: boolean;
+  disableAutoValidation?: boolean;
   message?: React.ReactNode;
   messageType?: 'error' | 'valid' | '' | null;
   label?: React.ReactNode;

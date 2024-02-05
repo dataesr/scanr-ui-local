@@ -4,7 +4,7 @@ import useSearchFilter from "../hooks/useSearchFilter"
 import Histogram from "../../../components/YearRangeSlider/histogram"
 import Modal from "../../../components/modal"
 import BaseSkeleton from "../../../components/skeleton/base-skeleton"
-import { PublicationAggregations } from "../../../api/types/publication"
+import { PublicationAggregations } from "../../../types/publication"
 
 export default function NetworkFilters() {
   const intl = useIntl()

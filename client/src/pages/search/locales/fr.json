@@ -25,10 +25,11 @@
   "search.publications.filters.by-type-description": "Sélectionnez un ou plusieurs types de publications",
   "search.publications.filters.filters-modal-title": "Filtres",
   "search.publications.filters.delete-all-filters": "Réinitialiser les filtres",
-  "search.publications.analytics.by-year-accordion-name": "Publications par année",
-  "search.publications.analytics.by-type-accordion-name": "Publications par type",
-  "search.publications.analytics.by-project-accordion-name": "Publications par type de financement",
-  "search.publications.analytics.by-author-accordion-name": "Top 10 des auteurs",
+  "search.publications.analytics.by-year.year-bars.name": "Publications",
+  "search.publications.analytics.by-year.title": "Publications par année",
+  "search.publications.analytics.by-type.title": "Publications par type",
+  "search.publications.analytics.by-project.title": "Publications par type de financement",
+  "search.publications.analytics.by-author.title": "Top 10 des auteurs",
   "search.results.pagination.next": "Afficher plus de résultats",
   "search.results.pagination.end": "Pas de résultats supplémentaires pour la recherche « {query} »"
 }

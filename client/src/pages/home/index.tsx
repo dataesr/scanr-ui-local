@@ -137,7 +137,7 @@ function ObjectsBanner() {
 function NetworksBanner() {
   const intl = useIntl();
   return (
-    <Container className="bg-organizations" fluid>
+    <Container fluid>
       <Container className="fr-py-8w">
         <Row>
           <Col xs="12" md="8">

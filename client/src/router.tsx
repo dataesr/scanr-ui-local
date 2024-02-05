@@ -12,6 +12,8 @@ import Error404 from './components/errors/error-404';
 import Organization from './pages/organizations/[id]';
 import Project from './pages/projects/[id]';
 import Networks from './pages/networks';
+import Suggest from './pages/suggest';
+import HEPartners from './pages/trouver-des-partenaires-pour-horizon-europe';
 
 
 function ScrollToTopOnLocationChange() {
@@ -40,6 +42,7 @@ export default function Router() {
           <Route path="/authors/:id" element={<Author />} />
           <Route path="/organizations/:id" element={<Organization />} />
           <Route path="/projects/:id" element={<Project />} />
+          <Route path="/suggest/:id" element={<Suggest />} />
           <Route path="/search">
             {/* <Route path="" element={<Navigate to="/search/organizations" replace />} /> */}
             <Route path="organizations" element={<Search />} />
@@ -49,6 +52,7 @@ export default function Router() {
             <Route path="patents" element={<h1 className="fr-mt-5w">Patents</h1>} />
           </Route>
           <Route path="/networks" element={<Networks />} />
+          <Route path="/trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
           <Route path="*" element={<Error404 />} />
         </Route>
       </Routes>

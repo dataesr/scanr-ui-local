@@ -1,65 +1,28 @@
-import { useLocation, useSearchParams } from "react-router-dom";
-import { filtersFromUrlToElasticQuery, parseSearchFiltersFromURL, stringifySearchFiltersForURL } from "../utils/filters";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getPublicationFilters, searchPublications } from "../../../api/publications";
-import { useCallback, useMemo } from "react";
-import { getAuthorsFilters, searchAuthors } from "../../../api/authors";
-import { Publication, PublicationAggregations } from "../../../api/types/publication";
-import { ElasticResult, SearchResponse } from "../../../api/types/commons";
-import { Author, AuthorsAggregations } from "../../../api/types/author";
-import { getOrganizationFilters, searchOrganizations } from "../../../api/organizations";
-import { getProjectFilters, searchProjects } from "../../../api/projects";
-import { Project, ProjectAggregations } from "../../../api/types/project";
-import { Organization, OrganizationAggregations } from "../../../api/types/organization";
+import { useMemo } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { searchPublications } from "../../../api/publications/search";
+import { searchAuthors } from "../../../api/authors/search";
+import { searchOrganizations } from "../../../api/organizations/search";
+import { searchProjects } from "../../../api/projects/search";
+import { InfiniteResponse, InfiniteResult } from "../../../types/commons";
+import { Author } from "../../../types/author";
+import { Organization } from "../../../types/organization";
+import { Project } from "../../../types/project";
+import { Publication } from "../../../types/publication";
+import useUrl from "./useUrl";
 
 const API_MAPPING = {
-  publications: {
-    search: searchPublications,
-    filter: getPublicationFilters,
-  },
-  authors: {
-    search: searchAuthors,
-    filter: getAuthorsFilters,
-  },
-  projects: {
-    search: searchProjects,
-    filter: getProjectFilters,
-  },
-  patents: {
-    search: searchPublications,
-    filter: getPublicationFilters,
-  },
-  organizations: {
-    search: searchOrganizations,
-    filter: getOrganizationFilters,
-  },
+  publications: searchPublications,
+  authors: searchAuthors,
+  projects: searchProjects,
+  organizations: searchOrganizations,
 }
 
-type Api = keyof typeof API_MAPPING;
 type ObjectModel = Publication | Author | Project | Organization;
-type AggregationsModel = PublicationAggregations | OrganizationAggregations | ProjectAggregations | AuthorsAggregations;
-type InfiniteResponse = SearchResponse<ObjectModel>
-type InfiniteResult = {
-  total: number,
-  results: ElasticResult<ObjectModel>[]
-}
 
 export default function useSearchData() {
-  const { pathname } = useLocation();
-  const api = pathname.split('/')?.[2]
-  const queryFn = API_MAPPING[api as Api]
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentQuery = searchParams.get('q') || "";
-  const currentFilters = parseSearchFiltersFromURL(searchParams.get('filters'));
-  const filters = filtersFromUrlToElasticQuery(searchParams.get('filters'));
-  const { data: dataFilters, isLoading: isLoadingFilters, isError: isErrorFilters } = useQuery<AggregationsModel, unknown, AggregationsModel>({
-    queryKey: [api, "filters", currentQuery],
-    queryFn: () => queryFn.filter(currentQuery),
-  });  
-  const { data: dataAnalytics, isLoading: isLoadingAnalytics, isError: isErrorAnalytics } = useQuery<AggregationsModel, unknown, AggregationsModel>({
-    queryKey: [api, "analytics", currentQuery, filters],
-    queryFn: () => queryFn.filter(currentQuery, filters),
-  });
+  const { api, currentQuery, filters } = useUrl();
+  const queryFn = API_MAPPING[api]
   const {
     data,
     error,
@@ -67,9 +30,9 @@ export default function useSearchData() {
     isFetching,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<InfiniteResponse, unknown, InfiniteResult>({
+  } = useInfiniteQuery<InfiniteResponse<ObjectModel>, unknown, InfiniteResult<ObjectModel>>({
     queryKey: [api, currentQuery, filters],
-    queryFn: ({ pageParam }) => queryFn.search({ cursor: pageParam, query: currentQuery, filters }),
+    queryFn: ({ pageParam }) => queryFn({ cursor: pageParam, query: currentQuery, filters }),
     getNextPageParam: (lastPage) => (lastPage?.data?.length === 10) ? lastPage.cursor : undefined,
     initialPageParam: undefined,
     select: (data) => ({
@@ -78,40 +41,9 @@ export default function useSearchData() {
     }),
   })
 
-  const handleFilterChange = useCallback((field, value, filterType = "terms") => {
-    const prev = currentFilters;
-    const types: Record<string, any>[] = prev.find((el) => el.field === field)?.value || [];
-    const nextTypes = types.includes(value) ? types.filter((el) => el !== value) : [...types, value];
-    let nextFilters: Record<string, unknown>[];
-    if (!nextTypes.length) {
-      nextFilters = prev.filter((el) => el.field !== field)
-    } else {
-      nextFilters = [...prev.filter((el) => el.field !== field), { field: field, value: nextTypes, type: filterType }]
-    }
-    
-    searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
-    setSearchParams(searchParams);
-  }, [currentFilters, searchParams, setSearchParams])
-
-  const handleQueryChange = useCallback((query) => {
-    setSearchParams({ q: query })
-  }, [setSearchParams])
-
-  const clearFilters = useCallback(() => {
-    setSearchParams({ q: currentQuery, filters: stringifySearchFiltersForURL([]) })
-  }, [setSearchParams, currentQuery])
-
   const values = useMemo(() => {
     return {
-      api,
-      handleQueryChange,
-      handleFilterChange,
-      clearFilters,
       total: data?.total,
-      currentQuery,
-      currentFilters,
-      filters: { data: dataFilters, isLoading: isLoadingFilters, isError: isErrorFilters},
-      analytics: { data: dataAnalytics, isLoading: isLoadingAnalytics, isError: isErrorAnalytics},
       search: {
         data: data?.results,
         error,
@@ -121,12 +53,6 @@ export default function useSearchData() {
         isFetching,
       }
     }
-  }, [
-    api, data, error, isFetchingNextPage, fetchNextPage, hasNextPage,
-    handleFilterChange, handleQueryChange, clearFilters,
-    currentFilters, isFetching, currentQuery, dataFilters, isLoadingFilters,
-    isErrorFilters, dataAnalytics, isLoadingAnalytics, isErrorAnalytics
-  ])
-
+  }, [data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching])
   return values
 }

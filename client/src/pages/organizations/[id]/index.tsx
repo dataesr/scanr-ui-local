@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Container, Link, useDSFRConfig } from "@dataesr/dsfr-plus";
-import OrganizationSkeleton from "./components/skeleton";
+import { Breadcrumb, Container, Link, Notice, useDSFRConfig } from "@dataesr/dsfr-plus";
+import PageSkeleton from "../../../components/skeleton/page-skeleton";
 import OrganizationPresentation from "./components/organization";
-import { getOrganizationById } from "../../../api/organizations";
+import { getOrganizationById } from "../../../api/organizations/[id]";
 import getLangFieldValue from "../../../utils/lang";
-import { FormattedMessage, RawIntlProvider, createIntl } from "react-intl";
+import { RawIntlProvider, createIntl } from "react-intl";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 
@@ -29,19 +29,24 @@ export default function Organization() {
   });
   return (
     <RawIntlProvider value={intl}>
+      {(data?.isFrench === false) && (
+        <Notice closeMode="disallow" type="warning">
+          {intl.formatMessage({ id: "organizations.notice.not-french" })}
+        </Notice>
+      )}
       <Container>
         <Breadcrumb>
           <Link href="/">
-            <FormattedMessage id="organizations.breadcrumb.home" />
+            {intl.formatMessage({ id: "organizations.breadcrumb.home" })}
           </Link>
           <Link href="/search/organizations">
-            <FormattedMessage id="organizations.breadcrumb.search" />
+            {intl.formatMessage({ id: "organizations.breadcrumb.search" })}
           </Link>
           <Link>
             {getLangFieldValue(locale)(data?.label)}
           </Link>
         </Breadcrumb>
-        {(isLoading || !data?.id) && <OrganizationSkeleton />}
+        {(isLoading || !data?.id) && <PageSkeleton />}
         {(data?.id) && <OrganizationPresentation data={data} />}
       </Container>
     </RawIntlProvider>

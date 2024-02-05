@@ -6,19 +6,16 @@ import useSearchData from "../../hooks/useSearchData";
 import Histogram from "../../../../components/YearRangeSlider/histogram";
 import Modal from "../../../../components/modal";
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton";
-import { PublicationAggregations } from "../../../../api/types/publication";
+import { PublicationAggregations } from "../../../../types/publication";
+import useAggregateData from "../../hooks/useAggregationData";
+import useUrl from "../../hooks/useUrl";
 
 
 export default function PublicationFilters() {
   const intl = useIntl()
-  const {
-    total,
-    search: { isFetching },
-    currentFilters,
-    handleFilterChange,
-    clearFilters,
-    filters: { data = { byYear: [], byType: [], byFunder: [] } }
-  } = useSearchData();
+  const { total, search: { isFetching } } = useSearchData();
+  const { currentFilters, handleFilterChange, clearFilters } = useUrl()
+  const { data = { byYear: [], byType: [], byFunder: [] }, isLoading, isError } = useAggregateData('filters')
 
   const { byYear, byType, byFunder } = data as PublicationAggregations
 
@@ -29,6 +26,7 @@ export default function PublicationFilters() {
         className="fr-tag filter-tag-button fr-icon-equalizer-line fr-icon fr-tag--icon-left"
         aria-controls="publication-filters"
         data-fr-opened="false"
+        disabled={isLoading || isError}
       >
         <FormattedMessage id={intl.formatMessage({ id: "search.top.filters-button-label" })} />
         {currentFilters.length ? <span className="filter-count-badge">{currentFilters.length}</span> : null}

@@ -1,6 +1,6 @@
 import { useIntl } from "react-intl";
-import { Col, Container, Row } from "@dataesr/dsfr-plus";
-import { Organization } from "../../../../api/types/organization";
+import { Button, ButtonGroup, Col, Container, Row } from "@dataesr/dsfr-plus";
+import { Organization } from "../../../../types/organization";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import OrganizationPublications from "./publications";
 import OrganizationProjects from "./projects";
@@ -13,7 +13,9 @@ import OrganizationLeaders from "./leaders";
 import { OrganizationNetworks, OrganizationNetworksBadges } from "./networks";
 import useScreenSize from "../../../../hooks/useScreenSize";
 import OrganizationHeader from "./header";
-import OrganizationIdentifiers from "./identifiers";
+import Identifiers from "../../../../components/identifiers";
+import MoreLikeThis from "../../../../components/more-like-this";
+import NetworksNotice from "../../../../components/networks-notice";
 
 const NETWORK_BADGES_CODES = [
   'carnot',
@@ -46,12 +48,14 @@ export default function OrganizationPresentation({ data }: { data: Organization 
             <Container fluid>
               <PageContent>
                 <PageSection
+                  size="hero"
                   icon="team-line"
                   title={intl.formatMessage({ id: "organizations.section.leaders.title" })}
                   show={!!data?.leaders?.length}>
                   <OrganizationLeaders data={data?.leaders} />
                 </PageSection>
                 <PageSection
+                  size="hero"
                   icon="git-branch-line"
                   title={intl.formatMessage({ id: "organizations.section.networks.title" })}
                   show={
@@ -166,65 +170,77 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
+                  {!!publications.publicationsCount && <NetworksNotice url="/networks" />}
+
                 </PageSection>
                 <PageSection
+                  size="hero"
                   icon="heart-pulse-line"
-                  title="organizations.section.activities.title"
+                  title={intl.formatMessage({ id: "organizations.section.activities.title" })}
                   show={!!(publications.publicationsCount || projects.projectsCount || patents.patentsCount)}
                 >
                   <OrganizationPublications data={publications} id={data.id} />
                   <OrganizationProjects data={projects} id={data.id} />
                   <OrganizationPatents data={patents} id={data.id} />
                 </PageSection>
-                <PageSection title="Data JSON" description="" show>
+                <PageSection
+                  size="hero"
+                  title={intl.formatMessage({ id: "organizations.section.more-like-this" })}
+                  icon="shopping-cart-2-line"
+                  show
+                >
+                  <MoreLikeThis id={data._id} api="organizations" />
+                </PageSection>
+                {/* <PageSection title="Data JSON" description="" show>
                   <div>
                     <pre>
                       {JSON.stringify(data || "", null, 2)}
                     </pre>
                   </div>
-                </PageSection>
+                </PageSection> */}
               </PageContent>
             </Container>
           </Col>
           <Col xs="12" md="4" xl="3" offsetXl="1">
             <PageContent>
               <PageSection
-                size="lg"
                 title={intl.formatMessage({ id: "organizations.section.localization.title" })}
                 show={!!data.address?.length}
               >
                 <OrganizationLocalizations data={data?.address} />
               </PageSection>
               <PageSection
-                size="lg"
                 title={intl.formatMessage({ id: "organizations.section.web.title" })}
                 show={!!data?.links?.length}
               >
                 <Websites data={data.links} />
               </PageSection>
               <PageSection
-                size="lg"
                 title={intl.formatMessage({ id: "organizations.section.social-medias.title" })}
                 show={!!data?.socialMedias?.length}
               >
                 <SocialMedias data={data?.socialMedias} />
               </PageSection>
               <PageSection
-                size="lg"
                 title={intl.formatMessage({ id: "organizations.section.identifiers.title" })}
                 description={intl.formatMessage({ id: "organizations.copy" })}
                 show={!!data?.externalIds?.length}
               >
-                <OrganizationIdentifiers data={data?.externalIds} />
+                <Identifiers data={data?.externalIds} />
               </PageSection>
               <PageSection
-                size="lg"
                 title={intl.formatMessage({ id: "organizations.section.share.title" })}
                 show
               >
                 <Share />
               </PageSection>
             </PageContent>
+            <hr className='fr-my-3w' />
+            <ButtonGroup>
+              <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+                Signaler une erreur
+              </Button>
+            </ButtonGroup>
           </Col>
         </Row >
       </Container >

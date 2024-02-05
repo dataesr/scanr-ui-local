@@ -1,31 +1,16 @@
+import { Fragment } from 'react';
 import './styles.module.scss';
 
-export default function SearchResultListSkeleton() {
+export default function SearchResultListSkeleton({ size = 8 }: { size?: number }) {
   return (
     <>
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
-      <hr />
-      <div className="skeleton-xs fr-mb-1v" />
-      <div className="skeleton fr-mb-2w" />
+      {[...Array(size).keys()].map((el) => (
+        <Fragment key={el}>
+          <div className="skeleton-xs fr-mb-1v" />
+          <div className="skeleton fr-mb-2w" />
+          <hr />
+        </Fragment>
+      ))}
     </>
   )
 }

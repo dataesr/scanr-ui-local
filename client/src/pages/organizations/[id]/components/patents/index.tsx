@@ -1,8 +1,8 @@
 import { useIntl } from "react-intl";
 import { Button, Row, Col, Text } from "@dataesr/dsfr-plus";
-import Histogram from "../../../../../components/YearRangeSlider/histogram";
-import { OrganizationPatentsData } from "../../../../../api/types/organization";
+import { OrganizationPatentsData } from "../../../../../types/organization";
 import useScreenSize from "../../../../../hooks/useScreenSize";
+import YearBars from "../../../../../components/year-bars";
 
 
 
@@ -39,7 +39,7 @@ export default function OrganizationPatents({ data: patents, id }: { data: Organ
     <>
       <div className="fr-mb-3w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ flexGrow: 1 }}>
-          <Text className="fr-m-0" bold>
+          <Text size="lg" className="fr-m-0" bold>
             {patents.patentsCount}
             {' '}
             {intl.formatMessage({ id: "organizations.patents.count" })}
@@ -50,9 +50,12 @@ export default function OrganizationPatents({ data: patents, id }: { data: Organ
         </Button>
       </div>
       <Row gutters>
-        <Col xs="4">
-          <fieldset id="publication-graph-selector" className="fr-segmented">
-            <div style={{ flexDirection: "column" }} className="fr-segmented__elements">
+        <Col xs="12">
+          <fieldset id="publication-graph-selector" className="fr-segmented fr-segmented--sm">
+            <legend className="fr-segmented__legend">
+              {intl.formatMessage({ id: "organizations.activity.fieldset.legend" })}
+            </legend>
+            <div className="fr-segmented__elements">
               <div className="fr-segmented__element">
                 <input checked type="radio" id="segmented-patents" />
                 <label className="fr-label" htmlFor="segmented-patents">
@@ -62,9 +65,13 @@ export default function OrganizationPatents({ data: patents, id }: { data: Organ
             </div>
           </fieldset>
         </Col>
-        <Col xs="8" className="fr-pb-6w">
-          <Text>{intl.formatMessage({ id: "organizations.patents.graph.year.label" })}</Text>
-          <Histogram data={patents.byYear.map((year) => year.count)} />
+        <Col xs="12" className="fr-pb-6w">
+          <YearBars
+            name={intl.formatMessage({ id: "organizations.patents.year-bars.name" })}
+            height="300px"
+            counts={patents.byYear.map((year) => year.count)}
+            years={patents.byYear.map((year) => year.label)}
+          />
         </Col>
       </Row>
       <hr />

@@ -1,12 +1,16 @@
-import { Row, Col, BadgeGroup, Link, Badge, Title, Text } from "@dataesr/dsfr-plus";
+import { Row, BadgeGroup, Link, Badge, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { publicationTypeMapping, encode } from "../../../../../utils/string";
 import { useIntl } from "react-intl";
+import Truncate from "../../../../../components/truncate";
+import getLangFieldValue from "../../../../../utils/lang";
 
 export default function PublicationsHeader({ data, authors, affiliations }) {
   const intl = useIntl();
+  const { locale } = useDSFRConfig();
+  const summary = getLangFieldValue(locale)(data?.summary);
   return (
-    <Row gutters>
-      <Col xs="12">
+    <section>
+      <div>
         <BadgeGroup>
           <Badge color="purple-glycine" noIcon>{publicationTypeMapping[data.type]}</Badge>
           <Badge color={data.isOa ? 'green-emeraude' : 'pink-macaron'} icon={data.isOa ? 'lock-unlock-line' : 'lock-line'}>
@@ -41,15 +45,13 @@ export default function PublicationsHeader({ data, authors, affiliations }) {
           {data?.year && `${data.year}`}
           {data?.source?.publisher && `, ${data.source.publisher}`}
         </Text>
-
-      </Col>
-      <Col xs="12">
-        <Text bold size="lead">{intl.formatMessage({ id: "publications.header.summary" })}</Text>
-        {(data?.summary?.default || data?.summary?.fr || data?.summary?.en)
-          ? <Text size="sm">{data?.summary.default || data?.summary.fr || data?.summary.en}</Text>
-          : <Text size="sm"><i>{intl.formatMessage({ id: "publications.header.no-summary" })}</i></Text>
-        }
-      </Col>
-    </Row>
+      </div>
+      {summary && (<Row>
+        <Text className="fr-mt-3w fr-mb-0" bold>{intl.formatMessage({ id: "publications.header.summary" })}</Text>
+        <Truncate lines={6} className="fr-mt-2w">
+          <Text className="fr-m-0" size="sm">{summary}</Text>
+        </Truncate>
+      </Row>)}
+    </section>
   )
 }
