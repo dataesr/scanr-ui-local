@@ -1,7 +1,13 @@
-import React from 'react';
-import { Container, Link, Logo } from '@dataesr/dsfr-plus';
+import React from "react";
+import { Container, Link, Logo } from "@dataesr/dsfr-plus";
 
-export function Footer({ children, fluid = false }: { children?: React.ReactNode, fluid?: boolean }) {
+export function Footer({
+  children,
+  fluid = false,
+}: {
+  children?: React.ReactNode;
+  fluid?: boolean;
+}) {
   return (
     <footer className="fr-footer fr-mt-8w" role="contentinfo" id="footer">
       <div className="fr-footer__top">
@@ -11,35 +17,19 @@ export function Footer({ children, fluid = false }: { children?: React.ReactNode
               <h3 className="fr-footer__top-cat">Aide</h3>
               <ul className="fr-footer__top-list">
                 <li>
-                  <Link className="fr-footer__top-link" href="#">FAQ</Link>
+                  <Link className="fr-footer__top-link" href="/about/FAQ">
+                    FAQ
+                  </Link>
                 </li>
                 <li>
-                  <Link className="fr-footer__top-link" href="#">Glossaire</Link>
+                  <Link className="fr-footer__top-link" href="#">
+                    Glossaire
+                  </Link>
                 </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
                 <li>
-                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
-                </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
-                </li>
-
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                  <Link className="fr-footer__top-link" href="/about/team">
+                    L'équipe
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -47,7 +37,9 @@ export function Footer({ children, fluid = false }: { children?: React.ReactNode
               <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
               <ul className="fr-footer__top-list">
                 <li>
-                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                  <Link className="fr-footer__top-link" href="#">
+                    Lien de navigation
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -55,45 +47,109 @@ export function Footer({ children, fluid = false }: { children?: React.ReactNode
               <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
               <ul className="fr-footer__top-list">
                 <li>
-                  <Link className="fr-footer__top-link" href="#">Lien de navigation</Link>
+                  <Link className="fr-footer__top-link" href="#">
+                    Lien de navigation
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">
+                    Lien de navigation
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">
+                    Lien de navigation
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
+              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
+              <ul className="fr-footer__top-list">
+                <li>
+                  <Link className="fr-footer__top-link" href="#">
+                    Lien de navigation
+                  </Link>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <Container fluid={fluid}>
-        {children}
-      </Container>
+      <Container fluid={fluid}>{children}</Container>
     </footer>
-  )
+  );
 }
 
-export function FooterBottom({ children, copy }: { children?: React.ReactNode, copy?: React.ReactNode }) {
+export function FooterBottom({
+  children,
+  copy,
+}: {
+  children?: React.ReactNode;
+  copy?: React.ReactNode;
+}) {
   const childs = React.Children.toArray(children);
   return (
     <div className="fr-footer__bottom">
       <ul className="fr-footer__bottom-list">
-        {childs.map((child, i) => <li key={i} className="fr-footer__bottom-item">{child}</li>)}
+        {childs.map((child, i) => (
+          <li key={i} className="fr-footer__bottom-item">
+            {child}
+          </li>
+        ))}
       </ul>
-      {copy ? <div className="fr-footer__bottom-copy"><p>{copy}</p></div> : null}
+      {copy ? (
+        <div className="fr-footer__bottom-copy">
+          <p>{copy}</p>
+        </div>
+      ) : null}
     </div>
-  )
+  );
 }
 
-export function FooterBody({ children, description }: { children?: React.ReactNode, description?: React.ReactNode }) {
-  const links = React.Children.toArray(children).filter((child) => (React.isValidElement(child)) && child.type === Link);
-  const logo = React.Children.toArray(children).filter((child) => (React.isValidElement(child)) && child.type === Logo)?.[0];
+export function FooterBody({
+  children,
+  description,
+}: {
+  children?: React.ReactNode;
+  description?: React.ReactNode;
+}) {
+  const links = React.Children.toArray(children).filter(
+    (child) => React.isValidElement(child) && child.type === Link
+  );
+  const logo = React.Children.toArray(children).filter(
+    (child) => React.isValidElement(child) && child.type === Logo
+  )?.[0];
 
   return (
     <div className="fr-footer__body">
-      {logo ? <div className="fr-footer__brand fr-enlarge-link">{logo}</div> : null}
+      {logo ? (
+        <div className="fr-footer__brand fr-enlarge-link">{logo}</div>
+      ) : null}
       <div className="fr-footer__content">
-        {description ? <p className="fr-footer__content-desc">{description}</p> : null}
-        {links.length ? (<ul className="fr-footer__content-list">
-          {links.map((link, i) => <li key={i} className="fr-footer__content-item">{link}</li>)}
-        </ul>) : null}
+        {description ? (
+          <p className="fr-footer__content-desc">{description}</p>
+        ) : null}
+        {links.length ? (
+          <ul className="fr-footer__content-list">
+            {links.map((link, i) => (
+              <li key={i} className="fr-footer__content-item">
+                {link}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </div>
-  )
+  );
 }
