@@ -9,7 +9,7 @@ import {
   Title,
   AccordionGroup,
 } from "@dataesr/dsfr-plus";
-import { FormattedMessage, IntlProvider, createIntl } from "react-intl";
+import { IntlProvider, createIntl } from "react-intl";
 import { questions } from "./questions";
 
 const modules = import.meta.glob("./locales/*.json", {
@@ -23,7 +23,6 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   }
   return acc;
 }, {});
-console.log(messages);
 
 export default function FAQ() {
   const { locale } = useDSFRConfig();
@@ -82,7 +81,6 @@ export default function FAQ() {
           <Link href="/">Accueil</Link>
           <Link>
             {intl.formatMessage({ id: "app.faq.breadcrumb.current" })}
-            <FormattedMessage id="app.faq.breadcrumb.current" />
           </Link>
         </Breadcrumb>
         <Row>

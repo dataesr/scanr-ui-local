@@ -1,0 +1,9 @@
+{
+  "app.resources.breadcrumb.current": "Ressources",
+  "app.resources.ref": "RÉFÉRENTIELS",
+  "app.resources.source": "SOURCES",
+  "app.resources.indirect.source": "SOURCES INDIRECTES (via le Baromètre de la Science Ouverte)",
+  "app.resources.tools": "OUTILS",
+  "app.resources.contributors": "ONT CONTRIBUÉ À SCANR",
+  "app.resources.intervenants.contributors": "ONT CONTRIBUÉ AU REPÉRAGE DE LEURS PROPRES PARTICIPANTS DES PROJETS H2020"
+}

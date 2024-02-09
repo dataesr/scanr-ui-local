@@ -31,14 +31,37 @@ export function Footer({
                     L'équipe
                   </Link>
                 </li>
+                <li>
+                  <Link className="fr-footer__top-link" href="/about/resources">
+                    Sources de données
+                  </Link>
+                </li>
+                <li>
+                  <Link className="fr-footer__top-link" href="/about/tutorial">
+                    Tutoriel
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
               <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
               <ul className="fr-footer__top-list">
                 <li>
-                  <Link className="fr-footer__top-link" href="#">
-                    Lien de navigation
+                  <Link
+                    className="fr-footer__top-link"
+                    href="https://github.com/dataesr/scanr"
+                    target="_blank"
+                  >
+                    GitHub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="fr-footer__top-link"
+                    href="about/glossary"
+                    target="_blank"
+                  >
+                    Glossaire
                   </Link>
                 </li>
               </ul>

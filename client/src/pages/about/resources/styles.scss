@@ -1,0 +1,24 @@
+.centered-col {
+  text-align: center;
+}
+
+.centered-col img {
+  width: 50%;
+  height: 50%;
+}
+
+.solo-centered-col {
+  text-align: center;
+}
+
+.solo-centered-col img {
+  width: 100%;
+  height: 50%;
+}
+
+.bordered-row {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
