@@ -171,7 +171,6 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     icon="links-fill"
                   />
                   {!!publications.publicationsCount && <NetworksNotice url="/networks" />}
-
                 </PageSection>
                 <PageSection
                   size="hero"
@@ -234,13 +233,17 @@ export default function OrganizationPresentation({ data }: { data: Organization 
               >
                 <Share />
               </PageSection>
+              <PageSection
+                title={intl.formatMessage({ id: "organizations.section.contribute.title" })}
+                show
+              >
+                <ButtonGroup>
+                  <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+                    {intl.formatMessage({ id: "organizations.section.contribute.button-label" })}
+                  </Button>
+                </ButtonGroup>
+              </PageSection>
             </PageContent>
-            <hr className='fr-my-3w' />
-            <ButtonGroup>
-              <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
-                Signaler une erreur
-              </Button>
-            </ButtonGroup>
           </Col>
         </Row >
       </Container >

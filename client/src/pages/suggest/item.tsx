@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { BadgeGroup, Badge, Text, Link, ButtonGroup, Button } from "@dataesr/dsfr-plus";
 import { publicationTypeMapping, encode } from "../../utils/string";
-import { Publication } from "../../types/publication";
+import { LightPublication } from "../../types/publication";
 import { useIntl } from "react-intl";
 
 export type AddItemProps<T> = {
@@ -15,7 +15,7 @@ export type RemoveItemProps<T> = {
   removeItem?: (item: T) => void;
 }
 
-export function SuggestionAddItem({ data: publication, highlight, addItem, disabled }: AddItemProps<Publication>) {
+export function SuggestionAddItem({ data: publication, highlight, addItem, disabled }: AddItemProps<LightPublication>) {
   const intl = useIntl();
   return (
     <div className="result-item" key={publication.id}>
@@ -75,7 +75,7 @@ export function SuggestionAddItem({ data: publication, highlight, addItem, disab
     </div>
   )
 }
-export function SuggestionRemoveItem({ data: publication, removeItem }: RemoveItemProps<Publication>) {
+export function SuggestionRemoveItem({ data: publication, removeItem }: RemoveItemProps<LightPublication>) {
   const intl = useIntl();
   return (
     <div>

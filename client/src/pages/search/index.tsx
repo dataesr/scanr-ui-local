@@ -2,7 +2,7 @@ import PublicationItem from "./components/publications/publication-item";
 import AuthorItem from "./components/authors/author-item";
 import SearchResultListSkeleton from "../../components/skeleton/search-result-list-skeleton";
 import useSearchData from "./hooks/useSearchData";
-import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
+import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFRConfig, MenuButton, MenuItem, MenuSection } from "@dataesr/dsfr-plus";
 import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
 import { useEffect } from "react";
@@ -78,6 +78,25 @@ export default function Search() {
     return <Error500 />
   }
 
+  const openWindows = [
+    {
+      name: 'Left Panel',
+      id: 'left',
+      children: [
+        { id: 1, name: 'Final Copy (1)' }
+      ]
+    },
+    {
+      name: 'Right Panel',
+      id: 'right',
+      children: [
+        { id: 2, name: 'index.ts' },
+        { id: 3, name: 'package.json' },
+        { id: 4, name: 'license.txt' }
+      ]
+    }
+  ];
+
   return (
     <RawIntlProvider value={intl}>
       <Container className={`bg-${api}`} fluid>
@@ -101,6 +120,15 @@ export default function Search() {
               <FilterComponent />
             </Col>
           </Row>
+          {/* <Row>
+            <MenuButton label="Filtres" items={openWindows}>
+              {item => (
+                <MenuSection items={item.children} title={item.name}>
+                  {item => <MenuItem key={item.id}>{item.name}</MenuItem>}
+                </MenuSection>
+              )}
+            </MenuButton>
+          </Row> */}
           <Container fluid className="fr-py-3w">
             {(total && total === 10000) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
               {intl.formatMessage({ id: "search.top.result-more-than" })}

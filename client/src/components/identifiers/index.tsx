@@ -1,4 +1,4 @@
-import { ExternalIdsData } from "../../types/organization";
+import { ExternalIdsData } from "../../types/commons";
 import CopyBadgeButton from "../copy/copy-badge-button";
 
 export default function Identifiers({ data: externalIds }: { data: ExternalIdsData[] }) {

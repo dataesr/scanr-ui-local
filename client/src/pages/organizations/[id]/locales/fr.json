@@ -50,5 +50,7 @@
   "organizations.publications.nav.authors": "Top 10 des authors",
   "organizations.publications.year-bars.name": "Publications",
   "organizations.networks.since": "depuis le",
-  "organizations.section.more-like-this": "Structures similaires"
+  "organizations.section.more-like-this": "Structures similaires",
+  "organizations.section.contribute.title": "Contribuer",
+  "organizations.section.contribute.button-label": "Signaler une erreur"
 }

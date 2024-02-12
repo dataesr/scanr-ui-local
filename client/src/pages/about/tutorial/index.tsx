@@ -27,7 +27,7 @@ export default function Tutorial() {
   if (!messages) return null;
 
   return (
-    <IntlProvider messages={messages} locale="fr" defaultLocale="fr">
+    <IntlProvider messages={messages} locale={locale} defaultLocale="fr">
       <Container className="bg-grey" fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
@@ -63,7 +63,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>
         <Row horizontalAlign="center" className="fr-mt-5w">
@@ -80,7 +80,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>
         <Row horizontalAlign="center" className="fr-mt-5w">
@@ -97,7 +97,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>
         <Row horizontalAlign="center" className="fr-mt-5w">
@@ -114,7 +114,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>{" "}
         <Row horizontalAlign="center" className="fr-mt-5w">
@@ -131,7 +131,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>
         <Row horizontalAlign="center" className="fr-mt-5w">
@@ -148,7 +148,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>
         <Row horizontalAlign="center" className="fr-mt-5w">
@@ -165,7 +165,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            ></iframe>
+            />
           </Col>
         </Row>
       </Container>
