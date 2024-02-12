@@ -162,18 +162,22 @@ export default function Team() {
       locale={locale}
       defaultLocale="fr"
     >
+      <Container className="bg-grey" fluid>
+        <Container>
+          <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
+            <Link href="/">Accueil</Link>
+            <Link>
+              <FormattedMessage id="app.team.breadcrumb" values={formating} />
+            </Link>
+          </Breadcrumb>
+          <Row className="fr-mb-4w">
+            <Title as="h1" look="h3">
+              <FormattedMessage id="app.team.h1" values={formating} />
+            </Title>
+          </Row>
+        </Container>
+      </Container>
       <Container>
-        <Breadcrumb>
-          <Link href="/">Accueil</Link>
-          <Link>
-            <FormattedMessage id="app.team.breadcrumb" values={formating} />
-          </Link>
-        </Breadcrumb>
-        <Row>
-          <Title as="h1" look="h3">
-            <FormattedMessage id="app.team.h1" values={formating} />
-          </Title>
-        </Row>
         <Row gutters>
           <Col xs="12" md="10" lg="9" xl="10" className="fr-mb-2w">
             <FormattedMessage id="app.team.project" values={formating} />

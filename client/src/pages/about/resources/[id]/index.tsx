@@ -34,44 +34,44 @@ export default function ResourcesInformations() {
 
   return (
     <IntlProvider messages={messages} locale="fr" defaultLocale="fr">
+      <Container className="bg-grey" fluid>
+        <Container>
+          <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
+            <Link href="/">Accueil</Link>
+            <span> / </span>
+            <Link href="/about/resources">Ressources</Link>
+            <span> / </span>
+            <Link>
+              {intl.formatMessage({
+                id: `app.resourcesID.${id}.breadcrumb.current`,
+              })}
+            </Link>
+          </Breadcrumb>
+          <Row className="fr-mb-4w">
+            <Col>
+              <Title as="h3" className="fr-mb-1w">
+                {intl.formatMessage({ id: `app.resourcesID.${id}.title` })}
+              </Title>
+            </Col>
+          </Row>
+        </Container>
+      </Container>
       <Container>
-        <Breadcrumb>
-          <Link href="/" style={{ color: "#0078A8" }}>
-            Accueil
-          </Link>
-          <span style={{ color: "#0078A8" }}> / </span>
-          <Link href="/about/resources" style={{ color: "#0078A8" }}>
-            Ressources
-          </Link>
-          <span style={{ color: "#0078A8" }}> / </span>
-          <Link>
-            {intl.formatMessage({
-              id: `app.resourcesID.${id}.breadcrumb.current`,
-            })}
-          </Link>
-        </Breadcrumb>
-        <Row>
-          <Col>
-            <Title as="h3" className="fr-mb-1w" style={{ color: "#0078A8" }}>
-              {intl.formatMessage({ id: `app.resourcesID.${id}.title` })}
-            </Title>
-          </Col>
-        </Row>
         <Row gutters>
           <Col xs="12" md="8">
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: "app.resourcesID.role" })}
             </Title>
             <p style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: `app.resourcesID.${id}.role` })}
             </p>
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: `app.resourcesID.description` })}
             </Title>
             <p style={{ marginBottom: "2rem" }}>
               {intl.formatMessage({ id: `app.resourcesID.${id}.description` })}
             </p>
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: "app.resourcesID.productor" })}
             </Title>
             <p style={{ marginBottom: "1rem" }}>
@@ -87,7 +87,7 @@ export default function ResourcesInformations() {
                 </Link>
               </span>
             </p>
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: "app.resourcesID.frequency" })}
             </Title>
             <p style={{ marginBottom: "2rem" }}>
@@ -97,7 +97,7 @@ export default function ResourcesInformations() {
             </p>
           </Col>
           <Col xs="12" md="4">
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: "app.resourcesID.usage" })}
             </Title>
             <p style={{ marginBottom: "1rem" }}>
@@ -106,13 +106,13 @@ export default function ResourcesInformations() {
             <p style={{ marginBottom: "2rem" }}>
               {intl.formatMessage({ id: `app.resourcesID.${id}.usage2` })}
             </p>
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: "app.resourcesID.perimeter" })}
             </Title>
             <p style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: `app.resourcesID.${id}.perimeter` })}
             </p>
-            <Title as="h4" style={{ color: "#0078A8", marginBottom: "1rem" }}>
+            <Title as="h4" style={{ marginBottom: "1rem" }}>
               {intl.formatMessage({ id: "app.resourcesID.retreatment" })}
             </Title>
             <p style={{ marginBottom: "2rem" }}>
