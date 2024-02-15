@@ -21,6 +21,10 @@
   // }
 }
 
+.no-shadow {
+  box-shadow: none !important;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -65,4 +69,39 @@
 .fr-tag[class*="fr-icon-"]::before {
   --icon-size: 1.25rem !important;
   margin-right: .5rem !important;
+}
+
+.highcharts-background {
+  fill: var(--background-default-grey);
+}
+
+.highcharts-root {
+  font-family: var(--font-family) !important;
+}
+
+.highcharts-xaxis-labels text,
+.highcharts-yaxis-labels text {
+  fill: var(--text-default-grey) !important;
+}
+
+.highcharts-label text {
+  fill: var(--text-default-grey) !important;
+}
+
+.highcharts-text-outline {
+  stroke-width: 0 !important;
+}
+
+.highcharts-point {
+  stroke-width: 0 !important;
+}
+
+.highcharts-legend-item text {
+  fill: var(--text-default-grey) !important;
+}
+
+.highcharts-title,
+.highcharts-subtitle {
+  fill: var(--text-default-grey) !important;
+  font-family: var(--font-family) !important;
 }

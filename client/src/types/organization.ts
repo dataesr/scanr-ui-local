@@ -89,6 +89,8 @@ export type OrganizationAggregations = {
   byKind: Aggregation[],
   byLocalization: Aggregation[],
   byLevel: Aggregation[],
+  byFundings: Aggregation[],
+  byTags: Aggregation[],
 }
 
 export type LightOrganization = {

@@ -13,7 +13,7 @@ export async function getOrganizationById(id: string): Promise<Organization> {
         filter: [{term: { "id.keyword": id }}]
       }
     },
-  }
+  }  
   const structureQuery = fetch(`${organizationsIndex}/_search`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
     .then(r => r.json())
   const publicationsQuery = getStructurePublicationsById(id)

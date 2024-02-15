@@ -1,4 +1,4 @@
-import cs from 'classnames';
+import cn from 'classnames';
 import './styles.scss';
 
 
@@ -10,8 +10,8 @@ export type LinkCardProps = {
 }
 
 export default function LinkCard({ children, type, prefetch, icon }: LinkCardProps) {
-  const css = cs("link-card", `link-card--${type}`, "fr-p-1w");
-  const cssInner = cs(`avatar avatar--${type}`, "fr-mr-2w", { [`fr-icon-${icon}`]: icon });
+  const css = cn("link-card", `link-card--${type}`, "fr-p-1w");
+  const cssInner = cn(`avatar avatar--${type}`, "fr-mr-2w", { [`fr-icon-${icon}`]: icon });
   return (
     <div onMouseEnter={prefetch} className={css}>
       <div className={cssInner} />

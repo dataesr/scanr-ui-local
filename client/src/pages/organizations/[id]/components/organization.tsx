@@ -190,13 +190,13 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                 >
                   <MoreLikeThis id={data._id} api="organizations" />
                 </PageSection>
-                {/* <PageSection title="Data JSON" description="" show>
+                <PageSection title="Data JSON" description="" show>
                   <div>
                     <pre>
                       {JSON.stringify(data || "", null, 2)}
                     </pre>
                   </div>
-                </PageSection> */}
+                </PageSection>
               </PageContent>
             </Container>
           </Col>

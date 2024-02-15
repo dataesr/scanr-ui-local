@@ -2,7 +2,7 @@ import PublicationItem from "./components/publications/publication-item";
 import AuthorItem from "./components/authors/author-item";
 import SearchResultListSkeleton from "../../components/skeleton/search-result-list-skeleton";
 import useSearchData from "./hooks/useSearchData";
-import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFRConfig, MenuButton, MenuItem, MenuSection } from "@dataesr/dsfr-plus";
+import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
 import { useEffect } from "react";
@@ -19,6 +19,10 @@ import Error500 from "../../components/errors/error-500";
 import ProjectFilters from "./components/projects/projects-filters";
 import AuthorFilters from "./components/authors/author-filters";
 import useUrl from "./hooks/useUrl";
+import OrganizationsAnalytics from "./components/organizations/organization-analytics";
+import OrganizationsCurrentFilters from "./components/organizations/current-filters";
+import OrganizationsExports from "./components/organizations/exports";
+import useScreenSize from "../../hooks/useScreenSize";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 const messages = Object.keys(modules).reduce((acc, key) => {
@@ -34,34 +38,48 @@ const API_MAPPING = {
     item: PublicationItem,
     analytics: PublicationAnalytics,
     filters: PublicationFilters,
+    currentFilters: () => <></>,
+    exports: () => <></>,
   },
   authors: {
     item: AuthorItem,
     analytics: () => <></>,
     filters: AuthorFilters,
+    currentFilters: () => <></>,
+    exports: () => <></>,
   },
   organizations: {
     item: OrganizationItem,
-    analytics: () => <></>,
+    analytics: OrganizationsAnalytics,
     filters: OrganizationFilters,
+    currentFilters: OrganizationsCurrentFilters,
+    exports: OrganizationsExports,
   },
   projects: {
     item: ProjectItem,
     analytics: () => <></>,
     filters: ProjectFilters,
+    currentFilters: () => <></>,
+    exports: () => <></>,
   }
 }
 
 export default function Search() {
   const { locale } = useDSFRConfig();
+  const { screen } = useScreenSize();
   const intl = createIntl({ locale, messages: messages[locale] })
   const [ref, inView] = useInView();
   const { api, currentQuery, handleQueryChange } = useUrl()
   const { search, total } = useSearchData();
   const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search;
+
+  const isMobile = screen === 'sm' || screen === 'xs';
+
   const ItemComponent = API_MAPPING[api].item;
   const AnalyticsComponent = API_MAPPING[api].analytics;
   const FilterComponent = API_MAPPING[api].filters;
+  const CurrentFiltersComponent = API_MAPPING[api].currentFilters;
+  const ExportsComponent = API_MAPPING[api].exports;
 
 
   const shouldClickToLoad = data?.length
@@ -77,25 +95,6 @@ export default function Search() {
   if (error) {
     return <Error500 />
   }
-
-  const openWindows = [
-    {
-      name: 'Left Panel',
-      id: 'left',
-      children: [
-        { id: 1, name: 'Final Copy (1)' }
-      ]
-    },
-    {
-      name: 'Right Panel',
-      id: 'right',
-      children: [
-        { id: 2, name: 'index.ts' },
-        { id: 3, name: 'package.json' },
-        { id: 4, name: 'license.txt' }
-      ]
-    }
-  ];
 
   return (
     <RawIntlProvider value={intl}>
@@ -120,21 +119,13 @@ export default function Search() {
               <FilterComponent />
             </Col>
           </Row>
-          {/* <Row>
-            <MenuButton label="Filtres" items={openWindows}>
-              {item => (
-                <MenuSection items={item.children} title={item.name}>
-                  {item => <MenuItem key={item.id}>{item.name}</MenuItem>}
-                </MenuSection>
-              )}
-            </MenuButton>
-          </Row> */}
-          <Container fluid className="fr-py-3w">
-            {(total && total === 10000) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
+          {isMobile && <CurrentFiltersComponent />}
+          <Container fluid className={isMobile ? "fr-py-1w" : "fr-py-3w"}>
+            {(total && total === 10000) ? (<Text as="span" size={isMobile ? "sm" : "lg"} bold className="fr-mb-1w">
               {intl.formatMessage({ id: "search.top.result-more-than" })}
             </Text>) : null
             }
-            {(total && total > 0) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
+            {(total && total > 0) ? (<Text as="span" size={isMobile ? "sm" : "lg"} bold className="fr-mb-1w">
               {intl.formatMessage(
                 { id: `search.top.${api}.result` },
                 { count: total, query: currentQuery }
@@ -191,7 +182,13 @@ export default function Search() {
             }
           </Col>
           <Col xs="12" lg="4" offsetLg="1">
-            <AnalyticsComponent />
+            <Container fluid>
+              {!isMobile && <CurrentFiltersComponent />}
+              <hr />
+              <ExportsComponent />
+              <hr />
+              <AnalyticsComponent />
+            </Container>
           </Col>
         </Row>
       </Container>

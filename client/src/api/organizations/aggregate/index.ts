@@ -40,7 +40,20 @@ export async function aggregateOrganizations(
       },
       byLocalization: {
         terms: {
-          field: "address.localisationSuggestions.keyword",
+          field: "address.urbanUnitLabel.keyword",
+          size: 10
+        },
+      },
+      byFundings: {
+        terms: {
+          field: "projects.type.keyword",
+          size: 100
+        },
+      },
+      byTags: {
+        terms: {
+          field: "badges.label.fr.keyword",
+          size: 100
         },
       },
     }
@@ -78,6 +91,22 @@ export async function aggregateOrganizations(
     }
   }).filter(el => el) || [];
 
+  const byFundings = data?.byFundings?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+    }
+  }).filter(el => el) || [];
+
+  const byTags = data?.byTags?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+    }
+  }).filter(el => el) || [];
+
   const byLocalization = data?.byLocalization?.buckets?.map((element) => {
     return {
       value: element.key,
@@ -85,6 +114,9 @@ export async function aggregateOrganizations(
       count: element.doc_count,
     }
   }).filter(el => el) || [];
+  console.log("byLocalization", byLocalization);
   
-  return { byKind, byNature, byLevel, byLocalization }
+  
+  
+  return { byKind, byNature, byLevel, byLocalization, byFundings, byTags}
 }

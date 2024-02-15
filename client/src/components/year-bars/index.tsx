@@ -6,19 +6,14 @@ export type YearBarsProps = {
   counts: number[];
   height?: string;
   name: string;
+  orient?: 'bar' | 'column';
 };
 
-export default function YearBars({ years, counts, name, height = '150px' }: YearBarsProps) {
+export default function YearBars({ years, counts, name, height = '150px', orient = 'column' }: YearBarsProps) {
   const options = {
     chart: {
-      type: 'column',
-      plotBackgroundColor: null,
-      plotBorderWidth: 0,
-      plotShadow: false,
+      type: orient,
       height,
-    },
-    credits: {
-      enabled: false
     },
     title: {
       text: null,

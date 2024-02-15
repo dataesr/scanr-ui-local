@@ -21,7 +21,7 @@ export default function OrganizationItem({ data: organization, highlight }: Item
     <Fragment key={organization.id}>
       <div className="result-item" key={organization.id}>
         <BadgeGroup className="structure-badge-list fr-mt-1v">
-          {organization.kind?.map((k) => <Badge key={k} size="sm" color="yellow-tournesol" noIcon>{k}</Badge>)}
+          {organization?.kind?.length ? <Badge size="sm" color="yellow-tournesol" noIcon>{organization.kind?.join(' / ')}</Badge> : null}
           {organization.level && <Badge size="sm" color='yellow-tournesol'>{organization.level?.match(/\((.*?)\)/)?.[1] || organization.level}</Badge>}
         </BadgeGroup>
         <span onMouseEnter={() => prefetch(organization.id)}><Link href={`/organizations/${encode(organization.id)}`} className="fr-link">
