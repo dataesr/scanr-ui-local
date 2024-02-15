@@ -17,6 +17,7 @@ import HEPartners from "./pages/trouver-des-partenaires-pour-horizon-europe";
 import Resources from "./pages/about/resources";
 import ResourcesInformations from "./pages/about/resources/[id]";
 import Tutorial from "./pages/about/tutorial";
+import Glossary from "./pages/about/glossary";
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -45,7 +46,8 @@ export default function Router() {
             path="/about/resources/:id"
             element={<ResourcesInformations />}
           />
-          <Route path="/about/tutorial" element={<Tutorial />} />
+          {/* <Route path="/about/tutorial" element={<Tutorial />} /> */}
+          <Route path="/about/glossary" element={<Glossary />} />
           <Route path="/publications/:id" element={<Publication />} />
           <Route path="/authors/:id" element={<Author />} />
           <Route path="/organizations/:id" element={<Organization />} />

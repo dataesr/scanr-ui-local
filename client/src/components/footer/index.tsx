@@ -1,5 +1,21 @@
 import React from "react";
-import { Container, Link, Logo } from "@dataesr/dsfr-plus";
+import { Col, Container, Link, Logo, Title } from "@dataesr/dsfr-plus";
+import { IntlProvider, createIntl } from "react-intl";
+
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] };
+  }
+  return acc;
+}, {});
+
+const locale = "fr";
+const intl = createIntl({ locale, messages: messages[locale] });
 
 export function Footer({
   children,
@@ -9,108 +25,168 @@ export function Footer({
   fluid?: boolean;
 }) {
   return (
-    <footer className="fr-footer fr-mt-8w" role="contentinfo" id="footer">
-      <div className="fr-footer__top">
-        <div className="fr-container">
-          <div className="fr-grid-row fr-grid-row--start fr-grid-row--gutters">
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Aide</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="/about/FAQ">
-                    FAQ
-                  </Link>
-                </li>
-                <li>
-                  <Link className="fr-footer__top-link" href="#">
-                    Glossaire
-                  </Link>
-                </li>
-                <li>
-                  <Link className="fr-footer__top-link" href="/about/team">
-                    L'équipe
-                  </Link>
-                </li>
-                <li>
-                  <Link className="fr-footer__top-link" href="/about/resources">
-                    Sources de données
-                  </Link>
-                </li>
-                <li>
-                  <Link className="fr-footer__top-link" href="/about/tutorial">
-                    Tutoriel
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link
-                    className="fr-footer__top-link"
-                    href="https://github.com/dataesr/scanr"
-                    target="_blank"
-                  >
-                    GitHub
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="fr-footer__top-link"
-                    href="about/glossary"
-                    target="_blank"
-                  >
-                    Glossaire
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="#">
-                    Lien de navigation
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="#">
-                    Lien de navigation
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="#">
-                    Lien de navigation
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="fr-col-12 fr-col-sm-3 fr-col-md-2">
-              <h3 className="fr-footer__top-cat">Nom de la catégorie</h3>
-              <ul className="fr-footer__top-list">
-                <li>
-                  <Link className="fr-footer__top-link" href="#">
-                    Lien de navigation
-                  </Link>
-                </li>
-              </ul>
+    <IntlProvider messages={messages} locale="fr" defaultLocale="fr">
+      <footer className="fr-footer fr-mt-3w" role="contentinfo" id="footer">
+        <div className="fr-footer__top">
+          <div className="fr-container">
+            <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
+              <div>
+                <Col className="fr-mr-5w">
+                  <Title as="h3" className="fr-footer__top-cat">
+                    {intl.formatMessage({
+                      id: "layout.footer.top.about.help",
+                    })}
+                  </Title>
+                  <ul className="fr-footer__top-list">
+                    <li>
+                      <Link className="fr-footer__top-link" href="/about/FAQ">
+                        {intl.formatMessage({
+                          id: "layout.footer.top.about.faq",
+                        })}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="fr-footer__top-link" href="/about/team">
+                        {intl.formatMessage({
+                          id: "layout.footer.top.about.team",
+                        })}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="/about/resources"
+                      >
+                        {intl.formatMessage({
+                          id: "layout.footer.top.about.resources",
+                        })}
+                      </Link>
+                    </li>
+                    {/* <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="/about/tutorial"
+                      >
+                        {intl.formatMessage({
+                          id: "layout.footer.top.about.tutorial",
+                        })}
+                      </Link>
+                    </li> */}
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="/about/glossary"
+                      >
+                        {intl.formatMessage({
+                          id: "layout.footer.top.about.glossary",
+                        })}
+                      </Link>
+                    </li>
+                  </ul>
+                </Col>
+              </div>
+              <div>
+                <Col className="fr-mr-5v">
+                  <Title as="h3" className="fr-footer__top-cat">
+                    Voir aussi
+                  </Title>
+                  <ul className="fr-footer__top-list">
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://github.com/dataesr/scanr"
+                        target="_blank"
+                      >
+                        GitHub
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://curiexplore.enseignementsup-recherche.gouv.fr/"
+                        target="_blank"
+                      >
+                        CurieXplore
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://barometredelascienceouverte.esr.gouv.fr/"
+                        target="_blank"
+                      >
+                        Baromètre de la Science Ouverte
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://data.esr.gouv.fr/FR/"
+                        target="_blank"
+                      >
+                        #dataESR
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://data.enseignementsup-recherche.gouv.fr/pages/home/"
+                        target="_blank"
+                      >
+                        Plateforme Open Data
+                      </Link>
+                    </li>
+                  </ul>
+                </Col>
+              </div>
+              <div>
+                <Col>
+                  <Title as="h3" className="fr-footer__top-cat">
+                    Nous contacter
+                  </Title>
+                  <ul className="fr-footer__top-list">
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://github.com/dataesr/scanr"
+                        target="_blank"
+                        icon="twitter-x-fill"
+                        iconPosition="left"
+                      >
+                        Twitter
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://www.linkedin.com/company/enseignementsup-recherche/"
+                        target="_blank"
+                        icon="linkedin-box-fill"
+                        iconPosition="left"
+                      >
+                        Linkedin
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="fr-footer__top-link"
+                        href="https://www.facebook.com/enseignementsup.recherche"
+                        target="_blank"
+                        iconPosition="left"
+                        icon="facebook-circle-fill"
+                      >
+                        Facebook
+                      </Link>
+                    </li>
+                  </ul>
+                </Col>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <Container fluid={fluid}>{children}</Container>
-    </footer>
+        <Container fluid={fluid}>{children}</Container>
+      </footer>
+    </IntlProvider>
   );
 }
 

@@ -7,14 +7,12 @@
   "layout.header.nav.search.authors": "Auteurs",
   "layout.header.nav.search.patents": "Brevets",
   "layout.footer.top.about": "A propos",
+  "layout.footer.top.about.help": "Aide",
   "layout.footer.top.about.faq": "FAQ",
   "layout.footer.top.about.team": "L'équipe",
+  "layout.footer.top.about.resources": "Sources de données",
+  "layout.footer.top.about.tutorial": "Tutoriel",
+  "layout.footer.top.about.glossary": "Glossaire",
   "layout.switch-theme": "Paramètres d'affichage",
-  "layout.header.nav.networks": "Explorer les réseaux",
-  "layout.footer.tagline": "Explorez le monde de la Recherche et de l'Innovation française avec scanR",
-  "layout.footer.legal-notice": "Mentions légales",
-  "layout.footer.personal-data": "Données personnelles",
-  "layout.footer.cookies": "Cookies",
-  "layout.footer.accessibility": "Accessibilité",
-  "layout.footer.switch-theme": "Thème"
+  "layout.header.nav.networks": "Explorer les réseaux"
 }

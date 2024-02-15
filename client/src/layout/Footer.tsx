@@ -1,14 +1,19 @@
-import { Link, Logo } from '@dataesr/dsfr-plus';
+import { Link, Logo } from "@dataesr/dsfr-plus";
 import { Footer, FooterBody, FooterBottom } from "../components/footer";
-import { FormattedMessage, useIntl } from 'react-intl';
-import SwitchTheme from '../components/switch-theme';
+import { useIntl } from "react-intl";
+import SwitchTheme from "../components/switch-theme";
 
 export default function MainFooter() {
-  const intl = useIntl()
+  const intl = useIntl();
   return (
     <Footer>
-      <FooterBody description={intl.formatMessage({ id: "layout.footer.tagline" })}>
-        <Logo splitCharacter='|' text="Ministère|de l'enseignement|supérieur|et de la recherche" />
+      <FooterBody
+        description={intl.formatMessage({ id: "layout.footer.tagline" })}
+      >
+        <Logo
+          splitCharacter="|"
+          text="Ministère|de l'enseignement|supérieur|et de la recherche"
+        />
         <Link
           className="fr-footer__content-link"
           target="_blank"
@@ -46,31 +51,42 @@ export default function MainFooter() {
           data.gouv.fr
         </Link>
       </FooterBody>
-      <FooterBottom copy={intl.formatMessage({ id: "layout.footer.tagline" })}>
+      <FooterBottom>
         <Link className="fr-footer__bottom-link" href="#">
-          <FormattedMessage id="layout.footer.legal-notice" />
+          {intl.formatMessage({
+            id: "layout.footer.legal-notice",
+          })}
         </Link>
         <Link className="fr-footer__bottom-link" href="#">
-          <FormattedMessage id="layout.footer.personal-data" />
+          {intl.formatMessage({
+            id: "layout.footer.personal-data",
+          })}
         </Link>
         <Link className="fr-footer__bottom-link" href="#">
-          <FormattedMessage id="layout.footer.cookies" />
+          {intl.formatMessage({
+            id: "layout.footer.accessibility",
+          })}
         </Link>
-        <Link className="fr-footer__bottom-link" href="#">
-          <FormattedMessage id="layout.footer.accessibility" />
-        </Link>
-        <Link className="fr-footer__bottom-link" href="#">
-          <FormattedMessage id="layout.footer.help" />
-        </Link>
-        <button className="fr-footer__bottom-link" data-fr-opened="false" aria-controls="fr-consent-modal">
-          <FormattedMessage id="layout.cookies" />
+        <button
+          className="fr-footer__bottom-link"
+          data-fr-opened="false"
+          aria-controls="fr-consent-modal"
+        >
+          {intl.formatMessage({
+            id: "layout.footer.cookies",
+          })}
         </button>
-        <button className="fr-footer__bottom-link fr-icon-theme-fill fr-btn--icon-left" aria-controls="fr-theme-modal" data-fr-opened="false">
-          <FormattedMessage id="layout.switch-theme" />
+        <button
+          className="fr-footer__bottom-link fr-icon-theme-fill fr-btn--icon-left"
+          aria-controls="fr-theme-modal"
+          data-fr-opened="false"
+        >
+          {intl.formatMessage({
+            id: "layout.footer.switch-theme",
+          })}
         </button>
       </FooterBottom>
       <SwitchTheme />
-    </Footer >
-  )
+    </Footer>
+  );
 }
-

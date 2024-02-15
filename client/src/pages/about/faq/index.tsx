@@ -95,7 +95,11 @@ export default function FAQ() {
                 </Title>
                 <AccordionGroup>
                   {groupQuestions.map((question: any, index: number) => (
-                    <Accordion key={index} title={question.label[locale]}>
+                    <Accordion
+                      key={index}
+                      id={`question${question.key}`}
+                      title={question.label[locale]}
+                    >
                       {intl.formatMessage(
                         {
                           id: question.key,
@@ -110,6 +114,7 @@ export default function FAQ() {
             </Row>
           )
         )}
+        <a href="#questionq2">ici</a>
       </Container>
     </IntlProvider>
   );

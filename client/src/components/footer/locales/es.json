@@ -1,0 +1,14 @@
+{
+  "layout.header.nav.home": "Inicio",
+  "layout.header.nav.search": "Buscar",
+  "layout.header.nav.search.organizations": "Organizaciones",
+  "layout.header.nav.search.publications": "Publicaciones",
+  "layout.header.nav.search.projects": "Proyectos",
+  "layout.header.nav.search.authors": "Autores",
+  "layout.header.nav.search.patents": "Patentes",
+  "layout.footer.top.about": "Acerca de",
+  "layout.footer.top.about.faq": "Preguntas frecuentes",
+  "layout.footer.top.about.team": "Equipo",
+  "layout.switch-theme": "Configuración de visualización",
+  "layout.header.nav.networks": "Explorar redes"
+}
