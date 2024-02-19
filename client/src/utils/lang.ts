@@ -1,5 +1,7 @@
-export default function getLangFieldValue(locale) {
-  return function (field) {
+import { LangField } from "../types/commons";
+
+export default function getLangFieldValue(locale: string): any {
+  return function (field: LangField): string | null {
     if (!field) {
       return null;
     }

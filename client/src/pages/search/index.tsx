@@ -16,7 +16,7 @@ import PublicationFilters from "./components/publications/filters";
 
 import OrganizationFilters from "./components/organizations/organization-filters";
 import Error500 from "../../components/errors/error-500";
-import ProjectFilters from "./components/projects/projects-filters";
+import ProjectFilters from "./components/projects/filters";
 import AuthorFilters from "./components/authors/author-filters";
 import useUrl from "./hooks/useUrl";
 import OrganizationsAnalytics from "./components/organizations/organization-analytics";
