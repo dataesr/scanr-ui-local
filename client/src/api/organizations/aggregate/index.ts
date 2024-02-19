@@ -44,6 +44,12 @@ export async function aggregateOrganizations(
           size: 10
         },
       },
+      byGPS: {
+        terms: {
+          field: "address.gps",
+          size: 5000
+        },
+      },
       byFundings: {
         terms: {
           field: "projects.type.keyword",
@@ -68,6 +74,8 @@ export async function aggregateOrganizations(
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const result = await res.json()
   const { aggregations: data} = result;
+  console.log("pgs", data.byGPS);
+  
   const byKind = data?.byKind?.buckets?.map((element) => {
     return {
       value: element.key,

@@ -16,6 +16,12 @@ export type LightAuthor = {
     type: string;
     count: number;
   }[];
+  domains: {
+    label: LangField;
+    code: string;
+    type: string;
+    count: number;
+  }[];
 }
 
 export type Author = {

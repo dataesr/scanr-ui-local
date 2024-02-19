@@ -1,5 +1,5 @@
 import {
-  Button, Container, SelectableTag, TagGroup, Text
+  Button, Container, SelectableTag, TagGroup, Text, MenuButton, MenuItem
 } from "@dataesr/dsfr-plus";
 import { FormattedMessage, useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
@@ -16,23 +16,63 @@ const SEE_MORE_AFTER = 8
 export default function OrganizationFilters() {
   const intl = useIntl()
   const { total, search: { isFetching } } = useSearchData();
-  const { currentFilters, handleFilterChange } = useUrl()
+  const { currentFilters, handleFilterChange, api } = useUrl()
   const { data = { byKind: [], byLevel: [] } } = useAggregateData('filters')
 
   const { byKind, byLevel } = data as OrganizationAggregations
 
   const [seeMoreNature, setSeeMoreNature] = useState(false)
 
+  const id = `${api}-filters`;
+
   return (
     <>
-      <Modal id="organization-filters" size="lg" title={intl.formatMessage({ id: "search.top.filters.organizations.title" })}>
+      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.organizations.title" })}>
         <Container fluid className="fr-my-2w">
-          <Text className="fr-mt-3w fr-mb-0" bold size="md">
-            <FormattedMessage id="search.organizations.filters.by-kind" />
-          </Text>
-          <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.organizations.filters.by-kind-description" />
-          </Text>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ flexGrow: 1 }}>
+              <Text className="fr-mt-3w fr-mb-0" bold size="md">
+                <FormattedMessage id="search.organizations.filters.by-kind" />
+              </Text>
+              <Text className="fr-card__detail fr-mb-2w" size="sm">
+                <FormattedMessage id="search.organizations.filters.by-kind-description" />
+              </Text>
+            </div>
+            <MenuButton label="Union" className="fr-ml-2w" placement="end" size="sm" aria-label="Options" variant="text" icon="union" onAction={() => { }}>
+              <MenuItem
+                key="union"
+                className="fr-py-1v fr-px-2w"
+                description={
+                  <>
+                    Combiner les valeurs sélectionnées
+                    <br />
+                    avec l'opérateur 'OU'
+                  </>
+                }
+                startContent={<span className="fr-icon-union fr-mr-2w" />}
+              >
+                <span className="fr-text--sm">
+                  Union
+                </span>
+              </MenuItem>
+              <MenuItem
+                key="intersect"
+                className="fr-py-1v fr-px-2w"
+                description={
+                  <>
+                    Combiner les valeurs sélectionnées
+                    <br />
+                    avec l'opérateur 'ET'
+                  </>
+                }
+                startContent={<span className="fr-icon-intersect fr-mr-2w" />}
+              >
+                <span className="fr-text--sm">
+                  Intersection
+                </span>
+              </MenuItem>
+            </MenuButton>
+          </div>
           <TagGroup>
             {byKind.map((element) => (
               <SelectableTag
@@ -82,7 +122,7 @@ export default function OrganizationFilters() {
             </Text>) : <BaseSkeleton height="1.25rem" width="30%" />}
           </div>
           <Button disabled={isFetching} onClick={() => {
-            const element = document.getElementById("organization-filters")
+            const element = document.getElementById(id)
             // @ts-expect-error dsfr does not have types
             window.dsfr(element).modal.conceal()
           }}>

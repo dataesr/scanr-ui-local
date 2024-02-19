@@ -29,6 +29,20 @@ export default function useUrl() {
     setSearchParams(searchParams);
   }, [currentFilters, searchParams, setSearchParams])
 
+  const setOperator = useCallback((field, operator = "and") => {
+    const prev = currentFilters;
+    if (prev.find((el) => el.field === field)) {
+      const nextFilters = prev.map((el) => el.field === field ? { ...el, operator } : el);
+      searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
+      setSearchParams(searchParams);
+    } else {
+      const nextFilters = [...prev, { field, operator }]
+      searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
+      setSearchParams(searchParams);
+    }
+    
+  }, [currentFilters, searchParams, setSearchParams])
+
   const handleQueryChange = useCallback((query) => {
     setSearchParams({ q: query })
   }, [setSearchParams])
@@ -46,10 +60,11 @@ export default function useUrl() {
       currentQuery,
       currentFilters,
       filters,
+      setOperator, 
     }
   }, [
     api, handleFilterChange, handleQueryChange, clearFilters,
-    currentFilters, filters, currentQuery
+    currentFilters, filters, currentQuery, setOperator
   ])
 
   return values

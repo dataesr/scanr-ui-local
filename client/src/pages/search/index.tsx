@@ -12,7 +12,7 @@ import PublicationAnalytics from "./components/publications/publication-analytic
 import OrganizationItem from "./components/organizations/organization-item";
 import ProjectItem from "./components/projects/project-item";
 import BaseSkeleton from "../../components/skeleton/base-skeleton";
-import PublicationFilters from "./components/publications/publication-filters";
+import PublicationFilters from "./components/publications/filters";
 
 import OrganizationFilters from "./components/organizations/organization-filters";
 import Error500 from "../../components/errors/error-500";
@@ -20,9 +20,11 @@ import ProjectFilters from "./components/projects/projects-filters";
 import AuthorFilters from "./components/authors/author-filters";
 import useUrl from "./hooks/useUrl";
 import OrganizationsAnalytics from "./components/organizations/organization-analytics";
-import OrganizationsCurrentFilters from "./components/organizations/current-filters";
-import OrganizationsExports from "./components/organizations/exports";
+import CurrentFilters from "./components/commons/current-filters";
+import ResultExports from "./components/commons/exports";
 import useScreenSize from "../../hooks/useScreenSize";
+import ProjectAnalytics from "./components/projects/projects-analytics";
+import AuthorAnalytics from "./components/authors/author-analytics";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 const messages = Object.keys(modules).reduce((acc, key) => {
@@ -38,29 +40,21 @@ const API_MAPPING = {
     item: PublicationItem,
     analytics: PublicationAnalytics,
     filters: PublicationFilters,
-    currentFilters: () => <></>,
-    exports: () => <></>,
   },
   authors: {
     item: AuthorItem,
-    analytics: () => <></>,
+    analytics: AuthorAnalytics,
     filters: AuthorFilters,
-    currentFilters: () => <></>,
-    exports: () => <></>,
   },
   organizations: {
     item: OrganizationItem,
     analytics: OrganizationsAnalytics,
     filters: OrganizationFilters,
-    currentFilters: OrganizationsCurrentFilters,
-    exports: OrganizationsExports,
   },
   projects: {
     item: ProjectItem,
-    analytics: () => <></>,
+    analytics: ProjectAnalytics,
     filters: ProjectFilters,
-    currentFilters: () => <></>,
-    exports: () => <></>,
   }
 }
 
@@ -78,8 +72,6 @@ export default function Search() {
   const ItemComponent = API_MAPPING[api].item;
   const AnalyticsComponent = API_MAPPING[api].analytics;
   const FilterComponent = API_MAPPING[api].filters;
-  const CurrentFiltersComponent = API_MAPPING[api].currentFilters;
-  const ExportsComponent = API_MAPPING[api].exports;
 
 
   const shouldClickToLoad = data?.length
@@ -119,7 +111,7 @@ export default function Search() {
               <FilterComponent />
             </Col>
           </Row>
-          {isMobile && <CurrentFiltersComponent />}
+          {isMobile && <CurrentFilters />}
           <Container fluid className={isMobile ? "fr-py-1w" : "fr-py-3w"}>
             {(total && total === 10000) ? (<Text as="span" size={isMobile ? "sm" : "lg"} bold className="fr-mb-1w">
               {intl.formatMessage({ id: "search.top.result-more-than" })}
@@ -183,9 +175,9 @@ export default function Search() {
           </Col>
           <Col xs="12" lg="4" offsetLg="1">
             <Container fluid>
-              {!isMobile && <CurrentFiltersComponent />}
+              {!isMobile && <CurrentFilters />}
               <hr />
-              <ExportsComponent />
+              <ResultExports />
               <hr />
               <AnalyticsComponent />
             </Container>

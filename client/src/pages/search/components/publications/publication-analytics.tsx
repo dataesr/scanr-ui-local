@@ -3,9 +3,10 @@ import { useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
 import AnalyticsSkeleton from "../../../../components/skeleton/analytics-skeleton";
 import { PublicationAggregations } from "../../../../types/publication";
-import YearBars from "../../../../components/year-bars";
-import { PageContent, PageSection } from "../../../../components/page-content";
 import useAggregateData from "../../hooks/useAggregationData";
+import getYearChartOptions from "../../../../components/analytics-graph/graph-options/years";
+import { Row, Col } from "@dataesr/dsfr-plus";
+import AnalyticsGraph from "../../../../components/analytics-graph";
 
 export default function PublicationAnalytics() {
   const intl = useIntl();
@@ -16,18 +17,22 @@ export default function PublicationAnalytics() {
 
   const { byYear, byAuthors } = data as PublicationAggregations
 
+  const yearOptions = getYearChartOptions({ data: byYear, colors: ['var(--artwork-minor-purple-glycine)'] });
+
   const _100TopAuthors = Math.max(...byAuthors.map((el) => el.count | 0));
+
+
+
   return (
-    <PageContent>
-      <PageSection size='lg' show title={intl.formatMessage({ id: "search.publications.analytics.by-year.title" })} >
-        <YearBars
-          height="250px"
-          name={intl.formatMessage({ id: "search.publications.analytics.by-year.year-bars.name" })}
-          counts={byYear.map((year) => year.count)}
-          years={byYear.map((year) => year.value)}
+    <Row>
+      <Col xs="12">
+        <AnalyticsGraph
+          title={intl.formatMessage({ id: "search.analytics.publications.by-year.title" })}
+          description={intl.formatMessage({ id: "search.analytics.publications.by-year.description" })}
+          options={yearOptions}
         />
-      </PageSection>
-      <PageSection size='lg' show title={intl.formatMessage({ id: "search.publications.analytics.by-author.title" })}>
+      </Col>
+      <Col xs="12">
         {byAuthors?.slice(0, 10)?.map((coAuthor) => (
           <BarLink
             key={coAuthor.value}
@@ -37,7 +42,7 @@ export default function PublicationAnalytics() {
             href={`/authors/${coAuthor.value}`}
           />
         ))}
-      </PageSection>
-    </PageContent >
+      </Col>
+    </Row>
   )
 }

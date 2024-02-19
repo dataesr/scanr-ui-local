@@ -29,7 +29,7 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<LightA
         </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {author?.topDomains
+          {author?.domains
             ?.filter((domain) => (domain.type === "wikidata"))
             ?.slice(0, 8)
             .map((domain, k) => (

@@ -15,16 +15,17 @@ const SEE_MORE_AFTER = 8
 export default function AuthorFilters() {
   const intl = useIntl()
   const { total, search: { isFetching } } = useSearchData();
-  const { currentFilters, handleFilterChange, clearFilters } = useUrl()
-  const { data = { byAward: [] }, isLoading, isError } = useAggregateData('filters')
+  const { currentFilters, handleFilterChange, clearFilters, api } = useUrl()
+  const { data = { byAward: [] } } = useAggregateData('filters')
 
   const { byAward } = data as AuthorsAggregations
 
   const [seeMoreAwards, setSeeMoreAwards] = useState(false)
+  const id = `${api}-filters`;
 
   return (
     <>
-      <button
+      {/* <button
         className="fr-tag filter-tag-button fr-icon-equalizer-line fr-icon fr-tag--icon-left"
         aria-controls="author-filters"
         data-fr-opened="false"
@@ -32,8 +33,8 @@ export default function AuthorFilters() {
       >
         <FormattedMessage id={intl.formatMessage({ id: "search.top.filters-button-label" })} />
         {currentFilters.length ? <span className="filter-count-badge">{currentFilters.length}</span> : null}
-      </button>
-      <Modal id="author-filters" size="lg" title={intl.formatMessage({ id: "search.top.filters.authors.title" })}>
+      </button> */}
+      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.authors.title" })}>
         <hr className="fr-mt-3w" />
         {currentFilters.length ? (<Container fluid className="fr-mb-2w">
           <div className="fr-mb-2w" style={{ display: "flex", alignItems: "center" }}>
@@ -108,7 +109,7 @@ export default function AuthorFilters() {
             </Text>) : <BaseSkeleton height="1.25rem" width="30%" />}
           </div>
           <Button disabled={isFetching} onClick={() => {
-            const element = document.getElementById("author-filters")
+            const element = document.getElementById(id)
             // @ts-expect-error dsfr does not have types
             window.dsfr(element).modal.conceal()
           }}>

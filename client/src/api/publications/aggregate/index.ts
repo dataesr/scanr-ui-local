@@ -27,7 +27,7 @@ export async function aggregatePublications(
       byYear: {
         terms: {
           field: "year",
-          size: 40
+          size: 40,
         }
       },
       byPublicationType: {

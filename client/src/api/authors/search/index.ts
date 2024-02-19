@@ -5,7 +5,7 @@ import { FIELDS } from "../_utils/constants";
 
 const SOURCE = [
   "id", "fullName", "domains", "orcid",
-  "idref", "recent_affiliations"
+  "idref", "recent_affiliations", "topDomains",
 ]
 const SORTER = [
   // requires a second field to sort on for elastic to return a cursor
@@ -50,7 +50,7 @@ export async function searchAuthors({ cursor, query, filters }: SearchArgs): Pro
   const data = await res.json()
   const nextCursor: string = data?.hits?.hits[data.hits.hits.length - 1]?.sort || ""
   const totalCount: number = data?.hits?.total?.value || 0;
-  const authors: ElasticResult<LightAuthor>[] = data?.hits?.hits || []
+  const authors: ElasticResult<LightAuthor>[] = data?.hits?.hits || []  
   
   return { data: authors, cursor: nextCursor as string, total: totalCount }
 }
