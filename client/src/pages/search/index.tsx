@@ -14,10 +14,10 @@ import ProjectItem from "./components/projects/project-item";
 import BaseSkeleton from "../../components/skeleton/base-skeleton";
 import PublicationFilters from "./components/publications/filters";
 
-import OrganizationFilters from "./components/organizations/organization-filters";
+import OrganizationFilters from "./components/organizations/filters";
 import Error500 from "../../components/errors/error-500";
 import ProjectFilters from "./components/projects/filters";
-import AuthorFilters from "./components/authors/author-filters";
+import AuthorFilters from "./components/authors/filters";
 import useUrl from "./hooks/useUrl";
 import OrganizationsAnalytics from "./components/organizations/organization-analytics";
 import CurrentFilters from "./components/commons/current-filters";

@@ -5,11 +5,6 @@ import useUrl from "../../../hooks/useUrl";
 export default function PublicationAccessFilter() {
   const { currentFilters, handleFilterChange } = useUrl()
 
-  // const isOa = currentFilters.find((el) => el.field === 'isOa').value === "true"
-  //   ? "true"
-  //   : currentFilters.find((el) => el.field === 'isOa').value === "false"
-  //     ? "false" : 'none';
-
   return (
     <>
       <Text className="fr-mb-0" bold size="md">
@@ -19,8 +14,8 @@ export default function PublicationAccessFilter() {
         className="no-shadow"
         selectionMode="multiple"
         label="Open access"
-        defaultSelectedKeys={currentFilters.find((el) => el.field === 'isOa') ? ["true"] : []}
-        onSelectionChange={() => handleFilterChange('isOa', true, "bool")}
+        defaultSelectedKeys={currentFilters.isOa?.values?.[0]?.value ? ["true"] : []}
+        onSelectionChange={() => handleFilterChange({ field: 'isOa', value: true, filterType: "bool", label: "Open access seulement" })}
       >
         <ListboxItem
           key="true"
@@ -29,12 +24,6 @@ export default function PublicationAccessFilter() {
         >
           Ouvert
         </ListboxItem>
-        {/* <ListboxItem
-          key="false"
-          description="Voir les publications en accès fermé"
-        >
-          Fermé
-        </ListboxItem> */}
       </Listbox >
     </>
   )

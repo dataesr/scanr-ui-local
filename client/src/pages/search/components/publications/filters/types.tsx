@@ -20,9 +20,9 @@ export default function PublicationTypeFilter() {
       <TagGroup>
         {byType.map((type) => (
           <SelectableTag
-            selected={currentFilters.find((el) => el.field === 'type')?.value?.includes(type.value)}
+            selected={currentFilters.type?.values?.map(v => v.value)?.includes(type.value)}
             key={type.value}
-            onClick={() => handleFilterChange('type', type.value)}
+            onClick={() => handleFilterChange({ field: 'type', value: type.value })}
           >
             {type.label}
           </SelectableTag>

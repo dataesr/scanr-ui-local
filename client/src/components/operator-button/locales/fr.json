@@ -1,7 +1,7 @@
 {
-  "operator-button.label.and": "Union",
-  "operator-button.label.or": "Intersection",
+  "operator-button.label.and": "Intersection",
+  "operator-button.label.or": "Union",
   "operator-button.item.common": "Combiner les valeurs sélectionnées",
-  "operator-button.item.and": "avec l'opérateur 'OU'",
-  "operator-button.item.or": "avec l'opérateur 'ET'"
+  "operator-button.item.and": "avec l'opérateur 'ET'",
+  "operator-button.item.or": "avec l'opérateur 'OU'"
 }

@@ -1,4 +1,4 @@
-import BarLink from "../../../../components/bar-link";
+// import BarLink from "../../../../components/bar-link";
 import { useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
 import AnalyticsSkeleton from "../../../../components/skeleton/analytics-skeleton";
@@ -7,6 +7,7 @@ import useAggregateData from "../../hooks/useAggregationData";
 import getYearChartOptions from "../../../../components/analytics-graph/graph-options/years";
 import { Row, Col } from "@dataesr/dsfr-plus";
 import AnalyticsGraph from "../../../../components/analytics-graph";
+import getBarChartOptions from "../../../../components/analytics-graph/graph-options/bar";
 
 export default function PublicationAnalytics() {
   const intl = useIntl();
@@ -18,10 +19,9 @@ export default function PublicationAnalytics() {
   const { byYear, byAuthors } = data as PublicationAggregations
 
   const yearOptions = getYearChartOptions({ data: byYear, colors: ['var(--artwork-minor-purple-glycine)'] });
+  const authorsOptions = getBarChartOptions({ data: byAuthors.slice(0, 10), colors: ['var(--background-contrast-purple-glycine)'] });
 
-  const _100TopAuthors = Math.max(...byAuthors.map((el) => el.count | 0));
-
-
+  // const _100TopAuthors = Math.max(...byAuthors.map((el) => el.count | 0));
 
   return (
     <Row>
@@ -33,6 +33,15 @@ export default function PublicationAnalytics() {
         />
       </Col>
       <Col xs="12">
+        <Col xs="12">
+          <AnalyticsGraph
+            title={intl.formatMessage({ id: "search.analytics.publications.by-authors.title" })}
+            description={intl.formatMessage({ id: "search.analytics.publications.by-authors.description" })}
+            options={authorsOptions}
+          />
+        </Col>
+      </Col>
+      {/* <Col xs="12">
         {byAuthors?.slice(0, 10)?.map((coAuthor) => (
           <BarLink
             key={coAuthor.value}
@@ -42,7 +51,7 @@ export default function PublicationAnalytics() {
             href={`/authors/${coAuthor.value}`}
           />
         ))}
-      </Col>
+      </Col> */}
     </Row>
   )
 }

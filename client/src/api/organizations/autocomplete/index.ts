@@ -3,7 +3,7 @@ import { LightOrganization } from "../../../types/organization";
 import { SearchArgs, SearchResponse, ElasticResult } from "../../../types/commons";
 
 const SOURCE = [
-  "id", "label", "address.main", "address.city",
+  "id", "label", "address.main", "address.city", 'publicationsCount', 'projectsCount',
 ]
 
 export async function autocompleteOrganizations({ query }: SearchArgs): Promise<Pick<SearchResponse<LightOrganization>, "data">> {

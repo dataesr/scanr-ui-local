@@ -28,6 +28,8 @@
   "search.publications.filters.by-author-description": "Sélectionnez un ou plusieurs auteurs",
   "search.publications.filters.by-is-oa": "Accès ouvert",
   "search.publications.filters.delete-all-filters": "Réinitialiser les filtres",
+  "search.publications.filters.by-organization": "Filtrer par affiliation",
+  "search.publications.filters.by-organization-description": "Séléctionnez une ou plusieurs structures",
   "search.publications.analytics.by-year.year-bars.name": "Publications",
   "search.publications.analytics.by-year.title": "Publications par année",
   "search.publications.analytics.by-type.title": "Publications par type",
@@ -39,7 +41,9 @@
   "search.filters.current.no-filter": "Aucun filtre actif",
   "search.filters.current.organizations.kind": "Secteur",
   "search.filters.current.organizations.level": "Type d'organisme",
+  "search.filters.current.publications.affiliations.id": "Affiliations",
   "search.filters.current.publications.authors.fullName": "Auteurs",
+  "search.filters.current.publications.type": "Type de publication",
   "search.results.pagination.next": "Afficher plus de résultats",
   "search.results.pagination.end": "Pas de résultats supplémentaires pour la recherche « {query} »",
   "search.exports.title": "Exporter les résultats",
@@ -59,5 +63,9 @@
   "search.analytics.projects.by-year.title": "Nombre de financements par année",
   "search.analytics.projects.by-year.description": "Calculé à partir des résultats de la recherche",
   "search.analytics.authors.by-award.title": "Top 10 des prix obtenus",
-  "search.analytics.authors.by-award.description": "Calculé à partir des résultats de la recherche"
+  "search.analytics.authors.by-award.description": "Calculé à partir des résultats de la recherche",
+  "search.analytics.publications.by-year.title": "Nombre de publications par année",
+  "search.analytics.publications.by-year.description": "Calculé à partir des résultats de la recherche",
+  "search.analytics.publications.by-authors.title": "Top 10 des auteurs",
+  "search.analytics.publications.by-authors.description": "Calculé à partir des résultats de la recherche"
 }

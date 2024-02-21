@@ -1,9 +1,10 @@
-import { Autocomplete, AutocompleteItem, DissmissibleTag, MenuButton, MenuItem, TagGroup, Text, useAutocompleteList } from "@dataesr/dsfr-plus";
+import { Autocomplete, AutocompleteItem, DissmissibleTag, TagGroup, Text, useAutocompleteList } from "@dataesr/dsfr-plus";
 import { FormattedMessage } from "react-intl";
 import useUrl from "../../../hooks/useUrl";
 import { Fragment } from "react";
 import { autocompleteAuthors } from "../../../../../api/authors/autocomplete";
 import { LightAuthor } from "../../../../../types/author";
+import OperatorButton from "../../../../../components/operator-button";
 
 export default function PublicationAuthorFilter() {
   const { currentFilters, handleFilterChange, setOperator } = useUrl()
@@ -20,7 +21,7 @@ export default function PublicationAuthorFilter() {
     }
   });
 
-  const operator = currentFilters.find((el) => el.field === 'authors.fullName')?.operator || 'or'
+  const operator = currentFilters?.['authors.fullName']?.operator || 'or'
 
   return (
     <>
@@ -33,65 +34,23 @@ export default function PublicationAuthorFilter() {
             <FormattedMessage id="search.publications.filters.by-author-description" />
           </Text>
         </div>
-        <MenuButton
-          label={(operator === "or") ? "Union" : "Intersection"}
-          className="fr-ml-2w"
-          placement="end"
-          size="sm"
-          aria-label="Options"
-          variant="text"
-          icon={(operator === "or") ? "union" : "intersect"}
-          onAction={(key) => setOperator('authors.fullName', (key === 'and') ? 'and' : 'or')}
-        >
-          <MenuItem
-            key="or"
-            className="fr-py-1v fr-px-2w"
-            description={
-              <>
-                Combiner les valeurs sélectionnées
-                <br />
-                avec l'opérateur 'OU'
-              </>
-            }
-            startContent={<span className="fr-icon-union fr-mr-2w" />}
-          >
-            <span className="fr-text--sm">
-              Union
-            </span>
-          </MenuItem>
-          <MenuItem
-            key="and"
-            className="fr-py-1v fr-px-2w"
-            description={
-              <>
-                Combiner les valeurs sélectionnées
-                <br />
-                avec l'opérateur 'ET'
-              </>
-            }
-            startContent={<span className="fr-icon-intersect fr-mr-2w" />}
-          >
-            <span className="fr-text--sm">
-              Intersection
-            </span>
-          </MenuItem>
-        </MenuButton>
+        <OperatorButton operator={operator} setOperator={(key) => setOperator('authors.fullName', (key === 'and') ? 'and' : 'or')} />
       </div>
-      {currentFilters.find((el) => el.field === 'authors.fullName') ? (<Text bold size="sm" className="fr-mb-1v">
+      {currentFilters?.['authors.fullName'] ? (<Text bold size="sm" className="fr-mb-1v">
         Séléctionnées:
       </Text>) : null}
       <TagGroup>
-        {currentFilters.find((el) => el.field === 'authors.fullName')?.value?.map((value) => (
+        {currentFilters?.['authors.fullName']?.values?.map(({ value, label }) => (
           <DissmissibleTag
             key={value}
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange('authors.fullName', value)
+              handleFilterChange({ field: 'authors.fullName', value })
             }}
           >
-            {value}
+            {label || value}
           </DissmissibleTag>
         ))}
       </TagGroup>
@@ -104,7 +63,7 @@ export default function PublicationAuthorFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          handleFilterChange('authors.fullName', item)
+          handleFilterChange({ field: 'authors.fullName', value: item })
         }}
       >
         {(item) => (

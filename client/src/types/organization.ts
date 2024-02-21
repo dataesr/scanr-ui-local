@@ -107,4 +107,6 @@ export type LightOrganization = {
   creationYear: string,
   isFrench: string,
   active: string,
+  publicationsCount: number,
+  projectsCount: number,
 }

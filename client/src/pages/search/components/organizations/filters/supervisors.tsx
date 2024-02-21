@@ -6,7 +6,7 @@ import { LightOrganization } from "../../../../../types/organization";
 import OperatorButton from "../../../../../components/operator-button";
 import getLangFieldValue from "../../../../../utils/lang";
 
-export default function ProjectOrganizationsFilter() {
+export default function OrganizationSupervisorsFilter() {
   const { locale } = useDSFRConfig();
   const { currentFilters, handleFilterChange, setOperator } = useUrl()
 
@@ -22,7 +22,7 @@ export default function ProjectOrganizationsFilter() {
     }
   });
 
-  const filter = currentFilters?.['participants.structure.id']
+  const filter = currentFilters?.['institutions.structure']
   const operator = filter?.operator || 'or'
 
   return (
@@ -30,13 +30,13 @@ export default function ProjectOrganizationsFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.projects.filters.by-organization" />
+            <FormattedMessage id="search.organizations.filters.by-supervisors" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.projects.filters.by-organization-description" />
+            <FormattedMessage id="search.organizations.filters.by-supervisors-description" />
           </Text>
         </div>
-        <OperatorButton operator={operator} setOperator={(key) => setOperator('participants.structure.id', (key === 'and') ? 'and' : 'or')} />
+        <OperatorButton operator={operator} setOperator={(key) => setOperator('institutions.structure', (key === 'and') ? 'and' : 'or')} />
       </div>
       {filter ? (<Text bold size="sm" className="fr-mb-1v">
         Séléctionnées:
@@ -49,7 +49,7 @@ export default function ProjectOrganizationsFilter() {
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange({ field: 'participants.structure.id', value })
+              handleFilterChange({ field: 'institutions.structure', value })
             }}
           >
             {label || value}
@@ -66,13 +66,12 @@ export default function ProjectOrganizationsFilter() {
         size="md"
         onSelectionChange={(item) => {
           const [value, label] = item.toString().split('###')
-          handleFilterChange({ field: 'participants.structure.id', value, label })
+          handleFilterChange({ field: 'institutions.structure', value, label })
         }}
       >
         {(item) => (
           <AutocompleteItem
             startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
-            endContent={<span className="fr-text--xs fr-text-mention--grey">{item.projectsCount} financements</span>}
             description={item.address?.find((a) => a.main).city}
             key={`${item.id}###${getLangFieldValue(locale)(item.label)}`}
           >

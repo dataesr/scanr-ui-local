@@ -1,38 +1,26 @@
-import { Button, Container, Text } from "@dataesr/dsfr-plus";
+import {
+  Button, Container, Text
+} from "@dataesr/dsfr-plus";
 import { useIntl } from "react-intl";
 import useSearchData from "../../../hooks/useSearchData";
 import Modal from "../../../../../components/modal";
 import BaseSkeleton from "../../../../../components/skeleton/base-skeleton";
 import useUrl from "../../../hooks/useUrl";
-import PublicationOrganizationsFilter from "./organizations";
-import PublicationAccessFilter from "./access";
-import PublicationAuthorFilter from "./authors";
-import PublicationFunderFilter from "./funders";
-import PublicationTypeFilter from "./types";
-import PublicationYearFilter from "./years";
+import AuthorAwardsFilter from "./awards";
 
 
-export default function PublicationFilters() {
+export default function AuthorFilters() {
   const intl = useIntl()
   const { total, search: { isFetching } } = useSearchData();
   const { api } = useUrl()
-  const id = `${api}-filters`
+
+  const id = `${api}-filters`;
 
   return (
     <>
-      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.publications.title" })}>
+      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.authors.title" })}>
         <Container fluid className="fr-my-2w">
-          <PublicationYearFilter />
-          <hr className="fr-mt-3w" />
-          <PublicationTypeFilter />
-          <hr className="fr-mt-3w" />
-          <PublicationAuthorFilter />
-          <hr className="fr-mt-3w" />
-          <PublicationOrganizationsFilter />
-          <hr className="fr-mt-3w" />
-          <PublicationAccessFilter />
-          <hr className="fr-mt-3w" />
-          <PublicationFunderFilter />
+          <AuthorAwardsFilter />
           <hr className="fr-mt-3w" />
         </Container>
         <div className='fr-modal__footer fr-px-0' style={{ display: 'flex', width: '100%', alignItems: "center" }}>
@@ -43,7 +31,7 @@ export default function PublicationFilters() {
             }
             {(total && total > 0) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
               {intl.formatMessage(
-                { id: "search.top.publications.filters.result-count" },
+                { id: "search.top.authors.filters.result-count" },
                 { count: total }
               )}
             </Text>) : <BaseSkeleton height="1.25rem" width="30%" />}

@@ -1,5 +1,5 @@
 import {
-  Button, Container, SelectableTag, Tag, TagGroup, Text
+  Button, Container, SelectableTag, TagGroup, Text
 } from "@dataesr/dsfr-plus";
 import { FormattedMessage, useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
@@ -15,7 +15,7 @@ const SEE_MORE_AFTER = 8
 export default function AuthorFilters() {
   const intl = useIntl()
   const { total, search: { isFetching } } = useSearchData();
-  const { currentFilters, handleFilterChange, clearFilters, api } = useUrl()
+  const { currentFilters, handleFilterChange, api } = useUrl()
   const { data = { byAward: [] } } = useAggregateData('filters')
 
   const { byAward } = data as AuthorsAggregations
@@ -25,53 +25,7 @@ export default function AuthorFilters() {
 
   return (
     <>
-      {/* <button
-        className="fr-tag filter-tag-button fr-icon-equalizer-line fr-icon fr-tag--icon-left"
-        aria-controls="author-filters"
-        data-fr-opened="false"
-        disabled={isLoading || isError}
-      >
-        <FormattedMessage id={intl.formatMessage({ id: "search.top.filters-button-label" })} />
-        {currentFilters.length ? <span className="filter-count-badge">{currentFilters.length}</span> : null}
-      </button> */}
       <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.authors.title" })}>
-        <hr className="fr-mt-3w" />
-        {currentFilters.length ? (<Container fluid className="fr-mb-2w">
-          <div className="fr-mb-2w" style={{ display: "flex", alignItems: "center" }}>
-            <div style={{ flexGrow: 1, flexShrink: 0 }}>
-              <Text className="fr-my-1w" bold size="md">
-                {intl.formatMessage({ id: "search.authors.filters.active-filter-title" })}
-              </Text>
-            </div>
-            <button
-              className="fr-tag delete-filter-tag-button fr-icon-delete-bin-line fr-icon fr-tag--icon-left fr-tag--pink-macaron"
-              onClick={clearFilters}
-            >
-              <FormattedMessage id={intl.formatMessage({ id: "search.top.filters.clear" })} />
-            </button>
-          </div>
-          {currentFilters.map((filter) => (
-            <div key={filter.field}>
-              Type de author :
-              {' '}
-              {filter.value.map((value, i) => (
-                <>
-                  <Tag
-                    size="sm"
-                    key={value}
-                    className="fr-mr-1v"
-                    color="blue-cumulus"
-                  >
-                    {value}
-                  </Tag>
-                  {(i !== filter.value?.length - 1) ? ' ou ' : null}
-                </>
-
-              ))}
-            </div>
-          ))}
-        </Container>) : null}
-        {currentFilters.length ? <hr className="fr-mt-3w" /> : null}
         <Container fluid className="fr-my-2w">
           <Text className="fr-mt-3w fr-mb-0" bold size="md">
             <FormattedMessage id="search.authors.filters.by-award" />
@@ -82,9 +36,9 @@ export default function AuthorFilters() {
           <TagGroup>
             {byAward.slice(0, seeMoreAwards ? 10000 : SEE_MORE_AFTER).map((type) => (
               <SelectableTag
-                selected={currentFilters.find((el) => el.field === 'awards.label')?.value?.includes(type.value)}
+                selected={currentFilters?.['awards.label']?.values?.map(v => v.value)?.includes(type.value)}
                 key={type.value}
-                onClick={() => handleFilterChange('awards.label', type.value)}
+                onClick={() => handleFilterChange({ field: 'awards.label', value: type.value })}
               >
                 {type.label}
               </SelectableTag>
