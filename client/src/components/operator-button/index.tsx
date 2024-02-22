@@ -44,7 +44,7 @@ export default function OperatorButton({ operator, setOperator }: OperatorProps)
           <>
             {intl.formatMessage({ id: "operator-button.item.common" })}
             <br />
-            {intl.formatMessage({ id: "operator-button.item.and" })}
+            {intl.formatMessage({ id: "operator-button.item.or" })}
           </>
         }
         startContent={<span className="fr-icon-union fr-mr-2w" />}
@@ -60,7 +60,7 @@ export default function OperatorButton({ operator, setOperator }: OperatorProps)
           <>
             {intl.formatMessage({ id: "operator-button.item.common" })}
             <br />
-            {intl.formatMessage({ id: "operator-button.item.or" })}
+            {intl.formatMessage({ id: "operator-button.item.and" })}
           </>
         }
         startContent={<span className="fr-icon-intersect fr-mr-2w" />}

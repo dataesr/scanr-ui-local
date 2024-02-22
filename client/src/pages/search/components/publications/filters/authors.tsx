@@ -15,8 +15,6 @@ export default function PublicationAuthorFilter() {
         return { items: [] };
       }
       const res = await autocompleteAuthors({ query: filterText })
-      console.log(res);
-
       return { items: res.data?.map((author) => author._source) };
     }
   });

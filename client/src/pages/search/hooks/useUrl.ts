@@ -34,6 +34,18 @@ function fromFilterToElasticQuery(field: string, value: (string | number)[], typ
       }
     })
   }
+  if (type ==="range") {
+    console.log({field, value, type});
+    
+    return ({
+      [type]: {
+        [field]: {
+          gte: value[0],
+          lte: value[1]
+        }
+      }
+    })
+  }
   return ({
     [type]: {
       [`${field}.keyword`]: value
@@ -46,7 +58,6 @@ export function filtersToElasticQuery(filters: Filters): Record<string, unknown>
   return Object.entries(filters).flatMap(([field, filter]) => {
     if (!filter?.values?.length || !filter?.type) return [];
     if (filter.operator === "and") {
-      console.log('operatorChange', filter);
       return filter?.values?.map(({ value }) => fromFilterToElasticQuery(field, [value], filter.type));
     }
     return [fromFilterToElasticQuery(field, filter.values.map(({ value }) => value), filter.type)];
@@ -60,13 +71,18 @@ export default function useUrl() {
   const currentQuery = searchParams.get('q') || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get('filters'));
   const filters = filtersToElasticQuery(currentFilters);
-  console.log(filters);
   
 
   const handleFilterChange = useCallback(({field, value, filterType = "terms", label = null}) => {
     if (!field || !value) return;
     const prev = {...currentFilters};
     const filter = prev?.[field];
+    if (filterType === "range") {
+      const nextFilters = { ...prev, [field]: { values: [{ value: value?.[0]}, { value: value?.[1]}], type: filterType } }
+      searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
+      setSearchParams(searchParams);
+      return;
+    }
     if (!filter) {
       const nextFilters = { ...prev, [field]: { values: [{value, label}], type: filterType, operator: "or" } }
       searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
@@ -77,6 +93,15 @@ export default function useUrl() {
       ? filter?.values?.filter((el) => el.value !== value) : [...filter.values, {value, label}];
     const nextFilters = { ...prev, [field]: { ...filter, values: nextFilterValues } }
     
+    searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
+    setSearchParams(searchParams);
+  }, [currentFilters, searchParams, setSearchParams])
+
+  const handleDeleteFilter = useCallback(({ field }) => {
+    if (!field) return;
+    const prev = {...currentFilters};
+    const { [field]: currentField, ...nextFilters } = prev;
+    if (!currentField) return;
     searchParams.set('filters', stringifySearchFiltersForURL(nextFilters));
     setSearchParams(searchParams);
   }, [currentFilters, searchParams, setSearchParams])
@@ -107,10 +132,11 @@ export default function useUrl() {
       currentFilters,
       filters,
       setOperator, 
+      handleDeleteFilter,
     }
   }, [
     api, handleFilterChange, handleQueryChange, clearFilters,
-    currentFilters, filters, currentQuery, setOperator
+    currentFilters, filters, currentQuery, setOperator, handleDeleteFilter
   ])
 
   return values

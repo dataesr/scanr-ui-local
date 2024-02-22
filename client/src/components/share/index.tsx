@@ -1,3 +1,5 @@
+import { Link } from "@dataesr/dsfr-plus";
+import useConsent from "../../hooks/useConsent";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 
 const onClickFacebook = (e) => {
@@ -28,27 +30,30 @@ const onClickLinkedin = (e) => {
 };
 export default function Share() {
   const url = window.location.href;
-  const concent = localStorage.getItem('consent');
+  const { consent, dialogId } = useConsent();
   const { copy } = useCopyToClipboard();
-  const isOk = concent === "all";
+  const { facebook, twitter, linkedin } = consent;
+
   return (
     <div className="fr-share">
-      {!isOk && <p className="fr-share__text">
+      {(!twitter || !facebook || !linkedin) && <p className="fr-share__text">
         Veuillez
-        <button className="fr-btn fr-btn--secondary" data-fr-opened="false" aria-controls="fr-consent-modal" title="Personnaliser les cookies">
+        {' '}
+        <Link role="button" href={null} data-fr-opened="false" aria-controls={dialogId} title="Personnaliser les cookies">
           autoriser le dépot de cookies
-        </button>
+        </Link>
+        {' '}
         pour partager sur Facebook, Twitter et LinkedIn.
       </p>}
       <ul className="fr-share__group">
         <li>
           <a
             className="fr-share__link fr-share__link--facebook"
-            title={`Partager sur Facebook ${!isOk ? "- désactivé" : null}`}
+            title={`Partager sur Facebook ${!facebook ? "- désactivé" : null}`}
             role="link"
-            aria-disabled={!isOk}
+            aria-disabled={!facebook}
             onClick={onClickFacebook}
-            href={isOk ? `https://www.facebook.com/sharer.php?u=${url}` : undefined}
+            href={facebook ? `https://www.facebook.com/sharer.php?u=${url}` : undefined}
           >
             Partager sur Facebook
           </a>
@@ -56,11 +61,11 @@ export default function Share() {
         <li>
           <a
             className="fr-share__link fr-share__link--twitter"
-            title={`Partager sur Twitter ${!isOk ? "- désactivé" : null}`}
+            title={`Partager sur Twitter ${!twitter ? "- désactivé" : null}`}
             role="link"
-            aria-disabled={!isOk}
+            aria-disabled={!twitter}
             onClick={onClickTwitter}
-            href={isOk ? `https://twitter.com/intent/tweet?url=${url}` : undefined}
+            href={twitter ? `https://twitter.com/intent/tweet?url=${url}` : undefined}
           >
             Partager sur Twitter
           </a>
@@ -68,11 +73,11 @@ export default function Share() {
         <li>
           <a
             className="fr-share__link fr-share__link--linkedin"
-            title={`Partager sur LinkedIn ${!isOk ? "- désactivé" : null}`}
+            title={`Partager sur LinkedIn ${!linkedin ? "- désactivé" : null}`}
             role="link"
-            aria-disabled={!isOk}
+            aria-disabled={!linkedin}
             onClick={onClickLinkedin}
-            href={isOk ? `https://www.linkedin.com/shareArticle?url=${url}` : undefined}
+            href={linkedin ? `https://www.linkedin.com/shareArticle?url=${url}` : undefined}
           >
             Partager sur LinkedIn
           </a>

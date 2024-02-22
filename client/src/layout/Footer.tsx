@@ -2,9 +2,11 @@ import { Link, Logo } from "@dataesr/dsfr-plus";
 import { Footer, FooterBody, FooterBottom } from "../components/footer";
 import { useIntl } from "react-intl";
 import SwitchTheme from "../components/switch-theme";
+import useConsent from "../hooks/useConsent";
 
 export default function MainFooter() {
   const intl = useIntl();
+  const { dialogId } = useConsent();
   return (
     <Footer>
       <FooterBody
@@ -70,7 +72,7 @@ export default function MainFooter() {
         <button
           className="fr-footer__bottom-link"
           data-fr-opened="false"
-          aria-controls="fr-consent-modal"
+          aria-controls={dialogId}
         >
           {intl.formatMessage({
             id: "layout.footer.cookies",

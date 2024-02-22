@@ -5,7 +5,7 @@ import useAggregateData from "../../hooks/useAggregationData";
 
 export default function CurrentFilters() {
   const intl = useIntl()
-  const { currentFilters, handleFilterChange, clearFilters, api } = useUrl()
+  const { currentFilters, handleFilterChange, handleDeleteFilter, clearFilters, api } = useUrl()
   const { isLoading, isError } = useAggregateData('filters')
 
 
@@ -43,7 +43,7 @@ export default function CurrentFilters() {
             <br />
             <Row verticalAlign="middle">
 
-              {filter.values?.map(({ value, label }, i) => (
+              {filter.type !== 'range' ? filter.values?.map(({ value, label }, i) => (
                 <>
                   <Tag
                     as="button"
@@ -61,7 +61,21 @@ export default function CurrentFilters() {
                   {(i !== filter.values?.length - 1) ? `${filter?.operator === "and" ? ' & ' : ' | '}` : null}
                 </>
 
-              ))}
+              )) : (
+                <Tag
+                  as="button"
+                  icon="delete-bin-line"
+                  iconPosition="right"
+                  className="fr-mb-1v"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDeleteFilter({ field })
+                  }}
+                >
+                  {filter.values?.[0]?.value} - {filter.values?.[1]?.value}
+                </Tag>
+
+              )}
             </Row>
           </Col>
         ))}

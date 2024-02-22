@@ -94,6 +94,13 @@ export default function AuthorPage({ data }: { data: Author }) {
               >
                 <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
               </PageSection>
+              <PageSection title="Data JSON" description="" show>
+                <div>
+                  <pre>
+                    {JSON.stringify(data || "", null, 2)}
+                  </pre>
+                </div>
+              </PageSection>
             </PageContent>
           </Row>
         </Col>

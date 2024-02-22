@@ -9,7 +9,7 @@ const PUBLICATION_LIGHT_SOURCE = [
 
 const AUTHOR_SOURCE = [
   "id", "idref", "orcid", "fullName", 
-  "externalIds", "awards", "recent_affiliations",
+  "externalIds", "awards", "recentAffiliations",
 ]
 
 async function getAuthorsPublicationsById(id: string): Promise<AuthorsPublications> {

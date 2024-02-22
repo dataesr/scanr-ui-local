@@ -11,16 +11,10 @@ export async function autocompleteAuthors({ query }: SearchArgs): Promise<Pick<S
     _source: SOURCE,
     size: 7,
     query: {
-      multi_match: {
-        query,
-        type: "bool_prefix",
-        fields: [
-          "autocompleted",
-          "autocompleted._2gram",
-          "autocompleted._3gram"
-        ]
+      match: {
+        autocompleted: query
       }
-    },
+    }
   }
   const res = await fetch(
     `${authorsIndex}/_search`,

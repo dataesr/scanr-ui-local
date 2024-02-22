@@ -1,0 +1,118 @@
+.slider {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  --color: var(--text-label-inverse-grey);
+  --idle: transparent;
+  --hover: var(--background-default-grey-hover);
+  --active: var(--background-default-grey-active);
+}
+
+.label-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider .track {
+  height: 30px;
+  width: 100%;
+}
+
+/* track line */
+.track:before {
+  content: attr(x);
+  display: block;
+  position: absolute;
+  background-color: var(--color);
+}
+
+.slider .track:before {
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--background-default-grey);
+  border: 1px solid var(--border-plain-grey);
+
+  &::after {
+    content: attr(data-value);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 0.75rem;
+    color: var(--text-label-inverse-grey);
+  }
+}
+
+.thumb.dragging {
+  background-color: var(--hover);
+}
+
+.thumb.focus {
+  background-color: var(--active);
+}
+
+.slider .thumb {
+  top: 50%;
+}
+
+
+.track.disabled {
+  opacity: 0.4;
+}
+
+.histogram {
+  height: 60px;
+  display: flex;
+  gap: 2px;
+  transform: rotate(180deg) translateY(-15px);
+  flex-direction: row-reverse;
+  flex-wrap: 0;
+}
+
+.histogram__bar {
+  background-color: var(--color);
+  width: 100%;
+}
+
+.histogram__bar.unselected {
+  background-color: var(--background-contrast-grey);
+}
+
+$color-families: green-tilleul-verveine,
+  green-bourgeon,
+  green-emeraude,
+  green-menthe,
+  green-archipel,
+  blue-ecume,
+  blue-cumulus,
+  purple-glycine,
+  pink-macaron,
+  pink-tuile,
+  yellow-tournesol,
+  yellow-moutarde,
+  orange-terre-battue,
+  brown-cafe-creme,
+  brown-caramel,
+  brown-opera,
+  beige-gris-galet,
+  success,
+  warning,
+  info,
+  error;
+
+@each $color in $color-families {
+  .slider--#{$color} {
+    --thumb: var(--background-default-#{$color}) !important;
+    --color: var(--artwork-minor-#{$color}) !important;
+    --hover: var(--background-contrast-#{$color}-hover) !important;
+    --active: var(--background-contrast-#{$color}-active) !important;
+  }
+}

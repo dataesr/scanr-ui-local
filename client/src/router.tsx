@@ -16,7 +16,7 @@ import Suggest from "./pages/suggest";
 import HEPartners from "./pages/trouver-des-partenaires-pour-horizon-europe";
 import Resources from "./pages/about/resources";
 import ResourcesInformations from "./pages/about/resources/[id]";
-// import Tutorial from "./pages/about/tutorial";
+import Tutorial from "./pages/about/tutorial";
 import Glossary from "./pages/about/glossary";
 
 function ScrollToTopOnLocationChange() {
@@ -42,6 +42,7 @@ export default function Router() {
           <Route path="/about/faq" element={<FAQ />} />
           <Route path="/about/team" element={<Team />} />
           <Route path="/about/resources" element={<Resources />} />
+          <Route path="/about/tutorials" element={<Tutorial />} />
           <Route
             path="/about/resources/:id"
             element={<ResourcesInformations />}

@@ -8,6 +8,7 @@ import {
   Col,
 } from "@dataesr/dsfr-plus";
 import { IntlProvider, createIntl } from "react-intl";
+import useConsent from "../../../hooks/useConsent";
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -21,8 +22,24 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   return acc;
 }, {});
 
+function YoutubePlaceholder() {
+  const { dialogId } = useConsent();
+
+  return (
+    <div className="fr-consent-placeholder">
+      <h4 className="fr-h6 fr-mb-2v">**Nom du service** est désactivé</h4>
+      <p className="fr-mb-6v">Autorisez le dépôt de cookies pour accéder à cette fonctionnalité.</p>
+      <button aria-controls={dialogId} className="fr-btn" title="Autorisez le dépôt de cookies pour accéder au service **Nom du service**">
+        Autoriser
+      </button>
+    </div>
+  )
+}
+
 export default function Tutorial() {
+  const { consent } = useConsent();
   const { locale } = useDSFRConfig();
+  const youtube = consent?.youtube;
   const intl = createIntl({ locale, messages: messages[locale] });
   if (!messages) return null;
 
@@ -54,7 +71,7 @@ export default function Tutorial() {
             {intl.formatMessage({ id: "app.tutorial.video.title1" })}
           </Title>
           <Col xs="12" lg="12" className="search-object fr-mb-5w">
-            <iframe
+            {youtube ? <iframe
               width="60%"
               height="400"
               src="https://www.youtube.com/embed/KBVXDcnfcso?si=6FijUwbtBxUQ7ubv"
@@ -63,7 +80,7 @@ export default function Tutorial() {
               allowFullScreen
               // @ts-expect-error: Ignoring type checking for the `frameborder` attribute
               frameborder="0"
-            />
+            /> : <YoutubePlaceholder />}
           </Col>
         </Row>
         <Row horizontalAlign="center" className="fr-mt-5w">
