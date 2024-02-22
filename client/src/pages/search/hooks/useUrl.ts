@@ -34,9 +34,7 @@ function fromFilterToElasticQuery(field: string, value: (string | number)[], typ
       }
     })
   }
-  if (type ==="range") {
-    console.log({field, value, type});
-    
+  if (type ==="range") {  
     return ({
       [type]: {
         [field]: {

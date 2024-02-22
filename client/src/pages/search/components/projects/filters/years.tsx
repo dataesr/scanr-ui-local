@@ -21,11 +21,11 @@ export default function ProjectYearFilter() {
         <FormattedMessage id="search.projects.filters.by-year-description" />
       </Text>
       <RangeSlider
+        aria-label="Années de publication"
         minValue={byYear[0].value}
         maxValue={byYear[byYear.length - 1].value}
         step={1}
         data={byYear.map((year) => year.normalizedCount)}
-        // label="Années de publication"
         color="green-emeraude"
         defaultValue={[byYear[0].value, byYear[byYear.length - 1].value]}
         onChangeEnd={(value) => handleFilterChange({ field: 'year', value: value, filterType: 'range' })}

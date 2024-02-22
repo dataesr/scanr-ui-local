@@ -21,7 +21,6 @@ export default function ProjectItem({ data: project, highlight }: ItemProps<Ligh
 
   const frenchParticipants = project?.participants
     ?.filter((el) => el?.structure?.address?.find(({ country }) => country === 'France'));
-  console.log(frenchParticipants);
 
   const shouldFilterParticipants = project?.participants?.length > 4;
   const participants = shouldFilterParticipants ? frenchParticipants : project?.participants;

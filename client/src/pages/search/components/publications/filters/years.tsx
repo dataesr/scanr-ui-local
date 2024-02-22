@@ -13,8 +13,6 @@ export default function PublicationYearFilter() {
   if (!byYear.length) {
     return null
   }
-  console.log(byYear);
-
   return (
     <>
       <Text bold size="md" className="fr-mb-1v">
@@ -24,11 +22,11 @@ export default function PublicationYearFilter() {
         <FormattedMessage id="search.publications.filters.by-year-description" />
       </Text>
       <RangeSlider
+        aria-label="Années de publication"
         minValue={byYear[0].value}
         maxValue={byYear[byYear.length - 1].value}
         step={1}
         data={byYear.map((year) => year.normalizedCount)}
-        // label="Années de publication"
         color="purple-glycine"
         defaultValue={[byYear[0].value, byYear[byYear.length - 1].value]}
         onChangeEnd={(value) => handleFilterChange({ field: 'year', value: value, filterType: 'range' })}

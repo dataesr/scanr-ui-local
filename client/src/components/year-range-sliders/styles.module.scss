@@ -71,7 +71,6 @@
 .histogram {
   height: 60px;
   display: flex;
-  gap: 2px;
   transform: rotate(180deg) translateY(-15px);
   flex-direction: row-reverse;
   flex-wrap: 0;
@@ -79,6 +78,7 @@
 
 .histogram__bar {
   background-color: var(--color);
+  margin: 0 1px;
   width: 100%;
 }
 
@@ -110,7 +110,6 @@ $color-families: green-tilleul-verveine,
 
 @each $color in $color-families {
   .slider--#{$color} {
-    --thumb: var(--background-default-#{$color}) !important;
     --color: var(--artwork-minor-#{$color}) !important;
     --hover: var(--background-contrast-#{$color}-hover) !important;
     --active: var(--background-contrast-#{$color}-active) !important;
