@@ -43,7 +43,8 @@ export function RangeSlider({ color, data, height = "80px", ...props }) {
 
   const { minValue, maxValue } = props;
   const range = maxValue - minValue;
-  const rangeArray = useMemo(() => Array.from({ length: range + 1 }, (_, i) => ([i + minValue, Math.floor(Math.random() * 100)])), [range, minValue]);
+  const rangeArray = useMemo(() => Array.from({ length: range + 1 }, (_, i) => (i + minValue)), [range, minValue]);
+
 
   const isUnselected = (year) => year < state.values[0] || year > state.values[1];
 
