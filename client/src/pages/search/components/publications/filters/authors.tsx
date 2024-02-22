@@ -19,7 +19,7 @@ export default function PublicationAuthorFilter() {
     }
   });
 
-  const operator = currentFilters?.['authors.fullName']?.operator || 'or'
+  const operator = currentFilters?.['authors.person']?.operator || 'or'
 
   return (
     <>
@@ -32,20 +32,20 @@ export default function PublicationAuthorFilter() {
             <FormattedMessage id="search.publications.filters.by-author-description" />
           </Text>
         </div>
-        <OperatorButton operator={operator} setOperator={(key) => setOperator('authors.fullName', (key === 'and') ? 'and' : 'or')} />
+        <OperatorButton operator={operator} setOperator={(key) => setOperator('authors.person', (key === 'and') ? 'and' : 'or')} />
       </div>
-      {currentFilters?.['authors.fullName'] ? (<Text bold size="sm" className="fr-mb-1v">
+      {currentFilters?.['authors.person'] ? (<Text bold size="sm" className="fr-mb-1v">
         Séléctionnées:
       </Text>) : null}
       <TagGroup>
-        {currentFilters?.['authors.fullName']?.values?.map(({ value, label }) => (
+        {currentFilters?.['authors.person']?.values?.map(({ value, label }) => (
           <DissmissibleTag
             key={value}
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange({ field: 'authors.fullName', value })
+              handleFilterChange({ field: 'authors.person', value })
             }}
           >
             {label || value}
@@ -61,7 +61,8 @@ export default function PublicationAuthorFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          handleFilterChange({ field: 'authors.fullName', value: item })
+          const [value, label] = item.toString().split('###')
+          handleFilterChange({ field: 'authors.person', value, label })
         }}
       >
         {(item) => (
@@ -71,7 +72,7 @@ export default function PublicationAuthorFilter() {
               {(i > 0) ? ', ' : ''}
               <Text as="span" bold>#{el?.label.default}</Text>
             </Fragment>))}
-            key={item.fullName}
+            key={`${item.id}###${(item.fullName)}`}
           >
             {item.fullName}
           </AutocompleteItem>

@@ -42,7 +42,7 @@
   "search.filters.current.organizations.kind": "Secteur",
   "search.filters.current.organizations.level": "Type d'organisme",
   "search.filters.current.publications.affiliations.id": "Affiliations",
-  "search.filters.current.publications.authors.fullName": "Auteurs",
+  "search.filters.current.publications.authors.person": "Auteurs",
   "search.filters.current.publications.type": "Type de publication",
   "search.results.pagination.next": "Afficher plus de résultats",
   "search.results.pagination.end": "Pas de résultats supplémentaires pour la recherche « {query} »",
