@@ -65,6 +65,7 @@ export default function OrganizationSupervisorsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
+          if (!item) return;
           const [value, label] = item.toString().split('###')
           handleFilterChange({ field: 'institutions.structure', value, label })
         }}

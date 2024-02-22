@@ -63,6 +63,7 @@ export default function PublicationOrganizationsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
+          if (!item) return;
           const [value, label] = item.toString().split('###')
           handleFilterChange({ field: 'affiliations.id', value, label })
         }}

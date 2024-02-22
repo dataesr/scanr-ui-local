@@ -65,6 +65,7 @@ export default function ProjectOrganizationsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
+          if (!item) return;
           const [value, label] = item.toString().split('###')
           handleFilterChange({ field: 'participants.structure.id', value, label })
         }}
