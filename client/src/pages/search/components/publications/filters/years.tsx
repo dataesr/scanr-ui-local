@@ -27,6 +27,7 @@ export default function PublicationYearFilter() {
         minValue={byYear[0].value}
         maxValue={byYear[byYear.length - 1].value}
         step={1}
+        data={byYear.map((year) => year.normalizedCount)}
         // label="Années de publication"
         color="purple-glycine"
         defaultValue={[byYear[0].value, byYear[byYear.length - 1].value]}

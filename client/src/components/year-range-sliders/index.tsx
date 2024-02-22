@@ -29,7 +29,7 @@ function Thumb(props) {
 }
 
 
-export function RangeSlider({ color, height = "80px", ...props }) {
+export function RangeSlider({ color, data, height = "80px", ...props }) {
   const trackRef = React.useRef(null);
 
   const numberFormatter = useNumberFormatter(props.formatOptions);
@@ -49,11 +49,11 @@ export function RangeSlider({ color, height = "80px", ...props }) {
 
   return (
     <div {...groupProps} className={cn(styles.slider, styles[`slider--${color}`])}>
-      <div className={cn(styles.histogram)} style={{ height }}>
-        {rangeArray.map(([year, count]) => (
-          <div key={year} className={cn(styles.histogram__bar, { [styles.unselected]: isUnselected(year) })} style={{ height: `${count}%` }} />
+      {data.length ? <div className={cn(styles.histogram)} style={{ height }}>
+        {data.map((count, i) => (
+          <div key={i} className={cn(styles.histogram__bar, { [styles.unselected]: isUnselected(rangeArray?.[i]) })} style={{ height: `${count}%` }} />
         ))}
-      </div>
+      </div> : null}
       <div
         {...trackProps}
         ref={trackRef}
