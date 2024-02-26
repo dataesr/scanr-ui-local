@@ -13,14 +13,28 @@ function ActorsCard({ actors }: { actors: PatentActorsData }) {
       queryFn: () => getAuthorById(id),
     });
   }
+
+  const cardType = actors.typeParticipant === "pm" ? "organization" : "author";
+
   return (
     <LinkCard
       prefetch={actors.person ? () => prefetch(actors.person) : undefined}
-      type="author"
+      type={cardType}
       icon="user-line"
     >
       <Text className="fr-card__detail" size="sm">
-        <i>{actors.rolePatent.map((el) => el.role)}</i>
+        <i>
+          {actors.rolePatent.map((el) => {
+            if (el.role === "inv" && el.type === "dep") {
+              return "Déposant & inventeur";
+            } else if (el.role === "inv") {
+              return "Inventeur";
+            } else if (el.role === "dep") {
+              return "Déposant";
+            }
+            return el.role;
+          })}
+        </i>
       </Text>
       <Link className="fr-text--bold" href={`/authors/${actors.person}`}>
         {actors.fullName}

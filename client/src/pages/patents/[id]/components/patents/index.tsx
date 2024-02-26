@@ -17,40 +17,13 @@ import {
 } from "../../../../../components/page-content";
 import Map from "../../../../../components/map";
 import PatentActors from "../actors";
+import { toString } from "../../../../../utils/string";
 
 export default function PatentPage({ data }: { data: Patent }) {
   const intl = useIntl();
   const { screen } = useScreenSize();
   const patentActors = data.authors;
   const iso2Codes = data.patents.map((patent) => patent.office);
-
-  const depInfo = data.authors.reduce(
-    (acc, author) => {
-      if (author.rolePatent.some((role) => role.role === "dep")) {
-        acc.count++;
-        acc.names.push(author.fullName);
-      }
-      return acc;
-    },
-    { count: 0, names: [] }
-  );
-
-  const numberOfDep = depInfo.count;
-  const depNames = depInfo.names;
-
-  const invInfo = data.authors.reduce(
-    (acc, author) => {
-      if (author.rolePatent.some((role) => role.role === "inv")) {
-        acc.count++;
-        acc.names.push(author.fullName);
-      }
-      return acc;
-    },
-    { count: 0, names: [] }
-  );
-
-  const numberOfInv = invInfo.count;
-  const invNames = invInfo.names;
 
   return (
     <Container fluid>
@@ -68,26 +41,21 @@ export default function PatentPage({ data }: { data: Patent }) {
           <Container fluid>
             <PageContent>
               <PageSection
-                title={intl.formatMessage({ id: "patents.section.first.dep" })}
+                title={intl.formatMessage({ id: "patents.section.info" })}
                 show
+                icon="git-branch-line"
               >
-                <Text>{data.submissionDate}</Text>
-              </PageSection>
-              <PageSection
-                title={intl.formatMessage({ id: "patents.section.first.pub" })}
-                show
-              >
-                <Text>{data.publicationDate}</Text>
-              </PageSection>
-              <PageSection
-                title={intl.formatMessage({ id: "patents.section.issued" })}
-                show
-              >
-                <Text>
-                  {intl.formatMessage({
-                    id: "patents.section.first.deliverance",
-                  })}
-                  {data.grantedDate}
+                <Text className="fr-card__detail" size="sm">
+                  <i>
+                    {intl.formatMessage({ id: "patents.section.first.dep" })}
+                    {toString(data.submissionDate)}
+                    <br />
+                    {intl.formatMessage({ id: "patents.section.first.pub" })}
+                    {toString(data.publicationDate)}
+                    <br />
+                    {intl.formatMessage({ id: "patents.section.issued" })}{" "}
+                    {toString(data.grantedDate)}
+                  </i>
                 </Text>
               </PageSection>
               <PageSection
@@ -97,6 +65,12 @@ export default function PatentPage({ data }: { data: Patent }) {
                 <Text>
                   {data.summary.fr ? data.summary.fr : data.summary.en}
                 </Text>
+              </PageSection>
+              <PageSection
+                show
+                title={intl.formatMessage({ id: "patents.section.familly" })}
+              >
+                <Text>dazd</Text>
               </PageSection>
               <PageSection title="data section" show>
                 <pre>{JSON.stringify(data, null, 2)}</pre>
@@ -113,30 +87,7 @@ export default function PatentPage({ data }: { data: Patent }) {
               })}
             >
               <PatentActors data={patentActors} />
-              {/* <Text>
-                <b>{numberOfDep} déposants:</b>
-                <ul>
-                  {depNames.map((name, index) => (
-                    <li key={index}>{name}</li>
-                  ))}
-                </ul>
-              </Text> */}
             </PageSection>
-            {/* <PageSection
-              show
-              title={intl.formatMessage({
-                id: "patents.section.authors",
-              })}
-            >
-              <Text>
-                <b>{numberOfInv} inventeurs:</b>
-                <ul>
-                  {invNames.map((name, index) => (
-                    <li key={index}>{name}</li>
-                  ))}
-                </ul>
-              </Text>
-            </PageSection> */}
             <PageSection
               show
               title={intl.formatMessage({

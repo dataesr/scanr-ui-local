@@ -1,5 +1,5 @@
-import { Aggregation, LangField } from "./commons";
-import { LightPublication } from "./publication";
+import { LangField } from "./commons";
+// import { LightPublication } from "./publication";
 
 // export type LightPatent = {
 //   id: string;
@@ -76,6 +76,7 @@ export type Patent = {
 };
 
 export type PatentActorsData = {
+  typeParticipant: string;
   rolePatent: any;
   fullName: string;
   person?: string;
