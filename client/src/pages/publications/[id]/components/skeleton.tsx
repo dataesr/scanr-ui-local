@@ -10,7 +10,11 @@ export default function PublicationSkeleton() {
           <Row gutters>
             <Col xs="12">
               <Row className="fr-my-1v">
-                <BaseSkeleton height="1.5rem" width="175px" className="fr-mr-1v" />
+                <BaseSkeleton
+                  height="1.5rem"
+                  width="175px"
+                  className="fr-mr-1v"
+                />
                 <BaseSkeleton height="1.5rem" width="75px" />
               </Row>
               <BaseSkeleton width="100%" height="2rem" className="fr-my-1v" />
@@ -33,7 +37,12 @@ export default function PublicationSkeleton() {
           </Row>
           <Row className="fr-my-5w">
             <Tabs>
-              <Tab index="1" className='more-like-this' label="Publications similaires" icon="ri-link">
+              <Tab
+                index="1"
+                className="more-like-this"
+                label="Publications similaires"
+                icon="ri-link"
+              >
                 <Skeleton />
               </Tab>
               <Tab index="2" label="Références de l'article" icon="ri-link">
@@ -65,5 +74,5 @@ export default function PublicationSkeleton() {
         </Col>
       </Row>
     </Container>
-  )
+  );
 }

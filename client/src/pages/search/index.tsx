@@ -2,7 +2,17 @@ import PublicationItem from "./components/publications/publication-item";
 import AuthorItem from "./components/authors/author-item";
 import SearchResultListSkeleton from "../../components/skeleton/search-result-list-skeleton";
 import useSearchData from "./hooks/useSearchData";
-import { Breadcrumb, Button, Col, Container, Link, Row, SearchBar, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Breadcrumb,
+  Button,
+  Col,
+  Container,
+  Link,
+  Row,
+  SearchBar,
+  Text,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
 import { useEffect } from "react";
@@ -25,12 +35,16 @@ import ResultExports from "./components/commons/exports";
 import useScreenSize from "../../hooks/useScreenSize";
 import ProjectAnalytics from "./components/projects/projects-analytics";
 import AuthorAnalytics from "./components/authors/author-analytics";
+import PatentItem from "./components/patents/patent-item";
 
-const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
 const messages = Object.keys(modules).reduce((acc, key) => {
   const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
   if (locale) {
-    return { ...acc, [locale]: modules[key] }
+    return { ...acc, [locale]: modules[key] };
   }
   return acc;
 }, {});
@@ -55,24 +69,35 @@ const API_MAPPING = {
     item: ProjectItem,
     analytics: ProjectAnalytics,
     filters: ProjectFilters,
-  }
-}
+  },
+  patents: {
+    item: PatentItem,
+    analytics: () => <></>,
+    filters: () => <></>,
+  },
+};
 
 export default function Search() {
   const { locale } = useDSFRConfig();
   const { screen } = useScreenSize();
-  const intl = createIntl({ locale, messages: messages[locale] })
+  const intl = createIntl({ locale, messages: messages[locale] });
   const [ref, inView] = useInView();
-  const { api, currentQuery, handleQueryChange } = useUrl()
+  const { api, currentQuery, handleQueryChange } = useUrl();
   const { search, total } = useSearchData();
-  const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search;
+  const {
+    data,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = search;
 
-  const isMobile = screen === 'sm' || screen === 'xs';
+  const isMobile = screen === "sm" || screen === "xs";
 
-  const ItemComponent = API_MAPPING[api].item;
-  const AnalyticsComponent = API_MAPPING[api].analytics;
-  const FilterComponent = API_MAPPING[api].filters;
-
+  const ItemComponent = API_MAPPING[api]?.item;
+  const AnalyticsComponent = API_MAPPING[api]?.analytics;
+  const FilterComponent = API_MAPPING[api]?.filters;
 
   const shouldClickToLoad = data?.length
     ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK
@@ -80,12 +105,11 @@ export default function Search() {
 
   useEffect(() => {
     if (inView) {
-      fetchNextPage()
+      fetchNextPage();
     }
-  }, [inView, fetchNextPage])
-
+  }, [inView, fetchNextPage]);
   if (error) {
-    return <Error500 />
+    return <Error500 />;
   }
 
   return (
@@ -93,17 +117,25 @@ export default function Search() {
       <Container className={`bg-${api}`} fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
-            <Link href="/"><FormattedMessage id="search.top.breadcrumb.home" /></Link>
-            <Link current>{intl.formatMessage({ id: `search.top.breadcrumb.${api}` })}</Link>
+            <Link href="/">
+              <FormattedMessage id="search.top.breadcrumb.home" />
+            </Link>
+            <Link current>
+              {intl.formatMessage({ id: `search.top.breadcrumb.${api}` })}
+            </Link>
           </Breadcrumb>
           <Row gutters>
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
                 isLarge
-                buttonLabel={intl.formatMessage({ id: "search.top.main-search-bar" })}
+                buttonLabel={intl.formatMessage({
+                  id: "search.top.main-search-bar",
+                })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "search.top.main-search-bar" })}
+                placeholder={intl.formatMessage({
+                  id: "search.top.main-search-bar",
+                })}
                 onSearch={(value) => handleQueryChange(value)}
               />
             </Col>
@@ -113,16 +145,31 @@ export default function Search() {
           </Row>
           {isMobile && <CurrentFilters />}
           <Container fluid className={isMobile ? "fr-py-1w" : "fr-py-3w"}>
-            {(total && total === 10000) ? (<Text as="span" size={isMobile ? "sm" : "lg"} bold className="fr-mb-1w">
-              {intl.formatMessage({ id: "search.top.result-more-than" })}
-            </Text>) : null
-            }
-            {(total && total > 0) ? (<Text as="span" size={isMobile ? "sm" : "lg"} bold className="fr-mb-1w">
-              {intl.formatMessage(
-                { id: `search.top.${api}.result` },
-                { count: total, query: currentQuery }
-              )}
-            </Text>) : isFetchingNextPage ? <BaseSkeleton height="1.5rem" width="40%" /> : null}
+            {total && total === 10000 ? (
+              <Text
+                as="span"
+                size={isMobile ? "sm" : "lg"}
+                bold
+                className="fr-mb-1w"
+              >
+                {intl.formatMessage({ id: "search.top.result-more-than" })}
+              </Text>
+            ) : null}
+            {total && total > 0 ? (
+              <Text
+                as="span"
+                size={isMobile ? "sm" : "lg"}
+                bold
+                className="fr-mb-1w"
+              >
+                {intl.formatMessage(
+                  { id: `search.top.${api}.result` },
+                  { count: total, query: currentQuery }
+                )}
+              </Text>
+            ) : isFetchingNextPage ? (
+              <BaseSkeleton height="1.5rem" width="40%" />
+            ) : null}
           </Container>
         </Container>
       </Container>
@@ -133,9 +180,13 @@ export default function Search() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                    <ItemComponent data={data} highlight={highlight} key={data.id} />))
-                  : null
-                }
+                      <ItemComponent
+                        data={data}
+                        highlight={highlight}
+                        key={data.id}
+                      />
+                    ))
+                  : null}
               </div>
             </Container>
             {(isFetching || isFetchingNextPage) && (
@@ -146,32 +197,34 @@ export default function Search() {
                 </div>
               </>
             )}
-            {(hasNextPage && !shouldClickToLoad) && (
+            {hasNextPage && !shouldClickToLoad && (
               <>
                 <div ref={ref} />
                 <hr />
               </>
             )}
-            {(hasNextPage && shouldClickToLoad) && (
+            {hasNextPage && shouldClickToLoad && (
               <Separator className="fr-my-2w">
-                <Button icon="arrow-down-s-line" variant="text" onClick={() => fetchNextPage()}>
+                <Button
+                  icon="arrow-down-s-line"
+                  variant="text"
+                  onClick={() => fetchNextPage()}
+                >
                   <FormattedMessage id="search.results.pagination.next" />
                 </Button>
               </Separator>
             )}
-            {
-              (!isFetchingNextPage && !hasNextPage)
-                ? (<>
-                  <Separator />
-                  <Text size="md" className="fr-my-4w">
-                    {intl.formatMessage(
-                      { id: "search.results.pagination.end" },
-                      { query: currentQuery }
-                    )}
-                  </Text>
-                </>)
-                : null
-            }
+            {!isFetchingNextPage && !hasNextPage ? (
+              <>
+                <Separator />
+                <Text size="md" className="fr-my-4w">
+                  {intl.formatMessage(
+                    { id: "search.results.pagination.end" },
+                    { query: currentQuery }
+                  )}
+                </Text>
+              </>
+            ) : null}
           </Col>
           <Col xs="12" lg="4" offsetLg="1">
             <Container fluid>
@@ -185,6 +238,5 @@ export default function Search() {
         </Row>
       </Container>
     </RawIntlProvider>
-  )
+  );
 }
-

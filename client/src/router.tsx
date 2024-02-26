@@ -10,6 +10,7 @@ import Team from "./pages/about/team";
 import FAQ from "./pages/about/faq";
 import Error404 from "./components/errors/error-404";
 import Organization from "./pages/organizations/[id]";
+import Patents from "./pages/patents/[id]";
 import Project from "./pages/projects/[id]";
 import Networks from "./pages/networks";
 import Suggest from "./pages/suggest";
@@ -53,6 +54,7 @@ export default function Router() {
           <Route path="/authors/:id" element={<Author />} />
           <Route path="/organizations/:id" element={<Organization />} />
           <Route path="/projects/:id" element={<Project />} />
+          <Route path="/patents/:id" element={<Patents />} />
           <Route path="/suggest/:id" element={<Suggest />} />
           <Route path="/search">
             {/* <Route path="" element={<Navigate to="/search/organizations" replace />} /> */}
@@ -60,10 +62,7 @@ export default function Router() {
             <Route path="authors" element={<Search />} />
             <Route path="projects" element={<Search />} />
             <Route path="publications" element={<Search />} />
-            <Route
-              path="patents"
-              element={<h1 className="fr-mt-5w">Patents</h1>}
-            />
+            <Route path="patents" element={<Search />} />
           </Route>
           <Route path="/networks" element={<Networks />} />
           <Route

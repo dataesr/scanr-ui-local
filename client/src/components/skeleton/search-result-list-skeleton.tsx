@@ -1,7 +1,11 @@
-import { Fragment } from 'react';
-import './styles.module.scss';
+import { Fragment } from "react";
+import "./styles.module.scss";
 
-export default function SearchResultListSkeleton({ size = 8 }: { size?: number }) {
+export default function SearchResultListSkeleton({
+  size = 8,
+}: {
+  size?: number;
+}) {
   return (
     <>
       {[...Array(size).keys()].map((el) => (
@@ -12,5 +16,5 @@ export default function SearchResultListSkeleton({ size = 8 }: { size?: number }
         </Fragment>
       ))}
     </>
-  )
+  );
 }
