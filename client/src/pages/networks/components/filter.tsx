@@ -1,7 +1,6 @@
 import { Button, Container, SelectableTag, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
 import { FormattedMessage, useIntl } from "react-intl"
 import useSearchFilter from "../hooks/useSearchFilter"
-import Histogram from "../../../components/YearRangeSlider/histogram"
 import Modal from "../../../components/modal"
 import BaseSkeleton from "../../../components/skeleton/base-skeleton"
 import { PublicationAggregations } from "../../../types/publication"
@@ -16,7 +15,7 @@ export default function NetworkFilters() {
     filters: { data = { byYear: [], byType: [], byFunder: [] }, isLoading },
   } = useSearchFilter()
 
-  const { byYear, byType, byFunder } = data as PublicationAggregations
+  const { byType, byFunder } = data as PublicationAggregations
 
   return (
     <>
@@ -68,7 +67,6 @@ export default function NetworkFilters() {
           <Text className="fr-card__detail fr-mb-2w" size="sm">
             <FormattedMessage id="search.publications.filters.by-year-description" />
           </Text>
-          <Histogram height="75px" data={byYear.map((year) => year.count)} />
           <hr className="fr-mt-3w" />
           <Text className="fr-mt-3w fr-mb-0" bold size="md">
             <FormattedMessage id="search.publications.filters.by-type" />

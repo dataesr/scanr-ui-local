@@ -8,9 +8,16 @@ import {
   Nav,
   FastAccess,
   Button,
+  Autocomplete,
+  AutocompleteItem,
+  useAutocompleteList,
+  useDSFRConfig,
 } from '@dataesr/dsfr-plus';
 import { FormattedMessage, useIntl } from 'react-intl';
 import SwitchLanguage from '../components/switch-language';
+import { autocompleteOrganizations } from '../api/organizations/autocomplete';
+import { LightOrganization } from '../types/organization';
+import getLangFieldValue from '../utils/lang';
 
 const languages = [
   { shortName: 'FR', fullName: 'Français', key: 'fr' },
@@ -20,8 +27,19 @@ const languages = [
 ];
 
 export default function Header() {
+  const { locale } = useDSFRConfig();
   const { pathname } = useLocation();
   const intl = useIntl();
+
+  const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
+    async load({ filterText }) {
+      if (!filterText) {
+        return { items: [] };
+      }
+      const res = await autocompleteOrganizations({ query: filterText })
+      return { items: res.data?.map((org) => org._source) };
+    }
+  });
 
   return (
     <HeaderWrapper>
@@ -33,6 +51,29 @@ export default function Header() {
         </Button>
         <SwitchLanguage languages={languages} />
       </FastAccess>
+      <Autocomplete
+        label="Rechercher des structures"
+        items={authorsAutocompletedList.items}
+        inputValue={authorsAutocompletedList.filterText}
+        onInputChange={authorsAutocompletedList.setFilterText}
+        loadingState={authorsAutocompletedList.loadingState}
+        placeholder="Recherche rapide"
+        // menuTrigger="focus"
+        size="md"
+      >
+        {(item) => (
+          <AutocompleteItem
+            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-building-line" />}
+            description={item.address?.find((a) => a.main).city}
+            key={item.id}
+            href={`/organizations/${item.id}`}
+          >
+            <span className="fr-text--sm">
+              {getLangFieldValue(locale)(item.label)}
+            </span>
+          </AutocompleteItem>
+        )}
+      </Autocomplete>
       <Nav>
         <Link current={pathname === "/"} href='/'><FormattedMessage id="layout.header.nav.home" /></Link>
         <NavItem

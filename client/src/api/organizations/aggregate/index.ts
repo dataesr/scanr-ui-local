@@ -44,12 +44,6 @@ export async function aggregateOrganizations(
           size: 10
         },
       },
-      byGPS: {
-        terms: {
-          field: "address.gps",
-          size: 5000
-        },
-      },
       byFundings: {
         terms: {
           field: "projects.type.keyword",

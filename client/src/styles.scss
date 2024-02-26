@@ -119,3 +119,40 @@ $icons: (
     mask-image: url(#{$mask});
   }
 }
+
+
+@keyframes extend {
+  from {
+    max-width: 24rem;
+  }
+
+  to {
+    max-width: 32rem;
+  }
+}
+
+@keyframes shrink {
+  from {
+    max-width: 32rem;
+  }
+
+  to {
+    max-width: 24rem;
+  }
+}
+
+.fr-header__tools {
+  .fr-header__search {
+    &:focus-within {
+      max-width: 32rem;
+
+      @media only screen and (min-width: 992px) {
+        animation: extend 0.1s ease-in-out;
+      }
+    }
+
+    @media only screen and (min-width: 992px) {
+      animation: shrink 0.2s ease-in-out;
+    }
+  }
+}

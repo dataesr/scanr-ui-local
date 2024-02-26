@@ -9,6 +9,9 @@ import useUrl from "../../../hooks/useUrl";
 import OrganizationKindFilter from "./kind";
 import OrganizationLevelFilter from "./level";
 import OrganizationSupervisorsFilter from "./supervisors";
+import OrganizationLocalisationssFilter from "./localisation";
+import OrganizationFunderFilter from "./funders";
+import OrganizationTagsFilter from "./tags";
 
 
 
@@ -23,11 +26,17 @@ export default function OrganizationFilters() {
     <>
       <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.organizations.title" })}>
         <Container fluid className="fr-my-2w">
+          <OrganizationLocalisationssFilter />
+          <hr className="fr-mt-3w" />
           <OrganizationKindFilter />
           <hr className="fr-mt-3w" />
           <OrganizationLevelFilter />
           <hr className="fr-mt-3w" />
           <OrganizationSupervisorsFilter />
+          <hr className="fr-mt-3w" />
+          <OrganizationFunderFilter />
+          <hr className="fr-mt-3w" />
+          <OrganizationTagsFilter />
           <hr className="fr-mt-3w" />
         </Container>
         <div className='fr-modal__footer fr-px-0' style={{ display: 'flex', width: '100%', alignItems: "center" }}>
