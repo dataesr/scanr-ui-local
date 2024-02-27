@@ -6,12 +6,11 @@ import { searchPatents } from "../../../api/patents/search";
 
 import { searchOrganizations } from "../../../api/organizations/search";
 import { searchProjects } from "../../../api/projects/search";
-import { InfiniteResponse, InfiniteResult } from "../../../types/commons";
-import { LightAuthor } from "../../../types/author";
-import { LightOrganization } from "../../../types/organization";
-import { Patent } from "../../../types/patent";
-import { LightProject } from "../../../types/project";
-import { LightPublication } from "../../../types/publication";
+import {
+  InfiniteResponse,
+  InfiniteResult,
+  ObjectModel,
+} from "../../../types/commons";
 import useUrl from "./useUrl";
 
 const API_MAPPING = {
@@ -21,13 +20,6 @@ const API_MAPPING = {
   organizations: searchOrganizations,
   patents: searchPatents,
 };
-
-type ObjectModel =
-  | LightPublication
-  | LightAuthor
-  | LightProject
-  | LightOrganization
-  | Patent;
 
 export default function useSearchData() {
   const { api, currentQuery, filters } = useUrl();

@@ -36,6 +36,8 @@ import useScreenSize from "../../hooks/useScreenSize";
 import ProjectAnalytics from "./components/projects/projects-analytics";
 import AuthorAnalytics from "./components/authors/author-analytics";
 import PatentItem from "./components/patents/patent-item";
+import { ObjectModel } from "../../types/commons";
+import { ItemProps } from "./types";
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -95,9 +97,10 @@ export default function Search() {
 
   const isMobile = screen === "sm" || screen === "xs";
 
-  const ItemComponent = API_MAPPING[api]?.item;
   const AnalyticsComponent = API_MAPPING[api]?.analytics;
   const FilterComponent = API_MAPPING[api]?.filters;
+  const ItemComponent: React.FC<ItemProps<ObjectModel>> =
+    API_MAPPING[api]?.item;
 
   const shouldClickToLoad = data?.length
     ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK

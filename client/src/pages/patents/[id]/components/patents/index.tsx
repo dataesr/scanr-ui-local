@@ -18,9 +18,13 @@ import {
 import Map from "../../../../../components/map";
 import PatentActors from "../actors";
 import { toString } from "../../../../../utils/string";
+import PatentFamily from "../family";
+import Share from "../../../../../components/share";
+import { useParams } from "react-router-dom";
 
 export default function PatentPage({ data }: { data: Patent }) {
   const intl = useIntl();
+  const { id } = useParams();
   const { screen } = useScreenSize();
   const patentActors = data.authors;
   const iso2Codes = data.patents.map((patent) => patent.office);
@@ -68,9 +72,16 @@ export default function PatentPage({ data }: { data: Patent }) {
               </PageSection>
               <PageSection
                 show
-                title={intl.formatMessage({ id: "patents.section.familly" })}
+                title={intl.formatMessage({
+                  id: `patents.section.family`,
+                })}
+                description={
+                  data.patents.length > 1
+                    ? `Les différents brevets de la famille ${id}`
+                    : null
+                }
               >
-                <Text>dazd</Text>
+                <PatentFamily data={data} />
               </PageSection>
               <PageSection title="data section" show>
                 <pre>{JSON.stringify(data, null, 2)}</pre>
@@ -107,6 +118,9 @@ export default function PatentPage({ data }: { data: Patent }) {
                   })}
                 </ul>
               </Text>
+            </PageSection>
+            <PageSection show title="Partager la page">
+              <Share />
             </PageSection>
           </PageContent>
           <hr className="fr-my-3w" />

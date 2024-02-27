@@ -24,16 +24,18 @@ function ActorsCard({ actors }: { actors: PatentActorsData }) {
     >
       <Text className="fr-card__detail" size="sm">
         <i>
-          {actors.rolePatent.map((el) => {
-            if (el.role === "inv" && el.type === "dep") {
-              return "Déposant & inventeur";
-            } else if (el.role === "inv") {
-              return "Inventeur";
-            } else if (el.role === "dep") {
-              return "Déposant";
-            }
-            return el.role;
-          })}
+          {actors.rolePatent
+            .map((el) => {
+              if (el.role === "inv" && el.type === "dep") {
+                return "Inventeur & Déposant";
+              } else if (el.role === "inv") {
+                return "Inventeur";
+              } else if (el.role === "dep") {
+                return "Déposant";
+              }
+              return el.role;
+            })
+            .join(" & ")}
         </i>
       </Text>
       <Link className="fr-text--bold" href={`/authors/${actors.person}`}>

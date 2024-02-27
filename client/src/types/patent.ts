@@ -87,15 +87,6 @@ export type PatentActorsData = {
   lastName?: string;
 };
 
-// export type PatentPublications = {
-//   publicationsCount: number;
-//   publications: LightPublication[];
-//   coAuthors: Aggregation[];
-//   wikis: Aggregation[];
-//   reviews: Aggregation[];
-//   byYear: Aggregation[];
-// };
-
 // export type PatentAggregations = {
 //   byAward: Aggregation[];
 // };
