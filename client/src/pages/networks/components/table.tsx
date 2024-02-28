@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Container, Spinner } from "@dataesr/dsfr-plus"
+import { Container } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import { Network } from "../../../types/network"
 
@@ -12,15 +12,7 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
     [currentTab, currentQuery, currentFilters]
   )
 
-  if (search.isFetching || !communities)
-    return (
-      <Container
-        className="fr-mt-5w"
-        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "500px" }}
-      >
-        <Spinner />
-      </Container>
-    )
+  if (search.isFetching || !communities) return <></>
 
   return (
     <Container key={key} className="fr-mt-5w">

@@ -1,18 +1,23 @@
-import { FormattedMessage, useIntl, IntlProvider } from "react-intl"
+import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
-import useSearchFilter from "./hooks/useSearchFilter";
-
-import messagesFr from "./locales/fr.json";
-import messagesEn from "./locales/en.json";
-import NetworkFilters from "./components/filter";
-import useTab from "./hooks/useTab";
-import { Graph } from "./components/graph";
+import useSearchFilter from "./hooks/useSearchFilter"
+import NetworkFilters from "./components/filter"
+import useTab from "./hooks/useTab"
+import { Graph } from "./components/graph"
+import Home from "./components/home"
 import ClustersTable from "./components/table"
 
-const messages = {
-  fr: messagesFr,
-  en: messagesEn,
-}
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+})
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1]
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc
+}, {})
 
 const NETWORK_TABS_MAPPING = {
   authors: {
@@ -42,8 +47,8 @@ const networkTabFindLabel = (index) => networkTabs[index].label
 
 function NetworksPage() {
   const intl = useIntl()
-  const { currentTab, handleTabChange} = useTab();
-  const { currentQuery, handleQueryChange } = useSearchFilter();
+  const { currentTab, handleTabChange } = useTab()
+  const { currentQuery, handleQueryChange } = useSearchFilter()
 
   return (
     <>
@@ -79,6 +84,7 @@ function NetworksPage() {
         >
           {networkTabs.map(({ label, icon }) => (
             <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
+              <Home value={intl} currentTab={label} />
               <Graph currentTab={label} />
               <ClustersTable currentTab={label} />
             </Tab>
@@ -91,9 +97,13 @@ function NetworksPage() {
 
 export default function Networks() {
   const { locale } = useDSFRConfig()
+  const intl = createIntl({
+    locale,
+    messages: messages[locale],
+  })
   return (
-    <IntlProvider messages={messages[locale]} locale={locale}>
+    <RawIntlProvider value={intl}>
       <NetworksPage />
-    </IntlProvider>
+    </RawIntlProvider>
   )
 }
