@@ -3,7 +3,7 @@ import { graphGetTerminology } from "./models"
 import graphGetTemplates from "./templates"
 // import graphGetColorSchemes from "./colors"
 
-export default function createConfig(clusters: any, model: string): NetworkConfig {
+export default function configCreate(clusters: any, model: string): NetworkConfig {
   const templates = graphGetTemplates(model)
   const terminology = graphGetTerminology(model)
   // const color_schemes = graphGetColorSchemes(clusters)

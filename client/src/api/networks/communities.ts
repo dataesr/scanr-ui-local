@@ -1,71 +1,57 @@
 import Graph from "graphology-types"
-import { graphGetAggs } from "./models"
+import { Communities } from "../../types/network"
+import { arrayPush } from "./utils"
 
-const nodesGetUniqueAttribute = (graph: Graph, ids: Array<string>, name: string) =>
-  ids.reduce((acc, id) => {
-    const attribute = graph.getNodeAttribute(id, name)
-    if (!attribute) return acc
-    if (typeof attribute === "object")
-      if (Array.isArray(attribute)) {
-        acc.push(...attribute)
-      } else {
-        acc.push(...Object.keys(attribute))
-      }
-    else {
-      acc.push(attribute)
-    }
-    return Array.from(new Set(acc))
-  }, [])
-
-const nodesGetMaxAttribute = (graph: Graph, ids: Array<string>, name: string) => {
-  const maxElement = ids.reduce(
-    (acc, id) => {
-      const value = graph.getNodeAttribute(id, name)
-      const label = graph.getNodeAttribute(id, "label")
-      if (value > acc.value) {
-        acc.value = value
-        acc.labels = [label]
-      }
-      if (value === acc.value) {
-        acc.labels.concat(label)
-      }
-      return acc
-    },
-    { value: 0, labels: [] }
+const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
+  graph.reduceNodes(
+    (acc, _, attr) => (attr.community === community && attr?.[name] ? (acc = arrayPush(acc, attr[name])) : acc),
+    []
   )
 
-  return maxElement.labels
+const communityGetIds = (graph: Graph, community: number): Array<string> =>
+  graph.filterNodes((_, attr) => attr?.community === community)
+
+const communityGetSize = (graph: Graph, community: number): number =>
+  graph.filterNodes((_, attr) => attr?.community === community).length
+
+const communityGetMaxYear = (graph: Graph, community: number): number =>
+  Math.max(...communityGetAttribute(graph, community, "maxYear"))
+
+const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<string> => {
+  const maxWeight = Math.max(...communityGetAttribute(graph, community, "weight"))
+  const labels = graph.reduceNodes(
+    (acc, _, attr) => (acc = attr?.community === community && attr?.weight === maxWeight ? [...acc, attr.label] : acc),
+    []
+  )
+  return labels
 }
 
-const communityGetAttribute = (graph: Graph, ids: Array<string>, name: string, n = 0) =>
-  n > 0
-    ? nodesGetUniqueAttribute(graph, ids, name).slice(0, n).join(", ")
-    : nodesGetUniqueAttribute(graph, ids, name).join(", ")
+const communityGetDomains = (graph: Graph, community: number): any => {
+  const topHits = [...new Map(communityGetAttribute(graph, community, "topHits").map((hit) => [hit.id, hit])).values()] // Unique publications
+  const domains = topHits.reduce((acc, hit) => {
+    if (hit?.domains) Object.entries(hit.domains).forEach(([key, value]) => (acc[key] = acc[key] ? acc[key] + value : value))
+    return acc
+  }, {})
+  return domains
+}
 
-const communityGetMaxAttribute = (graph: Graph, ids: Array<string>, name: string) => nodesGetMaxAttribute(graph, ids, name)
-
-export default function graphGetCommunities(graph: Graph, model: string): Array<any> {
+export default function createCommunities(graph: Graph): Communities {
   // Find number of communities
   const count = graph.reduceNodes((acc, _, attr) => Math.max(acc, attr.community), 0) + 1
 
   // Create communities array
-  let communities = Array.from({ length: count }, (_, index) => ({
+  const communities = Array.from({ length: count }, (_, index) => ({
     index: index,
-    ids: graph.filterNodes((_, attr) => attr?.community === index),
-  })).sort((a, b) => b.ids.length - a.ids.length) as Array<any>
-
-  // Fill communities
-  communities = communities.map((community) => ({
-    ...community,
-    label: `${community.ids.length} ${model}`,
-    size: community.ids.length,
-    maxYear: Math.max(...nodesGetUniqueAttribute(graph, community.ids, "maxYear")),
-    aggs: graphGetAggs(model)?.reduce(
-      (acc, { name }) => (acc = { ...acc, [name]: communityGetAttribute(graph, community.ids, name, 10) }),
-      {}
-    ),
-    topElement: communityGetMaxAttribute(graph, community.ids, "weight"),
+    label: `Community ${index}`,
+    ids: communityGetIds(graph, index),
+    size: communityGetSize(graph, index),
+    maxYear: communityGetMaxYear(graph, index),
+    maxWeightNodes: communityGetMaxWeightNodes(graph, index),
+    domains: communityGetDomains(graph, index),
   }))
+
+  // Sort communities
+  communities.sort((a, b) => b.size - a.size)
 
   console.log("communities", communities)
   return communities

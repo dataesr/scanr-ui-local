@@ -2,30 +2,42 @@ import UndirectedGraph from "graphology"
 import louvain from "graphology-communities-louvain"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
-import { NetworkData } from "../../types/network"
-import graphGetCommunities from "./communities"
+import { NetworkData, NetworkHits } from "../../types/network"
+import createCommunities from "./communities"
 import itemGetDescription from "./description"
-import itemGetAggregations from "./aggregations"
+import { aggExtractHit } from "./aggregations"
+// import itemGetAggregations from "./aggregations"
 
 export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
-export default function createNetwork(aggregation: Array<any>, model: string): NetworkData {
+const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
+const nodeConcatTopHits = (nodeTopHits: NetworkHits, topHits: Array<any>): NetworkHits => {
+  const topHitsSource = topHits.map((hit) => aggExtractHit(hit?._source))
+  const concat = nodeTopHits
+    ? [...new Map(nodeTopHits.concat(topHitsSource).map((hit) => [hit.id, hit])).values()]
+    : topHitsSource
+  return concat
+}
+
+export default function networkCreate(aggregation: Array<any>, model: string): NetworkData {
   // Create Graph object
   let graph = new UndirectedGraph()
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
     const maxYear = item.max_year?.value
+    const topHits = item.top_hits?.hits?.hits
     const nodes = key.split("---")
 
     // Add nodes and compute weight
-    nodes.forEach((id) =>
+    nodes.forEach((id: string) =>
       graph.updateNode(id.split("###")[0], (attr) => ({
         label: id.split("###")[1],
         weight: (attr?.weight ?? 0) + count,
-        ...(maxYear && { maxYear: attr?.maxYear ? Math.max(attr.maxYear, maxYear) : maxYear }),
-        ...itemGetAggregations(model, item, attr),
+        ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),
+        ...(topHits && { topHits: nodeConcatTopHits(attr?.topHits, topHits) }),
+        // ...itemGetAggregations(model, item, attr),
       }))
     )
 
@@ -33,7 +45,7 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
     graph.updateUndirectedEdgeWithKey(key, nodes[0].split("###")[0], nodes[1].split("###")[0], (attr) => ({
       weight: (attr?.weight ?? 0) + count,
       label: `${attr?.weight || 1} links`,
-      ...itemGetAggregations(model, item),
+      // ...itemGetAggregations(model, item),
     }))
   })
 
@@ -69,7 +81,7 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
 
   // Add communities
   louvain.assign(graph)
-  const communities = graphGetCommunities(graph, model)
+  const communities = createCommunities(graph)
 
   console.log("Graph nodes", Array.from(graph.nodeEntries()))
 
@@ -79,7 +91,7 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
       id: key,
       label: attr?.label,
       cluster: attr.community + 1,
-      weights: { Weight: attr?.weight, Degree: graph.degree(key) },
+      weights: { Weight: attr.weight, Degree: graph.degree(key), ...(attr?.topHits && { TopHits: attr.topHits.length }) },
       scores: { "Last activity": attr?.maxYear },
       description: itemGetDescription(model, key, attr),
     })),
@@ -89,12 +101,8 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
       strength: attr?.weight,
     })),
     clusters: communities.map((community) => ({
+      ...community,
       cluster: community.index + 1,
-      label: community.label,
-      size: community.size,
-      maxYear: community.maxYear,
-      topElement: community.topElement,
-      aggs: community.aggs,
     })),
   }
 

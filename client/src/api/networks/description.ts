@@ -11,7 +11,8 @@ export default function itemGetDescription(model: string, key: string, attr: any
 
   if (!conf) return ""
 
-  const url = model === "domains" ? `${conf?.url}?q="${attr.label.replace(/ /g, "+")}"` : `${conf?.url}/${key}`
+  const url =
+    model === "domains" || model === "software" ? `${conf?.url}?q="${attr.label.replace(/ /g, "+")}"` : `${conf?.url}/${key}`
   const header = `<div class='description_label'><a class='description_url' href=${url} target='_blank'>{label}</a></div><div></div>`
 
   const description = conf?.aggregations?.reduce(

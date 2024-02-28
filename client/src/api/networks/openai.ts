@@ -43,7 +43,6 @@ export async function openAiLabelsFromDomains(query: string, domains: any): Prom
 export async function openAiLabeledClusters(query:string, clusters: Array<any>) {
 
     const prefix = "cluster"
-
     const domains = clusters?.reduce((acc, cluster, index) => {
       return cluster?.aggs?.domains ? acc + `${prefix}${index} = [${cluster.aggs.domains}], ` : acc
     }, "")

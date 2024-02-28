@@ -2,19 +2,21 @@ import { publicationTypeMapping } from "../../utils/string"
 import { publicationsIndex, postHeaders } from "../../config/api"
 import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../../types/network"
 import { PublicationAggregations } from "../../types/publication"
-import createNetwork from "./network"
-import createConfig from "./config"
-import { graphGetAggs } from "./models"
-import { openAiLabeledClusters } from "./openai"
+import networkCreate from "./network"
+import configCreate from "./config"
+// import { openAiLabeledClusters } from "./openai"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
 
-const networkSearchSubAggregations = (model: string) => {
+const networkSearchSubAggregations = () => {
   const subAggregations = {
     max_year: { max: { field: "year" } },
+    top_hits: {
+      top_hits: { _source: { includes: ["id", "title.default", "year", "productionType", "isOa", "domains"] }, size: 10 },
+    },
   }
-  graphGetAggs(model)?.forEach(({ name, field }) => (subAggregations[name] = { terms: { field: field, size: 10 } }))
+  // graphGetAggs(model)?.forEach(({ name, field }) => (subAggregations[name] = { terms: { field: field, size: 10 } }))
   return subAggregations
 }
 
@@ -34,9 +36,9 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
     },
   },
   aggs: {
-    [`byCo${model}`]: {
+    [model]: {
       terms: { field: `co_${model}.keyword`, size: DEFAULT_SIZE },
-      aggs: networkSearchSubAggregations(model),
+      aggs: networkSearchSubAggregations(),
     },
   },
 })
@@ -57,12 +59,12 @@ export async function networkSearch({ model, query, filters }: NetworkSearchArgs
 
   console.log("endOfSearch", res)
 
-  const aggregation = res.aggregations?.[`byCo${model}`].buckets
+  const aggregation = res.aggregations?.[model].buckets
 
-  const network = createNetwork(aggregation, model)
-  network.clusters = await openAiLabeledClusters(query, network?.clusters)
+  const network = networkCreate(aggregation, model)
+  // network.clusters = await openAiLabeledClusters(query, network?.clusters)
 
-  const config = createConfig(network?.clusters, model)
+  const config = configCreate(network?.clusters, model)
 
   const data = {
     network: network,

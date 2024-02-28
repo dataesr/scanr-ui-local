@@ -3,13 +3,13 @@ import { Container } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import { NetworkData } from "../../../types/network"
 
-const communityGetAggs = (obj) => (obj === undefined ? [] : Object.entries(obj))
+// const communityGetAggs = (obj) => (obj === undefined ? [] : Object.entries(obj))
 
-const communitiesGetAggsKeys = (communities) =>
-  communities?.reduce(
-    (acc, community) => [...new Set([...acc, ...communityGetAggs(community?.aggs).map((item) => item[0])])],
-    []
-  )
+// const communitiesGetAggsKeys = (communities) =>
+//   communities?.reduce(
+//     (acc, community) => [...new Set([...acc, ...communityGetAggs(community?.aggs).map((item) => item[0])])],
+//     []
+//   )
 
 export default function ClustersTable({ currentTab }: { currentTab: string }) {
   const { search, currentQuery, currentFilters } = useSearchData(currentTab)
@@ -28,9 +28,6 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
         <tr>
           <th>Community</th>
           <th>Size</th>
-          {communitiesGetAggsKeys(communities).map((item) => (
-            <th>{`Top ${item}`}</th>
-          ))}
           <th>Top element</th>
           <th>Last activity</th>
         </tr>
@@ -39,10 +36,7 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
             <tr key={key}>
               <td>{val.label}</td>
               <td>{val.size}</td>
-              {communityGetAggs(val?.aggs).map((item: [string, string]) => (
-                <td>{item[1]}</td>
-              ))}
-              <td>{val.topElement}</td>
+              <td>{val.maxWeightNodes.join(", ")}</td>
               <td>{val.maxYear}</td>
             </tr>
           )

@@ -1,16 +1,13 @@
-import { Aggregation } from "./commons"
-
+import { LangField } from "./commons"
 export type Network = {
   network: NetworkData
   config?: NetworkConfig
 }
-
 export type NetworkData = {
   items: object[]
   links: object[]
   clusters?: any
 }
-
 export type NetworkConfig = {
   terminology?: object
   color_schemes?: object
@@ -23,35 +20,54 @@ export type NetworkSearchBody = {
   query: any
   aggs: any
 }
-
 export type NetworkSearchArgs = {
   model: string
   query?: string
   filters?: Record<string, unknown>[]
 }
-
 export type NetworkFilterArgs = {
   query?: string | unknown
 }
 
-export type NetworkAggregation = {
-  byCoAuthors: Aggregation[]
-  byCoInstitutions: Aggregation[]
-  byCoStructures: Aggregation[]
-  byCoDomains: Aggregation[]
-}
+// export type NetworkAggregation = {
+//   authors: Aggregation[]
+//   institutions: Aggregation[]
+//   structures: Aggregation[]
+//   domaines: Aggregation[]
+//   software: Aggregation[]
+// }
 
-export type NetworkVosConfig = {
-  network: Network
-  config?: {
-    parameters: object[]
-    color_schemes?: object[]
-    terminology?: object[]
-    templates?: object[]
-    styles?: object[]
-  }
-  info?: {
-    title: string
-    description: string
-  }
+export type Community = {
+  index: number
+  label: string
+  ids: Array<string>
+  size: number
+  maxYear?: number
+  maxWeightNodes?: Array<string>
+  domains?: any
 }
+export type Communities = Array<Community>
+
+export type NetworkHit = {
+  id: string
+  title: string
+  type: string
+  isOa: boolean
+  domains: any
+}
+export type NetworkHits = Array<NetworkHit>
+
+export type ElasticDomain = {
+  label: LangField
+  count: number
+}
+export type ElasticDomains = Array<ElasticDomain>
+export type ElasticHit = {
+  id: string
+  title?: LangField
+  productionType?: string
+  isOa?: boolean
+  domains?: ElasticDomains
+  year?: number
+}
+export type ElasticHits = Array<ElasticHit>
