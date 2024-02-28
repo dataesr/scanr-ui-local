@@ -12,10 +12,10 @@ export default function PublicationTypeFilter() {
   return (
     <>
       <Text className="fr-mb-0" bold size="md">
-        <FormattedMessage id="search.publications.filters.by-type" />
+        <FormattedMessage id="search.filters.publications.by-type" />
       </Text>
       <Text className="fr-card__detail fr-mb-2w" size="sm">
-        <FormattedMessage id="search.publications.filters.by-type-description" />
+        <FormattedMessage id="search.filters.publications.by-type-description" />
       </Text>
       <TagGroup>
         {byType.map((type) => (

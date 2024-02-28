@@ -13,6 +13,7 @@ type ModalProps = Merge<React.HTMLAttributes<HTMLDialogElement>, {
   id: string;
   className?: Argument;
   title: React.ReactNode;
+  footer?: React.ReactNode;
 }>
 
 
@@ -21,6 +22,7 @@ export default function Modal({
   size = "md",
   id: modalId,
   className,
+  footer,
   title,
   ...props
 }: ModalProps) {
@@ -59,6 +61,11 @@ export default function Modal({
                 </h1>
                 {children}
               </div>
+              {footer && (
+                <div className="fr-modal__footer">
+                  {footer}
+                </div>
+              )}
             </div>
           </div>
         </div>

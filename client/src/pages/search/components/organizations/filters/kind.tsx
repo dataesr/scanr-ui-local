@@ -18,10 +18,10 @@ export default function OrganizationKindFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mt-3w fr-mb-0" bold size="md">
-            <FormattedMessage id="search.organizations.filters.by-kind" />
+            <FormattedMessage id="search.filters.organizations.by-kind" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.organizations.filters.by-kind-description" />
+            <FormattedMessage id="search.filters.organizations.by-kind-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('kind', (key === 'and') ? 'and' : 'or')} />

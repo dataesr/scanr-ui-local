@@ -4,7 +4,7 @@ import useUrl from "../../../hooks/useUrl";
 import { LocalisationAutocomplete, autocompleteLocalisations } from "../../../../../api/localisations";
 import OperatorButton from "../../../../../components/operator-button";
 
-export default function OrganizationLocalisationssFilter() {
+export default function OrganizationLocalisationsFilter() {
   const { currentFilters, handleFilterChange, setOperator } = useUrl()
 
   const localisationAutocompletedList = useAutocompleteList<LocalisationAutocomplete>({
@@ -27,10 +27,10 @@ export default function OrganizationLocalisationssFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.organizations.filters.by-supervisors" />
+            <FormattedMessage id="search.filters.organizations.by-localisation" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.organizations.filters.by-supervisors-description" />
+            <FormattedMessage id="search.filters.organizations.by-localisation-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('address.localisationSuggestions', (key === 'and') ? 'and' : 'or')} />
@@ -59,6 +59,7 @@ export default function OrganizationLocalisationssFilter() {
         inputValue={localisationAutocompletedList.filterText}
         onInputChange={localisationAutocompletedList.setFilterText}
         loadingState={localisationAutocompletedList.loadingState}
+        placeholder="Ex: Ile de france, Bas-Rhin, Lyon..."
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {

@@ -16,10 +16,10 @@ export default function PublicationYearFilter() {
   return (
     <>
       <Text bold size="md" className="fr-mb-1v">
-        <FormattedMessage id="search.publications.filters.by-year" />
+        <FormattedMessage id="search.filters.publications.by-year" />
       </Text>
       <Text className="fr-card__detail fr-mb-2w" size="sm">
-        <FormattedMessage id="search.publications.filters.by-year-description" />
+        <FormattedMessage id="search.filters.publications.by-year-description" />
       </Text>
       <RangeSlider
         aria-label="Années de publication"

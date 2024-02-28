@@ -26,10 +26,10 @@ export default function PublicationAuthorFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.publications.filters.by-author" />
+            <FormattedMessage id="search.filters.publications.by-author" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.publications.filters.by-author-description" />
+            <FormattedMessage id="search.filters.publications.by-author-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('authors.person', (key === 'and') ? 'and' : 'or')} />
