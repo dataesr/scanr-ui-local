@@ -37,7 +37,7 @@ export default function graphGetCommunities(graph: Graph, model: string): Array<
     size: community.ids.length,
     maxYear: Math.max(...nodesGetUniqueAttribute(graph, community.ids, "maxYear")),
     aggs: graphGetAggs(model)?.reduce(
-      (acc, { name }) => (acc[name] = communityGetAttribute(graph, community.ids, name, 5)),
+      (acc, { name }) => (acc = { ...acc, [name]: communityGetAttribute(graph, community.ids, name, 5) }),
       {}
     ),
   }))
