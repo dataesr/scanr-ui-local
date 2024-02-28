@@ -29,18 +29,20 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
           <th>Community</th>
           <th>Size</th>
           {communitiesGetAggsKeys(communities).map((item) => (
-            <th>{item}</th>
+            <th>{`Top ${item}`}</th>
           ))}
+          <th>Top element</th>
           <th>Last activity</th>
         </tr>
         {communities.map((val, key) => {
           return (
             <tr key={key}>
-              <td>{val.cluster}</td>
+              <td>{val.label}</td>
               <td>{val.size}</td>
               {communityGetAggs(val?.aggs).map((item: [string, string]) => (
                 <td>{item[1]}</td>
               ))}
+              <td>{val.topElement}</td>
               <td>{val.maxYear}</td>
             </tr>
           )

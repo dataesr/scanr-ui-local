@@ -15,7 +15,10 @@ const GRAPH_MODELS = {
   },
   institutions: {
     url: "http://localhost:5173/organizations",
-    aggregations: [{ name: "authors", field: "co_authors.keyword" }],
+    aggregations: [
+      { name: "authors", field: "co_authors.keyword" },
+      { name: "domains", field: "co_domains.keyword" },
+    ],
     terminology: {
       item: "institution",
       items: "institutions",
@@ -29,7 +32,10 @@ const GRAPH_MODELS = {
   },
   structures: {
     url: "http://localhost:5173/organizations",
-    aggregations: [{ name: "authors", field: "co_authors.keyword" }],
+    aggregations: [
+      { name: "authors", field: "co_authors.keyword" },
+      { name: "domains", field: "co_domains.keyword" },
+    ],
     terminology: {
       item: "structure",
       items: "structures",

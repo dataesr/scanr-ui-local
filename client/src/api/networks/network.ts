@@ -1,4 +1,5 @@
 import UndirectedGraph from "graphology"
+import louvain from "graphology-communities-louvain"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
 import { NetworkData } from "../../types/network"
@@ -67,6 +68,7 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
   // console.log("Edge weight threshold :", edgeWeightThresh)
 
   // Add communities
+  louvain.assign(graph)
   const communities = graphGetCommunities(graph, model)
 
   console.log("Graph nodes", Array.from(graph.nodeEntries()))
@@ -76,7 +78,7 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
     items: graph.mapNodes((key, attr) => ({
       id: key,
       label: attr?.label,
-      cluster: communities.findIndex((community) => community.ids.includes(key)) + 1,
+      cluster: attr.community + 1,
       weights: { Weight: attr?.weight, Degree: graph.degree(key) },
       scores: { "Last activity": attr?.maxYear },
       description: itemGetDescription(model, key, attr),
@@ -86,11 +88,12 @@ export default function createNetwork(aggregation: Array<any>, model: string): N
       target_id: target,
       strength: attr?.weight,
     })),
-    clusters: communities.map((community, index) => ({
-      cluster: index + 1,
+    clusters: communities.map((community) => ({
+      cluster: community.index + 1,
       label: community.label,
       size: community.size,
       maxYear: community.maxYear,
+      topElement: community.topElement,
       aggs: community.aggs,
     })),
   }

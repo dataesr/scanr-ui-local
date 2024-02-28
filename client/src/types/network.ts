@@ -26,7 +26,7 @@ export type NetworkSearchBody = {
 
 export type NetworkSearchArgs = {
   model: string
-  query?: string | unknown
+  query?: string
   filters?: Record<string, unknown>[]
 }
 

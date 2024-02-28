@@ -5,6 +5,7 @@ import { PublicationAggregations } from "../../types/publication"
 import createNetwork from "./network"
 import createConfig from "./config"
 import { graphGetAggs } from "./models"
+import { openAiLabeledClusters } from "./openai"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
@@ -59,6 +60,8 @@ export async function networkSearch({ model, query, filters }: NetworkSearchArgs
   const aggregation = res.aggregations?.[`byCo${model}`].buckets
 
   const network = createNetwork(aggregation, model)
+  network.clusters = await openAiLabeledClusters(query, network?.clusters)
+
   const config = createConfig(network?.clusters, model)
 
   const data = {
@@ -67,7 +70,6 @@ export async function networkSearch({ model, query, filters }: NetworkSearchArgs
   }
 
   console.log("data", data)
-
   return data
 }
 
