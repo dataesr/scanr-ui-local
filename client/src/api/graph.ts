@@ -5,7 +5,7 @@ import { connectedComponents } from "graphology-components"
 import { Network } from "../types/network"
 
 const GRAPH_MAX_ORDER = 300
-const GRAPH_MAX_COMPONENTS = 3
+const GRAPH_MAX_COMPONENTS = 5
 
 const bucketToDomains = (bucket) =>
   bucket.reduce((acc, item) => {
@@ -50,16 +50,26 @@ export function aggToGraphology(aggregation: Array<any>): Network {
     }))
   })
 
+  console.log(`Graph items=${graph.order}, links=${graph.size}, components=${connectedComponents(graph).length}`)
+
   // Keep only largests components
   const sortedComponents = connectedComponents(graph).sort((a, b) => b.length - a.length)
-  graph = subgraph(graph, sortedComponents.slice(0, GRAPH_MAX_COMPONENTS).flat())
+  let numberOfComponents = GRAPH_MAX_COMPONENTS
+  graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
+  while (graph.order > GRAPH_MAX_ORDER && numberOfComponents > 1) {
+    numberOfComponents -= 1
+    graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
+  }
+  console.log(`Components graph items=${graph.order}, links=${graph.size}, components=${connectedComponents(graph).length}`)
 
   // Filter with minimal number of nodes
-  let nodeWeightThresh = 1
-  while (graph.order > GRAPH_MAX_ORDER) {
-    nodeWeightThresh += 1
-    graph = subgraph(graph, (_, attr) => attr?.weight >= nodeWeightThresh) // eslint-disable-line no-loop-func
-  }
+  // let nodeWeightThresh = 1
+  // while (graph.order > GRAPH_MAX_ORDER) {
+  //   nodeWeightThresh += 1
+  //   graph = subgraph(graph, (_, attr) => attr?.weight >= nodeWeightThresh) // eslint-disable-line no-loop-func
+  // }
+
+  // console.log(`Filtered graph items=${graph.order}, links=${graph.size}, components=${connectedComponents(graph).length}`)
 
   // Filter with minimal number of edges
   // let edgeWeightThresh = 1
