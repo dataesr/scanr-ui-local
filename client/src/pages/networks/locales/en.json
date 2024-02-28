@@ -1,10 +1,10 @@
 {
-    "network.top.breadcrumb.home": "Home",
-    "network.top.breadcrumb.explore": "Explore network",
-    "network.top.main-search-bar": "Search",
-    "network.header.tab.authors": "Authors",
-    "network.header.tab.institutions": "Institutions",
-    "network.header.tab.structures": "Structures",
-    "network.header.tab.domains": "Domains",
-    "network.top.filters-button-label": "Filter"
+    "networks.top.breadcrumb.home": "Home",
+    "networks.top.breadcrumb.explore": "Explore network",
+    "networks.top.main-search-bar": "Search",
+    "networks.header.tab.authors": "Authors",
+    "networks.header.tab.institutions": "Institutions",
+    "networks.header.tab.structures": "Structures",
+    "networks.header.tab.domains": "Domains",
+    "networks.top.filters-button-label": "Filter"
 }

@@ -52,7 +52,7 @@ export async function networkSearch({ agg, query, filters }: NetworkSearchArgs):
   return network
 }
 
-export async function networkFilter({ agg, query }: NetworkFilterArgs): Promise<PublicationAggregations> {
+export async function networkFilter({ query }: NetworkFilterArgs): Promise<PublicationAggregations> {
   const body: any = {
     size: 0,
     query: {
@@ -63,9 +63,6 @@ export async function networkFilter({ agg, query }: NetworkFilterArgs): Promise<
               query: query || "*",
               fields: SEARCH_FIELDS,
             },
-          },
-          {
-            exists: { field: `co_${agg}` },
           },
         ],
       },

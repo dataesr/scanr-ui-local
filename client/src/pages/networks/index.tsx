@@ -50,18 +50,18 @@ function NetworksPage() {
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
             <Link href="/">
-              <FormattedMessage id="network.top.breadcrumb.home" />
+              <FormattedMessage id="networks.top.breadcrumb.home" />
             </Link>
-            <Link current>{intl.formatMessage({ id: "network.top.breadcrumb.explore" })}</Link>
+            <Link current>{intl.formatMessage({ id: "networks.top.breadcrumb.explore" })}</Link>
           </Breadcrumb>
           <Row gutters>
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
                 isLarge
-                buttonLabel={intl.formatMessage({ id: "network.top.main-search-bar" })}
+                buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "network.top.main-search-bar" })}
+                placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 onSearch={(value) => handleQueryChange(value)}
               />
             </Col>
@@ -77,7 +77,7 @@ function NetworksPage() {
           onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
         >
           {networkTabs.map(({ label, icon }) => (
-            <Tab index={label} label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
+            <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
               <Graph currentTab={label} />
             </Tab>
           ))}

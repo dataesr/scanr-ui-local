@@ -16,7 +16,6 @@ export type NetworkSearchArgs = {
   filters?: Record<string, unknown>[]
 }
 export type NetworkFilterArgs = {
-  agg: string
   query?: string | unknown
 }
 
