@@ -1,14 +1,21 @@
 import { Aggregation } from "./commons"
 
-export type vosViewerData = {
-  network: Network
-  config: any
+export type Network = {
+  network: NetworkData
+  config?: NetworkConfig
 }
 
-export type Network = {
+export type NetworkData = {
   items: object[]
   links: object[]
   clusters?: any
+}
+
+export type NetworkConfig = {
+  terminology?: object
+  color_schemes?: object
+  templates?: object
+  styles?: object
 }
 
 export type NetworkSearchBody = {

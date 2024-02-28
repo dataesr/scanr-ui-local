@@ -24,16 +24,16 @@ const communityGetAttribute = (graph: Graph, ids: Array<string>, name: string, n
 
 export default function graphGetCommunities(graph: Graph, model: string): Array<any> {
   // Create communities array
+  louvain.assign(graph)
   const details = louvain.detailed(graph)
   const communitiesArray = Array.from({ length: details.count }, (_, index) => ({
-    index: index,
     ids: graph.filterNodes((_, attr) => attr?.community === index),
   })).sort((a, b) => b.ids.length - a.ids.length)
 
   // Fill communities
   const communities = communitiesArray.map((community) => ({
     ...community,
-    label: `Group ${community.index + 1} (${community.ids.length})`,
+    label: `${community.ids.length} ${model}`,
     size: community.ids.length,
     maxYear: Math.max(...nodesGetUniqueAttribute(graph, community.ids, "maxYear")),
     aggs: graphGetAggs(model)?.reduce(

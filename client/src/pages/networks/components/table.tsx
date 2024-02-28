@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { Container } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
-import { Network } from "../../../types/network"
+import { NetworkData } from "../../../types/network"
 
 const communityGetAggs = (obj) => (obj === undefined ? [] : Object.entries(obj))
 
@@ -13,7 +13,7 @@ const communitiesGetAggsKeys = (communities) =>
 
 export default function ClustersTable({ currentTab }: { currentTab: string }) {
   const { search, currentQuery, currentFilters } = useSearchData(currentTab)
-  const network = search?.data?.network as Network
+  const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const key = useMemo(
     () => JSON.stringify({ currentTab, currentQuery, currentFilters }),

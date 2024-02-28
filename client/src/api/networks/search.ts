@@ -1,6 +1,6 @@
 import { publicationTypeMapping } from "../../utils/string"
 import { publicationsIndex, postHeaders } from "../../config/api"
-import { vosViewerData, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../../types/network"
+import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../../types/network"
 import { PublicationAggregations } from "../../types/publication"
 import createNetwork from "./network"
 import createConfig from "./config"
@@ -40,7 +40,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
 })
 
-export async function networkSearch({ model, query, filters }: NetworkSearchArgs): Promise<vosViewerData> {
+export async function networkSearch({ model, query, filters }: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
@@ -61,14 +61,14 @@ export async function networkSearch({ model, query, filters }: NetworkSearchArgs
   const network = createNetwork(aggregation, model)
   const config = createConfig(network?.clusters, model)
 
-  const vosviewer = {
+  const data = {
     network: network,
     config: config,
-  } as vosViewerData
+  }
 
-  console.log("vosViewerData", vosviewer)
+  console.log("data", data)
 
-  return vosviewer
+  return data
 }
 
 export async function networkFilter({ query }: NetworkFilterArgs): Promise<PublicationAggregations> {
