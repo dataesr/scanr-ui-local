@@ -1,7 +1,8 @@
 import { useMemo } from "react"
-import { Container, Text, Spinner } from "@dataesr/dsfr-plus"
+import { Container, Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
+import Error204 from "./error204"
 
 export function Graph({ currentTab }: { currentTab: string }) {
   const { search, currentQuery, currentFilters } = useSearchData(currentTab)
@@ -28,9 +29,9 @@ export function Graph({ currentTab }: { currentTab: string }) {
     return (
       <Container
         className="fr-mt-5w"
-        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "500px" }}
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "200px" }}
       >
-        <Text>No results with this query / filters...</Text>
+        <Error204 />
       </Container>
     )
 
