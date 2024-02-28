@@ -46,17 +46,17 @@ const TERMINOLOGY_MAPPING = {
   domains: terminologyDomains,
 }
 
-const templates = (networkTab: string) => ({
+const templates = (tab: string) => ({
   // prettier-ignore
-  item_description: `<div class='description_label'><a class='description_url' href=http://localhost:4173/${(networkTab === "authors" ? networkTab : "organizations")}/{id} target='_self'>{label}</a></div><div class='description_text'>Ut enim ad minim veniam, quis nostrud exercitation</div>`,
-  link_description: `<div class='description_heading'>Co-${networkTab} link</div><div class='description_label'><div class='description_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>`,
+  link_description: `<div class='description_heading'>Co-${tab} link</div><div class='description_label'><div class='description_text'>{strength} co-publications</div>`,
 })
 
 export default function getConfig(networkTab: string) {
-  console.log("templates", templates(networkTab))
   const config = {
-    // templates: templates(networkTab),
-    ...(networkTab in TERMINOLOGY_MAPPING && { terminology: TERMINOLOGY_MAPPING[networkTab] }),
+    templates: templates(networkTab),
+    ...(networkTab in TERMINOLOGY_MAPPING && {
+      terminology: TERMINOLOGY_MAPPING[networkTab],
+    }),
   }
   return config
 }

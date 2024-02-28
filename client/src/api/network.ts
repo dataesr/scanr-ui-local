@@ -2,7 +2,7 @@ import { publicationTypeMapping } from "../utils/string"
 import { publicationsIndex, postHeaders } from "../config/api"
 import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../types/network"
 import { PublicationAggregations } from "../types/publication"
-import { aggToGraphology } from "./graph"
+import { aggToGraphology, GRAPH_MAPPING } from "./graph"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
@@ -27,7 +27,7 @@ const networkSearchBody = (agg: string, query?: string | unknown): NetworkSearch
       terms: { field: `co_${agg}.keyword`, size: DEFAULT_SIZE },
       aggs: {
         max_year: { max: { field: "year" } },
-        ...(agg === "authors" && { agg_domains: { terms: { field: "co_domains.keyword", size: 10 } } }),
+        ...(agg in GRAPH_MAPPING && { agg_sub: { terms: { field: GRAPH_MAPPING[agg].subAggField, size: 10 } } }),
       },
     },
   },
@@ -39,15 +39,20 @@ export async function networkSearch({ agg, query, filters }: NetworkSearchArgs):
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
 
+  console.log("networkSearch", body)
+
   const res = await fetch(`${publicationsIndex}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
   }).then((response) => response.json())
 
+  console.log("endOfSearch", res)
+
   const aggregation = res.aggregations?.[`byCo${agg}`].buckets
 
-  const network = aggToGraphology(aggregation)
+  const network = aggToGraphology(aggregation, agg)
+  console.log("network", network)
 
   return network
 }
