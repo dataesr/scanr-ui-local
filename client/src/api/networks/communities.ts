@@ -61,7 +61,7 @@ export default async function communitiesCreate(graph: Graph): Promise<any> {
 
       const community = {
         index: index,
-        label: `Community ${index}`,
+        label: `Commu ${index}`,
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
