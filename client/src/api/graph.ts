@@ -114,6 +114,13 @@ export function aggToGraphology(aggregation: Array<any>, agg: string): Network {
 
   // Add communities
   louvain.assign(graph)
+  const details = louvain.detailed(graph)
+  const communities = Array.from({ length: details.count }, (_, index) => ({
+    cluster: index + 1,
+    ids: graph.filterNodes((_, attr) => attr?.community === index),
+    label: `Cluster ${index + 1}`,
+  }))
+  console.log("communities", communities)
 
   // Create network
   const network = {
@@ -142,6 +149,10 @@ export function aggToGraphology(aggregation: Array<any>, agg: string): Network {
       ],
       []
     ),
+    clusters: communities.map((community) => ({
+      cluster: community.cluster,
+      label: `Group ${community.cluster} (${community.ids.length})`,
+    })),
   }
 
   console.log("network", network)
