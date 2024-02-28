@@ -6,5 +6,6 @@
     "networks.header.tab.institutions": "Institutions",
     "networks.header.tab.structures": "Structures",
     "networks.header.tab.domains": "Domains",
+    "networks.header.tab.software": "Software",
     "networks.top.filters-button-label": "Filter"
 }

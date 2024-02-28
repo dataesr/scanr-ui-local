@@ -38,7 +38,12 @@ const NETWORK_TABS_MAPPING = {
   domains: {
     index: 3,
     label: "domains",
-    icon: "trophy-line",
+    icon: "book-2-line",
+  },
+  software: {
+    index: 4,
+    label: "software",
+    icon: "terminal-box-line",
   },
 }
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
