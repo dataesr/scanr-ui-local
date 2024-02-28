@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Container } from "@dataesr/dsfr-plus"
+import { Container, Accordion } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import { NetworkData } from "../../../types/network"
 
@@ -24,32 +24,40 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
 
   return (
     <Container key={key} className="fr-mt-5w">
-      <table style={{ fontSize: 12 }} width={"100%"}>
-        <tr>
-          <th>Community</th>
-          <th>Size</th>
-          <th>Keywords</th>
-          <th>Top element</th>
-          <th>Last activity</th>
-        </tr>
-        {communities.map((val, key) => {
-          return (
-            <tr key={key}>
-              <td>{val.label}</td>
-              <td>{val.size}</td>
-              <td>
-                {Object.entries(val.domains)
-                  .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
-                  .slice(0, 5)
-                  .map(([key, value]) => `${key} (${value})`)
-                  .join(", ")}
-              </td>
-              <td>{val.maxWeightNodes.join(", ")}</td>
-              <td>{val.maxYear}</td>
-            </tr>
-          )
-        })}
-      </table>
+      <Accordion title="Communities features">
+        <table style={{ fontSize: 12 }} width={"100%"}>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Top keyword(s)</th>
+            <th>Top element(s)</th>
+            <th>Top publication(s)</th>
+            <th>Open Access</th>
+            <th>Last activity</th>
+          </tr>
+          {communities.map((community, index) => {
+            return (
+              <tr key={index}>
+                <td>{community.label}</td>
+                <td>{community.size}</td>
+                <td>
+                  {community?.domains
+                    ? Object.entries(community.domains)
+                        .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+                        .slice(0, 5)
+                        .map(([domain]) => `${domain}`)
+                        .join(", ")
+                    : ""}
+                </td>
+                <td>{community.maxWeightNodes.join(", ")}</td>
+                <td>{community?.topHits ? community.topHits : 0}</td>
+                <td>{community?.oaPercent ? `${community.oaPercent.toFixed(1)} %` : ""}</td>
+                <td>{community.maxYear}</td>
+              </tr>
+            )
+          })}
+        </table>
+      </Accordion>
     </Container>
   )
 }

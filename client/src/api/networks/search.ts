@@ -1,6 +1,6 @@
 import { publicationTypeMapping } from "../../utils/string"
 import { publicationsIndex, postHeaders } from "../../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../../types/network"
+import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs, ElasticHits } from "../../types/network"
 import { PublicationAggregations } from "../../types/publication"
 import networkCreate from "./network"
 import configCreate from "./config"
@@ -21,7 +21,7 @@ const networkSearchSubAggregations = () => {
   return subAggregations
 }
 
-export async function networkSearchHits(ids: Array<string>): Promise<any> {
+export async function networkSearchHits(ids: Array<string>): Promise<ElasticHits> {
   const body = {
     size: ids.length,
     _source: HIT_FIELDS,

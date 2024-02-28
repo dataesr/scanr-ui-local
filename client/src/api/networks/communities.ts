@@ -2,6 +2,7 @@ import Graph from "graphology-types"
 import louvain from "graphology-communities-louvain"
 import { arrayPush, labelClean } from "./utils"
 import { networkSearchHits } from "./search"
+import { ElasticHits } from "../../types/network"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
@@ -31,7 +32,7 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   return labels
 }
 
-const communityGetDomains = (hits: any): any =>
+const communityGetDomains = (hits: ElasticHits): any =>
   hits.reduce((acc, hit) => {
     if (hit?.domains) {
       hit.domains.forEach(({ label, count }) => {
@@ -41,6 +42,9 @@ const communityGetDomains = (hits: any): any =>
     }
     return acc
   }, {})
+
+const communityGetOaPercent = (hits: ElasticHits): number =>
+  (hits.map((hit) => hit.isOa).filter(Boolean).length / hits.length) * 100
 
 export default async function communitiesCreate(graph: Graph): Promise<any> {
   // Assign communities
@@ -62,12 +66,15 @@ export default async function communitiesCreate(graph: Graph): Promise<any> {
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
         maxWeightNodes: communityGetMaxWeightNodes(graph, index),
-        domains: communityGetDomains(hits),
+        ...(hits && {
+          domains: communityGetDomains(hits),
+          oaPercent: communityGetOaPercent(hits),
+          topHits: hits.length,
+        }),
       }
       return community
     })
   ).then((c) => c.sort((a, b) => b.size - a.size))
 
-  console.log("communities", communities)
   return communities
 }

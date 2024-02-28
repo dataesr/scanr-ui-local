@@ -44,7 +44,7 @@ export default async function networkCreate(aggregation: Array<any>, model: stri
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
       graph.updateNode(id.split("###")[0], (attr) => ({
-        label: id.split("###")[1],
+        label: id.split("###")[1] ?? id,
         weight: (attr?.weight ?? 0) + count,
         ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),
         ...(topHits && { topHits: nodeConcatTopHits(attr?.topHits, topHits) }),
@@ -93,13 +93,14 @@ export default async function networkCreate(aggregation: Array<any>, model: stri
   // Add communities
   const communities = await createCommunities(graph)
 
+  console.log("Communities", communities)
   // console.log("Graph nodes", Array.from(graph.nodeEntries()))
 
   // Create network
   const network = {
     items: graph.mapNodes((key, attr) => ({
       id: key,
-      label: attr?.label,
+      label: attr.label,
       cluster: attr.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key), ...(attr?.topHits && { TopHits: attr.topHits.length }) },
       scores: { "Last activity": attr?.maxYear },
