@@ -4,9 +4,9 @@ export type Network = {
   config?: NetworkConfig
 }
 export type NetworkData = {
-  items: object[]
-  links: object[]
-  clusters?: any
+  items: Array<any>
+  links: Array<any>
+  clusters?: Array<any>
 }
 export type NetworkConfig = {
   terminology?: object
@@ -24,6 +24,11 @@ export type NetworkSearchArgs = {
   model: string
   query?: string
   filters?: Record<string, unknown>[]
+}
+export type NetworkHitsBody = {
+  size: number
+  query: any
+  _source: Array<string>
 }
 export type NetworkFilterArgs = {
   query?: string | unknown

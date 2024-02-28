@@ -1,26 +1,37 @@
 import UndirectedGraph from "graphology"
-import louvain from "graphology-communities-louvain"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
 import { NetworkData, NetworkHits } from "../../types/network"
 import createCommunities from "./communities"
 import itemGetDescription from "./description"
-import { aggExtractHit } from "./aggregations"
-// import itemGetAggregations from "./aggregations"
 
 export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
 const nodeConcatTopHits = (nodeTopHits: NetworkHits, topHits: Array<any>): NetworkHits => {
-  const topHitsSource = topHits.map((hit) => aggExtractHit(hit?._source))
-  const concat = nodeTopHits
-    ? [...new Map(nodeTopHits.concat(topHitsSource).map((hit) => [hit.id, hit])).values()]
-    : topHitsSource
-  return concat
+  const topHitsIds = topHits.map((hit) => hit._id)
+  const concatIds = nodeTopHits ? [...new Set([...nodeTopHits, ...topHitsIds])] : topHitsIds
+  return concatIds
 }
+// const nodeConcatTopHits = (nodeTopHits: NetworkHits, topHits: Array<any>): NetworkHits => {
+//   const topHitsSource = topHits.map((hit) => aggExtractHit(hit?._source))
+//   const concat = nodeTopHits
+//     ? [...new Map(nodeTopHits.concat(topHitsSource).map((hit) => [hit.id, hit])).values()]
+//     : topHitsSource
+//   return concat
+// }
 
-export default function networkCreate(aggregation: Array<any>, model: string): NetworkData {
+// function networkUpdate(network: NetworkData, hits: any): NetworkData {
+//   // Update nodes with hits info
+//   network.items.map((item) => {
+//     const topHits = item?.topHits?.map((id) => aggExtractHit(hits.find((hit) => (hit._id = id))._source))
+//     item.test = topHits?.length ?? 99
+//   })
+//   return network
+// }
+
+export default async function networkCreate(aggregation: Array<any>, model: string): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
 
@@ -80,10 +91,9 @@ export default function networkCreate(aggregation: Array<any>, model: string): N
   // console.log("Edge weight threshold :", edgeWeightThresh)
 
   // Add communities
-  louvain.assign(graph)
-  const communities = createCommunities(graph)
+  const communities = await createCommunities(graph)
 
-  console.log("Graph nodes", Array.from(graph.nodeEntries()))
+  // console.log("Graph nodes", Array.from(graph.nodeEntries()))
 
   // Create network
   const network = {
@@ -93,6 +103,7 @@ export default function networkCreate(aggregation: Array<any>, model: string): N
       cluster: attr.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key), ...(attr?.topHits && { TopHits: attr.topHits.length }) },
       scores: { "Last activity": attr?.maxYear },
+      topHits: attr?.topHits,
       description: itemGetDescription(model, key, attr),
     })),
     links: graph.mapEdges((_, attr, source, target) => ({

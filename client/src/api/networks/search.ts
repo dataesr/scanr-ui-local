@@ -8,21 +8,41 @@ import configCreate from "./config"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
+const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "domains"]
 
 const networkSearchSubAggregations = () => {
   const subAggregations = {
     max_year: { max: { field: "year" } },
     top_hits: {
-      top_hits: { _source: { includes: ["id", "title.default", "year", "productionType", "isOa", "domains"] }, size: 10 },
+      top_hits: { _source: { include: ["_id"] }, size: 10 },
     },
   }
   // graphGetAggs(model)?.forEach(({ name, field }) => (subAggregations[name] = { terms: { field: field, size: 10 } }))
   return subAggregations
 }
 
+export async function networkSearchHits(ids: Array<string>): Promise<any> {
+  const body = {
+    size: ids.length,
+    _source: HIT_FIELDS,
+    query: {
+      ids: {
+        values: ids,
+      },
+    },
+  }
+
+  const res = await fetch(`${publicationsIndex}/_search`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: postHeaders,
+  }).then((response) => response.json())
+
+  return res?.hits?.hits?.map((hit) => hit._source)
+}
+
 const networkSearchBody = (model: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,
-  // _source: SEARCH_SOURCE,
   query: {
     bool: {
       must: [
@@ -61,9 +81,7 @@ export async function networkSearch({ model, query, filters }: NetworkSearchArgs
 
   const aggregation = res.aggregations?.[model].buckets
 
-  const network = networkCreate(aggregation, model)
-  // network.clusters = await openAiLabeledClusters(query, network?.clusters)
-
+  const network = await networkCreate(aggregation, model)
   const config = configCreate(network?.clusters, model)
 
   const data = {

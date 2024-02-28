@@ -1,12 +1,17 @@
 import Graph from "graphology-types"
-import { Communities } from "../../types/network"
-import { arrayPush } from "./utils"
+import louvain from "graphology-communities-louvain"
+import { arrayPush, labelClean } from "./utils"
+import { networkSearchHits } from "./search"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
     (acc, _, attr) => (attr.community === community && attr?.[name] ? (acc = arrayPush(acc, attr[name])) : acc),
     []
   )
+
+const communityGetTopHits = (graph: Graph, community: number): Array<string> => [
+  ...new Set(communityGetAttribute(graph, community, "topHits").flat(1)),
+]
 
 const communityGetIds = (graph: Graph, community: number): Array<string> =>
   graph.filterNodes((_, attr) => attr?.community === community)
@@ -26,32 +31,42 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   return labels
 }
 
-const communityGetDomains = (graph: Graph, community: number): any => {
-  const topHits = [...new Map(communityGetAttribute(graph, community, "topHits").map((hit) => [hit.id, hit])).values()] // Unique publications
-  const domains = topHits.reduce((acc, hit) => {
-    if (hit?.domains) Object.entries(hit.domains).forEach(([key, value]) => (acc[key] = acc[key] ? acc[key] + value : value))
+const communityGetDomains = (hits: any): any =>
+  hits.reduce((acc, hit) => {
+    if (hit?.domains) {
+      hit.domains.forEach(({ label, count }) => {
+        const clean = labelClean(label.default)
+        acc[clean] = acc[clean] ? acc[clean] + count : count
+      })
+    }
     return acc
   }, {})
-  return domains
-}
 
-export default function createCommunities(graph: Graph): Communities {
+export default async function communitiesCreate(graph: Graph): Promise<any> {
+  // Assign communities
+  louvain.assign(graph)
+
   // Find number of communities
   const count = graph.reduceNodes((acc, _, attr) => Math.max(acc, attr.community), 0) + 1
+  if (count < 1) return []
 
   // Create communities array
-  const communities = Array.from({ length: count }, (_, index) => ({
-    index: index,
-    label: `Community ${index}`,
-    ids: communityGetIds(graph, index),
-    size: communityGetSize(graph, index),
-    maxYear: communityGetMaxYear(graph, index),
-    maxWeightNodes: communityGetMaxWeightNodes(graph, index),
-    domains: communityGetDomains(graph, index),
-  }))
+  const communities = Promise.all(
+    Array.from({ length: count }, async (_, index) => {
+      const hits = await networkSearchHits(communityGetTopHits(graph, index))
 
-  // Sort communities
-  communities.sort((a, b) => b.size - a.size)
+      const community = {
+        index: index,
+        label: `Community ${index}`,
+        ids: communityGetIds(graph, index),
+        size: communityGetSize(graph, index),
+        maxYear: communityGetMaxYear(graph, index),
+        maxWeightNodes: communityGetMaxWeightNodes(graph, index),
+        domains: communityGetDomains(hits),
+      }
+      return community
+    })
+  ).then((c) => c.sort((a, b) => b.size - a.size))
 
   console.log("communities", communities)
   return communities

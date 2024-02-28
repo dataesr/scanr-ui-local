@@ -30,6 +30,5 @@ export const labelClean = (label: string): string => {
     .map((token) => token.charAt(0).toUpperCase() + token.slice(1).toLowerCase())
     .join(" ")
 
-  console.log(label, clean)
   return clean
 }

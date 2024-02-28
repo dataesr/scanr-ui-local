@@ -28,6 +28,7 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
         <tr>
           <th>Community</th>
           <th>Size</th>
+          <th>Keywords</th>
           <th>Top element</th>
           <th>Last activity</th>
         </tr>
@@ -36,6 +37,13 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
             <tr key={key}>
               <td>{val.label}</td>
               <td>{val.size}</td>
+              <td>
+                {Object.entries(val.domains)
+                  .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+                  .slice(0, 5)
+                  .map(([key, value]) => `${key} (${value})`)
+                  .join(", ")}
+              </td>
               <td>{val.maxWeightNodes.join(", ")}</td>
               <td>{val.maxYear}</td>
             </tr>
