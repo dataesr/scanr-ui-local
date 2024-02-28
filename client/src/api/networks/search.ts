@@ -82,7 +82,7 @@ export async function networkSearch({ model, query, filters }: NetworkSearchArgs
   const aggregation = res.aggregations?.[model].buckets
 
   const network = await networkCreate(aggregation, model)
-  const config = configCreate(network?.clusters, model)
+  const config = configCreate(model)
 
   const data = {
     network: network,
