@@ -13,9 +13,9 @@ const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "do
 const networkSearchSubAggregations = () => {
   const subAggregations = {
     max_year: { max: { field: "year" } },
-    top_hits: {
-      top_hits: { _source: { include: ["_id"] }, size: 10 },
-    },
+    // top_hits: {
+    //   top_hits: { _source: false, size: 10 },
+    // },
   }
   // graphGetAggs(model)?.forEach(({ name, field }) => (subAggregations[name] = { terms: { field: field, size: 10 } }))
   return subAggregations
