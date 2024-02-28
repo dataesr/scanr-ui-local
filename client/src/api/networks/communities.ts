@@ -1,5 +1,6 @@
 import louvain from "graphology-communities-louvain"
 import Graph from "graphology-types"
+import { graphGetAggs } from "./conf"
 // import askOpenAI from "./openai"
 
 const nodesGetUniqueAttribute = (graph: Graph, ids: Array<string>, name: string) =>
@@ -18,21 +19,27 @@ const nodesGetUniqueAttribute = (graph: Graph, ids: Array<string>, name: string)
     return Array.from(new Set(acc))
   }, [])
 
-export default function graphGetCommunities(graph: Graph, agg: string): Array<any> {
+const communityGetAttribute = (graph: Graph, ids: Array<string>, name: string, n: number) =>
+  nodesGetUniqueAttribute(graph, ids, name).slice(0, n).join(", ")
+
+export default function graphGetCommunities(graph: Graph, model: string): Array<any> {
   // Create communities array
   const details = louvain.detailed(graph)
   const communitiesArray = Array.from({ length: details.count }, (_, index) => ({
     index: index,
     ids: graph.filterNodes((_, attr) => attr?.community === index),
-    label: `Group ${index + 1}`,
   })).sort((a, b) => b.ids.length - a.ids.length)
 
   // Fill communities
   const communities = communitiesArray.map((community) => ({
     ...community,
+    label: `Group ${community.index + 1} (${community.ids.length})`,
     size: community.ids.length,
     maxYear: Math.max(...nodesGetUniqueAttribute(graph, community.ids, "maxYear")),
-    aggs: agg,
+    aggs: graphGetAggs(model)?.reduce(
+      (acc, { name }) => (acc[name] = communityGetAttribute(graph, community.ids, name, 5)),
+      {}
+    ),
   }))
 
   // Fill label with openai

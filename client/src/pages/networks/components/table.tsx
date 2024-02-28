@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Container } from "@dataesr/dsfr-plus"
+import { Container, Spinner } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import { Network } from "../../../types/network"
 
@@ -17,8 +17,9 @@ export default function ClustersTable({ currentTab }: { currentTab: string }) {
       <Container
         className="fr-mt-5w"
         style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "500px" }}
-      />
-      // Add spinner
+      >
+        <Spinner />
+      </Container>
     )
 
   return (
