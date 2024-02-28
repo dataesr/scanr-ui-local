@@ -1,32 +1,52 @@
-import { Container, Text } from "@dataesr/dsfr-plus"
+import { useMemo } from "react"
+import { Container, Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
-import { Network } from "../../../types/network"
+import Error204 from "./error204"
 
 export function Graph({ currentTab }: { currentTab: string }) {
-  const { search } = useSearchData(currentTab)
-  const network = search?.data as Network
+  const { search, currentQuery, currentFilters } = useSearchData(currentTab)
+
+  const vosviewer = search?.data
+  const key = useMemo(
+    () => JSON.stringify({ currentTab, currentQuery, currentFilters }),
+    [currentTab, currentQuery, currentFilters]
+  )
+
+  if (currentQuery === null) return <></>
+
+  if (search.isFetching)
+    return (
+      <Container
+        className="fr-mt-5w"
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "200px" }}
+      >
+        <Spinner />
+      </Container>
+    )
+
+  if (!vosviewer?.network)
+    return (
+      <Container
+        className="fr-mt-5w"
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "200px" }}
+      >
+        <Error204 />
+      </Container>
+    )
 
   const theme = document.documentElement.getAttribute("data-fr-scheme")
   const parameters = {
     attraction: 1,
     largest_component: false,
-    simple_ui: false,
     dark_ui: theme === "dark",
+    simple_ui: false,
+    show_info: true,
   }
 
-  if (!network)
-    return (
-      <Container
-        className="fr-mt-5w"
-        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "500px" }}
-      >
-        <Text>Loading data...</Text>
-      </Container>
-    )
   return (
-    <Container key={currentTab} className="fr-mt-5w" style={{ height: "500px" }}>
-      <VOSviewerOnline data={{ network }} parameters={parameters} />
+    <Container key={key} className="fr-mt-5w" style={{ height: "500px" }}>
+      <VOSviewerOnline data={vosviewer} parameters={parameters} />
     </Container>
   )
 }

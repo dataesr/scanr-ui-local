@@ -2,20 +2,19 @@ import { useSearchParams } from "react-router-dom"
 import { filtersFromUrlToElasticQuery, parseSearchFiltersFromURL } from "../../../utils/filters"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
-import { networkSearch } from "../../../api/network"
+import { networkSearch } from "../../../api/networks/search"
 
 export default function useSearchData(networkTab?: string) {
   const [searchParams] = useSearchParams()
-  const currentQuery = searchParams.get("q") || ""
+  const currentQuery = searchParams.get("q")
   const currentTab = searchParams.get("tab") || "authors"
-
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"))
   const filters = filtersFromUrlToElasticQuery(searchParams.get("filters"))
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["network", networkTab, currentQuery, filters],
-    queryFn: () => networkSearch({ agg: networkTab, query: currentQuery, filters }),
-    enabled: networkTab === currentTab,
+    queryFn: () => networkSearch({ model: networkTab, query: currentQuery, filters }),
+    enabled: Boolean(currentQuery !== null && networkTab === currentTab),
   })
 
   const values = useMemo(() => {

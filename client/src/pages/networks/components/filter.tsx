@@ -24,24 +24,24 @@ export default function NetworkFilters() {
         aria-controls="publication-filters"
         data-fr-opened="false"
       >
-        <FormattedMessage id={intl.formatMessage({ id: "network.top.filters-button-label" })} />
+        <FormattedMessage id={intl.formatMessage({ id: "networks.top.filters-button-label" })} />
         {currentFilters.length ? <span className="filter-count-badge">{currentFilters.length}</span> : null}
       </button>
-      <Modal id="publication-filters" size="lg" title={intl.formatMessage({ id: "search.top.filters.publications.title" })}>
+      <Modal id="publication-filters" size="lg" title={intl.formatMessage({ id: "networks.top.filters.title" })}>
         <hr className="fr-mt-3w" />
         {currentFilters.length ? (
           <Container fluid className="fr-mb-2w">
             <div className="fr-mb-2w" style={{ display: "flex", alignItems: "center" }}>
               <div style={{ flexGrow: 1, flexShrink: 0 }}>
                 <Text className="fr-my-1w" bold size="md">
-                  {intl.formatMessage({ id: "search.publications.filters.active-filter-title" })}
+                  {intl.formatMessage({ id: "networks.filters.active-filter-title" })}
                 </Text>
               </div>
               <button
                 className="fr-tag delete-filter-tag-button fr-icon-delete-bin-line fr-icon fr-tag--icon-left fr-tag--pink-macaron"
                 onClick={clearFilters}
               >
-                <FormattedMessage id={intl.formatMessage({ id: "search.top.filters.clear" })} />
+                <FormattedMessage id={intl.formatMessage({ id: "networks.top.filters.clear" })} />
               </button>
             </div>
             {currentFilters.map((filter) => (
@@ -62,17 +62,17 @@ export default function NetworkFilters() {
         {currentFilters.length ? <hr className="fr-mt-3w" /> : null}
         <Container fluid className="fr-my-2w">
           <Text bold size="md" className="fr-mb-1v">
-            <FormattedMessage id="search.publications.filters.by-year" />
+            <FormattedMessage id="networks.filters.by-year" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.publications.filters.by-year-description" />
+            <FormattedMessage id="networks.filters.by-year-description" />
           </Text>
           <hr className="fr-mt-3w" />
           <Text className="fr-mt-3w fr-mb-0" bold size="md">
-            <FormattedMessage id="search.publications.filters.by-type" />
+            <FormattedMessage id="networks.filters.by-type" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.publications.filters.by-type-description" />
+            <FormattedMessage id="networks.filters.by-type-description" />
           </Text>
           <TagGroup>
             {byType.map((type) => (
@@ -87,10 +87,10 @@ export default function NetworkFilters() {
           </TagGroup>
           <hr className="fr-mt-3w" />
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.publications.filters.by-project" />
+            <FormattedMessage id="networks.filters.by-project" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.publications.filters.by-project-description" />
+            <FormattedMessage id="networks.filters.by-project-description" />
           </Text>
           <TagGroup>
             {byFunder.map((funder) => (
@@ -106,10 +106,10 @@ export default function NetworkFilters() {
           </TagGroup>
           <hr className="fr-mt-3w" />
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.publications.filters.by-project" />
+            <FormattedMessage id="networks.filters.by-project" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.publications.filters.by-project-description" />
+            <FormattedMessage id="networks.filters.by-project-description" />
           </Text>
           <TagGroup>
             {byFunder.map((funder) => (
@@ -129,12 +129,12 @@ export default function NetworkFilters() {
           <div style={{ flexGrow: 1 }}>
             {total && total === 10000 ? (
               <Text as="span" size="lg" bold className="fr-mb-1w">
-                {intl.formatMessage({ id: "search.top.result-more-than" })}
+                {intl.formatMessage({ id: "networks.top.result-more-than" })}
               </Text>
             ) : null}
             {total && total > 0 ? (
               <Text as="span" size="lg" bold className="fr-mb-1w">
-                {intl.formatMessage({ id: "search.top.publications.filters.result-count" }, { count: total })}
+                {intl.formatMessage({ id: "networks.top.filters.result-count" }, { count: total })}
               </Text>
             ) : (
               <BaseSkeleton height="1.25rem" width="30%" />
@@ -148,7 +148,7 @@ export default function NetworkFilters() {
               window.dsfr(element).modal.conceal()
             }}
           >
-            {intl.formatMessage({ id: "search.top.filters.display" })}
+            {intl.formatMessage({ id: "networks.top.filters.display" })}
           </Button>
         </div>
       </Modal>

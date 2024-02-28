@@ -1,17 +1,23 @@
-import { FormattedMessage, useIntl, IntlProvider } from "react-intl"
+import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
-import useSearchFilter from "./hooks/useSearchFilter";
+import useSearchFilter from "./hooks/useSearchFilter"
+import NetworkFilters from "./components/filter"
+import useTab from "./hooks/useTab"
+import { Graph } from "./components/graph"
+import Home from "./components/home"
+import ClustersTable from "./components/table"
 
-import messagesFr from "./locales/fr.json";
-import messagesEn from "./locales/en.json";
-import NetworkFilters from "./components/filter";
-import useTab from "./hooks/useTab";
-import { Graph } from "./components/graph";
-
-const messages = {
-  fr: messagesFr,
-  en: messagesEn,
-}
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+})
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1]
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc
+}, {})
 
 const NETWORK_TABS_MAPPING = {
   authors: {
@@ -32,7 +38,12 @@ const NETWORK_TABS_MAPPING = {
   domains: {
     index: 3,
     label: "domains",
-    icon: "trophy-line",
+    icon: "book-2-line",
+  },
+  software: {
+    index: 4,
+    label: "software",
+    icon: "terminal-box-line",
   },
 }
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
@@ -41,8 +52,8 @@ const networkTabFindLabel = (index) => networkTabs[index].label
 
 function NetworksPage() {
   const intl = useIntl()
-  const { currentTab, handleTabChange} = useTab();
-  const { currentQuery, handleQueryChange } = useSearchFilter();
+  const { currentTab, handleTabChange } = useTab()
+  const { currentQuery, handleQueryChange } = useSearchFilter()
 
   return (
     <>
@@ -50,18 +61,18 @@ function NetworksPage() {
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
             <Link href="/">
-              <FormattedMessage id="network.top.breadcrumb.home" />
+              <FormattedMessage id="networks.top.breadcrumb.home" />
             </Link>
-            <Link current>{intl.formatMessage({ id: "network.top.breadcrumb.explore" })}</Link>
+            <Link current>{intl.formatMessage({ id: "networks.top.breadcrumb.explore" })}</Link>
           </Breadcrumb>
           <Row gutters>
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
                 isLarge
-                buttonLabel={intl.formatMessage({ id: "network.top.main-search-bar" })}
+                buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "network.top.main-search-bar" })}
+                placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 onSearch={(value) => handleQueryChange(value)}
               />
             </Col>
@@ -77,14 +88,13 @@ function NetworksPage() {
           onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
         >
           {networkTabs.map(({ label, icon }) => (
-            <Tab index={label} label={intl.formatMessage({ id: `network.header.tab.${label}` })} icon={icon}>
+            <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
+              <Home value={intl} currentTab={label} />
               <Graph currentTab={label} />
+              <ClustersTable currentTab={label} />
             </Tab>
           ))}
         </Tabs>
-      </Container>
-      <Container>
-        <div className="fr-mb-2w">Clusters under construction...</div>
       </Container>
     </>
   )
@@ -92,9 +102,13 @@ function NetworksPage() {
 
 export default function Networks() {
   const { locale } = useDSFRConfig()
+  const intl = createIntl({
+    locale,
+    messages: messages[locale],
+  })
   return (
-    <IntlProvider messages={messages[locale]} locale={locale}>
+    <RawIntlProvider value={intl}>
       <NetworksPage />
-    </IntlProvider>
+    </RawIntlProvider>
   )
 }

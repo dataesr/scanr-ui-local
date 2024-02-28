@@ -3,12 +3,11 @@ import { parseSearchFiltersFromURL, stringifySearchFiltersForURL } from "../../.
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
 import { PublicationAggregations } from "../../../types/publication"
-import { networkFilter } from "../../../api/network"
+import { networkFilter } from "../../../api/networks/search"
 
 export default function useSearchFilter() {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
-  const currentTab = searchParams.get("tab") || "authors"
 
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"))
   const {
@@ -16,8 +15,8 @@ export default function useSearchFilter() {
     isLoading: isLoadingFilters,
     isError: isErrorFilters,
   } = useQuery<PublicationAggregations, unknown, PublicationAggregations>({
-    queryKey: ["network", "filters", currentTab, currentQuery],
-    queryFn: () => networkFilter({ agg: currentTab, query: currentQuery }),
+    queryKey: ["network", "filters", currentQuery],
+    queryFn: () => networkFilter({ query: currentQuery }),
   })
 
   const handleQueryChange = useCallback(
@@ -47,8 +46,9 @@ export default function useSearchFilter() {
   )
 
   const clearFilters = useCallback(() => {
-    setSearchParams({ q: currentQuery, filters: stringifySearchFiltersForURL([]) })
-  }, [setSearchParams, currentQuery])
+    searchParams.delete("filters")
+    setSearchParams(searchParams)
+  }, [searchParams, setSearchParams])
 
   const values = useMemo(() => {
     return {

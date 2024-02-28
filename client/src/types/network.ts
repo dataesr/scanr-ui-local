@@ -1,8 +1,18 @@
-import { Aggregation } from "./commons"
-
+import { LangField } from "./commons"
 export type Network = {
-  items: object[]
-  links: object[]
+  network: NetworkData
+  config?: NetworkConfig
+}
+export type NetworkData = {
+  items: Array<any>
+  links: Array<any>
+  clusters?: Array<any>
+}
+export type NetworkConfig = {
+  terminology?: object
+  color_schemes?: object
+  templates?: object
+  styles?: object
 }
 
 export type NetworkSearchBody = {
@@ -11,33 +21,58 @@ export type NetworkSearchBody = {
   aggs: any
 }
 export type NetworkSearchArgs = {
-  agg: string
-  query?: string | unknown
+  model: string
+  query?: string
   filters?: Record<string, unknown>[]
 }
+export type NetworkHitsBody = {
+  size: number
+  query: any
+  _source: Array<string>
+}
 export type NetworkFilterArgs = {
-  agg: string
   query?: string | unknown
 }
 
-export type NetworkAggregation = {
-  byCoAuthors: Aggregation[]
-  byCoInstitutions: Aggregation[]
-  byCoStructures: Aggregation[]
-  byCoDomains: Aggregation[]
-}
+// export type NetworkAggregation = {
+//   authors: Aggregation[]
+//   institutions: Aggregation[]
+//   structures: Aggregation[]
+//   domaines: Aggregation[]
+//   software: Aggregation[]
+// }
 
-export type NetworkVosConfig = {
-  network: Network
-  config?: {
-    parameters: object[]
-    color_schemes?: object[]
-    terminology?: object[]
-    templates?: object[]
-    styles?: object[]
-  }
-  info?: {
-    title: string
-    description: string
-  }
+export type Community = {
+  index: number
+  label: string
+  ids: Array<string>
+  size: number
+  maxYear?: number
+  maxWeightNodes?: Array<string>
+  domains?: any
 }
+export type Communities = Array<Community>
+
+export type NetworkHit = {
+  id: string
+  title: string
+  type: string
+  isOa: boolean
+  domains: any
+}
+export type NetworkHits = Array<NetworkHit>
+
+export type ElasticDomain = {
+  label: LangField
+  count: number
+}
+export type ElasticDomains = Array<ElasticDomain>
+export type ElasticHit = {
+  id: string
+  title?: LangField
+  productionType?: string
+  isOa?: boolean
+  domains?: ElasticDomains
+  year?: number
+}
+export type ElasticHits = Array<ElasticHit>
