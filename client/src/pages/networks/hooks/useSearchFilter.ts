@@ -3,7 +3,7 @@ import { parseSearchFiltersFromURL, stringifySearchFiltersForURL } from "../../.
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
 import { PublicationAggregations } from "../../../types/publication"
-import { networkFilter } from "../../../api/network"
+import { networkFilter } from "../../../api/networks/search"
 
 export default function useSearchFilter() {
   const [searchParams, setSearchParams] = useSearchParams()

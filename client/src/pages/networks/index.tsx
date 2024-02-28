@@ -7,6 +7,7 @@ import messagesEn from "./locales/en.json";
 import NetworkFilters from "./components/filter";
 import useTab from "./hooks/useTab";
 import { Graph } from "./components/graph";
+import ClustersTable from "./components/table"
 
 const messages = {
   fr: messagesFr,
@@ -79,12 +80,10 @@ function NetworksPage() {
           {networkTabs.map(({ label, icon }) => (
             <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
               <Graph currentTab={label} />
+              <ClustersTable currentTab={label} />
             </Tab>
           ))}
         </Tabs>
-      </Container>
-      <Container>
-        <div className="fr-mb-2w">Clusters under construction...</div>
       </Container>
     </>
   )

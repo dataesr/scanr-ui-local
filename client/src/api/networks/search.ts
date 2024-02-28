@@ -1,13 +1,22 @@
-import { publicationTypeMapping } from "../utils/string"
-import { publicationsIndex, postHeaders } from "../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../types/network"
-import { PublicationAggregations } from "../types/publication"
-import { aggToGraphology, GRAPH_MAPPING } from "./graph"
+import { publicationTypeMapping } from "../../utils/string"
+import { publicationsIndex, postHeaders } from "../../config/api"
+import { Network, NetworkSearchBody, NetworkSearchArgs, NetworkFilterArgs } from "../../types/network"
+import { PublicationAggregations } from "../../types/publication"
+import { createNetwork } from "./network"
+import { graphGetAggs } from "./conf"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
 
-const networkSearchBody = (agg: string, query?: string | unknown): NetworkSearchBody => ({
+const networkSearchSubAggregations = (model: string) => {
+  const subAggregations = {
+    max_year: { max: { field: "year" } },
+  }
+  graphGetAggs(model)?.forEach(({ name, field }) => (subAggregations[name] = { terms: { field: field, size: 10 } }))
+  return subAggregations
+}
+
+const networkSearchBody = (model: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,
   // _source: SEARCH_SOURCE,
   query: {
@@ -23,18 +32,15 @@ const networkSearchBody = (agg: string, query?: string | unknown): NetworkSearch
     },
   },
   aggs: {
-    [`byCo${agg}`]: {
-      terms: { field: `co_${agg}.keyword`, size: DEFAULT_SIZE },
-      aggs: {
-        max_year: { max: { field: "year" } },
-        ...(agg in GRAPH_MAPPING && { agg_sub: { terms: { field: GRAPH_MAPPING[agg].subAggField, size: 10 } } }),
-      },
+    [`byCo${model}`]: {
+      terms: { field: `co_${model}.keyword`, size: DEFAULT_SIZE },
+      aggs: networkSearchSubAggregations(model),
     },
   },
 })
 
-export async function networkSearch({ agg, query, filters }: NetworkSearchArgs): Promise<Network> {
-  const body = networkSearchBody(agg, query)
+export async function networkSearch({ model, query, filters }: NetworkSearchArgs): Promise<Network> {
+  const body = networkSearchBody(model, query)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
@@ -49,9 +55,9 @@ export async function networkSearch({ agg, query, filters }: NetworkSearchArgs):
 
   console.log("endOfSearch", res)
 
-  const aggregation = res.aggregations?.[`byCo${agg}`].buckets
+  const aggregation = res.aggregations?.[`byCo${model}`].buckets
 
-  const network = aggToGraphology(aggregation, agg)
+  const network = createNetwork(aggregation, model)
   console.log("network", network)
 
   return network
@@ -80,7 +86,7 @@ export async function networkFilter({ query }: NetworkFilterArgs): Promise<Publi
       },
       byPublicationType: {
         terms: {
-          field: "type.keyword",
+          field: "model.keyword",
         },
       },
       byAuthors: {
@@ -96,7 +102,7 @@ export async function networkFilter({ query }: NetworkFilterArgs): Promise<Publi
       },
       byFunder: {
         terms: {
-          field: "projects.type.keyword",
+          field: "projects.model.keyword",
         },
       },
     },

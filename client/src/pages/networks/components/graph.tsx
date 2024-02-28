@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Container, Text } from "@dataesr/dsfr-plus"
+import { Container, Text, Row, Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
 import { Network } from "../../../types/network"
@@ -15,12 +15,11 @@ export function Graph({ currentTab }: { currentTab: string }) {
 
   if (search.isFetching)
     return (
-      <Container
-        className="fr-mt-5w"
-        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "500px" }}
-      >
-        <Text>Loading data...</Text>
-      </Container>
+      // <Container className="fr-mt-5w">
+      <Row>
+        <Spinner size={40} />
+      </Row>
+      // </Container>
     )
 
   if (!network)

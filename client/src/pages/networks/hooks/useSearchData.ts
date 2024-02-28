@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom"
 import { filtersFromUrlToElasticQuery, parseSearchFiltersFromURL } from "../../../utils/filters"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
-import { networkSearch } from "../../../api/network"
+import { networkSearch } from "../../../api/networks/search"
 
 export default function useSearchData(networkTab?: string) {
   const [searchParams] = useSearchParams()
@@ -14,7 +14,7 @@ export default function useSearchData(networkTab?: string) {
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["network", networkTab, currentQuery, filters],
-    queryFn: () => networkSearch({ agg: networkTab, query: currentQuery, filters }),
+    queryFn: () => networkSearch({ model: networkTab, query: currentQuery, filters }),
     enabled: networkTab === currentTab,
   })
 

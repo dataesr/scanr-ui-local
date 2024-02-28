@@ -3,6 +3,7 @@ import { Aggregation } from "./commons"
 export type Network = {
   items: object[]
   links: object[]
+  clusters?: any
 }
 
 export type NetworkSearchBody = {
@@ -11,7 +12,7 @@ export type NetworkSearchBody = {
   aggs: any
 }
 export type NetworkSearchArgs = {
-  agg: string
+  model: string
   query?: string | unknown
   filters?: Record<string, unknown>[]
 }
