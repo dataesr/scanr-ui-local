@@ -13,7 +13,7 @@ const communitiesGetAggsKeys = (communities) =>
 
 export default function ClustersTable({ currentTab }: { currentTab: string }) {
   const { search, currentQuery, currentFilters } = useSearchData(currentTab)
-  const network = search?.data as Network
+  const network = search?.data?.network as Network
   const communities = network?.clusters
   const key = useMemo(
     () => JSON.stringify({ currentTab, currentQuery, currentFilters }),

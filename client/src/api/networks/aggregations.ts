@@ -1,5 +1,5 @@
 import { objectMerge } from "./utils"
-import { graphGetAggs } from "./conf"
+import { graphGetAggs } from "./models"
 
 const bucketToObject = (bucket) =>
   bucket.reduce((acc, item) => {

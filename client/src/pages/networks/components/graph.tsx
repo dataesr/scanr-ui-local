@@ -2,13 +2,11 @@ import { useMemo } from "react"
 import { Container, Text, Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
-import { Network } from "../../../types/network"
-import getConfig from "../config"
 
 export function Graph({ currentTab }: { currentTab: string }) {
   const { search, currentQuery, currentFilters } = useSearchData(currentTab)
 
-  const network = search?.data as Network
+  const vosviewer = search?.data
   const key = useMemo(
     () => JSON.stringify({ currentTab, currentQuery, currentFilters }),
     [currentTab, currentQuery, currentFilters]
@@ -26,7 +24,7 @@ export function Graph({ currentTab }: { currentTab: string }) {
       </Container>
     )
 
-  if (!network)
+  if (!vosviewer?.network)
     return (
       <Container
         className="fr-mt-5w"
@@ -44,12 +42,10 @@ export function Graph({ currentTab }: { currentTab: string }) {
     simple_ui: false,
     show_info: true,
   }
-  const config = getConfig(currentTab)
-  // console.log("config", config)
 
   return (
     <Container key={key} className="fr-mt-5w" style={{ height: "500px" }}>
-      <VOSviewerOnline data={{ config, network }} parameters={parameters} />
+      <VOSviewerOnline data={vosviewer} parameters={parameters} />
     </Container>
   )
 }

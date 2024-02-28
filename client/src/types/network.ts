@@ -1,5 +1,10 @@
 import { Aggregation } from "./commons"
 
+export type vosViewerData = {
+  network: Network
+  config: any
+}
+
 export type Network = {
   items: object[]
   links: object[]
@@ -11,11 +16,13 @@ export type NetworkSearchBody = {
   query: any
   aggs: any
 }
+
 export type NetworkSearchArgs = {
   model: string
   query?: string | unknown
   filters?: Record<string, unknown>[]
 }
+
 export type NetworkFilterArgs = {
   query?: string | unknown
 }

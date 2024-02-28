@@ -1,6 +1,6 @@
 import louvain from "graphology-communities-louvain"
 import Graph from "graphology-types"
-import { graphGetAggs } from "./conf"
+import { graphGetAggs } from "./models"
 // import askOpenAI from "./openai"
 
 const nodesGetUniqueAttribute = (graph: Graph, ids: Array<string>, name: string) =>

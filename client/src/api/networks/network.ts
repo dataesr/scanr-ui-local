@@ -10,7 +10,7 @@ import itemGetAggregations from "./aggregations"
 export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
-export function createNetwork(aggregation: Array<any>, model: string): Network {
+export default function createNetwork(aggregation: Array<any>, model: string): Network {
   // Create Graph object
   let graph = new UndirectedGraph()
 

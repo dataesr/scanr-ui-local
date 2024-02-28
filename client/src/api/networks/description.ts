@@ -1,5 +1,5 @@
 import { objectSlice } from "./utils"
-import { graphGetConf } from "./conf"
+import { graphGetConf } from "./models"
 
 const objectToDescription = (obj: object): string =>
   Object.entries(obj).reduce((acc, [k, v]) => {
