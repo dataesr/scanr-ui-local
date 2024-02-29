@@ -200,5 +200,5 @@ export async function networkFilter({ query }: NetworkFilterArgs): Promise<Publi
         }
       })
       .filter((el) => el) || []
-  return { byYear, byType, byAuthors, byFunder, byIsOa }
+  return { byYear, byType, byAuthors, byFunder, byIsOa, byReview: [] }
 }
