@@ -1,5 +1,6 @@
 export const FIELDS = ["label.*^3", "acronym.*^3", "publications.title.default^2", "publications.summary.default"]
 export const LIGHT_SOURCE = ["label.*", "acronym.*", "address.main", "address.city", "kind", "level", 'nature', 'id', "creationYear", "isFrench", "active"]
+export const EXPORT_SOURCE = ["label.*", "acronym.*", "address.*", "links", "kind", "nature", "id"]
 export const SORTER = [
   // requires a second field to sort on for elastic to return a cursor
   { _score: { order: "desc" } },

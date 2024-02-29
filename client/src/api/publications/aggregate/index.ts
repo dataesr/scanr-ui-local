@@ -50,6 +50,12 @@ export async function aggregatePublications(
         terms: {
           field: "projects.type.keyword",
         }
+      },
+      byReview: {
+        terms: {
+          field: "source.title.keyword",
+          size: 10,
+        }
       }
     }
   }
@@ -93,6 +99,13 @@ export async function aggregatePublications(
       count: element.doc_count,
     }
   }).filter(el => el) || [];
+  const byReview = data?.byReview?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+    }
+  }).filter(el => el) || [];
   const _100IsOa = data?.byIsOa?.buckets && Math.max(...data.byIsOa.buckets.map((el) => el.doc_count));
   const byIsOa = data?.byIsOa?.buckets?.map((element) => {
     return {
@@ -102,5 +115,5 @@ export async function aggregatePublications(
     }
   }
   ).filter(el => el) || [];
-  return { byYear, byType, byAuthors, byFunder, byIsOa }
+  return { byYear, byType, byAuthors, byFunder, byIsOa, byReview }
 }

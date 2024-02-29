@@ -27,7 +27,7 @@ const DEFAULT_FILTERS = [
 ]
 
 
-export async function searchOrganizations({ cursor, query, filters }: SearchArgs): Promise<SearchResponse<LightOrganization>> {
+export async function searchOrganizations({ cursor, query, filters, size }: SearchArgs): Promise<SearchResponse<LightOrganization>> {
   const body: any = {
     _source: LIGHT_SOURCE,
     sort: SORTER,
@@ -46,6 +46,7 @@ export async function searchOrganizations({ cursor, query, filters }: SearchArgs
     },
   }
   if (filters) body.query.bool.filter = [...filters, ...DEFAULT_FILTERS]
+  if (size) body.size = size;
   if (cursor) body.search_after = cursor;
   if (!query) body.query = { function_score: { query: body.query, random_score: {} }}
   const res = await fetch(

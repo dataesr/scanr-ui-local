@@ -27,10 +27,10 @@ export default function ProjectLocalisationsFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.filters.organizations.by-supervisors" />
+            <FormattedMessage id="search.filters.projects.by-localisation" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.filters.organizations.by-supervisors-description" />
+            <FormattedMessage id="search.filters.projects.by-localisation-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('participants.structure.mainAddress.localisationSuggestions', (key === 'and') ? 'and' : 'or')} />

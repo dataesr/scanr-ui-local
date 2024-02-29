@@ -24,6 +24,21 @@ export type LightAuthor = {
   }[];
 }
 
+export type ExportAuthor = {
+  id: string;
+  idref: string;
+  orcid: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  topDomains: {
+    label: LangField;
+    code: string;
+    type: string;
+    count: number;
+  }[];
+}
+
 export type Author = {
   _id: string;
   id: string;

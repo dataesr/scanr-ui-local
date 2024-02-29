@@ -22,7 +22,7 @@ export default function ProjectFilters() {
 
   return (
     <>
-      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.projects.title" })}>
+      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.filters.projects.title" })}>
         <Container fluid className="fr-my-2w">
           <ProjectYearFilter />
           <hr className="fr-mt-3w" />

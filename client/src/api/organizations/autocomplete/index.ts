@@ -17,14 +17,8 @@ export async function autocompleteOrganizations({ query }: SearchArgs): Promise<
           { term: { status: "active" } },
         ],
         must: {
-          multi_match: {
-            query,
-            type: "bool_prefix",
-            fields: [
-              "autocompleted",
-              "autocompleted._2gram",
-              "autocompleted._3gram"
-            ]
+          match: {
+            autocompleted: query
           }
         }
       },

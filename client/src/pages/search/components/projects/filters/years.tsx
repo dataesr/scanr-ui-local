@@ -15,10 +15,10 @@ export default function ProjectYearFilter() {
   return (
     <>
       <Text bold size="md" className="fr-mb-1v">
-        <FormattedMessage id="search.projects.filters.by-year" />
+        <FormattedMessage id="search.filters.projects.by-year" />
       </Text>
       <Text className="fr-card__detail fr-mb-2w" size="sm">
-        <FormattedMessage id="search.projects.filters.by-year-description" />
+        <FormattedMessage id="search.filters.projects.by-year-description" />
       </Text>
       <RangeSlider
         aria-label="Années de publication"

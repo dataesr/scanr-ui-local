@@ -18,6 +18,7 @@ type SourceData = {
   volume?: string;
   issue?: string;
   publisher?: string;
+  journalIssns?: string[];
 };
 
 type ProjectData = {
@@ -65,10 +66,25 @@ export type Publication = BasePublication & {
   externalIds: ExternalIdsData[];
 };
 
+export type ExportPublication = {
+  id: string;
+  title: LangField;
+  summary: LangField;
+  authors: {
+    fullName: string;
+  }[];
+  source: SourceData;
+  type: string;
+  isOa: boolean;
+  publicationDate: string;
+  submissionDate: string;
+};
+
 export type PublicationAggregations = {
   byYear: Aggregation[];
   byType: Aggregation[];
   byAuthors: Aggregation[];
   byIsOa: Aggregation[];
   byFunder: Aggregation[];
+  byReview: Aggregation[];
 };

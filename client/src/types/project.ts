@@ -98,6 +98,25 @@ export type LightProject = {
   type: string,
 }
 
+export type ExportProject = {
+  id: string,
+  label: LangField,
+  type: string,
+  startDate: string,
+  endDate: string,
+  budgetTotal: number,
+  budgetFinanced: number,
+  url: string,
+  participantCount: number,
+  call: {
+    label: string,
+  },
+  action: {
+    label: LangField,
+  },
+  duration: number,
+}
+
 export type ProjectAggregations = {
   byType: Aggregation[],
   byYear: Aggregation[],

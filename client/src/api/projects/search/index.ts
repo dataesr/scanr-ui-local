@@ -39,6 +39,7 @@ export async function searchProjects({
   cursor,
   query,
   filters,
+  size,
 }: SearchArgs): Promise<SearchResponse<LightProject>> {
   const body: any = {
     _source: SOURCE,
@@ -58,6 +59,7 @@ export async function searchProjects({
     },
   };
   if (filters) body.query.bool.filter = filters;
+  if (size) body.size = size;
   if (cursor) body.search_after = cursor;
   if (!query)
     body.query = { function_score: { query: body.query, random_score: {} } };

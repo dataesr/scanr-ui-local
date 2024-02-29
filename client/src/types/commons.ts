@@ -8,6 +8,14 @@ export type SearchArgs = {
   cursor?: string | unknown;
   query?: string;
   filters?: Record<string, unknown>[];
+  size?: number;
+};
+
+export type ExportArgs = {
+  query?: string;
+  filters?: Record<string, unknown>[];
+  format?: 'csv' | 'json';
+  ctx?: string
 };
 
 export type AggregationArgs = {

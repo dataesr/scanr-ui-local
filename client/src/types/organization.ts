@@ -112,3 +112,18 @@ export type LightOrganization = {
   publicationsCount: number;
   projectsCount: number;
 };
+
+
+export type ExportOrganization = {
+  label: LangField;
+  acronym: LangField;
+  address: {
+    postcode: string;
+    main: boolean;
+    city?: string;
+  }[];
+  links: OrganizationLinksData;
+  kind: string[];
+  nature: string;
+  id: string;
+};

@@ -52,6 +52,13 @@
   "search.filters.organizations.by-supervisors-description": "Rechercher des structures sous la tutelle de...",
   "search.filters.authors.by-award": "Filtrer par prix",
   "search.filters.authors.by-award-description": "Sélectionnez un ou plusieurs prix",
+  "search.filters.projects.by-localisation-description": "Région, Académies, Départements, Unités urbaines, ville d'un participant",
+  "search.filters.projects.by-localisation": "Filtre géographique",
+  "search.filters.projects.by-type": "Filtrer par type de financement",
+  "search.filters.projects.by-type-description": "Sélectionnez un ou plusieurs types de financements",
+  "search.filters.projects.by-year": "Filtrer par année",
+  "search.filters.projects.by-year-description": "Sélectionnez une période",
+  "search.filters.projects.title": "Filtrer les financements",
   "search.publications.analytics.by-year.year-bars.name": "Publications",
   "search.publications.analytics.by-year.title": "Publications par année",
   "search.publications.analytics.by-type.title": "Publications par type",
@@ -77,6 +84,7 @@
   "search.results.pagination.end": "Pas de résultats supplémentaires pour la recherche « {query} »",
   "search.exports.title": "Exporter les résultats",
   "search.exports.description": "Pour des raisons de performance, scanr n'export qu'un maximum de 1000 résultats. Vous pouvez affiner votre recherche pour obtenir un export plus complet.",
+  "search.exports.is-exporting": "Téléchargement des données en cours, veuillez patienter...",
   "search.exports.csv.title": "CSV",
   "search.exports.csv.description": "Exporter les résultats au format CSV",
   "search.exports.json.title": "JSON",
@@ -96,5 +104,7 @@
   "search.analytics.publications.by-year.title": "Nombre de publications par année",
   "search.analytics.publications.by-year.description": "Calculé à partir des résultats de la recherche",
   "search.analytics.publications.by-authors.title": "Top 10 des auteurs",
-  "search.analytics.publications.by-authors.description": "Calculé à partir des résultats de la recherche"
+  "search.analytics.publications.by-authors.description": "Calculé à partir des résultats de la recherche",
+  "search.analytics.publications.by-reviews.title": "Top 10 des revues",
+  "search.analytics.publications.by-reviews.description": "Calculé à partir des résultats de la recherche"
 }

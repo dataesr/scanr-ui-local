@@ -27,6 +27,7 @@ export async function searchPatents({
   cursor,
   query,
   filters,
+  size,
 }: SearchArgs): Promise<SearchResponse<Patent>> {
   const body: any = {
     // _source: [
@@ -54,6 +55,7 @@ export async function searchPatents({
     },
   };
   if (filters) body.query.bool.filter = [...filters];
+  if (size) body.size = size;
   if (cursor) body.search_after = cursor;
   if (!query)
     body.query = { function_score: { query: body.query, random_score: {} } };

@@ -23,7 +23,7 @@ const HIGHLIGHT = {
     "domains.label.default": {},
   }
 }
-export async function searchAuthors({ cursor, query, filters }: SearchArgs): Promise<SearchResponse<LightAuthor>> {
+export async function searchAuthors({ cursor, query, filters, size }: SearchArgs): Promise<SearchResponse<LightAuthor>> {
   const body: any = {
     _source: SOURCE,
     sort: SORTER,
@@ -42,6 +42,7 @@ export async function searchAuthors({ cursor, query, filters }: SearchArgs): Pro
     },
   }
   if (filters) body.query.bool.filter = filters
+  if (size) body.size = size;
   if (cursor) body.search_after = cursor;
   if (!query) body.query = { function_score: { query: body.query, random_score: {} }}
   const res = await fetch(

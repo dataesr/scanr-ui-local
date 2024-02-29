@@ -16,10 +16,11 @@ export default function PublicationAnalytics() {
   if (isError) return null;
   if (isLoading || !searchData?.length) return <AnalyticsSkeleton />
 
-  const { byYear, byAuthors } = data as PublicationAggregations
+  const { byYear, byAuthors, byReview } = data as PublicationAggregations
 
   const yearOptions = getYearChartOptions({ data: byYear, colors: ['var(--artwork-minor-purple-glycine)'] });
   const authorsOptions = getBarChartOptions({ data: byAuthors.slice(0, 10), colors: ['var(--background-contrast-purple-glycine)'] });
+  const reviewOptions = getBarChartOptions({ data: byReview.slice(0, 10), colors: ['var(--background-contrast-purple-glycine)'] });
 
   // const _100TopAuthors = Math.max(...byAuthors.map((el) => el.count | 0));
 
@@ -41,17 +42,15 @@ export default function PublicationAnalytics() {
           />
         </Col>
       </Col>
-      {/* <Col xs="12">
-        {byAuthors?.slice(0, 10)?.map((coAuthor) => (
-          <BarLink
-            key={coAuthor.value}
-            name={coAuthor.label}
-            count={coAuthor.count}
-            width={coAuthor.count * 100 / _100TopAuthors}
-            href={`/authors/${coAuthor.value}`}
+      <Col xs="12">
+        <Col xs="12">
+          <AnalyticsGraph
+            title={intl.formatMessage({ id: "search.analytics.publications.by-reviews.title" })}
+            description={intl.formatMessage({ id: "search.analytics.publications.by-reviews.description" })}
+            options={reviewOptions}
           />
-        ))}
-      </Col> */}
+        </Col>
+      </Col>
     </Row>
   )
 }

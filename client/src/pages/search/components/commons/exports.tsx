@@ -1,14 +1,17 @@
 import { Row, Title, MenuButton, MenuItem } from "@dataesr/dsfr-plus";
 import useSearchData from "../../hooks/useSearchData";
 import { useIntl } from "react-intl";
+import useExportData from "../../hooks/useExportData";
 
 export default function ResultExports() {
   const intl = useIntl();
   const { total } = useSearchData();
+  const { isExporting, exportFile } = useExportData();
 
-  const handleExport = async (format: string) => {
-    if (format === 'export>json') return alert('Exporting JSON');
-    if (format === 'export>csv') return alert('Exporting CSV');
+
+  const handleExport = async (key: string) => {
+    const format = key.split('>')[1] as 'json' | 'csv';
+    await exportFile(format);
   }
 
   return (
@@ -23,14 +26,28 @@ export default function ResultExports() {
               {intl.formatMessage({ id: "search.exports.description" })}
             </p>
           )}
+          {(isExporting) && (
+            <p className="fr-text--xs fr-text-mention--grey">
+              {intl.formatMessage({ id: "search.exports.is-exporting" })}
+            </p>
+          )}
         </div>
         <div className="fr-pl-2w">
-          <MenuButton placement="end" size="sm" aria-label="Options" variant="text" icon="settings-5-line" onAction={handleExport}>
+          <MenuButton
+            disabledKeys={isExporting ? ["export>json", "export>csv"] : []}
+            placement="end"
+            size="sm"
+            aria-label="Options"
+            variant="text"
+            icon="settings-5-line"
+            onAction={handleExport}
+            className="fr-mb-1w"
+          >
             <MenuItem
               key="export>json"
-              className="fr-p-1v"
+              className="fr-p-1w"
               description={intl.formatMessage({ id: "search.exports.json.description" })}
-              endContent={<span className="fr-icon-download-line fr-icon--sm fr-ml-1w" />}
+              endContent={<span className="fr-icon-download-line fr-icon--sm fr-ml-3w" />}
             >
               <span className="fr-text--sm">
                 {intl.formatMessage({ id: "search.exports.json.title" })}
@@ -38,9 +55,9 @@ export default function ResultExports() {
             </MenuItem>
             <MenuItem
               key="export>csv"
-              className="fr-p-1v"
+              className="fr-p-1w"
               description={intl.formatMessage({ id: "search.exports.csv.description" })}
-              endContent={<span className="fr-icon-download-line fr-icon--sm fr-ml-1w" />}
+              endContent={<span className="fr-icon-download-line fr-icon--sm fr-ml-3w" />}
             >
               <span className="fr-text--sm">
                 {intl.formatMessage({ id: "search.exports.csv.title" })}
