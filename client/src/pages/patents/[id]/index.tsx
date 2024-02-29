@@ -28,7 +28,6 @@ export default function Patents() {
     queryFn: () => getPatentById(id),
     throwOnError: true,
   });
-  console.log("data", data);
   return (
     <RawIntlProvider value={intl}>
       <Container>

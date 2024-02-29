@@ -4,7 +4,12 @@ import { getAuthorById } from "../../../../../api/authors/[id]";
 import LinkCard from "../../../../../components/link-card";
 import { PatentActorsData } from "../../../../../types/patent";
 
-function ActorsCard({ actors }: { actors: PatentActorsData }) {
+function ActorsCard({
+  actor,
+}: {
+  actor: PatentActorsData;
+  type: "inv" | "dep";
+}) {
   const queryClient = useQueryClient();
   function prefetch(id: string) {
     if (!id) return;
@@ -14,49 +19,61 @@ function ActorsCard({ actors }: { actors: PatentActorsData }) {
     });
   }
 
-  const cardType = actors.typeParticipant === "pm" ? "organization" : "author";
+  const cardType = actor.typeParticipant === "pm" ? "organization" : "author";
+  const iconType =
+    actor.typeParticipant === "pm" ? "building-line" : "user-line";
+  {
+    console.log(actor);
+  }
 
   return (
     <LinkCard
-      prefetch={actors.person ? () => prefetch(actors.person) : undefined}
+      prefetch={actor.person ? () => prefetch(actor.person) : undefined}
       type={cardType}
-      icon="user-line"
+      icon={iconType}
     >
       <Text className="fr-card__detail" size="sm">
         <i>
-          {actors.rolePatent
-            .map((el) => {
-              if (el.role === "inv" && el.type === "dep") {
-                return "Inventeur & Déposant";
-              } else if (el.role === "inv") {
-                return "Inventeur";
-              } else if (el.role === "dep") {
-                return "Déposant";
-              }
-              return el.role;
-            })
-            .join(" & ")}
+          {actor.rolePatent.map((role) =>
+            role.role === "dep" ? "Déposant " : "Inventeurs"
+          )}
         </i>
       </Text>
-      <Link className="fr-text--bold" href={`/authors/${actors.person}`}>
-        {actors.fullName}
-      </Link>
+      {actor.typeParticipant === "pm" && actor.affiliations.length > 0 ? (
+        <Link
+          className="fr-text--bold"
+          href={`/organizations/${actor.affiliations[0]}`}
+        >
+          {actor.fullName}
+        </Link>
+      ) : (
+        <Text bold className="fr-m-0">
+          {actor.fullName}
+        </Text>
+      )}
     </LinkCard>
   );
 }
 
 export default function PatentActors({
   data: actors,
+  type,
 }: {
   data: PatentActorsData[];
+  type: "inv" | "dep";
 }) {
-  if (!actors?.length) return null;
+  const actorsList = actors.filter((actor) =>
+    actor.rolePatent.find((roleObj) => roleObj.role === type)
+  );
+
+  if (!actorsList?.length) return null;
+
   return (
-    <div className="fr-mb-3w">
+    <div>
       <Row gutters>
-        {actors?.map((actors) => (
-          <Col xs="12" md="12">
-            <ActorsCard actors={actors} />
+        {actorsList.map((actor) => (
+          <Col xs="12" md="6">
+            <ActorsCard actor={actor} type={"inv"} />
           </Col>
         ))}
       </Row>

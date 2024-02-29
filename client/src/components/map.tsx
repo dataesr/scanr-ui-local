@@ -123,9 +123,15 @@ export default function Map({
         data={customGeoJSON}
         style={(feature: any) => {
           const iso2Code = feature.properties.iso_a2;
-          const isMatching = iso2Codes.includes(iso2Code);
+          let fillColor = "transparent";
+          if (iso2Codes.includes(iso2Code)) {
+            fillColor = "blue";
+          }
+          if (iso2Codes.includes("WO") && fillColor !== "blue") {
+            fillColor = "green";
+          }
           return {
-            fillColor: isMatching ? "blue" : "transparent",
+            fillColor,
             weight: 1,
             opacity: 1,
             color: "white",

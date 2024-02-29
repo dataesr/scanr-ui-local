@@ -14,9 +14,11 @@ const onClickFacebook = (e: { preventDefault: () => void }) => {
 const onClickTwitter = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   const currentURL = window.location.href;
+  const text = "#dataEsr #scanR";
   const twitterShareURL = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
     currentURL
-  )}`;
+  )}&text=${encodeURIComponent(text)}`;
+
   window.open(
     twitterShareURL,
     "Partager sur Twitter",
@@ -24,10 +26,13 @@ const onClickTwitter = (e: { preventDefault: () => void }) => {
   );
 };
 
-const onClickLinkedin = (e: { preventDefault: () => void }) => {
+const onClickLinkedin = (e) => {
   e.preventDefault();
-  const currentURL = encodeURIComponent(window.location.href);
-  const linkedinShareURL = `https://www.linkedin.com/shareArticle?url=${currentURL}`;
+  const currentURL = encodeURIComponent("www.google.fr");
+  const text = "#dataEsr #scanR";
+  const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${currentURL}&text=${encodeURIComponent(
+    text
+  )}`;
   window.open(
     linkedinShareURL,
     "Partager sur LinkedIn",

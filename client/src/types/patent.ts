@@ -33,30 +33,21 @@ export type Patent = {
   submissionDate: number;
   publicationDate: number;
   grantedDate: number;
-  authors: [
-    {
-      typeParticipant: string;
-      fullName: string;
-      country: string;
-      rolePatent: [{ role: string }];
-      affiliations: [];
-    }
-  ];
-  domains: [
-    {
+  authors: PatentActorsData[];
+
+  domains: {
+    level: string;
+    code: string;
+    type: string;
+    label: {
       level: string;
-      code: string;
-      type: string;
-      label: {
-        level: string;
-        default: string;
-      };
-    }
-  ];
+      default: string;
+    };
+  }[];
   patents: [
     {
       id: string;
-      isPriority: false;
+      isPriority: boolean;
       ipType: string;
       office: string;
       applicationDate: string;
@@ -76,17 +67,15 @@ export type Patent = {
 };
 
 export type PatentActorsData = {
+  affiliations: string[];
+  person: string;
   typeParticipant: string;
-  rolePatent: any;
+  rolePatent: RolePatent[];
   fullName: string;
-  person?: string;
   role?: string;
-  actors?: string;
-  fromDate?: string;
-  firstName?: string;
-  lastName?: string;
 };
 
-// export type PatentAggregations = {
-//   byAward: Aggregation[];
-// };
+export type RolePatent = {
+  role: "inv" | "dep";
+  description: "inv" | "dep";
+};
