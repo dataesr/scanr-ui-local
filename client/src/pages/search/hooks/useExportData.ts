@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { exportOrganizations } from "../../../api/organizations/export";
+import { exportOrganizations, exportOrganizationsForHe } from "../../../api/organizations/export";
 import { exportAuthors } from "../../../api/authors/export";
 import { exportProjects } from "../../../api/projects/export";
 import { exportPublications } from "../../../api/publications/export";
@@ -11,6 +11,7 @@ const API_MAPPING = {
   authors: exportAuthors,
   projects: exportProjects,
   publications: exportPublications,
+  he: exportOrganizationsForHe,
 };
 
 export default function useExportData() {

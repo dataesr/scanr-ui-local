@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { aggregatePublications } from "../../../api/publications/aggregate";
 import { aggregateAuthors } from "../../../api/authors/aggregate";
-import { aggregateOrganizations } from "../../../api/organizations/aggregate";
+import { aggregateOrganizations, aggregateOrganizationsForHe } from "../../../api/organizations/aggregate";
 import { aggregateProjects } from "../../../api/projects/aggregate";
 import { ProjectAggregations } from "../../../types/project";
 import { AuthorsAggregations } from "../../../types/author";
@@ -16,6 +16,8 @@ const API_MAPPING = {
   authors: aggregateAuthors,
   projects: aggregateProjects,
   organizations: aggregateOrganizations,
+  he: aggregateOrganizationsForHe,
+
 }
 
 type AggregationsModel = PublicationAggregations | OrganizationAggregations | ProjectAggregations | AuthorsAggregations;

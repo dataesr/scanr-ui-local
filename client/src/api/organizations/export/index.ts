@@ -77,3 +77,32 @@ export async function exportOrganizations({ query, filters, format = 'csv', ctx 
   const blob = exporter(format)(data, ctx);
   return blob
 }
+export async function exportOrganizationsForHe({ query, filters, format = 'csv', ctx }: ExportArgs): Promise<Blob> {
+  const body: any = {
+    _source: EXPORT_SOURCE,
+    size: 1000,
+    query: {
+      bool: {
+        must: [
+          {
+            query_string: {
+              query: query || '*',
+              fields: FIELDS,
+            },
+          }
+        ]
+      }
+    },
+  }
+  if (filters) body.query.bool.filter = [...filters, ...DEFAULT_FILTERS]
+  const res = await fetch(
+    `${organizationsIndex}/_search`,
+    { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
+  if (res.status !== 200) {
+    throw new Error(`Elasticsearch error: ${res.status}`)
+  }
+  const json = await res.json()
+  const data: ExportOrganization[] = json?.hits?.hits.map(hit => hit._source) || [];
+  const blob = exporter(format)(data, ctx);
+  return blob
+}

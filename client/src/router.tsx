@@ -14,7 +14,7 @@ import Patents from "./pages/patents/[id]";
 import Project from "./pages/projects/[id]";
 import Networks from "./pages/networks";
 import Suggest from "./pages/suggest";
-import HEPartners from "./pages/trouver-des-partenaires-pour-horizon-europe";
+import HEPartners from "./pages/search/he";
 import Resources from "./pages/about/resources";
 import ResourcesInformations from "./pages/about/resources/[id]";
 import Tutorial from "./pages/about/tutorial";

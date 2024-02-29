@@ -35,8 +35,9 @@ export default function useHeData() {
   });
 
   useEffect(() => {
+    if (searchParams.has('q')) return;
     if (data?.TopicDetails?.keywords?.length) {
-      searchParams.set('q', data.TopicDetails.keywords.join('|'))
+      searchParams.set('q', data.TopicDetails.keywords?.join('|'))
       setSearchParams(searchParams)
     }
   }, [data, searchParams, setSearchParams]);

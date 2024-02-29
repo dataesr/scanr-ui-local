@@ -4,7 +4,7 @@ import { searchPublications } from "../../../api/publications/search";
 import { searchAuthors } from "../../../api/authors/search";
 import { searchPatents } from "../../../api/patents/search";
 
-import { searchOrganizations } from "../../../api/organizations/search";
+import { searchOrganizations, searchOrganizationsForHe } from "../../../api/organizations/search";
 import { searchProjects } from "../../../api/projects/search";
 import {
   InfiniteResponse,
@@ -19,6 +19,7 @@ const API_MAPPING = {
   projects: searchProjects,
   organizations: searchOrganizations,
   patents: searchPatents,
+  he: searchOrganizationsForHe,
 };
 
 export default function useSearchData() {
