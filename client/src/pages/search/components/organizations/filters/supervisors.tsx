@@ -30,10 +30,10 @@ export default function OrganizationSupervisorsFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.organizations.filters.by-supervisors" />
+            <FormattedMessage id="search.filters.organizations.by-supervisors" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.organizations.filters.by-supervisors-description" />
+            <FormattedMessage id="search.filters.organizations.by-supervisors-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('institutions.structure', (key === 'and') ? 'and' : 'or')} />

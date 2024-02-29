@@ -12,10 +12,10 @@ export default function PublicationFunderFilter() {
   return (
     <>
       <Text className="fr-mb-1v" bold size="md">
-        <FormattedMessage id="search.publications.filters.by-project" />
+        <FormattedMessage id="search.filters.publications.by-project" />
       </Text>
       <Text className="fr-card__detail fr-mb-2w" size="sm">
-        <FormattedMessage id="search.publications.filters.by-project-description" />
+        <FormattedMessage id="search.filters.publications.by-project-description" />
       </Text>
       <TagGroup>
         {byFunder.map((funder) => (

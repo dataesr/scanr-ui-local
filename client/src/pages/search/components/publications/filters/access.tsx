@@ -8,7 +8,7 @@ export default function PublicationAccessFilter() {
   return (
     <>
       <Text className="fr-mb-0" bold size="md">
-        <FormattedMessage id="search.publications.filters.by-is-oa" />
+        <FormattedMessage id="search.filters.publications.by-is-oa" />
       </Text>
       <Listbox
         className="no-shadow"

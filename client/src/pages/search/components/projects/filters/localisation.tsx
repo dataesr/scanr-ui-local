@@ -4,7 +4,7 @@ import useUrl from "../../../hooks/useUrl";
 import { LocalisationAutocomplete, autocompleteLocalisations } from "../../../../../api/localisations";
 import OperatorButton from "../../../../../components/operator-button";
 
-export default function OrganizationLocalisationsFilter() {
+export default function ProjectLocalisationsFilter() {
   const { currentFilters, handleFilterChange, setOperator } = useUrl()
 
   const localisationAutocompletedList = useAutocompleteList<LocalisationAutocomplete>({
@@ -19,7 +19,7 @@ export default function OrganizationLocalisationsFilter() {
     }
   });
 
-  const filter = currentFilters?.['address.localisationSuggestions']
+  const filter = currentFilters?.['participants.structure.mainAddress.localisationSuggestions']
   const operator = filter?.operator || 'or'
 
   return (
@@ -27,13 +27,13 @@ export default function OrganizationLocalisationsFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.filters.organizations.by-localisation" />
+            <FormattedMessage id="search.filters.organizations.by-supervisors" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.filters.organizations.by-localisation-description" />
+            <FormattedMessage id="search.filters.organizations.by-supervisors-description" />
           </Text>
         </div>
-        <OperatorButton operator={operator} setOperator={(key) => setOperator('address.localisationSuggestions', (key === 'and') ? 'and' : 'or')} />
+        <OperatorButton operator={operator} setOperator={(key) => setOperator('participants.structure.mainAddress.localisationSuggestions', (key === 'and') ? 'and' : 'or')} />
       </div>
       {filter ? (<Text bold size="sm" className="fr-mb-1v">
         Séléctionnées:
@@ -46,7 +46,7 @@ export default function OrganizationLocalisationsFilter() {
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange({ field: 'address.localisationSuggestions', value })
+              handleFilterChange({ field: 'participants.structure.mainAddress.localisationSuggestions', value })
             }}
           >
             {label || value}
@@ -59,12 +59,11 @@ export default function OrganizationLocalisationsFilter() {
         inputValue={localisationAutocompletedList.filterText}
         onInputChange={localisationAutocompletedList.setFilterText}
         loadingState={localisationAutocompletedList.loadingState}
-        placeholder="Ex: Ile de france, Bas-Rhin, Lyon..."
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
           if (!item) return;
-          handleFilterChange({ field: 'address.localisationSuggestions', value: item })
+          handleFilterChange({ field: 'participants.structure.mainAddress.localisationSuggestions', value: item })
         }}
       >
         {({ autocompleted }) => (

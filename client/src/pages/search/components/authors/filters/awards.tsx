@@ -15,7 +15,7 @@ export default function AuthorAwardsFilter() {
   const { data = { byAward: [] } } = useAggregateData('filters')
   const { byAward } = data as AuthorsAggregations
 
-  const [seeMoreAwards, setSeeMoreAwards] = useState(false)
+  const [seeMore, setSeeMore] = useState(false)
   const filter = currentFilters['awards.label']
   const operator = filter?.operator || 'or'
 
@@ -25,16 +25,16 @@ export default function AuthorAwardsFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mt-3w fr-mb-0" bold size="md">
-            <FormattedMessage id="search.authors.filters.by-award" />
+            <FormattedMessage id="search.filters.authors.by-award" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.authors.filters.by-award-description" />
+            <FormattedMessage id="search.filters.authors.by-award-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('awards.label', (key === 'and') ? 'and' : 'or')} />
       </div>
       <TagGroup>
-        {byAward.slice(0, seeMoreAwards ? 10000 : SEE_MORE_AFTER).map((type) => (
+        {byAward.slice(0, seeMore ? 10000 : SEE_MORE_AFTER).map((type) => (
           <SelectableTag
             selected={filter?.values?.map(v => v.value)?.includes(type.value)}
             key={type.value}
@@ -44,9 +44,19 @@ export default function AuthorAwardsFilter() {
           </SelectableTag>
         ))}
       </TagGroup>
-      {seeMoreAwards
-        ? <Button variant="text" size="sm" onClick={() => setSeeMoreAwards(false)}>{intl.formatMessage({ id: "search.filters.see-less" })}</Button>
-        : <Button variant="text" size="sm" onClick={() => setSeeMoreAwards(true)}>{intl.formatMessage({ id: "search.filters.see-more" })}</Button>}
+      {!!(byAward?.length > SEE_MORE_AFTER) && (
+        <Button
+          variant="text"
+          size="sm"
+          onClick={() => setSeeMore((prev) => !prev)}
+        >
+          {
+            seeMore
+              ? intl.formatMessage({ id: "search.filters.see-less" })
+              : intl.formatMessage({ id: "search.filters.see-more" }, { count: byAward?.length })
+          }
+        </Button>
+      )}
     </>
   )
 }

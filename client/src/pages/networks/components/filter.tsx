@@ -124,7 +124,7 @@ export default function NetworkFilters() {
             ))}
           </TagGroup>
           <hr className="fr-mt-3w" />
-        </Container>
+        </Container >
         <div className="fr-modal__footer fr-px-0" style={{ display: "flex", width: "100%", alignItems: "center" }}>
           <div style={{ flexGrow: 1 }}>
             {total && total === 10000 ? (
@@ -151,7 +151,7 @@ export default function NetworkFilters() {
             {intl.formatMessage({ id: "networks.top.filters.display" })}
           </Button>
         </div>
-      </Modal>
+      </Modal >
     </>
   )
 }

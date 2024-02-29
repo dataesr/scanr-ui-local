@@ -18,10 +18,10 @@ export default function OrganizationFunderFilter() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flexGrow: 1 }}>
           <Text className="fr-mb-1v" bold size="md">
-            <FormattedMessage id="search.organizations.filters.by-project" />
+            <FormattedMessage id="search.filters.organizations.by-project" />
           </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
-            <FormattedMessage id="search.organizations.filters.by-project-description" />
+            <FormattedMessage id="search.filters.organizations.by-project-description" />
           </Text>
         </div>
         <OperatorButton operator={operator} setOperator={(key) => setOperator('projects.type', (key === 'and') ? 'and' : 'or')} />
