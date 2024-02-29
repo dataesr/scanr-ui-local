@@ -63,7 +63,7 @@ export default function NetworkFilters() {
         <Container fluid className="fr-my-2w">
           <Text bold size="md" className="fr-mb-1v">
             <FormattedMessage id="networks.filters.by-year" />
-          </Text >
+          </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
             <FormattedMessage id="networks.filters.by-year-description" />
           </Text>
@@ -88,7 +88,7 @@ export default function NetworkFilters() {
           <hr className="fr-mt-3w" />
           <Text className="fr-mb-1v" bold size="md">
             <FormattedMessage id="networks.filters.by-project" />
-          </Text >
+          </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
             <FormattedMessage id="networks.filters.by-project-description" />
           </Text>
@@ -107,7 +107,7 @@ export default function NetworkFilters() {
           <hr className="fr-mt-3w" />
           <Text className="fr-mb-1v" bold size="md">
             <FormattedMessage id="networks.filters.by-project" />
-          </Text >
+          </Text>
           <Text className="fr-card__detail fr-mb-2w" size="sm">
             <FormattedMessage id="networks.filters.by-project-description" />
           </Text>
