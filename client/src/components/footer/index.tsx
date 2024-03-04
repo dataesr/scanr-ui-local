@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, Link, Logo, Title } from "@dataesr/dsfr-plus";
+import { Col, Container, Link, Logo, Row, Title } from "@dataesr/dsfr-plus";
 import { IntlProvider, createIntl } from "react-intl";
 
 const modules = import.meta.glob("./locales/*.json", {
@@ -28,41 +28,40 @@ export function Footer({
     <IntlProvider messages={messages} locale="fr" defaultLocale="fr">
       <footer className="fr-footer fr-mt-3w" role="contentinfo" id="footer">
         <div className="fr-footer__top">
-          <div className="fr-container">
-            <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-              <div>
-                <Col className="fr-mr-5w">
-                  <Title as="h3" className="fr-footer__top-cat">
-                    {intl.formatMessage({
-                      id: "layout.footer.top.about.help",
-                    })}
-                  </Title>
-                  <ul className="fr-footer__top-list">
-                    <li>
-                      <Link className="fr-footer__top-link" href="/about/FAQ">
-                        {intl.formatMessage({
-                          id: "layout.footer.top.about.faq",
-                        })}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="fr-footer__top-link" href="/about/team">
-                        {intl.formatMessage({
-                          id: "layout.footer.top.about.team",
-                        })}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="/about/resources"
-                      >
-                        {intl.formatMessage({
-                          id: "layout.footer.top.about.resources",
-                        })}
-                      </Link>
-                    </li>
-                    {/* <li>
+          <Container>
+            <Row gutters>
+              <Col xs={12} lg={2}>
+                <Title as="h3" className="fr-footer__top-cat">
+                  {intl.formatMessage({
+                    id: "layout.footer.top.about.help",
+                  })}
+                </Title>
+                <ul className="fr-footer__top-list">
+                  <li>
+                    <Link className="fr-footer__top-link" href="/about/FAQ">
+                      {intl.formatMessage({
+                        id: "layout.footer.top.about.faq",
+                      })}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="fr-footer__top-link" href="/about/team">
+                      {intl.formatMessage({
+                        id: "layout.footer.top.about.team",
+                      })}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="/about/resources"
+                    >
+                      {intl.formatMessage({
+                        id: "layout.footer.top.about.resources",
+                      })}
+                    </Link>
+                  </li>
+                  {/* <li>
                       <Link
                         className="fr-footer__top-link"
                         href="/about/tutorial"
@@ -72,117 +71,126 @@ export function Footer({
                         })}
                       </Link>
                     </li> */}
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="/about/glossary"
-                      >
-                        {intl.formatMessage({
-                          id: "layout.footer.top.about.glossary",
-                        })}
-                      </Link>
-                    </li>
-                  </ul>
-                </Col>
-              </div>
-              <div>
-                <Col className="fr-mr-5v">
-                  <Title as="h3" className="fr-footer__top-cat">
-                    Voir aussi
-                  </Title>
-                  <ul className="fr-footer__top-list">
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://github.com/dataesr/scanr"
-                        target="_blank"
-                      >
-                        GitHub
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://curiexplore.enseignementsup-recherche.gouv.fr/"
-                        target="_blank"
-                      >
-                        CurieXplore
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://barometredelascienceouverte.esr.gouv.fr/"
-                        target="_blank"
-                      >
-                        Baromètre de la Science Ouverte
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://data.esr.gouv.fr/FR/"
-                        target="_blank"
-                      >
-                        #dataESR
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://data.enseignementsup-recherche.gouv.fr/pages/home/"
-                        target="_blank"
-                      >
-                        Plateforme Open Data
-                      </Link>
-                    </li>
-                  </ul>
-                </Col>
-              </div>
-              <div>
-                <Col>
-                  <Title as="h3" className="fr-footer__top-cat">
-                    Nous contacter
-                  </Title>
-                  <ul className="fr-footer__top-list">
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://github.com/dataesr/scanr"
-                        target="_blank"
-                        icon="twitter-x-fill"
-                        iconPosition="left"
-                      >
-                        Twitter
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://www.linkedin.com/company/enseignementsup-recherche/"
-                        target="_blank"
-                        icon="linkedin-box-fill"
-                        iconPosition="left"
-                      >
-                        Linkedin
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="fr-footer__top-link"
-                        href="https://www.facebook.com/enseignementsup.recherche"
-                        target="_blank"
-                        iconPosition="left"
-                        icon="facebook-circle-fill"
-                      >
-                        Facebook
-                      </Link>
-                    </li>
-                  </ul>
-                </Col>
-              </div>
-            </div>
-          </div>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="/about/glossary"
+                    >
+                      {intl.formatMessage({
+                        id: "layout.footer.top.about.glossary",
+                      })}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="/about/contact"
+                    >
+                      {intl.formatMessage({
+                        id: "layout.footer.top.about.contact",
+                      })}
+                    </Link>
+                  </li>
+                </ul>
+              </Col>
+              <Col xs={12} lg={2}>
+                <Title as="h3" className="fr-footer__top-cat">
+                  {intl.formatMessage({
+                    id: "layout.footer.top.about.also",
+                  })}
+                </Title>
+                <ul className="fr-footer__top-list">
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://github.com/dataesr/scanr"
+                      target="_blank"
+                    >
+                      GitHub
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://curiexplore.enseignementsup-recherche.gouv.fr/"
+                      target="_blank"
+                    >
+                      CurieXplore
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://barometredelascienceouverte.esr.gouv.fr/"
+                      target="_blank"
+                    >
+                      Baromètre de la Science Ouverte
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://data.esr.gouv.fr/FR/"
+                      target="_blank"
+                    >
+                      #dataESR
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://data.enseignementsup-recherche.gouv.fr/pages/home/"
+                      target="_blank"
+                    >
+                      Plateforme Open Data
+                    </Link>
+                  </li>
+                </ul>
+              </Col>
+              <Col xs={12} lg={2}>
+                <Title as="h3" className="fr-footer__top-cat">
+                  {intl.formatMessage({
+                    id: "layout.footer.top.about.follow",
+                  })}
+                </Title>
+                <ul className="fr-footer__top-list">
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://github.com/dataesr/scanr"
+                      target="_blank"
+                      icon="twitter-x-fill"
+                      iconPosition="left"
+                    >
+                      Twitter
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://www.linkedin.com/company/enseignementsup-recherche/"
+                      target="_blank"
+                      icon="linkedin-box-fill"
+                      iconPosition="left"
+                    >
+                      Linkedin
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="fr-footer__top-link"
+                      href="https://www.facebook.com/enseignementsup.recherche"
+                      target="_blank"
+                      iconPosition="left"
+                      icon="facebook-circle-fill"
+                    >
+                      Facebook
+                    </Link>
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+          </Container>
         </div>
         <Container fluid={fluid}>{children}</Container>
       </footer>

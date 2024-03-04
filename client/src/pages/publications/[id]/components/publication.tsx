@@ -1,4 +1,4 @@
-import { Link, Button, ButtonGroup, Col, Container, Row, TextInput } from "@dataesr/dsfr-plus";
+import { Link, Button, ButtonGroup, Col, Container, Row } from "@dataesr/dsfr-plus";
 import Share from "../../../../components/share";
 import PublicationsHeader from "./header";
 import { useIntl } from "react-intl";
@@ -7,9 +7,9 @@ import useScreenSize from "../../../../hooks/useScreenSize";
 import Wiki from "../../../../components/wiki";
 import ProjectItem from "../../../search/components/projects/project-item";
 import Identifiers from "../../../../components/identifiers";
-import Modal from "../../../../components/modal";
 import MoreLikeThis from "../../../../components/more-like-this";
 import { Publication } from "../../../../types/publication";
+import { encode } from "../../../../utils/string";
 
 
 export default function PublicationPage({ data }: { data: Publication }) {
@@ -137,20 +137,24 @@ export default function PublicationPage({ data }: { data: Publication }) {
             >
               <Share />
             </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.contribute" })}
+              show
+            >
+              <ButtonGroup>
+                {/* <Button data-fr-opened="false" aria-controls="funding-add" variant="tertiary" icon="links-line" iconPosition="left">
+                  {intl.formatMessage({ id: "publications.signals.fundings" })}
+                </Button> */}
+                {/* <Button data-fr-opened="false" aria-controls="authors-identification" variant="tertiary" icon="links-line" iconPosition="left" >
+                  {intl.formatMessage({ id: "publications.signals.author" })}
+                </Button> */}
+                <Button as="a" href={`/bugs/publications/${encode(data.id)}`} color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+                  {intl.formatMessage({ id: "publications.signals.bug" })}
+                </Button>
+              </ButtonGroup>
+            </PageSection>
           </PageContent>
-          <hr className='fr-my-3w' />
-          <ButtonGroup>
-            <Button data-fr-opened="false" aria-controls="funding-add" variant="tertiary" icon="links-line" iconPosition="left">
-              {intl.formatMessage({ id: "publications.signals.fundings" })}
-            </Button>
-            <Button data-fr-opened="false" aria-controls="authors-identification" variant="tertiary" icon="links-line" iconPosition="left" >
-              {intl.formatMessage({ id: "publications.signals.author" })}
-            </Button>
-            <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
-              {intl.formatMessage({ id: "publications.signals.bug" })}
-            </Button>
-          </ButtonGroup>
-          <Modal id="authors-identification" title={intl.formatMessage({ id: "publications.signals.author" })}>
+          {/* <Modal id="authors-identification" title={intl.formatMessage({ id: "publications.signals.author" })}>
             {authors.map((author, i) => (
               <div className="fr-mb-3w" key={i}>
                 <TextInput label={author.fullName} disableAutoValidation defaultValue={author.person || ""} />
@@ -159,7 +163,7 @@ export default function PublicationPage({ data }: { data: Publication }) {
           </Modal>
           <Modal id="fundings-add" title={intl.formatMessage({ id: "publications.signals.fundings" })}>
             <TextInput disableAutoValidation label="Rechercher un financement" />
-          </Modal>
+          </Modal> */}
         </Col>
       </Row >
     </Container >

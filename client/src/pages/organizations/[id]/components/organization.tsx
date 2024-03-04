@@ -299,6 +299,8 @@ export default function OrganizationPresentation({
               >
                 <ButtonGroup>
                   <Button
+                    as="a"
+                    href={`/bugs/organizations/${data.id}`}
                     color="error"
                     variant="tertiary"
                     icon="bug-line"

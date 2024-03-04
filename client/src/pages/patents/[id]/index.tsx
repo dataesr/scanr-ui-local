@@ -24,7 +24,7 @@ export default function Patents() {
   const intl = createIntl({ locale, messages: messages[locale] });
   const { id } = useParams();
   const { data, isLoading } = useQuery({
-    queryKey: ["patents", id],
+    queryKey: ["patent", id],
     queryFn: () => getPatentById(id),
     throwOnError: true,
   });

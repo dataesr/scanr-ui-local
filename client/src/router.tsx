@@ -19,6 +19,8 @@ import Resources from "./pages/about/resources";
 import ResourcesInformations from "./pages/about/resources/[id]";
 import Tutorial from "./pages/about/tutorial";
 import Glossary from "./pages/about/glossary";
+import ContactPage from "./pages/about/contact";
+import BugsReport from "./pages/bugs/[api]/[id]";
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -43,6 +45,7 @@ export default function Router() {
           <Route path="/about/faq" element={<FAQ />} />
           <Route path="/about/team" element={<Team />} />
           <Route path="/about/resources" element={<Resources />} />
+          <Route path="/about/contact" element={<ContactPage />} />
           <Route path="/about/tutorials" element={<Tutorial />} />
           <Route
             path="/about/resources/:id"
@@ -50,6 +53,7 @@ export default function Router() {
           />
           {/* <Route path="/about/tutorial" element={<Tutorial />} /> */}
           <Route path="/about/glossary" element={<Glossary />} />
+          <Route path="/bugs/:api/:id" element={<BugsReport />} />
           <Route path="/publications/:id" element={<Publication />} />
           <Route path="/authors/:id" element={<Author />} />
           <Route path="/organizations/:id" element={<Organization />} />

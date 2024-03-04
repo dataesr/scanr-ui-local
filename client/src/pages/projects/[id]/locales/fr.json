@@ -1,8 +1,18 @@
 {
   "projects.breadcrumb.home": "Accueil",
   "projects.breadcrumb.search": "Financements",
-  "projects.signals.bug": "Signaler une erreur",
-  "projects.section.identifiers.title": "Identifiants de l'auteur",
+  "projects.section.identifiers.title": "Identifiants du projet",
   "projects.section.identifiers.desc": "Cliquez pour copier l'identifiant dans le presse-papier",
-  "projects.section.share": "Partager la page"
+  "projects.section.share": "Partager la page",
+  "projects.section.contribute.title": "Contribuer",
+  "projects.section.contribute.bugs": "Signaler une erreur",
+  "projects.section.programs": "Appel à projets et programmes",
+  "projects.section.website.title": "Sur le web",
+  "projects.section.website.name": "Site web du projet",
+  "projects.section.coordinator.title": "Coordinateur du projet",
+  "projects.section.funding.title": "Financement du projet",
+  "projects.section.funding.no-data": "Aucune information disponible",
+  "projects.section.funding.global-budget": "Budget global: ",
+  "projects.section.funding.contributed-budget": "Contribution du financeur: ",
+  "projects.section.funding.financed-at": "Financé à "
 }

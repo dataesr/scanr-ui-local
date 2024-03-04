@@ -1,11 +1,12 @@
 import cs from "classnames";
-import { Badge, BadgeGroup, Col, Container, Link, Notice, Row, Tab, Tabs, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
+import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Link, Notice, Row, Tab, Tabs, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { Project } from "../../../../types/project";
 import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import Map from "../../../../components/map";
 import Truncate from "../../../../components/truncate";
 import LinkCard from "../../../../components/link-card";
+import { useIntl } from "react-intl";
 
 function calculateAccomplishment(startDate, endDate) {
   if (!startDate || !endDate) return null;
@@ -27,6 +28,7 @@ const typeLogoMapping = {
 }
 export default function ProjectPresentation({ data }: { data: Project }) {
   const { locale } = useDSFRConfig();
+  const intl = useIntl();
 
   const markers = data?.participants
     .map((p) => p?.structure?.address?.find((a) => a?.main))
@@ -95,7 +97,9 @@ export default function ProjectPresentation({ data }: { data: Project }) {
             </Container>
             <Container fluid className="fr-mb-8w">
               <Row className="fr-my-3w">
-                <Title className="fr-mb-0" as="h2" look="h4">Appel à projets et programmes</Title>
+                <Title className="fr-mb-0" as="h2" look="h4">
+                  {intl.formatMessage({ id: "projects.section.programs" })}
+                </Title>
               </Row>
               <Text>
                 <Notice type="info" closeMode="disallow">
@@ -241,12 +245,26 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </div>)}
               </PageSection>
               <PageSection
-                title="Financement du projet"
+                title={intl.formatMessage({ id: "projects.section.funding.title" })}
                 description={(<Text className="fr-mb-0" size="xs">
-                  {(!data.budgetTotal && !data.budgetFinanced) && 'Aucune information disponible'}
-                  {data.budgetTotal && (<>Budget global: <b>{Math.floor(Number(data.budgetTotal)).toLocaleString()} €</b></>)}
+                  {(!data.budgetTotal && !data.budgetFinanced) && intl.formatMessage({ id: "projects.section.funding.no-data" })}
+                  {data.budgetTotal && (
+                    <>
+                      {intl.formatMessage({ id: "projects.section.funding.global-budget" })}
+                      <b>
+                        {Math.floor(Number(data.budgetTotal)).toLocaleString()} €
+                      </b>
+                    </>
+                  )}
                   <br />
-                  {data.budgetFinanced && (<>Contribution du financeur: <b>{Math.floor(Number(data.budgetFinanced)).toLocaleString()} €</b></>)}
+                  {data.budgetFinanced && (
+                    <>
+                      {intl.formatMessage({ id: "projects.section.funding.contributed-budget" })}
+                      <b>
+                        {Math.floor(Number(data.budgetFinanced)).toLocaleString()} €
+                      </b>
+                    </>
+                  )}
                 </Text>)}
                 show
               >
@@ -267,7 +285,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                           text-anchor={(fundingPercent > 80) ? "end" : (fundingPercent < 20) ? "start" : "middle"}
                           font-size=".75rem"
                         >
-                          Financé à
+                          {intl.formatMessage({ id: "projects.section.funding.financed-at" })}
                           {' '}
                           {fundingPercent.toLocaleString()}
                           {' '}
@@ -299,8 +317,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </div>)}
               </PageSection>
               <PageSection
-                title="Coordinateur du projet"
-                description=""
+                title={intl.formatMessage({ id: "projects.section.coordinator.title" })}
                 show={!!coordinator}
               >
                 <LinkCard type="organization" icon="building-line">
@@ -316,8 +333,8 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </LinkCard>
               </PageSection>
               <PageSection
-                title="Identifiants du projet"
-                description="Cliquez pour copier l'identifiant dans le press-papier"
+                title={intl.formatMessage({ id: "projects.section.identifiers.title" })}
+                description={intl.formatMessage({ id: "projects.section.identifiers.desc" })}
                 show={!!data?.id}
               >
                 <div>
@@ -326,7 +343,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   </div>
                 </div>
               </PageSection>
-              {data.url && (<PageSection title="Sur le web" description="" show={!!data?.url}>
+              {data.url && (<PageSection title={intl.formatMessage({ id: "projects.section.website.title" })} description="" show={!!data?.url}>
                 <div className="fr-follow">
                   <div className="fr-container">
                     <div className="fr-grid-row">
@@ -340,7 +357,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                                 target="_blank"
                                 rel="noreferrer noopener external"
                               >
-                                Site web du projet
+                                {intl.formatMessage({ id: "projects.section.website.name" })}
                               </a>
                             </li>
                           </ul>
@@ -350,6 +367,25 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   </div>
                 </div>
               </PageSection>)}
+              <PageSection
+                title={intl.formatMessage({ id: "projects.section.contribute.title" })}
+                show
+              >
+                <ButtonGroup>
+                  <Button
+                    as="a"
+                    href={`/bugs/projects/${data.id}`}
+                    color="error"
+                    variant="tertiary"
+                    icon="bug-line"
+                    iconPosition="left"
+                  >
+                    {intl.formatMessage({
+                      id: "projects.section.contribute.bugs",
+                    })}
+                  </Button>
+                </ButtonGroup>
+              </PageSection>
             </PageContent>
           </Col>
         </Row >

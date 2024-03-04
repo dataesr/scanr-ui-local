@@ -164,16 +164,20 @@ export default function AuthorPage({ data }: { data: Author }) {
             <PageSection show title={intl.formatMessage({ id: "authors.section.share" })}>
               <Share />
             </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "authors.section.contribute.title" })}
+              show
+            >
+              <ButtonGroup>
+                <Button as="a" href={`/suggest/${data.id}?q="${data?.fullName}"`} variant="tertiary" icon="links-line" iconPosition="left" >
+                  {intl.formatMessage({ id: "authors.signals.publications" })}
+                </Button>
+                <Button as="a" href={`/bugs/authors/${data.id}`} color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+                  {intl.formatMessage({ id: "authors.signals.bug" })}
+                </Button>
+              </ButtonGroup>
+            </PageSection>
           </PageContent>
-          <hr className='fr-my-3w' />
-          <ButtonGroup>
-            <Button as="a" href={`/suggest/${data.id}?q="${data?.fullName}"`} variant="tertiary" icon="links-line" iconPosition="left" >
-              {intl.formatMessage({ id: "authors.signals.publications" })}
-            </Button>
-            <Button color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
-              {intl.formatMessage({ id: "authors.signals.bug" })}
-            </Button>
-          </ButtonGroup>
         </Col>
       </Row>
     </Container>

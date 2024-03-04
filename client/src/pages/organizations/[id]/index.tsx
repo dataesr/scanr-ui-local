@@ -23,7 +23,7 @@ export default function Organization() {
   const intl = createIntl({ locale, messages: messages[locale] })
   const { id } = useParams();
   const { data, isLoading } = useQuery({
-    queryKey: ["organization", id],
+    queryKey: ["organizations", id],
     queryFn: () => getOrganizationById(id),
     throwOnError: true,
   });
