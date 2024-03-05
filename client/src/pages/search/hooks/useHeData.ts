@@ -25,7 +25,7 @@ export default function useHeData() {
   const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data, isFetching, isError } = useQuery<TopicData>({
+  const { data, isFetching, isError, error } = useQuery<TopicData>({
     queryKey: ["he-call-data", id],
     queryFn: async () => {
       const res = await fetch(`https://scanr.dataesr.ovh/topics/${id}`);
@@ -44,8 +44,8 @@ export default function useHeData() {
 
 
   const value = useMemo(
-    () => ({ data: data?.TopicDetails, isFetching, isError }),
-    [data, isFetching, isError]
+    () => ({ data: data?.TopicDetails, isFetching, isError, error }),
+    [data, isFetching, isError, error]
   );
   return value;
 }

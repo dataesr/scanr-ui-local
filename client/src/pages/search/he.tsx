@@ -34,7 +34,7 @@ export default function HEPartners() {
   const { locale } = useDSFRConfig();
   const [ref, inView] = useInView();
   const intl = createIntl({ locale, messages: messages[locale] })
-  const { data: heData, isFetching, isError } = useHeData();
+  const { data: heData, isFetching, isError, error } = useHeData();
   const { currentQuery, handleQueryChange } = useUrl();
   const { search } = useSearchData();
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching: isFetchingData, error: dataError } = search;
@@ -51,7 +51,7 @@ export default function HEPartners() {
   console.log("keywords", keywords, currentQuery);
 
 
-  if (isError || dataError) return <Error500 />
+  if (isError || dataError) return <Error500 error={error} />
   return (
     <RawIntlProvider value={intl}>
       <Container>

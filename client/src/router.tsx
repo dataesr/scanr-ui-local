@@ -78,7 +78,7 @@ export default function Router() {
             path="/trouver-des-partenaires-pour-horizon-europe/:id"
             element={<HEPartners />}
           />
-          <Route path="*" element={<Error404 />} />
+          <Route path="*" element={<Error404 error={null} />} />
         </Route>
       </Routes>
     </>

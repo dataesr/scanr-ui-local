@@ -76,7 +76,7 @@ export default function Suggest() {
   }, [inView, fetchNextPage])
 
   if (error) {
-    return <Error500 />
+    return <Error500 error={error} />
   }
 
   return (

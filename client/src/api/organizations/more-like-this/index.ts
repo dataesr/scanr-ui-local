@@ -7,7 +7,7 @@ export async function getMoreOrganizationsLikeThis(id: string) {
     size: 3,
     query: {
       more_like_this: {
-        fields: ["publications.title.*"],
+        fields: ["publications.title.*", "web_content", "patents.title.*", "projects.label.*", "description.*"],
         like: [{ _id: id }],
         min_term_freq: 1,
         max_query_terms: 12,
