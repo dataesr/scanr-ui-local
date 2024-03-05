@@ -15,7 +15,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <BadgeGroup className="structure-badge-list fr-mt-1v">
             {data?.kind?.map((k) => <Badge key={k} size="sm" color="yellow-tournesol" noIcon>{k}</Badge>)}
             {data.level && <Badge size="sm" color='green-emeraude'>{data.level}</Badge>}
-            {data.nature && <Badge size="sm" color='green-emeraude'>{data.nature}</Badge>}
+            {(data.nature && (data.nature !== data.level)) && <Badge size="sm" color='green-emeraude'>{data.nature}</Badge>}
           </BadgeGroup>
           <Title className="fr-mb-0" as="h1" look="h4">
             {getLangFieldValue(locale)(data.label)}
