@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { useDSFRConfig } from "@dataesr/dsfr-plus";
 import { createIntl } from "react-intl";
 import { OrganizationLinksData } from "../../types/organization";
@@ -10,6 +11,14 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   }
   return acc;
 }, {});
+
+const ICON_MAPPING = {
+  wikipedia: "wikipedia",
+  RSS: "rss-line",
+  Wikipedia: "wikipedia",
+  HAL: "hal",
+}
+
 
 export default function Websites({ data: links }: { data: OrganizationLinksData }) {
   const { locale } = useDSFRConfig();
@@ -26,10 +35,10 @@ export default function Websites({ data: links }: { data: OrganizationLinksData 
                 {links?.map((link, i) => (
                   <li key={i} style={{ width: "100%" }}>
                     <a
-                      className="fr-btn--links fr-btn social-btn"
                       href={link.url}
                       target="_blank"
                       rel="noreferrer noopener external"
+                      className={cn("fr-btn social-btn", `fr-icon-${ICON_MAPPING[link.type] || 'earth-line'}`)}
                     >
                       {/* {link.type?.toLowerCase()} */}
                       {intl.formatMessage({ id: `websites.types.${link.type}` })}
