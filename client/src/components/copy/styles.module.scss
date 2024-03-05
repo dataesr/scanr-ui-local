@@ -1,14 +1,41 @@
-.copy-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 99999px;
-  --hover: var(--active-tint);
-  line-height: 1.25rem;
-  height: 1.5rem;
-  width: 1.5rem;
-}
-
 .lowercase {
   text-transform: none !important;
+}
+
+.fr-badge--sm::after {
+  --icon-size: .75rem;
+  margin-left: -.09375rem;
+  margin-right: .25rem;
+}
+
+.copy-badge::after {
+  --icon-size: 1rem;
+  margin-right: -.125rem;
+  margin-left: .25rem;
+  flex: 0 0 auto;
+  display: inline-block;
+  vertical-align: calc((.75em - var(--icon-size)) * .5);
+  background-color: currentColor;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.copied::after {
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0ibTEwIDE1LjE3MiA5LjE5Mi05LjE5MyAxLjQxNSAxLjQxNEwxMCAxOGwtNi4zNjQtNi4zNjQgMS40MTQtMS40MTQgNC45NSA0Ljk1WiIvPjwvc3ZnPg==);
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0ibTEwIDE1LjE3MiA5LjE5Mi05LjE5MyAxLjQxNSAxLjQxNEwxMCAxOGwtNi4zNjQtNi4zNjQgMS40MTQtMS40MTQgNC45NSA0Ljk1WiIvPjwvc3ZnPg==);
+  content: "";
+}
+
+.copy::after {
+  -webkit-mask-image: url("/icons/file-copy.svg");
+  mask-image: url("/icons/file-copy.svg");
+  content: "";
+}
+
+.copy-error::after {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0ibTEyIDEwLjYgNC45NS00Ljk2IDEuNCAxLjRMMTMuNDIgMTJsNC45NiA0Ljk1LTEuNCAxLjRMMTIgMTMuNDJsLTQuOTUgNC45Ni0xLjQtMS40TDEwLjU4IDEyIDUuNjMgNy4wNWwxLjQtMS40eiIvPjwvc3ZnPg==);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0ibTEyIDEwLjYgNC45NS00Ljk2IDEuNCAxLjRMMTMuNDIgMTJsNC45NiA0Ljk1LTEuNCAxLjRMMTIgMTMuNDJsLTQuOTUgNC45Ni0xLjQtMS40TDEwLjU4IDEyIDUuNjMgNy4wNWwxLjQtMS40eiIvPjwvc3ZnPg==);
+  content: "";
 }

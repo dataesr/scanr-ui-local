@@ -7,10 +7,9 @@ import {
   Badge,
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
-import { encode } from "../../../../utils/string";
 import { ItemProps } from "../../types";
-import { getOrganizationById } from "../../../../api/organizations/[id]";
 import { LightProject } from "../../../../types/project";
+import { getProjectById } from "../../../../api/projects/[id]";
 
 export default function ProjectItem({
   data: project,
@@ -22,7 +21,7 @@ export default function ProjectItem({
   function prefetchAuthor(id: string) {
     queryClient.prefetchQuery({
       queryKey: ["project", id],
-      queryFn: () => getOrganizationById(encode(id)),
+      queryFn: () => getProjectById(id),
       staleTime: Infinity,
     });
   }
@@ -45,7 +44,7 @@ export default function ProjectItem({
           </Badge>
         </BadgeGroup>
         <span onMouseEnter={() => prefetchAuthor(project.id)}>
-          <Link href={`/projects/${encode(project.id)}`} className="fr-link">
+          <Link href={`/projects/${project.id}`} className="fr-link">
             {project?.label?.default ||
               project?.label?.fr ||
               project?.label?.en}
@@ -59,7 +58,7 @@ export default function ProjectItem({
             <Fragment key={k}>
               {structure && k > 0 ? ", " : ""}
               {structure?.label ? (
-                <Link href={`/authors/${encode(structure.id)}`}>
+                <Link href={`/organizations/${structure.id}`}>
                   {structure.label[locale] || structure.label.default}
                 </Link>
               ) : null}

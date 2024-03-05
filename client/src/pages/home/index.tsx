@@ -410,7 +410,7 @@ function ServicesBanner() {
 function OpendataBanner() {
   const intl = useIntl();
   return (
-    <Container className="bg-grey" fluid>
+    <Container className="bg-grey fr-mb-10w" fluid>
       <Container className="fr-py-4w">
         <Row>
           <Col xs="12" md="8">

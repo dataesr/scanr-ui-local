@@ -1,5 +1,5 @@
 import { ExternalIdsData } from "../../types/commons";
-import CopyBadgeButton from "../copy/copy-badge-button";
+import CopyBadge from "../copy/copy-badge";
 
 export default function Identifiers({ data: externalIds }: { data: ExternalIdsData[] }) {
   if (!externalIds?.length) return null;
@@ -8,7 +8,7 @@ export default function Identifiers({ data: externalIds }: { data: ExternalIdsDa
       <div className="fr-badge-group">
         {externalIds
           ?.filter((ext) => ext?.type !== 'scanr')
-          .map((ext) => <CopyBadgeButton key={ext.id} lowercase size="sm" text={ext.id} />)
+          .map((ext) => <CopyBadge key={ext.id} lowercase size="sm" copyText={ext.id?.replace("idref", "")}>{`${ext.type.toUpperCase()} : ${ext.id?.replace("idref", "")}`}</CopyBadge>)
         }
       </div>
     </div>

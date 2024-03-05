@@ -83,14 +83,14 @@ export default function Header() {
           <Link current={pathname.split('/').includes('organizations')} href="/search/organizations">
             <FormattedMessage id="layout.header.nav.search.organizations" />
           </Link>
-          <Link current={pathname.split('/').includes('publications')} href="/search/publications">
-            <FormattedMessage id="layout.header.nav.search.publications" />
+          <Link current={pathname.split('/').includes('authors')} href="/search/authors">
+            <FormattedMessage id="layout.header.nav.search.authors" />
           </Link>
           <Link current={pathname.split('/').includes('projects')} href="/search/projects">
             <FormattedMessage id="layout.header.nav.search.projects" />
           </Link>
-          <Link current={pathname.split('/').includes('authors')} href="/search/authors">
-            <FormattedMessage id="layout.header.nav.search.authors" />
+          <Link current={pathname.split('/').includes('publications')} href="/search/publications">
+            <FormattedMessage id="layout.header.nav.search.publications" />
           </Link>
           <Link current={pathname.split('/').includes('patents')} href="/search/patents">
             <FormattedMessage id="layout.header.nav.search.patents" />

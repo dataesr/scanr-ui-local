@@ -2,44 +2,44 @@ import classNames from 'classnames';
 import useCopyToClipboard from '../../hooks/useCopyToClipboard';
 import styles from './styles.module.scss';
 
-export type CopyBadgeButtonProps = {
+export type CopyBadgeProps = {
   lowercase?: boolean,
   size?: "sm" | "md",
   className?: string,
   color?: string,
-  text: string,
+  copyText: string,
+  children: React.ReactNode,
 };
 
-const iconsType: Record<string, string> = {
-  Copié: 'checkbox-circle-fill',
-  Erreur: 'settings-6-fill',
-};
-
-export default function CopyBadgeButton({
+export default function CopyBadge({
   className,
   color = 'green-menthe',
-  text,
+  copyText,
   size = "md",
   lowercase = false,
+  children,
   ...remainingProps
-}: CopyBadgeButtonProps) {
+}: CopyBadgeProps) {
   const { copyStatus, copy } = useCopyToClipboard();
-  const icon = copyStatus ? iconsType[copyStatus] : 'file-copy-line'
   const _className = classNames(
     'fr-badge',
+    styles['copy-badge'],
     {
       [`${styles.lowercase}`]: lowercase,
+      [`${styles.copied}`]: copyStatus === 1,
+      [`${styles.copy}`]: copyStatus === 0,
+      [`${styles['copy-error']}`]: copyStatus === 2,
       [`fr-badge--${color}`]: color,
       'fr-badge--sm': size === 'sm',
-      [`fr-icon-${icon}`]: true,
+
     },
     className,
   );
 
 
   return (
-    <button title="Copier" onClick={() => copy(text)} type="button" className={_className} {...remainingProps}>
-      {copyStatus === 'Copié' ? 'COPIÉ' : text}
+    <button title="Copier" onClick={() => copy(copyText)} type="button" className={_className} {...remainingProps}>
+      {children}
     </button>
   );
 }

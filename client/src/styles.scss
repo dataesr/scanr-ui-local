@@ -108,7 +108,8 @@
 
 $icons: (
   "intersect",
-  "/icons/intersect.svg") ("union", "/icons/union.svg"
+  "/icons/intersect.svg") ("union", "/icons/union.svg") ('file-copy', '/icons/file-copy.svg'
+  ) ("check-double", "/icons/check-double.svg"
 );
 
 @each $name, $mask in $icons {

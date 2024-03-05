@@ -21,6 +21,7 @@ import Tutorial from "./pages/about/tutorial";
 import Glossary from "./pages/about/glossary";
 import ContactPage from "./pages/about/contact";
 import BugsReport from "./pages/bugs/[api]/[id]";
+import PublicationIdParser from "./components/publication-id-parser";
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -55,9 +56,13 @@ export default function Router() {
           <Route path="/about/glossary" element={<Glossary />} />
           <Route path="/bugs/:api/:id" element={<BugsReport />} />
           <Route path="/publications/:id" element={<Publication />} />
+          <Route path="/publication/:id" element={<PublicationIdParser />} />
           <Route path="/authors/:id" element={<Author />} />
+          <Route path="/person/:id" element={<Author />} />
           <Route path="/organizations/:id" element={<Organization />} />
+          <Route path="/entite/:id" element={<Organization />} />
           <Route path="/projects/:id" element={<Project />} />
+          <Route path="/project/:id" element={<Project />} />
           <Route path="/patents/:id" element={<Patents />} />
           <Route path="/suggest/:id" element={<Suggest />} />
           <Route path="/search">

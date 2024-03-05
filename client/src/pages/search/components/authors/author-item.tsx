@@ -5,7 +5,7 @@ import { encode } from "../../../../utils/string";
 import { LightAuthor } from "../../../../types/author";
 import { getAuthorById } from "../../../../api/authors/[id]";
 import { ItemProps } from "../../types";
-import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
+import CopyBadge from "../../../../components/copy/copy-badge";
 
 
 export default function AuthorItem({ data: author, highlight }: ItemProps<LightAuthor>) {
@@ -35,7 +35,7 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<LightA
             .map((domain, k) => (
               <Fragment key={k}>
                 {(k > 0) ? ', ' : ''}
-                <Link href={`/search/authors?q=${encode(domain?.label.default)}`}>#{domain?.label.default}</Link>
+                <Link href={`/search/authors?q="${encode(domain?.label.default)}"`}>#{domain?.label.default}</Link>
               </Fragment>
             )
             )}
@@ -43,7 +43,7 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<LightA
         <div className="fr-mt-1w fr-badge-group">
           {[author.id.replace("idref", ""), author.orcid]
             ?.filter((id) => id)
-            .map((id) => <CopyBadgeButton key={id} lowercase size="sm" text={id} />)
+            .map((id, i) => <CopyBadge key={id} size="sm" copyText={id}>{(i === 0) ? 'idref' : 'orcid'} : {id}</CopyBadge>)
           }
         </div>
         {highlight?.["domains.label.default"] && (

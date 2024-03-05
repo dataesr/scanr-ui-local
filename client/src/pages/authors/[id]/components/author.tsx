@@ -94,13 +94,14 @@ export default function AuthorPage({ data }: { data: Author }) {
               >
                 <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
               </PageSection>
-              <PageSection title="Data JSON" description="" show>
+              {/* TODO: Helper function to display JSON data in page */}
+              {/* <PageSection title="Data JSON" description="" show>
                 <div>
                   <pre>
                     {JSON.stringify(data || "", null, 2)}
                   </pre>
                 </div>
-              </PageSection>
+              </PageSection> */}
             </PageContent>
           </Row>
         </Col>
@@ -157,7 +158,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                   name={review.label}
                   count={review.count}
                   width={review.count * 100 / maxReviews}
-                  href={`/search/authors?q=${review.label}`}
+                  href={`/search/publications?q="${review.label}"`}
                 />
               ))}
             </PageSection>

@@ -1,7 +1,7 @@
 import cs from "classnames";
 import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Link, Notice, Row, Tab, Tabs, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { Project } from "../../../../types/project";
-import CopyBadgeButton from "../../../../components/copy/copy-badge-button";
+import CopyBadge from "../../../../components/copy/copy-badge";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import Map from "../../../../components/map";
 import Truncate from "../../../../components/truncate";
@@ -339,7 +339,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
               >
                 <div>
                   <div className="fr-badge-group">
-                    <CopyBadgeButton lowercase size="sm" text={data.id} />
+                    <CopyBadge lowercase size="sm" copyText={data.id}>{data.id}</CopyBadge>
                   </div>
                 </div>
               </PageSection>

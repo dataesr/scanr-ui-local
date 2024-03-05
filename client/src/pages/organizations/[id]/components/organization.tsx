@@ -240,11 +240,14 @@ export default function OrganizationPresentation({
                 >
                   <MoreLikeThis id={data._id} api="organizations" />
                 </PageSection>
+                {/* TODO: Helper function to display JSON data in page */}
+                {/* 
                 <PageSection title="Data JSON" description="" show>
                   <div>
                     <pre>{JSON.stringify(data || "", null, 2)}</pre>
                   </div>
-                </PageSection>
+                </PageSection> 
+                */}
               </PageContent>
             </Container>
           </Col>

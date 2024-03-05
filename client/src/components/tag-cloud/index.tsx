@@ -42,7 +42,7 @@ export default function TagCloud({ data, order = 'random' }: { data: Aggregation
           key={element.value}
           size="sm"
           color="blue-cumulus"
-          href={`/search/publications?q=${element.value}`}
+          href={`/search/publications?q="${element.value}"`}
         >
           {element.value}
           {/* <span className="fr-tooltip fr-placement" id={`tooltip-${element.value}-${element.weight}`} role="tooltip" aria-hidden="true">

@@ -1,0 +1,23 @@
+{
+  "websites.types.main": "Site web",
+  "websites.types.wikipedia": "Wikipedia",
+  "websites.types.RSS": "Flux RSS",
+  "websites.types.Wikipedia": "Wikipedia",
+  "websites.types.valid": "Site web",
+  "websites.types.HAL": "Page HAL",
+  "websites.types.mooc": "MOOC",
+  "websites.types.BSO": "Baromêtre des sciences ouvertes",
+  "websites.types.Hypothese": "Hypotheses",
+  "websites.types.Euraxess": "Euraxess",
+  "websites.types.GitHub": "GitHub",
+  "websites.types.Data.gouv": "Data.gouv",
+  "websites.types.BooksOpenedition": "BooksOpenedition",
+  "websites.types.Journal": "Journal",
+  "websites.types.team": "Equipe",
+  "websites.types.Academia": "Academia",
+  "websites.types.Collection HAL": "Collection HAL",
+  "websites.types.CanalU": "CanalU",
+  "websites.types.Hypotheses": "Hypotheses",
+  "websites.types.Icalendar": "Icalendar",
+  "websites.types.Présentation": "Présentation"
+}

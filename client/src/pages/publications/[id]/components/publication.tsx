@@ -93,13 +93,14 @@ export default function PublicationPage({ data }: { data: Publication }) {
               >
                 <MoreLikeThis id={data._id} api="publications" />
               </PageSection>
-              <PageSection title="Data JSON" description="" show>
+              {/* TODO: Helper function to display JSON data in page */}
+              {/* <PageSection title="Data JSON" description="" show>
                 <div>
                   <pre>
                     {JSON.stringify(data || "", null, 2)}
                   </pre>
                 </div>
-              </PageSection>
+              </PageSection> */}
             </PageContent>
           </Container>
         </Col>
