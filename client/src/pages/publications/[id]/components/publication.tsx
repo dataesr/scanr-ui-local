@@ -61,7 +61,7 @@ export default function PublicationPage({ data }: { data: Publication }) {
                 show={!!affiliations?.length}
               >
                 <div className="fr-mb-6w">
-                  {affiliations.map((affiliation, i) => (
+                  {affiliations?.map((affiliation, i) => (
                     <div style={{ display: 'inline-flex' }} key={i}>
                       <sup>{affiliation.index + 1}</sup>
                       {' '}
