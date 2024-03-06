@@ -12,7 +12,7 @@ const SOURCE = [
   "publications",
   "participants.structure.id",
   "participants.structure.label.*",
-  "participants.structure.address.*",
+  "participants.structure.mainAddress.*",
   "year",
   "type",
   "id",

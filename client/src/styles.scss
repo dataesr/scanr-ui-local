@@ -106,9 +106,10 @@
   font-family: var(--font-family) !important;
 }
 
+
 $icons: (
   "intersect",
-  "/icons/intersect.svg") ("union", "/icons/union.svg") ('file-copy', '/icons/file-copy.svg'
+  "/icons/intersect.svg") ("union", "/icons/union.svg") ("corner-down-right", "/icons/corner-down-right.svg") ('file-copy', '/icons/file-copy.svg'
   ) ("check-double", "/icons/check-double.svg"
   ) ("hal", "/icons/hal.svg"
   ) ('wikipedia', '/icons/wikipedia.svg'

@@ -1,5 +1,4 @@
-import cs from "classnames";
-import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Link, Notice, Row, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
+import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Link, Row, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { Project } from "../../../../types/project";
 import CopyBadge from "../../../../components/copy/copy-badge";
 import { PageContent, PageSection } from "../../../../components/page-content";
@@ -7,6 +6,13 @@ import Map from "../../../../components/map";
 import Truncate from "../../../../components/truncate";
 import LinkCard from "../../../../components/link-card";
 import { useIntl } from "react-intl";
+import getLangFieldValue from "../../../../utils/lang";
+import Modal from "../../../../components/modal";
+import ProjectsPublications from "./publications";
+import ProjectParticipants from "./participants";
+import Websites from "../../../../components/websites";
+import ProjectProgram from "./programs";
+import Share from "../../../../components/share";
 
 function calculateAccomplishment(startDate, endDate) {
   if (!startDate || !endDate) return null;
@@ -22,9 +28,9 @@ function calculateAccomplishment(startDate, endDate) {
 }
 
 const typeLogoMapping = {
-  anr: 'https://scanr.enseignementsup-recherche.gouv.fr/img/logos/logo-anr.svg',
-  h2020: 'https://scanr.enseignementsup-recherche.gouv.fr/img/logos/logo-europe.svg',
-  fp7: 'https://scanr.enseignementsup-recherche.gouv.fr/img/logos/logo-fp7.svg',
+  anr: '/img/logo/logo-anr.svg',
+  h2020: '/img/logo/logo-europe.svg',
+  fp7: '/img/logo/logo-fp7.svg',
 }
 
 const frenchFirstSorter = (a) => {
@@ -43,7 +49,7 @@ const getSubParticipants = (type, participants, id) => {
   if (type !== "H2020") return null;
   console.log("LOGGER", id, participants.filter((part) => part.label?.default?.slice(-1) !== "0"));
 
-  return participants.filter((part) => part.label.default.split('__')[2].slice(0, -2) === id && part.label.default.slice(-1) !== "0");
+  return participants.filter((part) => part.label?.default?.split('__')[2].slice(0, -2) === id && part.label?.default?.slice(-1) !== "0");
 }
 
 export default function ProjectPresentation({ data }: { data: Project }) {
@@ -75,11 +81,13 @@ export default function ProjectPresentation({ data }: { data: Project }) {
   const coordinator = data?.participants?.find((part) => ['coordinator', 'coordinateur'].includes(part.role));
 
   const participantsWithSubParticipants = getParticipants(data.type, data.participants).map((part) => {
-    console.log("LOGGER1", part.label.default.split('__')[2]?.slice(0, -2));
-
-    const subParticipants = getSubParticipants(data.type, data.participants, part.label.default.split('__')[2]?.slice(0, -2));
+    const subParticipants = getSubParticipants(data.type, data.participants, part.label?.default?.split('__')[2]?.slice(0, -2));
     return { ...part, subParticipants };
   });
+
+  const frenchParticipants = participantsWithSubParticipants.filter((part) => part?.structure && part.structure.mainAddress?.country === 'France');
+  const foreignParticipants = participantsWithSubParticipants.filter((part) => part?.structure && part.structure.mainAddress?.country !== 'France');
+  const undefinedParticipants = participantsWithSubParticipants.filter((part) => !part?.structure);
 
 
 
@@ -96,11 +104,11 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     <Badge size="sm" color='green-emeraude'>{data.type}</Badge>
                   </BadgeGroup>
                   <Title className="fr-mb-0" as="h1" look="h4">
-                    {data.label?.[locale] || data.label.default || data.label.fr || data.label.en}
-                    {data?.acronym && (
+                    {getLangFieldValue(locale)(data.label)}
+                    {getLangFieldValue(locale)(data.acronym) && (
                       <span>
                         {' '}
-                        ({data.acronym?.[locale] || data.acronym.default || data.acronym.fr || data.acronym.en})
+                        ({getLangFieldValue(locale)(data.acronym)})
                       </span>
                     )}
                   </Title>
@@ -125,74 +133,87 @@ export default function ProjectPresentation({ data }: { data: Project }) {
               </Truncate>
             </Container>
             <PageContent>
-              <PageSection size="lead" show title={intl.formatMessage({ id: "projects.section.programs" })} description="">
+              <PageSection
+                size="hero"
+                show={getLangFieldValue(locale)(data.action?.label) || data.call?.label || data.domains?.filter(({ type }) => type === "topic")?.length || data.domains?.filter(({ type }) => type === "priorities")?.length}
+                title={intl.formatMessage({ id: "projects.section.programs" })}>
+
+                <ProjectProgram show={getLangFieldValue(locale)(data.action?.label)} title={intl.formatMessage({ id: "projects.section.programs.tool" })}>
+                  {data.action?.id}
+                  {' – '}
+                  {getLangFieldValue(locale)(data.action?.label)}
+                </ProjectProgram>
+                <ProjectProgram show={!!data.call.label} title={intl.formatMessage({ id: "projects.section.programs.call" })}>
+                  {data.call.id}
+                  {' – '}
+                  {data.call.label}
+                </ProjectProgram>
+                <ProjectProgram show={!!data.domains?.filter(({ type }) => type === "topic")?.length} title={intl.formatMessage({ id: "projects.section.programs.topics" })}>
+                  {data.domains?.filter(({ type }) => type === "topic").map(({ label }) => getLangFieldValue(locale)(label)).join(', ')}
+                </ProjectProgram>
+                <ProjectProgram show={!!data.domains?.filter(({ type }) => type === "priorities")?.length} title={intl.formatMessage({ id: "projects.section.programs.priorities" })}>
+                  {data.domains?.filter(({ type }) => type === "priorities").map(({ label }) => getLangFieldValue(locale)(label)).join(', ')}
+                </ProjectProgram>
+              </PageSection>
+              {/* <PageSection size="md" show title={intl.formatMessage({ id: "projects.section.programs" })} description="">
                 <Notice type="info" closeMode="disallow">
                   Ici seront listés les appels à projets et programmes du projet.
                 </Notice>
-              </PageSection>
-              <PageSection size="lead" show title={intl.formatMessage({ id: "projects.section.participants" })} description="">
+              </PageSection> */}
+              <PageSection
+                size="hero"
+                show={!!participantsWithSubParticipants?.length}
+                title={intl.formatMessage({ id: "projects.section.participants" }, { count: participantsWithSubParticipants?.length })}
+                description={(
+                  <>
+                    <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
+                    <Link
+                      role="button"
+                      href={null}
+                      data-fr-opened="false"
+                      aria-controls="participants-map"
+                    >
+                      {intl.formatMessage({ id: "projects.section.participants.map" })}
+                    </Link>
+                  </>
+                )}
+              >
                 <Row gutters>
                   <Col xs="12">
-                    {
-                      participantsWithSubParticipants.map((part, i) => (
-                        <div key={i} className={cs("fr-mb-2w", { "fr-border-bottom": i < participantsWithSubParticipants.length - 1 })}>
-                          <LinkCard type="organization" icon="building-line">
-                            <Text className="fr-m-0">
-                              {
-                                part.structure?.id ? (
-                                  <Link href={`/organizations/${part.structure?.id}`}>
-                                    {part.structure?.label?.default}
-                                  </Link>
-                                ) : part.label?.default?.split('__')[0]
-                              }
-                              {part.funding && <Text className="fr-card__detail" size="sm">
-                                <i>
-                                  Financé à hauteur de {Number(part.funding.split(',')[0]).toLocaleString()} €
-                                </i>
-                              </Text>}
-                            </Text>
-                          </LinkCard>
-                          {part.subParticipants?.map((subPart, j) => (
-                            <div key={j} className="fr-ml-10w">
-                              <LinkCard type="organization" icon="community-fill">
-                                <Text className="fr-card__detail" size="sm">
-                                  <i>
-                                    Co-participant
-                                  </i>
-                                </Text>
-                                <Text className="fr-m-0">
-                                  {
-                                    subPart.structure?.id ? (
-                                      <Link href={`/organizations/${subPart.structure?.id}`}>
-                                        {subPart.structure?.label?.default}
-                                      </Link>
-                                    ) : subPart.label?.default?.split('__')[0]
-                                  }
-                                </Text>
-                                {part.funding && <Text className="fr-card__detail" size="sm">
-                                  <i>
-                                    Financé à hauteur de {Number(part.funding.split(',')[0]).toLocaleString()} €
-                                  </i>
-                                </Text>}
-                              </LinkCard>
-                            </div>
-                          ))}
-                        </div>
-                      ))
-                    }
+                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.french" })} description="" data={frenchParticipants} />
+                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.foreign" })} description="" data={foreignParticipants} />
+                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.undefined" })} description="" data={undefinedParticipants} />
                   </Col>
-                  {markers.length ? (<Col xs="12">
-                    <div style={{ height: "400px", width: "100%" }}>
-                      <Map markers={markers} height={data?.participants.length > 2 ? "100%" : "200px"} width="100%" />
-                    </div>
-                  </Col>) : null}
+                  {markers.length ? (
+                    <Modal id="participants-map" size="xl" title={intl.formatMessage({ id: "projects.section.participants.map-title" })}>
+                      <Col xs="12">
+                        <div style={{ height: "400px", width: "100%", marginBottom: "6rem" }}>
+                          <Map markers={markers} height="400px" width="100%" />
+                        </div>
+                      </Col>
+                    </Modal>
+                  ) : null}
                 </Row>
               </PageSection>
-              <PageSection size="lead" show title={intl.formatMessage({ id: "projects.section.publications" })} description="">
-                <Notice type="info" closeMode="disallow">
-                  Publications du projet
-                </Notice>
+              <PageSection
+                size="hero"
+                icon="stethoscope-line"
+                show={!!data?.publications?.length}
+                title={intl.formatMessage(
+                  { id: "projects.section.publications" },
+                  { count: data?.publications?.length },
+                )}
+              >
+                <ProjectsPublications data={data?.publications} titleKey="projects.section.publications" />
               </PageSection>
+              {/* TODO: Helper function to display JSON data in page */}
+              {/* 
+                <PageSection title="Data JSON" description="" show>
+                  <div>
+                    <pre>{JSON.stringify(data || "", null, 2)}</pre>
+                  </div>
+                </PageSection> 
+                */}
             </PageContent>
           </Col>
           <Col xs="12" md="4" xl="3" offsetXl="1">
@@ -348,7 +369,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     {
                       coordinator?.structure?.id ? (
                         <Link href={`/organizations/${coordinator.structure?.id}`}>
-                          {coordinator?.structure?.label?.default}
+                          {getLangFieldValue(locale)(coordinator?.structure?.label)}
                         </Link>
                       ) : coordinator?.label?.default?.split('__')[0]
                     }
@@ -367,29 +388,16 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </div>
               </PageSection>
               {data.url && (<PageSection title={intl.formatMessage({ id: "projects.section.website.title" })} description="" show={!!data?.url}>
-                <div className="fr-follow">
-                  <div className="fr-container">
-                    <div className="fr-grid-row">
-                      <div className="fr-col-12">
-                        <div className="fr-follow__social">
-                          <ul className="fr-btns-group">
-                            <li style={{ width: "100%" }}>
-                              <a
-                                className="fr-btn--links fr-btn social-btn"
-                                href={data.url}
-                                target="_blank"
-                                rel="noreferrer noopener external"
-                              >
-                                {intl.formatMessage({ id: "projects.section.website.name" })}
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Websites data={[{ url: data.url, type: "main" }]} />
               </PageSection>)}
+              <PageSection
+                title={intl.formatMessage({
+                  id: "projects.section.share.title",
+                })}
+                show
+              >
+                <Share />
+              </PageSection>
               <PageSection
                 title={intl.formatMessage({ id: "projects.section.contribute.title" })}
                 show
@@ -413,7 +421,6 @@ export default function ProjectPresentation({ data }: { data: Project }) {
           </Col>
         </Row >
       </Container >
-      <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   )
 }

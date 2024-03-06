@@ -1,62 +1,79 @@
 import { Aggregation, LangField } from "./commons"
 
-export type Project = {
-  _id: string,
-  id: string,
-  label: {
-    default: string,
-    en?: string,
-    fr?: string,
-  }
-  keywords: {
-    default: string,
-    en?: string,
-    fr?: string,
-  },
-  participants: {
-    role: string,
-    funding?: string,
+export type Participant = {
+  role: string,
+  funding?: string,
+  label: LangField,
+  structure: {
+    id: string,
     label: {
       default: string,
       en?: string,
       fr?: string,
     },
-    structure: {
-      id: string,
-      label: {
-        default: string,
-        en?: string,
-        fr?: string,
-      },
-      mainAddress?: {
-        main: boolean,
-        city?: string,
-        address?: string,
-        postcode?: string,
-        country?: string,
-        gps?: {
-          lat: number,
-          lon: number,
-        },
+    mainAddress?: {
+      main: boolean,
+      city?: string,
+      address?: string,
+      postcode?: string,
+      country?: string,
+      gps?: {
+        lat: number,
+        lon: number,
       },
     },
+  },
+}
+
+export type Action = {
+  id: string,
+  label: LangField,
+  level: string,
+}
+
+
+export type Project = {
+  _id: string,
+  id: string,
+  label: LangField
+  keywords: LangField,
+  action: Action,
+  call: {
+    id: string,
+    label: string,
+  }
+  publications: {
+    id: string;
+    title: LangField;
+    source: {
+      title: string;
+      volume?: string;
+      issue?: string;
+      publisher?: string;
+      journalIssns?: string[];
+    },
+    isOa: boolean;
+    type: string;
+    year: number;
+    authors: {
+      fullName: string;
+      person: string;
+      role?: string;
+    }[];
   }[],
+  domains: {
+    type: string,
+    label: LangField,
+  }[],
+  participants: Participant[],
   year: number,
   type: string,
   endDate?: string,
   startDate?: string,
   budgetTotal?: number,
   budgetFinanced?: number,
-  acronym: {
-    default: string,
-    en?: string,
-    fr?: string,
-  },
-  description: {
-    default: string,
-    en?: string,
-    fr?: string,
-  },
+  acronym: LangField,
+  description: LangField,
   duration?: number,
   url?: string,
 }
@@ -70,30 +87,7 @@ export type LightProject = {
     en?: string[],
     fr?: string[],
   },
-  participants?: {
-    role: string,
-    funding?: string,
-    label: {
-      default: string,
-      en?: string,
-      fr?: string,
-    },
-    structure: {
-      id: string,
-      label: LangField,
-      mainAddress?: {
-        main: boolean,
-        city?: string,
-        address?: string,
-        postcode?: string,
-        country?: string,
-        gps?: {
-          lat: number,
-          lon: number,
-        },
-      },
-    },
-  }[],
+  participants?: Participant[],
   year: number,
   type: string,
 }

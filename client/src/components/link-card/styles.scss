@@ -7,6 +7,13 @@
   --arrow-color: currentColor;
   --icon-size: 1.25rem;
 
+  &:focus-within {
+    outline-offset: 2px;
+    outline-width: 2px;
+    outline-color: #0a76f6;
+    outline-style: solid;
+  }
+
   A::after {
     content: "";
     height: 100%;
@@ -96,17 +103,20 @@
   --avatar-color: var(--text-label-orange-terre-battue);
   --avatar-background-color: var(--background-contrast-orange-terre-battue);
   border-radius: 99999px;
-  height: 3rem;
-  width: 3rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  min-width: 2.5rem;
   color: var(--avatar-color);
   background-color: var(--avatar-background-color);
   --idle: transparent;
   --hover: var(--avatar-background-color-hover);
   --active: var(--avatar-background-color-active);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:before {
-    margin: .5rem !important;
-    --icon-size: 2rem !important;
+    --icon-size: 1.5rem !important;
   }
 }
 
