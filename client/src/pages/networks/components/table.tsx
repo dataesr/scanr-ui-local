@@ -29,7 +29,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
         {communities.map((community, index) => {
           return (
             <tbody key={index}>
-              <td>{community.name}</td>
+              <td>{community.label}</td>
               <td>{community.size}</td>
               <td>
                 {community?.domains
