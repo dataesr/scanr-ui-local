@@ -4,13 +4,12 @@ import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
 import Error204 from "./error204"
 
-export function Graph({ currentTab }: { currentTab: string }) {
-  const { search, currentQuery, currentFilters } = useSearchData(currentTab)
-
+export default function Graph({ currentTab, computeClusters }: { currentTab: string; computeClusters: boolean }) {
+  const { search, currentQuery, currentFilters } = useSearchData(currentTab, computeClusters)
   const vosviewer = search?.data
   const key = useMemo(
-    () => JSON.stringify({ currentTab, currentQuery, currentFilters }),
-    [currentTab, currentQuery, currentFilters]
+    () => JSON.stringify({ currentTab, currentQuery, currentFilters, computeClusters }),
+    [currentTab, currentQuery, currentFilters, computeClusters]
   )
 
   if (currentQuery === null) return <></>
