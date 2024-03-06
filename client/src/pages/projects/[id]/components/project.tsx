@@ -1,5 +1,5 @@
 import cs from "classnames";
-import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Link, Notice, Row, Tab, Tabs, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
+import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Link, Notice, Row, Text, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { Project } from "../../../../types/project";
 import CopyBadge from "../../../../components/copy/copy-badge";
 import { PageContent, PageSection } from "../../../../components/page-content";

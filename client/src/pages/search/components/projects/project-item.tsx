@@ -27,7 +27,7 @@ export default function ProjectItem({
   }
 
   const frenchParticipants = project?.participants?.filter((el) =>
-    el?.structure?.address?.find(({ country }) => country === "France")
+    el?.structure?.mainAddress?.country === "France"
   );
 
   const shouldFilterParticipants = project?.participants?.length > 4;
