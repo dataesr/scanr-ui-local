@@ -3,6 +3,7 @@ import louvain from "graphology-communities-louvain"
 import { arrayPush, labelClean } from "./utils"
 import { networkSearchHits } from "./search"
 import { ElasticHits } from "../../types/network"
+import { openAiLabeledClusters } from "./openai"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
@@ -66,7 +67,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
 
       const community = {
         index: index,
-        label: `Commu ${index}`,
+        label: `Unnamed ${index}`,
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
@@ -80,6 +81,11 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
       return community
     })
   ).then((c) => c.sort((a, b) => b.size - a.size))
+
+  // Add labels with IA
+  const labeledCommunities = await openAiLabeledClusters(query, await communities)
+
+  if (labeledCommunities) return labeledCommunities
 
   return communities
 }

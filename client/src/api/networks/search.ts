@@ -48,7 +48,6 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
 
   const aggregation = res.aggregations?.[model].buckets
   const computeClusters = options?.computeClusters ?? false
-  console.log("computeClusters", computeClusters)
   const network = await networkCreate(query, model, aggregation, computeClusters)
   const config = configCreate(model)
 
