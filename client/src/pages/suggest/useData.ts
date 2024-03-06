@@ -12,8 +12,8 @@ type InfiniteResult = {
   results: ElasticResult<LightPublication>[]
 }
 
+
 export default function useData(id) {
-  console.log(id);
   
   const [searchParams, setSearchParams] = useSearchParams();
   const currentQuery = searchParams.get('q') || "";
@@ -25,8 +25,8 @@ export default function useData(id) {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery<InfiniteResponse, unknown, InfiniteResult>({
-    queryKey: ["publications", currentQuery],
-    queryFn: ({ pageParam }) => searchPublications({cursor: pageParam, query: currentQuery}),
+    queryKey: ["suggest", "publications", currentQuery, id],
+    queryFn: ({ pageParam }) => searchPublications({cursor: pageParam, query: currentQuery, filters: [{ bool: { must_not: [ { term: { "authors.person.keyword": id } } ] } }]}),
     getNextPageParam: (lastPage) => (lastPage?.data?.length === 10) ? lastPage.cursor : undefined,
     initialPageParam: undefined,
     select: (data) => ({
