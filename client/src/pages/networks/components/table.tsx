@@ -1,10 +1,10 @@
 import { useMemo } from "react"
 import { Container } from "@dataesr/dsfr-plus"
-import useSearchData from "../hooks/useSearchData"
 import { NetworkData } from "../../../types/network"
+import useSearchClusters from "../hooks/useSearchClusters"
 
 export default function ClustersTable({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
-  const { search, currentQuery, currentFilters } = useSearchData(currentTab, enabled)
+  const { search, currentQuery, currentFilters } = useSearchClusters(currentTab, enabled)
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const key = useMemo(
@@ -15,7 +15,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
   if (!enabled || search.isFetching || !communities) return <></>
 
   return (
-    <Container key={key}>
+    <Container className="fr-mt-5w" key={key}>
       <table style={{ fontSize: 12 }} width={"100%"}>
         <thead>
           <th>Name</th>

@@ -1,8 +1,8 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
 import useTab from "./hooks/useTab"
+import useClusters from "./hooks/useClusters"
 import useSearchFilter from "./hooks/useSearchFilter"
-import useComputeClusters from "./hooks/useComputeClusters"
 import NetworkFilters from "./components/filter"
 import Graph from "./components/graph"
 import Home from "./components/home"
@@ -57,7 +57,7 @@ function NetworksPage() {
   const intl = useIntl()
   const { currentTab, handleTabChange } = useTab()
   const { currentQuery, handleQueryChange } = useSearchFilter()
-  const { computeClustersTabs, handleComputeClustersChange, resetComputeClusters } = useComputeClusters(networkTabsLabels)
+  const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
 
   return (
     <>
@@ -79,7 +79,7 @@ function NetworksPage() {
                 placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 onSearch={(value) => {
                   handleQueryChange(value)
-                  resetComputeClusters()
+                  resetClusters()
                 }}
               />
             </Col>
@@ -96,15 +96,15 @@ function NetworksPage() {
         >
           {networkTabs.map(({ label, icon }) => (
             <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
-              <Home intlValue={intl} currentTab={label} computeClusters={computeClustersTabs[label]} />
-              <Graph currentTab={label} computeClusters={computeClustersTabs[label]} />
+              <Home intlValue={intl} currentTab={label} />
+              <Graph currentTab={label} computeClusters={clustersTabs[label]} />
               <ClustersButton
                 intlValue={intl}
                 currentTab={label}
-                enabled={computeClustersTabs[label]}
-                handleChange={handleComputeClustersChange}
+                enabled={clustersTabs[label]}
+                handleChange={handleClustersChange}
               />
-              <ClustersTable currentTab={label} enabled={computeClustersTabs[label]} />
+              <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
             </Tab>
           ))}
         </Tabs>
