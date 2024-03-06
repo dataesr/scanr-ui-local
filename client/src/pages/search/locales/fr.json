@@ -37,6 +37,7 @@
   "search.filters.publications.by-author-description": "Sélectionnez un ou plusieurs auteurs",
   "search.filters.publications.by-is-oa": "Accès ouvert",
   "search.filters.publications.by-organization": "Filtrer par affiliation",
+  "search.filters.publications.by-organization-description": "Sélectionnez une ou plusieurs affiliations",
   "search.filters.organizations.by-project": "Filtrer par type de financements",
   "search.filters.organizations.by-project-description": "Sélectionnez un ou plusieurs types de financements",
   "search.filters.organizations.by-kind": "Filter par secteur",
