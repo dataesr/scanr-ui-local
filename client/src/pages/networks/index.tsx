@@ -96,14 +96,9 @@ function NetworksPage() {
         >
           {networkTabs.map(({ label, icon }) => (
             <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
-              <Home intlValue={intl} currentTab={label} />
+              <Home currentTab={label} />
               <Graph currentTab={label} computeClusters={clustersTabs[label]} />
-              <ClustersButton
-                intlValue={intl}
-                currentTab={label}
-                enabled={clustersTabs[label]}
-                handleChange={handleClustersChange}
-              />
+              <ClustersButton currentTab={label} enabled={clustersTabs[label]} handleChange={handleClustersChange} />
               <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
             </Tab>
           ))}

@@ -1,19 +1,10 @@
-import { IntlShape } from "react-intl"
+import { useIntl } from "react-intl"
 import { Container, Row, Button, Spinner } from "@dataesr/dsfr-plus"
 import useSearchClusters from "../hooks/useSearchClusters"
 import useSearchData from "../hooks/useSearchData"
 
-export default function ClustersButton({
-  intlValue: intl,
-  currentTab,
-  enabled,
-  handleChange,
-}: {
-  intlValue: IntlShape
-  currentTab: string
-  enabled: boolean
-  handleChange: any
-}) {
+export default function ClustersButton({ currentTab, enabled, handleChange }: { currentTab: string; enabled: boolean; handleChange: any }) {
+  const intl = useIntl()
   const { search } = useSearchData(currentTab)
   const { search: searchClusters } = useSearchClusters(currentTab, enabled)
 
