@@ -3,6 +3,7 @@ import louvain from "graphology-communities-louvain"
 import { arrayPush, labelClean } from "./utils"
 import { networkSearchHits } from "./search"
 import { ElasticHits } from "../../types/network"
+import { openAiLabeledClusters } from "./openai"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
@@ -10,8 +11,8 @@ const communityGetAttribute = (graph: Graph, community: number, name: string): A
     []
   )
 
-const communityGetTopHits = (graph: Graph, community: number): Array<string> => [
-  ...new Set(communityGetAttribute(graph, community, "topHits").flat(1)),
+const communityGetLinks = (graph: Graph, community: number): Array<string> => [
+  ...new Set(communityGetAttribute(graph, community, "links").flat(1)),
 ]
 
 const communityGetIds = (graph: Graph, community: number): Array<string> =>
@@ -46,9 +47,14 @@ const communityGetDomains = (hits: ElasticHits): any =>
 const communityGetOaPercent = (hits: ElasticHits): number =>
   (hits.map((hit) => hit.isOa).filter(Boolean).length / hits.length) * 100
 
-export default async function communitiesCreate(graph: Graph): Promise<any> {
+export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<any> {
+  const query = graph.getAttribute("query")
+  const model = graph.getAttribute("model")
+
   // Assign communities
   louvain.assign(graph)
+
+  if (!computeClusters) return []
 
   // Find number of communities
   const count = graph.reduceNodes((acc, _, attr) => Math.max(acc, attr.community), 0) + 1
@@ -57,11 +63,11 @@ export default async function communitiesCreate(graph: Graph): Promise<any> {
   // Create communities array
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
-      const hits = await networkSearchHits(communityGetTopHits(graph, index))
+      const hits = await networkSearchHits(query, model, communityGetLinks(graph, index))
 
       const community = {
         index: index,
-        label: `Commu ${index}`,
+        label: `Unnamed ${index}`,
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
@@ -75,6 +81,11 @@ export default async function communitiesCreate(graph: Graph): Promise<any> {
       return community
     })
   ).then((c) => c.sort((a, b) => b.size - a.size))
+
+  // Add labels with IA
+  const labeledCommunities = await openAiLabeledClusters(query, await communities)
+
+  if (labeledCommunities) return labeledCommunities
 
   return communities
 }

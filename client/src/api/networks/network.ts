@@ -14,26 +14,17 @@ const nodeConcatTopHits = (nodeTopHits: NetworkHits, topHits: Array<any>): Netwo
   const concatIds = nodeTopHits ? [...new Set([...nodeTopHits, ...topHitsIds])] : topHitsIds
   return concatIds
 }
-// const nodeConcatTopHits = (nodeTopHits: NetworkHits, topHits: Array<any>): NetworkHits => {
-//   const topHitsSource = topHits.map((hit) => aggExtractHit(hit?._source))
-//   const concat = nodeTopHits
-//     ? [...new Map(nodeTopHits.concat(topHitsSource).map((hit) => [hit.id, hit])).values()]
-//     : topHitsSource
-//   return concat
-// }
 
-// function networkUpdate(network: NetworkData, hits: any): NetworkData {
-//   // Update nodes with hits info
-//   network.items.map((item) => {
-//     const topHits = item?.topHits?.map((id) => aggExtractHit(hits.find((hit) => (hit._id = id))._source))
-//     item.test = topHits?.length ?? 99
-//   })
-//   return network
-// }
-
-export default async function networkCreate(aggregation: Array<any>, model: string): Promise<NetworkData> {
+export default async function networkCreate(
+  query: string,
+  model: string,
+  aggregation: Array<any>,
+  computeClusters: boolean
+): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
+  graph.setAttribute("query", query)
+  graph.setAttribute("model", model)
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -46,9 +37,9 @@ export default async function networkCreate(aggregation: Array<any>, model: stri
       graph.updateNode(id.split("###")[0], (attr) => ({
         label: id.split("###")[1] ?? id,
         weight: (attr?.weight ?? 0) + count,
+        links: attr?.links ? [...attr.links, key] : [key],
         ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),
         ...(topHits && { topHits: nodeConcatTopHits(attr?.topHits, topHits) }),
-        // ...itemGetAggregations(model, item, attr),
       }))
     )
 
@@ -56,7 +47,6 @@ export default async function networkCreate(aggregation: Array<any>, model: stri
     graph.updateUndirectedEdgeWithKey(key, nodes[0].split("###")[0], nodes[1].split("###")[0], (attr) => ({
       weight: (attr?.weight ?? 0) + count,
       label: `${attr?.weight || 1} links`,
-      // ...itemGetAggregations(model, item),
     }))
   })
 
@@ -91,10 +81,10 @@ export default async function networkCreate(aggregation: Array<any>, model: stri
   // console.log("Edge weight threshold :", edgeWeightThresh)
 
   // Add communities
-  const communities = await createCommunities(graph)
+  const communities = await createCommunities(graph, computeClusters)
 
   console.log("Communities", communities)
-  // console.log("Graph nodes", Array.from(graph.nodeEntries()))
+  console.log("Graph nodes", Array.from(graph.nodeEntries()))
 
   // Create network
   const network = {
@@ -112,10 +102,12 @@ export default async function networkCreate(aggregation: Array<any>, model: stri
       target_id: target,
       strength: attr?.weight,
     })),
-    clusters: communities.map((community) => ({
-      ...community,
-      cluster: community.index + 1,
-    })),
+    ...(communities && {
+      clusters: communities.map((community) => ({
+        ...community,
+        cluster: community.index + 1,
+      })),
+    }),
   }
 
   console.log("network", network)

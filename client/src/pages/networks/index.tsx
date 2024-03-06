@@ -1,11 +1,13 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
+import useTab from "./hooks/useTab"
+import useClusters from "./hooks/useClusters"
 import useSearchFilter from "./hooks/useSearchFilter"
 import NetworkFilters from "./components/filter"
-import useTab from "./hooks/useTab"
-import { Graph } from "./components/graph"
+import Graph from "./components/graph"
 import Home from "./components/home"
 import ClustersTable from "./components/table"
+import ClustersButton from "./components/button"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -49,11 +51,13 @@ const NETWORK_TABS_MAPPING = {
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 const networkTabFindIndex = (label) => networkTabs.findIndex((tab) => tab.label === label)
 const networkTabFindLabel = (index) => networkTabs[index].label
+const networkTabsLabels = networkTabs.map(({ label }) => label)
 
 function NetworksPage() {
   const intl = useIntl()
   const { currentTab, handleTabChange } = useTab()
   const { currentQuery, handleQueryChange } = useSearchFilter()
+  const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
 
   return (
     <>
@@ -73,7 +77,10 @@ function NetworksPage() {
                 buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 defaultValue={currentQuery || ""}
                 placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
-                onSearch={(value) => handleQueryChange(value)}
+                onSearch={(value) => {
+                  handleQueryChange(value)
+                  resetClusters()
+                }}
               />
             </Col>
             <Col xs="12" sm="4" lg="2">
@@ -89,9 +96,10 @@ function NetworksPage() {
         >
           {networkTabs.map(({ label, icon }) => (
             <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
-              <Home value={intl} currentTab={label} />
-              <Graph currentTab={label} />
-              <ClustersTable currentTab={label} />
+              <Home currentTab={label} />
+              <Graph currentTab={label} computeClusters={clustersTabs[label]} />
+              <ClustersButton currentTab={label} enabled={clustersTabs[label]} handleChange={handleClustersChange} />
+              <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
             </Tab>
           ))}
         </Tabs>

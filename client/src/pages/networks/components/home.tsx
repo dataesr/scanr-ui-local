@@ -1,8 +1,9 @@
-import { IntlShape } from "react-intl"
+import { useIntl } from "react-intl"
 import { Container, Row, Col, Title } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 
-export default function Home({ value: intl, currentTab }: { value: IntlShape; currentTab: string }) {
+export default function Home({ currentTab }: { currentTab: string }) {
+  const intl = useIntl()
   const { currentQuery } = useSearchData(currentTab)
 
   if (currentQuery !== null) return <></>

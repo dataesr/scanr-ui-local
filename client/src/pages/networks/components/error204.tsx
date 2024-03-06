@@ -1,14 +1,17 @@
+import { useIntl } from "react-intl"
 import { Container, Row, Text, Col, Title } from "@dataesr/dsfr-plus"
 
 export default function Error204() {
+  const intl = useIntl()
+
   return (
     <Container>
       <Row>
         <Col offsetMd="2">
           <Title as="h1" look="h5">
-            No data
+            {intl.formatMessage({ id: "networks.search.error204.title" })}
           </Title>
-          <Text>Cette recherche ne retourne aucune donnée.</Text>
+          <Text>{intl.formatMessage({ id: "networks.search.error204.text" })}</Text>
         </Col>
         <Col>
           <svg className="fr-artwork" aria-hidden="true" viewBox="0 0 80 80" width="100px" height="auto">

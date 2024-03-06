@@ -23,6 +23,9 @@ export type NetworkSearchBody = {
 export type NetworkSearchArgs = {
   model: string
   query?: string
+  options?: {
+    computeClusters?: boolean
+  }
   filters?: Record<string, unknown>[]
 }
 export type NetworkHitsBody = {
