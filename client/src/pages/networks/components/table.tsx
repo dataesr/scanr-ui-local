@@ -41,7 +41,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
                   : ""}
               </td>
               <td>{community.maxWeightNodes.join(", ")}</td>
-              <td>{community?.topHits ? community.topHits : 0}</td>
+              <td>{community?.publications ? community.publications : 0}</td>
               <td>{community?.oaPercent ? `${community.oaPercent.toFixed(1)} %` : ""}</td>
               <td>{community.maxYear}</td>
             </tbody>

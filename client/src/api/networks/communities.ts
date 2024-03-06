@@ -75,7 +75,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         ...(hits && {
           domains: communityGetDomains(hits),
           oaPercent: communityGetOaPercent(hits),
-          topHits: hits.length,
+          publications: hits.length,
         }),
       }
       return community

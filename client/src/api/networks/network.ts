@@ -1,19 +1,14 @@
 import UndirectedGraph from "graphology"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
-import { NetworkData, NetworkHits } from "../../types/network"
-import createCommunities from "./communities"
-import itemGetDescription from "./description"
+import { NetworkData } from "../../types/network"
+import communitiesCreate from "./communities"
+import nodeGetUrl from "./url"
 
 export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
-const nodeConcatTopHits = (nodeTopHits: NetworkHits, topHits: Array<any>): NetworkHits => {
-  const topHitsIds = topHits.map((hit) => hit._id)
-  const concatIds = nodeTopHits ? [...new Set([...nodeTopHits, ...topHitsIds])] : topHitsIds
-  return concatIds
-}
 
 export default async function networkCreate(
   query: string,
@@ -29,7 +24,6 @@ export default async function networkCreate(
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
     const maxYear = item.max_year?.value
-    const topHits = item.top_hits?.hits?.hits
     const nodes = key.split("---")
 
     // Add nodes and compute weight
@@ -39,7 +33,6 @@ export default async function networkCreate(
         weight: (attr?.weight ?? 0) + count,
         links: attr?.links ? [...attr.links, key] : [key],
         ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),
-        ...(topHits && { topHits: nodeConcatTopHits(attr?.topHits, topHits) }),
       }))
     )
 
@@ -81,7 +74,7 @@ export default async function networkCreate(
   // console.log("Edge weight threshold :", edgeWeightThresh)
 
   // Add communities
-  const communities = await createCommunities(graph, computeClusters)
+  const communities = await communitiesCreate(graph, computeClusters)
 
   console.log("Communities", communities)
   console.log("Graph nodes", Array.from(graph.nodeEntries()))
@@ -92,10 +85,9 @@ export default async function networkCreate(
       id: key,
       label: attr.label,
       cluster: attr.community + 1,
-      weights: { Weight: attr.weight, Degree: graph.degree(key), ...(attr?.topHits && { TopHits: attr.topHits.length }) },
+      weights: { Weight: attr.weight, Degree: graph.degree(key) },
       scores: { "Last activity": attr?.maxYear },
-      topHits: attr?.topHits,
-      description: itemGetDescription(model, key, attr),
+      page: nodeGetUrl(model, key, attr),
     })),
     links: graph.mapEdges((_, attr, source, target) => ({
       source_id: source,
