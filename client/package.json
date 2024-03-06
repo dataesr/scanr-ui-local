@@ -27,6 +27,7 @@
     "highcharts-react-official": "^3.2.1",
     "iwanthue": "^2.0.0",
     "leaflet": "^1.9.4",
+    "openai": "^4.28.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.3",
