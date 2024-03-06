@@ -26,18 +26,37 @@ const typeLogoMapping = {
   h2020: 'https://scanr.enseignementsup-recherche.gouv.fr/img/logos/logo-europe.svg',
   fp7: 'https://scanr.enseignementsup-recherche.gouv.fr/img/logos/logo-fp7.svg',
 }
+
+const frenchFirstSorter = (a) => {
+  if (a?.structure?.mainAddress?.country === "France") return -1;
+  return 1;
+}
+
+const getParticipants = (type, participants) => {
+  if (type !== "H2020") return participants;
+  return participants
+    .filter((part) => part.label?.default?.slice(-1) === "0")
+    .sort(frenchFirstSorter);
+}
+
+const getSubParticipants = (type, participants, id) => {
+  if (type !== "H2020") return null;
+  console.log("LOGGER", id, participants.filter((part) => part.label?.default?.slice(-1) !== "0"));
+
+  return participants.filter((part) => part.label.default.split('__')[2].slice(0, -2) === id && part.label.default.slice(-1) !== "0");
+}
+
 export default function ProjectPresentation({ data }: { data: Project }) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
 
   const markers = data?.participants
-    .map((p) => p?.structure?.address?.find((a) => a?.main))
-    .filter((a) => (a?.gps?.lat && a?.gps?.lon))
-    .map((address) => ({
-      latLng: [address?.gps?.lat, address?.gps?.lon],
-      address: `${address?.address},
-          ${address?.postcode}, ${address?.city},
-          ${address?.country}`,
+    ?.filter(({ structure }) => structure?.mainAddress?.gps?.lat && structure?.mainAddress?.gps?.lon)
+    .map(({ structure }) => ({
+      latLng: [structure?.mainAddress?.gps?.lat, structure?.mainAddress?.gps?.lon],
+      address: `${structure.mainAddress?.address},
+          ${structure.mainAddress?.postcode}, ${structure.mainAddress?.city},
+          ${structure.mainAddress?.country}`,
     }))
 
   const state = (data.endDate)
@@ -52,7 +71,17 @@ export default function ProjectPresentation({ data }: { data: Project }) {
 
   const logoUrl = typeLogoMapping[data.type?.toLowerCase()] || null;
 
-  const coordinator = data?.participants?.find((part) => part.role === 'coordinator');
+
+  const coordinator = data?.participants?.find((part) => ['coordinator', 'coordinateur'].includes(part.role));
+
+  const participantsWithSubParticipants = getParticipants(data.type, data.participants).map((part) => {
+    console.log("LOGGER1", part.label.default.split('__')[2]?.slice(0, -2));
+
+    const subParticipants = getSubParticipants(data.type, data.participants, part.label.default.split('__')[2]?.slice(0, -2));
+    return { ...part, subParticipants };
+  });
+
+
 
 
   return (
@@ -95,30 +124,19 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </Text>
               </Truncate>
             </Container>
-            <Container fluid className="fr-mb-8w">
-              <Row className="fr-my-3w">
-                <Title className="fr-mb-0" as="h2" look="h4">
-                  {intl.formatMessage({ id: "projects.section.programs" })}
-                </Title>
-              </Row>
-              <Text>
+            <PageContent>
+              <PageSection size="lead" show title={intl.formatMessage({ id: "projects.section.programs" })} description="">
                 <Notice type="info" closeMode="disallow">
                   Ici seront listés les appels à projets et programmes du projet.
                 </Notice>
-              </Text>
-            </Container>
-            <Container fluid className="fr-mb-8w">
-              <Row className="fr-my-3w">
-                <Title className="fr-mb-0" as="h2" look="h4">Participants français</Title>
-              </Row>
-              <Row gutters>
-                <Col xs="12" md={markers.length ? "6" : "12"}>
-                  <Row>
-                    {data.participants?.filter((e) => e.structure?.address?.[0]?.country === 'France')?.map((part) => (
-                      <Col xs="12">
-                        <div style={{ display: "flex", borderRadius: "0.5rem" }} className={cs("fr-p-1w", { "fr-enlarge-link": !!part.structure?.id })}>
-                          <div className="structure-avatar fr-mr-2w fr-icon-building-line" />
-                          <div style={{ flexGrow: 1, display: "block" }}>
+              </PageSection>
+              <PageSection size="lead" show title={intl.formatMessage({ id: "projects.section.participants" })} description="">
+                <Row gutters>
+                  <Col xs="12">
+                    {
+                      participantsWithSubParticipants.map((part, i) => (
+                        <div key={i} className={cs("fr-mb-2w", { "fr-border-bottom": i < participantsWithSubParticipants.length - 1 })}>
+                          <LinkCard type="organization" icon="building-line">
                             <Text className="fr-m-0">
                               {
                                 part.structure?.id ? (
@@ -127,50 +145,55 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                                   </Link>
                                 ) : part.label?.default?.split('__')[0]
                               }
+                              {part.funding && <Text className="fr-card__detail" size="sm">
+                                <i>
+                                  Financé à hauteur de {Number(part.funding.split(',')[0]).toLocaleString()} €
+                                </i>
+                              </Text>}
                             </Text>
-                            {part.role && <Text className="fr-card__detail" size="sm">
-                              <i>
-                                {part.role}
-                              </i>
-                            </Text>}
-                            {part.funding && <Text className="fr-card__detail" size="sm">
-                              <i>
-                                Financé à hauteur de {Number(part.funding.split(',')[0]).toLocaleString()} €
-                              </i>
-                            </Text>}
-                          </div>
+                          </LinkCard>
+                          {part.subParticipants?.map((subPart, j) => (
+                            <div key={j} className="fr-ml-10w">
+                              <LinkCard type="organization" icon="community-fill">
+                                <Text className="fr-card__detail" size="sm">
+                                  <i>
+                                    Co-participant
+                                  </i>
+                                </Text>
+                                <Text className="fr-m-0">
+                                  {
+                                    subPart.structure?.id ? (
+                                      <Link href={`/organizations/${subPart.structure?.id}`}>
+                                        {subPart.structure?.label?.default}
+                                      </Link>
+                                    ) : subPart.label?.default?.split('__')[0]
+                                  }
+                                </Text>
+                                {part.funding && <Text className="fr-card__detail" size="sm">
+                                  <i>
+                                    Financé à hauteur de {Number(part.funding.split(',')[0]).toLocaleString()} €
+                                  </i>
+                                </Text>}
+                              </LinkCard>
+                            </div>
+                          ))}
                         </div>
-                      </Col>
-                    ))}
-                  </Row>
-                </Col>
-                {markers.length ? (<Col xs="12" md="6">
-                  <div style={{ height: "100%", maxHeight: "380px", width: "100%", float: "right" }}>
-                    <Map markers={markers} height={data?.participants.length > 2 ? "100%" : "200px"} width="100%" />
-                  </div>
-                </Col>) : null}
-              </Row>
-            </Container>
-            <Container fluid className="fr-mb-8w">
-              <Row className="fr-my-3w">
-                <Title className="fr-mb-0" as="h2" look="h4">Contributions scientifiques</Title>
-              </Row>
-              <Row>
-                <Col className="fr-mt-5w" xs="12">
-                  <Tabs>
-                    <Tab index="1" className="authors-publications-tabs" label="Publications (0)">
-                      <Notice type="info" closeMode="disallow">
-                        Liste des publications
-                      </Notice>
-                    </Tab>
-                    <Tab index="2" className="authors-patents-tabs" label="Brevets (0)">
-                      Liste des brevets
-                    </Tab>
-                  </Tabs>
-                </Col>
-              </Row>
-            </Container>
-
+                      ))
+                    }
+                  </Col>
+                  {markers.length ? (<Col xs="12">
+                    <div style={{ height: "400px", width: "100%" }}>
+                      <Map markers={markers} height={data?.participants.length > 2 ? "100%" : "200px"} width="100%" />
+                    </div>
+                  </Col>) : null}
+                </Row>
+              </PageSection>
+              <PageSection size="lead" show title={intl.formatMessage({ id: "projects.section.publications" })} description="">
+                <Notice type="info" closeMode="disallow">
+                  Publications du projet
+                </Notice>
+              </PageSection>
+            </PageContent>
           </Col>
           <Col xs="12" md="4" xl="3" offsetXl="1">
             <PageContent>

@@ -31,7 +31,6 @@ export default function CopyBadge({
       [`${styles['copy-error']}`]: copyStatus === 2,
       [`fr-badge--${color}`]: color,
       'fr-badge--sm': size === 'sm',
-
     },
     className,
   );

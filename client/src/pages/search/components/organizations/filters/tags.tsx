@@ -36,7 +36,7 @@ export default function OrganizationTagsFilter() {
       <TagGroup>
         {byTags.slice(0, seeMore ? 10000 : SEE_MORE_AFTER).map((funder) => (
           <SelectableTag
-            selected={currentFilters?.['badges.label.fr']?.values.map(v => v.value)?.includes(funder.value)}
+            selected={currentFilters?.['badges.label.fr']?.values?.map(v => v.value)?.includes(funder.value)}
             key={funder.value}
             color="pink-macaron"
             onClick={() => handleFilterChange({ field: 'badges.label.fr', value: funder.value })}

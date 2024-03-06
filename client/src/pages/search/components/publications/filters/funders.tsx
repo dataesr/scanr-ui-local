@@ -20,7 +20,7 @@ export default function PublicationFunderFilter() {
       <TagGroup>
         {byFunder.map((funder) => (
           <SelectableTag
-            selected={currentFilters?.['projects.type']?.values.map(v => v.value)?.includes(funder.value)}
+            selected={currentFilters?.['projects.type']?.values?.map(v => v.value)?.includes(funder.value)}
             key={funder.value}
             color="green-emeraude"
             onClick={() => handleFilterChange({ field: 'projects.type', value: funder.value })}

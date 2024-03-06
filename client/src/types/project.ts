@@ -28,7 +28,7 @@ export type Project = {
         en?: string,
         fr?: string,
       },
-      address?: {
+      mainAddress?: {
         main: boolean,
         city?: string,
         address?: string,
@@ -38,7 +38,7 @@ export type Project = {
           lat: number,
           lon: number,
         },
-      }[],
+      },
     },
   }[],
   year: number,
@@ -81,7 +81,7 @@ export type LightProject = {
     structure: {
       id: string,
       label: LangField,
-      address?: {
+      mainAddress?: {
         main: boolean,
         city?: string,
         address?: string,
@@ -91,7 +91,7 @@ export type LightProject = {
           lat: number,
           lon: number,
         },
-      }[],
+      },
     },
   }[],
   year: number,

@@ -24,7 +24,6 @@ const API_MAPPER = {
     item: PublicationItem,
     fn: getMorePublicationsLikeThis
   },
-
 }
 
 

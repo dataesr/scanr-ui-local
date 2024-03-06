@@ -14,5 +14,7 @@
   "projects.section.funding.no-data": "Aucune information disponible",
   "projects.section.funding.global-budget": "Budget global: ",
   "projects.section.funding.contributed-budget": "Contribution du financeur: ",
-  "projects.section.funding.financed-at": "Financé à "
+  "projects.section.funding.financed-at": "Financé à ",
+  "projects.section.participants": "Participants",
+  "projects.section.publications": "Publications"
 }

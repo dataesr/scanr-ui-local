@@ -127,7 +127,7 @@ export default function Search() {
               {intl.formatMessage({ id: `search.top.breadcrumb.${api}` })}
             </Link>
           </Breadcrumb>
-          <Row gutters>
+          <Row gutters className="fr-pb-4w fr-mb-2w">
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
@@ -147,39 +147,39 @@ export default function Search() {
             </Col>
           </Row>
           {isMobile && <CurrentFilters />}
-          <Container fluid className={isMobile ? "fr-py-1w" : "fr-py-3w"}>
-            {total && total === 10000 ? (
-              <Text
-                as="span"
-                size={isMobile ? "sm" : "lg"}
-                bold
-                className="fr-mb-1w"
-              >
-                {intl.formatMessage({ id: "search.top.result-more-than" })}
-              </Text>
-            ) : null}
-            {total && total > 0 ? (
-              <Text
-                as="span"
-                size={isMobile ? "sm" : "lg"}
-                bold
-                className="fr-mb-1w"
-              >
-                {intl.formatMessage(
-                  { id: `search.top.${api}.result` },
-                  { count: total, query: currentQuery }
-                )}
-              </Text>
-            ) : isFetchingNextPage ? (
-              <BaseSkeleton height="1.5rem" width="40%" />
-            ) : null}
-          </Container>
         </Container>
       </Container>
       <Container className="fr-mt-3w">
         <Row>
           <Col xs="12" lg="7">
             <Container fluid as="section">
+              <p>
+                <em>
+                  {total && total === 10000 ? (
+                    <Text
+                      as="span"
+                      size="xs"
+                      className="fr-text-mention--grey"
+                    >
+                      {intl.formatMessage({ id: "search.top.result-more-than" })}
+                    </Text>
+                  ) : null}
+                  {total && total > 0 ? (
+                    <Text
+                      as="span"
+                      size="xs"
+                      className="fr-text-mention--grey"
+                    >
+                      {intl.formatMessage(
+                        { id: `search.top.${api}.result` },
+                        { count: total, query: currentQuery }
+                      )}
+                    </Text>
+                  ) : isFetchingNextPage ? (
+                    <BaseSkeleton height="1.5rem" width="40%" />
+                  ) : null}
+                </em>
+              </p>
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (

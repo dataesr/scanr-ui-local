@@ -6,7 +6,7 @@ import { fillWithMissingYears } from "../../utils/years"
 export async function getOrganizationById(id: string): Promise<Organization> {
   const body: any = {
     _source: {
-      excludes: ["publications", "projects"]
+      excludes: ["publications", "projects", "web_content", "patents", "autocompleted", "autocompletedText"]
     },
     query: {
       bool: {

@@ -58,7 +58,7 @@ export default function Header() {
         onInputChange={authorsAutocompletedList.setFilterText}
         loadingState={authorsAutocompletedList.loadingState}
         placeholder="Recherche rapide"
-        // menuTrigger="focus"
+        menuTrigger='input'
         size="md"
       >
         {(item) => (

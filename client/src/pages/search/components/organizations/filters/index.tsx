@@ -49,7 +49,7 @@ export default function OrganizationFilters() {
           </div>
         )}
         id={id}
-        size="lg"
+        size="xl"
         title={intl.formatMessage({ id: "search.filters.organizations.title" })}
       >
         <Container fluid className="fr-my-2w filter-list">
