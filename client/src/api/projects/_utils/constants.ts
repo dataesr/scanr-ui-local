@@ -1,1 +1,16 @@
-export const FIELDS = ["label.*^3"]
+export const FIELDS = [
+  "id^3",
+  "label.*^3",
+  "acronym.*^3",
+  "description.*^2",
+  "domains.label.*",
+  "publications.title.*",
+  "publications.summary.*",
+  "participants.structure.label.*",
+  "participants.structure.acronym.*",
+  "participants.structure.id",
+  "call.label",
+  "keywords.*",
+  "action.id",
+  "action.label.*",
+]

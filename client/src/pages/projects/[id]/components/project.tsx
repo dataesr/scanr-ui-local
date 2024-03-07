@@ -128,7 +128,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
               </div>
               <Truncate lines={6} className="fr-mt-2w">
                 <Text size="sm" className="fr-mb-0">
-                  {data.description?.[locale] || data.description?.default || data.description?.fr || data.description?.en}
+                  {getLangFieldValue(locale)(data.description)}
                 </Text>
               </Truncate>
             </Container>

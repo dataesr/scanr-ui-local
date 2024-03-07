@@ -35,34 +35,11 @@ export default function OrganizationItem({ data: organization, highlight }: Item
             {organization.address?.find((a) => a.main).city}
           </i>
         </Text>
-        {highlight?.["publications.title.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["publications.title.default"] }} />
-            ...
+        {Object.values(highlight || {}).map((value, i) => (
+          <Text key={i} size="sm" className="fr-mb-0">
+            <span dangerouslySetInnerHTML={{ __html: value }} />
           </Text>
-        )}
-        {highlight?.["publications.summary.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["publications.summary.default"] }} />
-            ...
-          </Text>
-        )}
-        {highlight?.["projects.title.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["publications.summary.default"] }} />
-            ...
-          </Text>
-        )}
-        {highlight?.["projects.title.en"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["publications.summary.default"] }} />
-            ...
-          </Text>
-        )}
+        ))}
       </div>
     </Fragment>
   )

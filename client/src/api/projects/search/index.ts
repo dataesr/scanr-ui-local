@@ -30,7 +30,7 @@ const HIGHLIGHT = {
   post_tags: ["</strong>"],
   fields: {
     "title.default": {},
-    "summary.default": {},
+    "description.default": {},
     "domains.label.default": {},
   },
 };
