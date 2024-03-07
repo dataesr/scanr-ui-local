@@ -11,7 +11,6 @@ import MoreLikeThis from "../../../../components/more-like-this";
 import { Publication } from "../../../../types/publication";
 import { encode } from "../../../../utils/string";
 
-const { DEV } = import.meta.env;
 
 export default function PublicationPage({ data }: { data: Publication }) {
   const intl = useIntl();
@@ -94,7 +93,7 @@ export default function PublicationPage({ data }: { data: Publication }) {
               >
                 <MoreLikeThis id={data._id} api="publications" />
               </PageSection>
-              <PageSection title="Data JSON" description="" show={DEV}>
+              <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                 <div>
                   <pre>
                     {JSON.stringify(data || "", null, 2)}
