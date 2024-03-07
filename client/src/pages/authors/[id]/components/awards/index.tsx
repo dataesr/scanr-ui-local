@@ -27,7 +27,7 @@ export default function AuthorAwards({ data }) {
           <Text bold className="fr-mb-0" as="span" size="sm">{award.label}</Text>
           <Text className="fr-card__detail" size="sm">
             <i>
-              {award.years?.join(' — ')}
+              {award.years?.filter(y => y)?.join(' — ')}
             </i>
           </Text>
         </LinkCard>
