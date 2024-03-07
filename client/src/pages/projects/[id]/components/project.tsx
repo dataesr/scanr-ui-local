@@ -126,7 +126,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     className="fr-mr-1v" />
                 </div>)}
               </div>
-              <Truncate lines={6} className="fr-mt-2w">
+              <Truncate lines={10} className="fr-mt-2w">
                 <Text size="sm" className="fr-mb-0">
                   {getLangFieldValue(locale)(data.description)}
                 </Text>
@@ -149,10 +149,10 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   {data.call.label}
                 </ProjectProgram>
                 <ProjectProgram show={!!data.domains?.filter(({ type }) => type === "topic")?.length} title={intl.formatMessage({ id: "projects.section.programs.topics" })}>
-                  {data.domains?.filter(({ type }) => type === "topic").map(({ label }) => getLangFieldValue(locale)(label)).join(', ')}
+                  {data.domains?.filter(({ type }) => type === "topic").map(({ label }) => getLangFieldValue(locale)(label)).join(' – ')}
                 </ProjectProgram>
                 <ProjectProgram show={!!data.domains?.filter(({ type }) => type === "priorities")?.length} title={intl.formatMessage({ id: "projects.section.programs.priorities" })}>
-                  {data.domains?.filter(({ type }) => type === "priorities").map(({ label }) => getLangFieldValue(locale)(label)).join(', ')}
+                  {data.domains?.filter(({ type }) => type === "priorities").map(({ label }) => getLangFieldValue(locale)(label)).join(' – ')}
                 </ProjectProgram>
               </PageSection>
               {/* <PageSection size="md" show title={intl.formatMessage({ id: "projects.section.programs" })} description="">
@@ -164,8 +164,8 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 size="lead"
                 show={!!participantsWithSubParticipants?.length}
                 title={intl.formatMessage({ id: "projects.section.participants" }, { count: participantsWithSubParticipants?.length })}
-                description={(markers.length > 0) && (
-                  <>
+                action={(markers.length > 0) && (
+                  <Text className="fr-text--sm">
                     <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
                     <Link
                       role="button"
@@ -175,7 +175,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     >
                       {intl.formatMessage({ id: "projects.section.participants.map" })}
                     </Link>
-                  </>
+                  </Text>
                 )}
               >
                 <Row gutters>

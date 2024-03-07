@@ -7,12 +7,13 @@ type PageSectionProps = {
   children: React.ReactNode,
   title: string,
   description?: React.ReactNode,
+  action?: React.ReactNode,
   show: boolean,
   icon?: string,
   size?: "hero" | "lead" | "lg" | "md" | "sm" | "xs"
 }
 
-export function PageSection({ children, title, icon, description = "", show = false, size = "md" }: PageSectionProps) {
+export function PageSection({ children, title, icon, action, description = "", show = false, size = "md" }: PageSectionProps) {
   const { screen } = useScreenSize();
   if (!show) {
     return null;
@@ -25,14 +26,21 @@ export function PageSection({ children, title, icon, description = "", show = fa
     "fr-mb-0": !description,
   });
   const TitlePart = () => (
-    <>
-      <Title as="h2" className={titleCSS}>
-        {title}
-      </Title>
-      {description && (<Text className="fr-card__detail" size="xs">
-        {description}
-      </Text>)}
-    </>
+    <div style={{ display: 'flex', alignContent: "flex-start", alignItems: "flex-start" }}>
+      <div style={{ flexGrow: 1 }}>
+        <Title as="h2" className={titleCSS}>
+          {title}
+        </Title>
+        {description && (<Text className="fr-card__detail" size="xs">
+          {description}
+        </Text>)}
+      </div>
+      {action && (
+        <div>
+          {action}
+        </div>
+      )}
+    </div>
   )
   if (["xs", "sm"].includes(screen)) {
     return (
