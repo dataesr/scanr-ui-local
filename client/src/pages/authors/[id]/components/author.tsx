@@ -44,12 +44,12 @@ export default function AuthorPage({ data }: { data: Author }) {
               <BadgeGroup>
                 <Badge variant="info" noIcon>Auteur</Badge>
               </BadgeGroup>
-              <Title className="fr-mb-3w" as="h1" look="h3">{data?.fullName}</Title>
+              <Title className="fr-mb-3w" as="h1" look="h4">{data?.fullName}</Title>
             </Col>
             <PageContent>
               <PageSection
                 icon="lightbulb-line"
-                size="hero"
+                size="lead"
                 show={!!wikis?.length}
                 title={intl.formatMessage({ id: "authors.section.wiki.title" })}
                 description={intl.formatMessage({ id: "authors.section.wiki.desc" })}
@@ -58,7 +58,7 @@ export default function AuthorPage({ data }: { data: Author }) {
               </PageSection>
               <PageSection
                 icon="trophy-line"
-                size="hero"
+                size="lead"
                 show={!!awards?.length}
                 title={intl.formatMessage({ id: "authors.section.prizes" })}
               >
@@ -66,14 +66,14 @@ export default function AuthorPage({ data }: { data: Author }) {
               </PageSection>
               <PageSection
                 icon="article-line"
-                size="hero"
+                size="lead"
                 show={!!thesis?.length}
                 title={intl.formatMessage({ id: "authors.section.activity.thesis" }, { count: thesis.length })}
               >
                 <AuthorsPublications data={thesis} titleKey="authors.section.activity.thesis" />
               </PageSection>
               <PageSection
-                size="hero"
+                size="lead"
                 show={!!others?.length}
                 title={intl.formatMessage(
                   { id: "authors.section.activity.publications" },
@@ -84,7 +84,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                 <AuthorsPublications data={others} titleKey="authors.section.activity.publications" />
               </PageSection>
               <PageSection
-                size="hero"
+                size="lead"
                 icon="stethoscope-line"
                 show={!!thesisParticipations?.length}
                 title={intl.formatMessage(
@@ -94,14 +94,13 @@ export default function AuthorPage({ data }: { data: Author }) {
               >
                 <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
               </PageSection>
-              {/* TODO: Helper function to display JSON data in page */}
-              {/* <PageSection title="Data JSON" description="" show>
+              <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                 <div>
                   <pre>
                     {JSON.stringify(data || "", null, 2)}
                   </pre>
                 </div>
-              </PageSection> */}
+              </PageSection>
             </PageContent>
           </Row>
         </Col>

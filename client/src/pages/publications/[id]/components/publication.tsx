@@ -11,6 +11,7 @@ import MoreLikeThis from "../../../../components/more-like-this";
 import { Publication } from "../../../../types/publication";
 import { encode } from "../../../../utils/string";
 
+const { DEV } = import.meta.env;
 
 export default function PublicationPage({ data }: { data: Publication }) {
   const intl = useIntl();
@@ -55,7 +56,7 @@ export default function PublicationPage({ data }: { data: Publication }) {
           <Container fluid>
             <PageContent>
               <PageSection
-                size="hero"
+                size="lead"
                 title={intl.formatMessage({ id: "publications.section.affiliations" })}
                 icon="building-line"
                 show={!!affiliations?.length}
@@ -74,7 +75,7 @@ export default function PublicationPage({ data }: { data: Publication }) {
                 </div>
               </PageSection>
               <PageSection
-                size="hero"
+                size="lead"
                 title={intl.formatMessage({ id: "publications.section.fundings" })}
                 icon="money-euro-circle-line"
                 show={!!data?.projects?.length}
@@ -86,21 +87,20 @@ export default function PublicationPage({ data }: { data: Publication }) {
                 </div>
               </PageSection>
               <PageSection
-                size="hero"
+                size="lead"
                 title={intl.formatMessage({ id: "publications.section.more-like-this" })}
                 icon="shopping-cart-2-line"
                 show
               >
                 <MoreLikeThis id={data._id} api="publications" />
               </PageSection>
-              {/* TODO: Helper function to display JSON data in page */}
-              {/* <PageSection title="Data JSON" description="" show>
+              <PageSection title="Data JSON" description="" show={DEV}>
                 <div>
                   <pre>
                     {JSON.stringify(data || "", null, 2)}
                   </pre>
                 </div>
-              </PageSection> */}
+              </PageSection>
             </PageContent>
           </Container>
         </Col>

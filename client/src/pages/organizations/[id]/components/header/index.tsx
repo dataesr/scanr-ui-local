@@ -17,7 +17,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
             {data.level && <Badge size="sm" color='green-emeraude'>{data.level}</Badge>}
             {(data.nature && (data.nature !== data.level)) && <Badge size="sm" color='green-emeraude'>{data.nature}</Badge>}
           </BadgeGroup>
-          <Title className="fr-mb-0" as="h1" look="h4">
+          <Title className="fr-mb-0" as="h1" look="h5">
             {getLangFieldValue(locale)(data.label)}
           </Title>
           {data?.creationYear && (<Text className="fr-card__detail" size="sm">

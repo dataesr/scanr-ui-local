@@ -1,137 +1,166 @@
-import { Link, Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Text, Title } from "@dataesr/dsfr-plus";
+import { Link, Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
 import Map from "../../../../components/map";
-import { getMarkers } from "../../../../utils/map";
+import Modal from "../../../../components/modal";
 import Share from "../../../../components/share";
+import ThesisHeader from "./header/thesis";
+import { PageContent, PageSection } from "../../../../components/page-content";
+import useScreenSize from "../../../../hooks/useScreenSize";
+import Jury from "./jury";
+import { encode } from "../../../../utils/string";
+import { useIntl } from "react-intl";
+import Wiki from "../../../../components/wiki";
+import LinkCard from "../../../../components/link-card";
+import getLangFieldValue from "../../../../utils/lang";
+import Author from "./author";
 
 export default function These({ data }) {
-  const author = data.authors?.filter((author) => author.role === "author")?.[0] || {};
-  const directors = data.authors?.filter((author) => author.role === "directeurthese") || [];
-  const president = data.authors?.filter((author) => author.role === "presidentjury")?.[0] || {};
-  const membres = data.authors?.filter((author) => author.role === "membrejury") || [];
-  const rapporteurs = data.authors?.filter((author) => author.role === "rapporteur") || [];
-  const keywords = data.domains?.filter((domain) => domain.type === "keyword").map((domain) => domain.label?.default) || [];
-  const wikis = data.domains?.filter((domain) => domain.type === "wikidata").map((domain) => domain.label?.default) || [];
+  const { locale } = useDSFRConfig();
+  const { screen } = useScreenSize();
+  const intl = useIntl();
+  const keywords = data.domains?.filter((domain) => domain.type === "keyword")
+    .map((domain) => getLangFieldValue(locale)(domain.label)) || [];
+  const wikis = data.domains?.filter((domain) => domain.type === "wikidata") || [];
   const affiliations = data.affiliations?.filter((affiliation) => affiliation.label) || [];
+  const markers = data?.affiliations
+    ?.filter(({ mainAddress }) => mainAddress?.gps?.lat && mainAddress?.gps?.lon)
+    .map(({ mainAddress }) => ({
+      latLng: [mainAddress?.gps?.lat, mainAddress?.gps?.lon],
+      address: `${mainAddress?.address},
+          ${mainAddress?.postcode}, ${mainAddress?.city},
+          ${mainAddress?.country}`,
+    })) || [];
 
   return (
     <Container fluid>
-      <Row gutters>
-        <Col className="fr-pr-8w" xs="12" lg="9">
-          <Row gutters>
-            <Col xs="12">
-              <BadgeGroup>
-                <Badge variant="info" noIcon>Thèse</Badge>
-                <Badge variant={data.isOa ? 'success' : 'error'} icon={data.isOa ? 'lock-unlock-line' : 'lock-line'}>
-                  {data.isOa ? 'Accès ouvert' : 'Accès fermé'}
-                </Badge>
-              </BadgeGroup>
-              <Title className="fr-mb-0" as="h1" look="h4">{data.title.default}</Title>
-              <Text bold size="sm">
-                par <Link className="fr-link fr-text--lg" href={`/authors/${author.person}`}>{author.fullName}</Link>,
-                {' '}
-                soutenue le {new Date(data.publicationDate).toLocaleDateString('FR-fr', { year: 'numeric', month: 'long', day: 'numeric' })}
-                {' '}
-                sous la direction de {directors.map((director, i) => (
+      <Row gutters={!["sm", "xs"].includes(screen)}>
+        <Col xs="12" md="8">
+          <Container fluid className="fr-mb-6w">
+            <ThesisHeader data={data} />
+          </Container>
+          <Container fluid>
+            <PageContent>
+              <PageSection
+                size="lead"
+                title={intl.formatMessage({ id: 'publications.section.author' })}
+                show
+              >
+                <Author authors={data.authors} />
+              </PageSection>
+              <PageSection
+                size="lead"
+                title={intl.formatMessage({ id: 'publications.section.jury' })}
+                show={!!data.authors?.length}>
+                <Jury authors={data.authors} />
+              </PageSection>
+              <PageSection
+                size="lead"
+                title={intl.formatMessage({ id: 'publications.section.affiliations' })}
+                show={!!data.authors?.length}
+                description={markers.length && (
                   <>
-                    {(i > 0) ? ', ' : ''}
-                    <Link className="fr-link fr-text--sm" href={`/authors/${director.person}`}>
-                      {director.fullName}
+                    <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
+                    <Link
+                      role="button"
+                      href={null}
+                      data-fr-opened="false"
+                      aria-controls="affiliations-map"
+                    >
+                      {intl.formatMessage({ id: "publications.section.affiliations.map" })}
                     </Link>
                   </>
-                ))}
-              </Text>
-            </Col>
-            <Col xs="12">
-              <Text bold size="lead">Résumé</Text>
-              <Text size="sm">{data?.summary?.default}</Text>
-            </Col>
-            <Col xs="12">
-              <Text bold size="lead">Composition du jury</Text>
-              <Text className="fr-mb-1v">
-                <Text as="span" className="fr-text--grey" bold>Président: </Text>
-                <Text as="span"><Link className="fr-link" href={`/authors/${president.person}`}>{president.fullName}</Link></Text>
-              </Text>
-              <Text className="fr-mb-1v">
-                <Text as="span" className="fr-text--grey" bold>Directeur de thèse: </Text>
-                <Text as="span">{directors.map((aut, i) => (<>{(i > 0) ? ', ' : ''}<Link className="fr-link" href={`/authors/${aut.person}`}>{aut.fullName}</Link></>))}</Text>
-              </Text>
-              <Text className="fr-mb-1v">
-                <Text as="span" className="fr-text--grey" bold>Membres du jury: </Text>
-                <Text as="span">{membres.map((aut, i) => (<>{(i > 0) ? ', ' : ''}<Link className="fr-link" href={`/authors/${aut.person}`}>{aut.fullName}</Link></>))}</Text>
-              </Text>
-              <Text>
-                <Text as="span" className="fr-text--grey" bold>Rapporteurs: </Text>
-                <Text as="span">{rapporteurs.map((aut, i) => (<>{(i > 0) ? ', ' : ''}<Link className="fr-link" href={`/authors/${aut.person}`}>{aut.fullName}</Link></>))}</Text>
-              </Text>
-            </Col>
-            <Col xs="12">
-              <Text bold size="lead">Affiliations</Text>
-              <Row gutters>
-                <Col xs="6">
-                  {affiliations.map((affiliation, i) => (
-                    <Row gutters key={i}>
-                      <Col xs="2">
-                        <span className="ri-building-line" />
-                      </Col>
-                      <Col>
-                        <Link className="fr-link" href={`/organizations/${affiliation.id}`}>{affiliation.label.fr || affiliation.label.en || affiliation.label.default}</Link>
-                      </Col>
-                    </Row>
+                )}
+              >
+                <>
+                  {affiliations.filter((affiliation) => affiliation.id).map((affiliation, i) => (
+                    <LinkCard key={i} type="organization" icon="building-line">
+                      <Text className="fr-m-0">
+                        <Link href={`/organizations/${affiliation.id}`}>
+                          {getLangFieldValue(locale)(affiliation.label)}
+                        </Link>
+                        {affiliation.mainAddress?.city && (
+                          <Text className="fr-text-mention--grey fr-mb-0" size="sm">
+                            <em>{affiliation.mainAddress.city}</em>
+                          </Text>
+                        )}
+                      </Text>
+                    </LinkCard>
                   ))}
-                </Col>
-                <Col xs="6">
-                  <Map height="320px" markers={getMarkers(data?.affiliations || [])} zoom={8} />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                  {markers.length ? (
+                    <Modal
+                      id="affiliations-map"
+                      size="xl"
+                      title={intl.formatMessage({ id: "publications.section.affiliations.map-title" })}
+                    >
+                      <div style={{ height: "400px", width: "100%", marginBottom: "6rem" }}>
+                        <Map markers={markers} height="400px" width="100%" />
+                      </div>
+                    </Modal>
+                  ) : null}
+                </>
+              </PageSection>
+              <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
+                <div>
+                  <pre>
+                    {JSON.stringify(data || "", null, 2)}
+                  </pre>
+                </div>
+              </PageSection>
+            </PageContent>
+          </Container>
         </Col>
-        <Col xs="1" lg="3" className="fr-pl-6w fr-pt-6w">
-          <Row gutters>
-            <Col xs="12">
-              <Text bold className="fr-mb-1v">
-                Mots-clés
-              </Text>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Cliquez pour rechercher d'autres publications contenant le mot-clé
-              </Text>
+        <Col md="4" lg="3" offsetLg="1">
+          <PageContent>
+            <PageSection title={intl.formatMessage({ id: "publications.section.access" })} show>
+              <ButtonGroup size="sm">
+                {data.isOa && <Button variant="tertiary" icon="file-download-line" iconPosition="right">Télécharger la thèse</Button>}
+                <Button variant="tertiary" icon="external-link-line" iconPosition="right">Voir sur thèse.fr</Button>
+              </ButtonGroup>
+            </PageSection>
+            <PageSection title="Mots-clés" show={!!keywords?.length}>
               <BadgeGroup>
                 {keywords?.map((keyword) => (
-                  <Badge key={keyword} size="sm" onClick={() => { }}>{keyword}</Badge>
+                  <Badge
+                    as="a"
+                    key={keyword}
+                    size="sm"
+                    href={`/search/publications?q="${keyword}"`}
+                  >
+                    {keyword}
+                  </Badge>
                 ))}
               </BadgeGroup>
-            </Col>
-            <Col xs="12">
-              <hr />
-              <Text bold className="fr-mb-1v">
-                Concepts wikidata
-              </Text>
-              <Text className="fr-card__detail fr-mb-2w" size="xs">
-                Cliquez pour voir la page wikipédia
-              </Text>
-              <BadgeGroup>
-                {wikis?.map((keyword) => (
-                  <Badge key={keyword} size="sm" onClick={() => { }}>{keyword}</Badge>
-                ))}
-              </BadgeGroup>
-            </Col>
-            <Col xs="12">
-              <hr />
-              <Text bold className="fr-mb-2w">
-                Plus sur cette thèse ?
-              </Text>
-              <ButtonGroup size="sm">
-                {data.isOa && <Button variant="tertiary" icon="ri-file-download-line" iconPosition="right">Télécharger la thèse</Button>}
-                <Button variant="tertiary" icon="ri-external-link-line" iconPosition="right">Voir sur thèse.fr</Button>
-              </ButtonGroup>
-            </Col>
-            <Col xs="12">
-              <hr />
+            </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.wikis" })}
+              show={!!wikis?.length}
+            >
+              <Wiki wikis={wikis} />
+            </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.share" })}
+              show
+            >
               <Share />
-            </Col>
-          </Row>
+            </PageSection>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.contribute" })}
+              show
+            >
+              <ButtonGroup>
+                {/* <Button data-fr-opened="false" aria-controls="funding-add" variant="tertiary" icon="links-line" iconPosition="left">
+                  {intl.formatMessage({ id: "publications.signals.fundings" })}
+                </Button> */}
+                {/* <Button data-fr-opened="false" aria-controls="authors-identification" variant="tertiary" icon="links-line" iconPosition="left" >
+                  {intl.formatMessage({ id: "publications.signals.author" })}
+                </Button> */}
+                <Button as="a" href={`/bugs/publications/${encode(data.id)}`} color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+                  {intl.formatMessage({ id: "publications.signals.bug" })}
+                </Button>
+              </ButtonGroup>
+            </PageSection>
+          </PageContent>
         </Col>
       </Row>
-    </Container>
+    </Container >
   )
 }

@@ -57,7 +57,7 @@ async function getAuthorsPublicationsById(id: string): Promise<AuthorsPublicatio
         return el;
       })
     }
-    return [...acc, { sourceTitle, count: 1 }]
+    return [...acc, { value: sourceTitle, label: sourceTitle, count: 1 }]
   }, []).sort((a, b) => b.count - a.count)
   const coAuthors = publications
     .flatMap((el) => el.authors || [])

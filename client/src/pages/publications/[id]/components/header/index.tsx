@@ -17,7 +17,7 @@ export default function PublicationsHeader({ data, authors, affiliations }) {
             {intl.formatMessage({ id: `publications.header.oa.${data.isOa ? "true" : "false"}` })}
           </Badge>
         </BadgeGroup>
-        <Title className="fr-mb-1v" as="h1" look="h4">{data.title.default}</Title>
+        <Title className="fr-mb-1v" as="h1" look="h5">{data.title.default}</Title>
         <Text bold size="sm" className="fr-mb-1v">
           {authors.map((author, i) => (
             <>

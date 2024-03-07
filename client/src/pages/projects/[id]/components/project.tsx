@@ -63,7 +63,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
       address: `${structure.mainAddress?.address},
           ${structure.mainAddress?.postcode}, ${structure.mainAddress?.city},
           ${structure.mainAddress?.country}`,
-    }))
+    })) || [];
 
   const state = (data.endDate)
     ? (new Date(data.endDate) < new Date()) ? ' terminé' : ' en cours'
@@ -103,7 +103,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   <BadgeGroup className="structure-badge-list fr-mt-1v">
                     <Badge size="sm" color='green-emeraude'>{data.type}</Badge>
                   </BadgeGroup>
-                  <Title className="fr-mb-0" as="h1" look="h4">
+                  <Title className="fr-mb-0" as="h1" look="h5">
                     {getLangFieldValue(locale)(data.label)}
                     {getLangFieldValue(locale)(data.acronym) && (
                       <span>
@@ -134,7 +134,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
             </Container>
             <PageContent>
               <PageSection
-                size="hero"
+                size="lead"
                 show={getLangFieldValue(locale)(data.action?.label) || data.call?.label || data.domains?.filter(({ type }) => type === "topic")?.length || data.domains?.filter(({ type }) => type === "priorities")?.length}
                 title={intl.formatMessage({ id: "projects.section.programs" })}>
 
@@ -161,10 +161,10 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </Notice>
               </PageSection> */}
               <PageSection
-                size="hero"
+                size="lead"
                 show={!!participantsWithSubParticipants?.length}
                 title={intl.formatMessage({ id: "projects.section.participants" }, { count: participantsWithSubParticipants?.length })}
-                description={(
+                description={markers.length && (
                   <>
                     <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
                     <Link
@@ -196,7 +196,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 </Row>
               </PageSection>
               <PageSection
-                size="hero"
+                size="lead"
                 icon="stethoscope-line"
                 show={!!data?.publications?.length}
                 title={intl.formatMessage(
@@ -206,14 +206,11 @@ export default function ProjectPresentation({ data }: { data: Project }) {
               >
                 <ProjectsPublications data={data?.publications} titleKey="projects.section.publications" />
               </PageSection>
-              {/* TODO: Helper function to display JSON data in page */}
-              {/* 
-                <PageSection title="Data JSON" description="" show>
-                  <div>
-                    <pre>{JSON.stringify(data || "", null, 2)}</pre>
-                  </div>
-                </PageSection> 
-                */}
+              <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
+                <div>
+                  <pre>{JSON.stringify(data || "", null, 2)}</pre>
+                </div>
+              </PageSection>
             </PageContent>
           </Col>
           <Col xs="12" md="4" xl="3" offsetXl="1">

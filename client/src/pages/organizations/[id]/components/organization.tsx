@@ -53,7 +53,7 @@ export default function OrganizationPresentation({
             <Container fluid>
               <PageContent>
                 <PageSection
-                  size="hero"
+                  size="lead"
                   icon="team-line"
                   title={intl.formatMessage({
                     id: "organizations.section.leaders.title",
@@ -63,7 +63,7 @@ export default function OrganizationPresentation({
                   <OrganizationLeaders data={data?.leaders} />
                 </PageSection>
                 <PageSection
-                  size="hero"
+                  size="lead"
                   icon="git-branch-line"
                   title={intl.formatMessage({
                     id: "organizations.section.networks.title",
@@ -213,7 +213,7 @@ export default function OrganizationPresentation({
                   )}
                 </PageSection>
                 <PageSection
-                  size="hero"
+                  size="lead"
                   icon="heart-pulse-line"
                   title={intl.formatMessage({
                     id: "organizations.section.activities.title",
@@ -231,7 +231,7 @@ export default function OrganizationPresentation({
                   <OrganizationPatents data={patents} id={data.id} />
                 </PageSection>
                 <PageSection
-                  size="hero"
+                  size="lead"
                   title={intl.formatMessage({
                     id: "organizations.section.more-like-this",
                   })}
@@ -240,14 +240,12 @@ export default function OrganizationPresentation({
                 >
                   <MoreLikeThis id={data._id} api="organizations" />
                 </PageSection>
-                {/* TODO: Helper function to display JSON data in page */}
-                {/* 
-                <PageSection title="Data JSON" description="" show>
+                <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                   <div>
                     <pre>{JSON.stringify(data || "", null, 2)}</pre>
                   </div>
-                </PageSection> 
-                */}
+                </PageSection>
+
               </PageContent>
             </Container>
           </Col>
