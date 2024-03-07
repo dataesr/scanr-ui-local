@@ -2,7 +2,6 @@ import { Patent } from "../../../../../types/patent";
 import { useIntl } from "react-intl";
 import { Badge, Col, Link, Row, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
 import geo from "../../locales/fr.json";
-console.log(geo);
 
 const options: Intl.DateTimeFormatOptions = {
   day: "numeric",

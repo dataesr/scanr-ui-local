@@ -76,9 +76,7 @@
 //     headers: postHeaders,
 //   });
 //   const result = await res.json();
-//   console.log(result);
 //   const { aggregations: data } = result;
-//   console.log("pgs", data.byGPS);
 
 //   const byKind =
 //     data?.byKind?.buckets?.map((element) => {
@@ -142,7 +140,6 @@
 //         };
 //       })
 //       .filter((el) => el) || [];
-//   console.log("byLocalization", byLocalization);
 
 //   return { byKind, byNature, byLevel, byLocalization, byFundings, byTags };
 // }

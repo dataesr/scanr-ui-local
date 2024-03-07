@@ -70,7 +70,6 @@ export async function aggregateOrganizations(
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const result = await res.json()
   const { aggregations: data} = result;
-  console.log("pgs", data.byGPS);
   
   const byKind = data?.byKind?.buckets?.map((element) => {
     return {
@@ -118,7 +117,6 @@ export async function aggregateOrganizations(
       count: element.doc_count,
     }
   }).filter(el => el) || [];
-  console.log("byLocalization", byLocalization);
   
   
   
@@ -180,7 +178,6 @@ export async function aggregateOrganizationsForHe(
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const result = await res.json()
   const { aggregations: data} = result;
-  console.log("pgs", data.byGPS);
   
   const byKind = data?.byKind?.buckets?.map((element) => {
     return {
@@ -228,7 +225,6 @@ export async function aggregateOrganizationsForHe(
       count: element.doc_count,
     }
   }).filter(el => el) || [];
-  console.log("byLocalization", byLocalization);
   
   
   

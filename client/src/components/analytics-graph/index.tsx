@@ -21,9 +21,9 @@ export default function AnalyticsGraph({ title, description, comment, options }:
   const handleAction = (key: any): void => {
     if (!chartRef.current) return;
     const { chart } = chartRef.current;
-    const expOptions = { title: title.replace(/ /g, "_") }
+    const expOptions = { title: { text: title.replace(/ /g, "_") } }
     if (key === "export>pdf") return chart.exportChart({ type: 'application/pdf', ...expOptions });
-    if (key === "export>png") return chart.downloadPNG();
+    if (key === "export>png") return chart.exportChart({ ...expOptions });
     if (key === "download>csv") return chart.downloadCSV();
     if (key === "view>fullscreen") return chart.fullscreen.toggle();
     if (key === "view>table") {
@@ -61,11 +61,11 @@ export default function AnalyticsGraph({ title, description, comment, options }:
             </MenuSection>
             <MenuSection title="EXPORTER" showDivider>
               <MenuItem
-                key="export>jpeg"
+                key="export>png"
                 className="fr-p-1v"
                 endContent={<span className="fr-icon-download-line fr-icon--sm fr-ml-1w" />}
               >
-                <span className="fr-text--sm">Exporter une image jpeg</span>
+                <span className="fr-text--sm">Exporter une image png</span>
               </MenuItem>
               <MenuItem
                 key="export>pdf"

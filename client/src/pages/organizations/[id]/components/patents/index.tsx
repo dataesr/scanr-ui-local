@@ -4,12 +4,16 @@ import { OrganizationPatentsData } from "../../../../../types/organization";
 import useScreenSize from "../../../../../hooks/useScreenSize";
 import YearBars from "../../../../../components/year-bars";
 
+type OrganizationPatentsProps = {
+  data: OrganizationPatentsData,
+  value: string,
+  label?: string
+}
 
-
-export default function OrganizationPatents({ data: patents, id }: { data: OrganizationPatentsData, id: string }) {
+export default function OrganizationPatents({ data: patents, value, label }: OrganizationPatentsProps) {
   const { screen } = useScreenSize();
   const intl = useIntl();
-  const searchFilters = [{ field: 'affiliations.id', value: [id], type: 'terms' }]
+  const searchFilters = { 'affiliations.id': { values: [{ value: value, label }], type: 'terms' } };
   const patentsFilterUrl = `/search/patents?filters=${encodeURIComponent(JSON.stringify(searchFilters))}`;
 
   if (!patents.patentsCount || patents.patentsCount === 0) {
@@ -26,7 +30,13 @@ export default function OrganizationPatents({ data: patents, id }: { data: Organ
               {intl.formatMessage({ id: "organizations.patents.count" })}
             </Text>
           </div>
-          <Button as="a" variant="text" icon="arrow-right-s-line" iconPosition="right" href={patentsFilterUrl}>
+          <Button
+            as="a"
+            variant="text"
+            icon="arrow-right-s-line"
+            iconPosition="right"
+            href={patentsFilterUrl}
+          >
             {intl.formatMessage({ id: "organizations.patents.search" })}
           </Button>
         </div>

@@ -16,8 +16,6 @@ export default function OrganizationSupervisorsFilter() {
         return { items: [] };
       }
       const res = await autocompleteOrganizations({ query: filterText })
-      console.log(res);
-
       return { items: res.data?.map((org) => org._source) };
     }
   });

@@ -13,7 +13,6 @@ export default function OrganizationLocalisationsFilter() {
         return { items: [] };
       }
       const res = await autocompleteLocalisations({ query: filterText })
-      console.log(res);
 
       return { items: res.data?.map((org) => org._source) };
     }

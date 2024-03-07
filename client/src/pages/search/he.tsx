@@ -48,7 +48,6 @@ export default function HEPartners() {
     : false;
 
   const [keywords, setKeywords] = useState<string[]>(() => currentQuery.split('|'))
-  console.log("keywords", keywords, currentQuery);
 
 
   if (isError || dataError) return <Error500 error={error} />

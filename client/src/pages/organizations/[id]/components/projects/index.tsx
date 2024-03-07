@@ -7,10 +7,16 @@ import { OrganizationProjectsData } from "../../../../../types/organization";
 import useScreenSize from "../../../../../hooks/useScreenSize";
 import YearBars from "../../../../../components/year-bars";
 
-export default function OrganizationProjects({ data: projects, id }: { data: OrganizationProjectsData, id: string }) {
+type OrganizationProjectsProps = {
+  data: OrganizationProjectsData,
+  value: string,
+  label?: string
+}
+
+export default function OrganizationProjects({ data: projects, value, label }: OrganizationProjectsProps) {
   const { screen } = useScreenSize();
   const intl = useIntl();
-  const searchFilters = [{ field: 'participants.structure.id', value: [id], type: 'terms' }]
+  const searchFilters = { 'participants.structure.id': { values: [{ value: value, label }], type: 'terms' } }
   const projectsFilterUrl = `/search/projects?filters=${encodeURIComponent(JSON.stringify(searchFilters))}`;
   const [projectGraph, setProjectGraph] = useState("type");
 

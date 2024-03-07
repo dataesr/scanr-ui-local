@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import { Button, ButtonGroup, Col, Container, Row } from "@dataesr/dsfr-plus";
+import { Button, ButtonGroup, Col, Container, Row, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { Organization } from "../../../../types/organization";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import OrganizationPublications from "./publications";
@@ -16,6 +16,7 @@ import OrganizationHeader from "./header";
 import Identifiers from "../../../../components/identifiers";
 import MoreLikeThis from "../../../../components/more-like-this";
 import NetworksNotice from "../../../../components/networks-notice";
+import getLangFieldValue from "../../../../utils/lang";
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -32,9 +33,8 @@ const NETWORK_BADGES_CODES = [
 
 export default function OrganizationPresentation({
   data,
-}: {
-  data: Organization;
-}) {
+}: { data: Organization }) {
+  const { locale } = useDSFRConfig();
   const intl = useIntl();
   const { publications, projects, patents } = data;
   const { screen } = useScreenSize();
@@ -226,9 +226,9 @@ export default function OrganizationPresentation({
                     )
                   }
                 >
-                  <OrganizationPublications data={publications} id={data.id} />
-                  <OrganizationProjects data={projects} id={data.id} />
-                  <OrganizationPatents data={patents} id={data.id} />
+                  <OrganizationPublications data={publications} value={data.id} label={getLangFieldValue(locale)(data.label)} />
+                  <OrganizationProjects data={projects} value={data.id} label={getLangFieldValue(locale)(data.label)} />
+                  <OrganizationPatents data={patents} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                 </PageSection>
                 <PageSection
                   size="lead"

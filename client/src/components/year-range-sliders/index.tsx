@@ -48,8 +48,6 @@ export function RangeSlider({ color, data, height = "80px", ...props }) {
 
   const isUnselected = (year) => year < state.values[0] || year > state.values[1];
 
-  console.log("Length", rangeArray);
-
 
   return (
     <div {...groupProps} className={cn(styles.slider, styles[`slider--${color}`])}>

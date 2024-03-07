@@ -9,7 +9,6 @@ import { ItemProps } from "../../types";
 
 export default function PublicationItem({ data: publication, highlight }: ItemProps<LightPublication>) {
   const queryClient = useQueryClient();
-  if (!publication.id) { console.log(publication); }
 
   function prefetch(id: string) {
     if (!id) return;

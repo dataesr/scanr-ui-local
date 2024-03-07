@@ -3,7 +3,6 @@ import { GetGraphOptionsProps } from "./types";
 
 export default function getBarChartOptions({data, colors = [], height = "auto", title = "", subtitle = ""}: GetGraphOptionsProps) {
   const _data = data.map((d) => ({ name: d.label || d.value, y: d.count }));
-  console.log("data", _data);
   if (height === "auto") {
     height = `${_data.length * 30}px`;
   }

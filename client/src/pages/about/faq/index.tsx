@@ -35,7 +35,6 @@ export default function FAQ() {
       grouped[groupKey] = [];
     }
     grouped[groupKey].push(question);
-    console.log(grouped);
     return grouped;
   }, {});
 

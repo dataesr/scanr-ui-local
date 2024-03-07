@@ -54,7 +54,6 @@ export default function Suggest() {
       body: JSON.stringify(body)
     })
     const json = await resp.json();
-    console.log(json);
 
     if (json?.status === "ERR") {
       setErrorSubmission(true)

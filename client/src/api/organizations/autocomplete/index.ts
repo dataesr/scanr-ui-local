@@ -28,9 +28,7 @@ export async function autocompleteOrganizations({ query }: SearchArgs): Promise<
     `${organizationsIndex}/_search`,
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const data = await res.json()
-  const orgs: ElasticResult<LightOrganization>[] = data?.hits?.hits || []
-  console.log("orgs", orgs);
-  
+  const orgs: ElasticResult<LightOrganization>[] = data?.hits?.hits || []  
   
   return { data: orgs }
 }
