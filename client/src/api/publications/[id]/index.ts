@@ -6,7 +6,7 @@ export async function getPublicationById(id: string): Promise<Publication> {
   const body: any = {
     _source: [
       "title", "summary", "authors.fullName", "authors.person", "authors.role", "authors.affiliations",
-      "domains", "affiliations", "source", "isOa", 'type', 'id', "year", "oaEvidence", "projects"
+      "domains", "affiliations", "source", "isOa", 'type', 'id', "year", "oaEvidence", "projects", "externalIds"
     ],
     query: {
       bool: {
