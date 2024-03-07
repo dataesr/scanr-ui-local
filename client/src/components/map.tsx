@@ -38,6 +38,14 @@ export type MapProps = {
   iso2Codes?: string[];
 };
 
+const colorMap = {
+  france: "#000091",
+  "pink-macaron-main-689": "#E18B76",
+  "blue-ecume-main-400": "#465F9D",
+  "green-bourgeon-975": "#e6feda",
+  "yellow-tournesol-main-731": "#C8AA39",
+};
+
 const getIcon = (color = "#0078f3") =>
   divIcon({
     html: `
