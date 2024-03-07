@@ -46,9 +46,7 @@ export default function ProjectItem({
         </BadgeGroup>
         <span onMouseEnter={() => prefetchAuthor(project.id)}>
           <Link href={`/projects/${project.id}`} className="fr-link">
-            {project?.label?.default ||
-              project?.label?.fr ||
-              project?.label?.en}
+            {getLangFieldValue(locale)(project.label)}
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
@@ -62,7 +60,7 @@ export default function ProjectItem({
                 <Link href={`/organizations/${p.structure.id}`}>
                   {getLangFieldValue(locale)(p.structure.label)}
                 </Link>
-              ) : <Text as="span">{p.label?.default.split('__')?.[0]}</Text>}
+              ) : <Text as="span">{p.label?.default?.split('__')?.[0]}</Text>}
             </Fragment>
           ))}
         </Text>
