@@ -1,5 +1,6 @@
 export const FIELDS = [
   "id^3",
+  "externalIds.id^3",
   "label.*^3",
   "acronym.*^3",
   "publications.title.default^2",

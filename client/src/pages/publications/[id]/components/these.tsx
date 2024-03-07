@@ -56,7 +56,7 @@ export default function These({ data }) {
                 size="lead"
                 title={intl.formatMessage({ id: 'publications.section.affiliations' })}
                 show={!!data.authors?.length}
-                description={markers.length && (
+                description={(markers.length > 0) && (
                   <>
                     <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
                     <Link
@@ -85,7 +85,7 @@ export default function These({ data }) {
                       </Text>
                     </LinkCard>
                   ))}
-                  {markers.length ? (
+                  {(markers.length > 0) ? (
                     <Modal
                       id="affiliations-map"
                       size="xl"

@@ -10,6 +10,7 @@ import {
 import { ItemProps } from "../../types";
 import { LightProject } from "../../../../types/project";
 import { getProjectById } from "../../../../api/projects/[id]";
+import getLangFieldValue from "../../../../utils/lang";
 
 export default function ProjectItem({
   data: project,
@@ -54,52 +55,25 @@ export default function ProjectItem({
           {shouldFilterParticipants &&
             `${project.participants?.length} participants dont ${frenchParticipants?.length} français`}
           {shouldFilterParticipants && <br />}
-          {participants?.map(({ structure }, k) => (
+          {participants?.map((p, k) => (
             <Fragment key={k}>
-              {structure && k > 0 ? ", " : ""}
-              {structure?.label ? (
-                <Link href={`/organizations/${structure.id}`}>
-                  {structure.label[locale] || structure.label.default}
+              {(k > 0) ? ", " : ""}
+              {p.structure?.label ? (
+                <Link href={`/organizations/${p.structure.id}`}>
+                  {getLangFieldValue(locale)(p.structure.label)}
                 </Link>
-              ) : null}
+              ) : <Text as="span">{p.label?.default.split('__')?.[0]}</Text>}
             </Fragment>
           ))}
         </Text>
         <Text size="sm" className="fr-card__detail fr-mb-0">
           <i>{project.year}</i>
         </Text>
-        {highlight?.["domains.label.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            Mots clés:{" "}
-            <span
-              dangerouslySetInnerHTML={{
-                __html: highlight?.["domains.label.default"],
-              }}
-            />
+        {Object.values(highlight || {}).map((value, i) => (
+          <Text key={i} size="sm" className="fr-mb-0">
+            <span dangerouslySetInnerHTML={{ __html: value }} />
           </Text>
-        )}
-        {highlight?.["publications.title.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span
-              dangerouslySetInnerHTML={{
-                __html: highlight?.["summary.default"],
-              }}
-            />
-            ...
-          </Text>
-        )}
-        {highlight?.["publications.summary.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span
-              dangerouslySetInnerHTML={{
-                __html: highlight?.["summary.default"],
-              }}
-            />
-            ...
-          </Text>
-        )}
+        ))}
       </div>
     </Fragment>
   );

@@ -164,7 +164,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 size="lead"
                 show={!!participantsWithSubParticipants?.length}
                 title={intl.formatMessage({ id: "projects.section.participants" }, { count: participantsWithSubParticipants?.length })}
-                description={markers.length && (
+                description={(markers.length > 0) && (
                   <>
                     <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
                     <Link
@@ -184,7 +184,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.foreign" })} description="" data={foreignParticipants} />
                     <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.undefined" })} description="" data={undefinedParticipants} />
                   </Col>
-                  {markers.length ? (
+                  {markers.length > 0 ? (
                     <Modal id="participants-map" size="xl" title={intl.formatMessage({ id: "projects.section.participants.map-title" })}>
                       <Col xs="12">
                         <div style={{ height: "400px", width: "100%", marginBottom: "6rem" }}>

@@ -10,6 +10,7 @@ import { FIELDS } from "../_utils/constants";
 const SOURCE = [
   "label.*",
   "publications",
+  "participants.label",
   "participants.structure.id",
   "participants.structure.label.*",
   "participants.structure.mainAddress.*",

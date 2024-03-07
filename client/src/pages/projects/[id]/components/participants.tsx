@@ -18,11 +18,11 @@ type ProjectParticipantsProps = {
   size?: "hero" | "lead" | "lg" | "md" | "sm" | "xs"
 }
 
-export default function ProjectParticipants({ title, description, size, icon, data }: ProjectParticipantsProps) {
+export default function ProjectParticipants({ title, description, size, icon, data = [] }: ProjectParticipantsProps) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
 
-  if (!data?.length) return null;
+  if (!(data.length > 0)) return null;
 
   const titleCSS = cn("page-section__title", {
     [`fr-text--${size}`]: size !== "hero",
