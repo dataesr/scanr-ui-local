@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { divIcon, latLngBounds } from "leaflet";
 import { GeoJSON } from "react-leaflet";
 import customGeoJSON from "./custom.geo.json";
+import { EP, EA, AP, WO } from "./map-utils";
 
 import "leaflet/dist/leaflet.css";
 import {
@@ -86,6 +87,30 @@ export default function Map({
     window.localStorage.getItem("prefers-color-scheme") === "dark"
       ? "dark"
       : "sunny";
+
+  const getFillColor = (iso2Code) => {
+    console.log(iso2Codes);
+    const colorMapping = {
+      FR: colorMap["france"],
+      WO: colorMap["pink-macaron-main-689"],
+      EP: colorMap["blue-ecume-main-400"],
+      EA: colorMap["green-bourgeon-975"],
+      AP: colorMap["yellow-tournesol-main-731"],
+    };
+
+    if (iso2Code === "FR") return colorMapping.FR;
+    if (iso2Codes.includes(iso2Code)) return "#d64d00";
+    if (iso2Codes.includes("EP") && EP.includes(iso2Code))
+      return colorMapping.EP;
+    if (iso2Codes.includes("WO") && WO.includes(iso2Code))
+      return colorMapping.WO;
+    if (iso2Codes.includes("EA") && EA.includes(iso2Code))
+      return colorMapping.EA;
+    if (iso2Codes.includes("AP") && AP.includes(iso2Code))
+      return colorMapping.AP;
+    return "gray";
+  };
+
   return (
     <MapContainer
       attributionControl
@@ -97,6 +122,20 @@ export default function Map({
       <TileLayer
         attribution="<a href='https://www.jawg.io' target='_blank'>&copy; Jawg</a>"
         url={`https://tile.jawg.io/jawg-${theme}/{z}/{x}/{y}.png?access-token=5V4ER9yrsLxoHQrAGQuYNu4yWqXNqKAM6iaX5D1LGpRNTBxvQL3enWXpxMQqTrY8`}
+      />
+      <GeoJSON
+        data={customGeoJSON}
+        style={(feature: any) => {
+          const iso2Code = feature.properties.iso_a2;
+          const fillColor = getFillColor(iso2Code);
+          return {
+            fillColor,
+            weight: 1,
+            opacity: 1,
+            color: "white",
+            fillOpacity: 0.7,
+          };
+        }}
       />
       {markers?.map((marker, i) => (
         <Marker
@@ -119,26 +158,6 @@ export default function Map({
         </Marker>
       ))}
       <SetMap markers={markers} />
-      <GeoJSON
-        data={customGeoJSON}
-        style={(feature: any) => {
-          const iso2Code = feature.properties.iso_a2;
-          let fillColor = "transparent";
-          if (iso2Codes.includes(iso2Code)) {
-            fillColor = "blue";
-          }
-          if (iso2Codes.includes("WO") && fillColor !== "blue") {
-            fillColor = "green";
-          }
-          return {
-            fillColor,
-            weight: 1,
-            opacity: 1,
-            color: "white",
-            fillOpacity: 0.7,
-          };
-        }}
-      />
     </MapContainer>
   );
 }

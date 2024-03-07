@@ -22,6 +22,7 @@ import getLangFieldValue from "../../../../../utils/lang";
 import PatentCPC from "../cpc";
 import PatentFilings from "../patents-filings";
 import Identifiers from "../identifier";
+import MapLegend from "../utils/map-legend";
 
 const options: Intl.DateTimeFormatOptions = {
   day: "numeric",
@@ -125,6 +126,7 @@ export default function PatentPage({ data }: { data: Patent }) {
                   id: "patents.section.map",
                 })}
               >
+                <MapLegend />
                 <Map
                   height="500px"
                   markers={[]}
