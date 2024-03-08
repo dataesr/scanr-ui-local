@@ -22,5 +22,9 @@
   "authors.section.reviews.title": "Principales revues",
   "authors.section.reviews.desc": "Cliquez pour rechercher des publications de la revue",
   "authors.section.share": "Partager la page",
-  "authors.section.contribute.title": "Contribuer"
+  "authors.section.contribute.title": "Contribuer",
+  "authors.section.recent-affiliations.publication-count": "{count, plural, one {# publication} other {# publications}}",
+  "authors.section.recent-affiliations.between": "entre {min} et {max}",
+  "authors.section.recent-affiliations.title": "Affiliations récentes",
+  "authors.section.recent-affiliations.description": "Les affiliations récentes présentées ici sont basées sur les publications répertoriées dans scanR. Elles ne sont pas exhaustives."
 }

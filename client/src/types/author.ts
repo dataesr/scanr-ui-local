@@ -52,10 +52,7 @@ export type Author = {
   awards: {
     label: string;
   }[];
-  recent_affiliations: {
-    label: string;
-    id: string;
-  }[];
+  recentAffiliations: RecentAffiliation[];
   publications: {
     publicationsCount: number;
     publications: LightPublication[];
@@ -78,3 +75,30 @@ export type AuthorsPublications = {
 export type AuthorsAggregations = {
   byAward: Aggregation[];
 }
+
+export type RecentAffiliation = {
+  structure: {
+    id: string;
+    mainAddress: {
+      address: string;
+      gps: {
+        lat: number;
+        lon: number;
+      };
+      postcode: string;
+      city: string;
+      country: string;
+    };
+    kind: string[];
+    label: LangField;
+    acronym: LangField;
+    status: string;
+    isFrench: boolean;
+    endDate: string;
+    startDate: string;
+  };
+  sources: {
+    id: string;
+    year: string;
+  }[];
+};
