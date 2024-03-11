@@ -2,7 +2,6 @@ import { Patent } from "../../../../../types/patent";
 import { useIntl } from "react-intl";
 import { Badge, Col, Link, Row, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
 import geo from "../../locales/fr.json";
-console.log(geo);
 
 const options: Intl.DateTimeFormatOptions = {
   day: "numeric",
@@ -37,7 +36,6 @@ export default function PatentFilings({ data }: { data: Patent }) {
             >
               {geo[patent.office]}
             </Badge>
-
             <Row className="fr-mt-3v">
               <Text className="fr-card__detail" size="sm">
                 <i>

@@ -19,6 +19,7 @@
   "patents.section.family.filing.first.publication": "Premier numéro de publication : ",
   "patents.section.family.priority": "Dépôt prioritaire",
   "patents.id.title": "Identifiant de la famille de brevet",
+  "patents.detail.title": "En bref",
   "patents.copy": "Cliquez pour copier dans le presse-papier",
   "patents.section.description.cpc": "Liste des codes CPC, passez le curseur sur un code CPC pour visualiser le nom",
   "patents.section.family.link": "Lien vers Espacenet",

@@ -11,6 +11,7 @@ function ActorsCard({
   type: "inv" | "dep";
 }) {
   const queryClient = useQueryClient();
+
   function prefetch(id: string) {
     if (!id) return;
     queryClient.prefetchQuery({
@@ -22,9 +23,6 @@ function ActorsCard({
   const cardType = actor.typeParticipant === "pm" ? "organization" : "author";
   const iconType =
     actor.typeParticipant === "pm" ? "building-line" : "user-line";
-  {
-    console.log(actor);
-  }
 
   return (
     <LinkCard
@@ -62,18 +60,25 @@ export default function PatentActors({
   data: PatentActorsData[];
   type: "inv" | "dep";
 }) {
-  const actorsList = actors.filter((actor) =>
-    actor.rolePatent.find((roleObj) => roleObj.role === type)
+  const filteredActors = actors.filter((actor) =>
+    actor.rolePatent.some((role) => role.role === type)
   );
 
-  if (!actorsList?.length) return null;
+  const uniqueActors = filteredActors.filter((actor1) =>
+    filteredActors.every((actor2) => {
+      if (actor1 === actor2) return true;
+      return !actor2.fullName.includes(actor1.fullName);
+    })
+  );
+
+  if (!uniqueActors.length) return null;
 
   return (
     <div>
       <Row gutters>
-        {actorsList.map((actor) => (
-          <Col xs="12" md="6">
-            <ActorsCard actor={actor} type={"inv"} />
+        {uniqueActors.map((actor, index) => (
+          <Col xs="12" md="6" key={index}>
+            <ActorsCard actor={actor} type={type} />
           </Col>
         ))}
       </Row>
