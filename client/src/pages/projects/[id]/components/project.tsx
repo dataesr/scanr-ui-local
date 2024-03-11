@@ -47,8 +47,6 @@ const getParticipants = (type, participants) => {
 
 const getSubParticipants = (type, participants, id) => {
   if (type !== "H2020") return null;
-  console.log("LOGGER", id, participants.filter((part) => part.label?.default?.slice(-1) !== "0"));
-
   return participants.filter((part) => part.label?.default?.split('__')[2].slice(0, -2) === id && part.label?.default?.slice(-1) !== "0");
 }
 

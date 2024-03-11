@@ -39,7 +39,6 @@
 //   );
 //   const data = await res.json();
 //   const orgs: ElasticResult<LightPatent>[] = data?.hits?.hits || [];
-//   console.log("orgs", orgs);
 
 //   return { data: orgs };
 // }

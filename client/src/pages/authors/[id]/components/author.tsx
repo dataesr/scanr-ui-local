@@ -10,6 +10,7 @@ import { useIntl } from "react-intl";
 import AuthorAwards from "./awards";
 import Identifiers from "../../../../components/identifiers";
 import { Author } from "../../../../types/author";
+import RecentAffiliations from "./recent-affiliations";
 
 
 function getOaInfo(publi) {
@@ -55,6 +56,14 @@ export default function AuthorPage({ data }: { data: Author }) {
                 description={intl.formatMessage({ id: "authors.section.wiki.desc" })}
               >
                 <TagCloud data={wikis} order="random" />
+              </PageSection>
+              <PageSection
+                size="lead"
+                show={!!data.recentAffiliations?.length}
+                title={intl.formatMessage({ id: "authors.section.recent-affiliations.title" })}
+                description={intl.formatMessage({ id: "authors.section.recent-affiliations.description" })}
+              >
+                <RecentAffiliations data={data.recentAffiliations} />
               </PageSection>
               <PageSection
                 icon="trophy-line"

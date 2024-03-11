@@ -53,7 +53,6 @@ export async function aggregateProjects(
       normalizedCount: element.doc_count * 100 / _100Year,
     }
   }).sort((a, b) => a.label - b.label).reduce(fillWithMissingYears, []) || [];
-  console.log(byYear.length, "byYear", byYear);
   
   const byType = data?.byType?.buckets?.map((element) => {
     return {

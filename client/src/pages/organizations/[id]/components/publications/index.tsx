@@ -7,11 +7,20 @@ import { OrganizationPublicationsData } from "../../../../../types/organization"
 import useScreenSize from "../../../../../hooks/useScreenSize";
 import YearBars from "../../../../../components/year-bars";
 
+type OrganizationPublicationsProps = {
+  data: OrganizationPublicationsData,
+  value: string,
+  label?: string
+}
 
-export default function OrganizationPublications({ data: publications, id }: { data: OrganizationPublicationsData, id: string }) {
+export default function OrganizationPublications({
+  data: publications,
+  value,
+  label = "",
+}: OrganizationPublicationsProps) {
   const { screen } = useScreenSize();
   const intl = useIntl();
-  const searchFilter = [{ field: 'affiliations.id', value: [id], type: 'terms' }]
+  const searchFilter = { 'affiliations.id': { values: [{ value: value, label }], type: 'terms' } };
   const publicationsFilterUrl = `/search/publications?filters=${encodeURIComponent(JSON.stringify(searchFilter))}`;
   const [publicationGraph, setPublicationGraph] = useState("wiki");
   const segmentId = useId();
@@ -31,7 +40,13 @@ export default function OrganizationPublications({ data: publications, id }: { d
               {intl.formatMessage({ id: "organizations.publications.count" })}
             </Text>
           </div>
-          <Button as="a" variant="text" icon="arrow-right-s-line" iconPosition="right" href={publicationsFilterUrl}>
+          <Button
+            as="a"
+            variant="text"
+            icon="arrow-right-s-line"
+            iconPosition="right"
+            href={publicationsFilterUrl}
+          >
             {intl.formatMessage({ id: "organizations.publications.search" })}
           </Button>
         </div>
@@ -50,7 +65,13 @@ export default function OrganizationPublications({ data: publications, id }: { d
             {intl.formatMessage({ id: "organizations.publications.count" })}
           </Text>
         </div>
-        <Button as="a" variant="text" icon="arrow-right-s-line" iconPosition="right" href={publicationsFilterUrl}>
+        <Button
+          as="a"
+          variant="text"
+          icon="arrow-right-s-line"
+          iconPosition="right"
+          href={publicationsFilterUrl}
+        >
           {intl.formatMessage({ id: "organizations.publications.search" })}
         </Button>
       </div>

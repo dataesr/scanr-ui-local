@@ -1,5 +1,4 @@
 export const websiteURL = (id: string) => {
-  console.log(id);
   switch (id) {
     case "anr":
       return {

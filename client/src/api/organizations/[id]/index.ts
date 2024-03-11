@@ -48,6 +48,7 @@ export async function getStructurePublicationsById(id: string): Promise<any> {
       byYear: {
         terms: {
           field: "year",
+          size: 30,
         }
       },
       byPublicationType: {
@@ -135,6 +136,7 @@ export async function getStructureProjectsById(id: string): Promise<any> {
       byYear: {
         terms: {
           field: "year",
+          size: 25,
         }
       },
       byKeywordsFr: {
@@ -196,6 +198,8 @@ export async function getStructurePatentsById(id: string): Promise<any> {
       byYear: {
         terms: {
           field: "year",
+          size: 25,
+
         }
       }
     }

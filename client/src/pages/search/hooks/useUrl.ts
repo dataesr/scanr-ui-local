@@ -89,7 +89,6 @@ const getAPI = (pathname: string) => {
 export default function useUrl() {
   const { pathname } = useLocation();
   const api = getAPI(pathname);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));
