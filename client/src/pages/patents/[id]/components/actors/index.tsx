@@ -64,14 +64,15 @@ export default function PatentActors({
     actor.rolePatent.some((role) => role.role === type)
   );
 
-  const uniqueActors = filteredActors.filter((actor1) =>
-    filteredActors.every((actor2) => {
-      if (actor1 === actor2) return true;
-      return !actor2.fullName.includes(actor1.fullName);
-    })
-  );
+  const uniqueActors: PatentActorsData[] = [];
+  const encounteredNames = new Set<string>();
 
-  if (!uniqueActors.length) return null;
+  filteredActors.forEach((actor) => {
+    if (!encounteredNames.has(actor.fullName)) {
+      uniqueActors.push(actor);
+      encounteredNames.add(actor.fullName);
+    }
+  });
 
   return (
     <div>

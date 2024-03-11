@@ -23,7 +23,6 @@ import PatentFilings from "../patents-filings";
 import Identifiers from "../identifier";
 import MapLegend from "../utils/map-legend";
 import PatentMap from "../../../../../components/patent-map";
-import PatentDetail from "../details";
 import Truncate from "../../../../../components/truncate";
 
 const options: Intl.DateTimeFormatOptions = {
