@@ -76,10 +76,42 @@
   flex-wrap: 0;
 }
 
+.histogram__wrap {
+  background-color: transparent;
+  margin: 0 1px;
+  width: 100%;
+  position: relative;
+
+  &:hover .histogram__bar {
+    opacity: 0.8;
+  }
+}
+
 .histogram__bar {
   background-color: var(--color);
   margin: 0 1px;
   width: 100%;
+  position: relative;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: rotate(180deg) translate(15px, 0);
+  font-size: 0.75rem;
+  color: var(--text-label-inverse-grey);
+  background-color: var(--background-contrast-grey);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tooltip-visible {
+  visibility: visible;
 }
 
 .histogram__bar.unselected {
