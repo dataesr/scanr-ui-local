@@ -49,6 +49,36 @@ export default function PatentPage({ data }: { data: Patent }) {
                   id: "patents.section.badge",
                 })}
               </Badge>
+              {data.isInternational && (
+                <Badge
+                  size="sm"
+                  color="blue-ecume"
+                  style={{ marginRight: "10px" }}
+                >
+                  International
+                </Badge>
+              )}
+              {data.isOeb && (
+                <Badge
+                  size="sm"
+                  color="blue-ecume"
+                  style={{ marginRight: "10px" }}
+                >
+                  Office européen
+                </Badge>
+              )}
+              <Badge
+                size="sm"
+                color="green-bourgeon"
+                style={{ marginRight: "10px" }}
+              >
+                {`${intl.formatMessage(
+                  {
+                    id: "patents.detail.badge.count",
+                  },
+                  { count: data.patents.length }
+                )}`}
+              </Badge>
             </BadgeGroup>
             <Title className="fr-mb-3w" as="h1" look="h5">
               {getLangFieldValue(locale)(data.title)}
