@@ -38,6 +38,7 @@ import AuthorAnalytics from "./components/authors/author-analytics";
 import PatentItem from "./components/patents/patent-item";
 import { ObjectModel } from "../../types/commons";
 import { ItemProps } from "./types";
+import PatentFilters from "./components/patents/filters";
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -75,7 +76,7 @@ const API_MAPPING = {
   patents: {
     item: PatentItem,
     analytics: () => <></>,
-    filters: () => <></>,
+    filters: PatentFilters,
   },
 };
 
@@ -156,20 +157,14 @@ export default function Search() {
               <p>
                 <em>
                   {total && total === 10000 ? (
-                    <Text
-                      as="span"
-                      size="xs"
-                      className="fr-text-mention--grey"
-                    >
-                      {intl.formatMessage({ id: "search.top.result-more-than" })}
+                    <Text as="span" size="xs" className="fr-text-mention--grey">
+                      {intl.formatMessage({
+                        id: "search.top.result-more-than",
+                      })}
                     </Text>
                   ) : null}
                   {total && total > 0 ? (
-                    <Text
-                      as="span"
-                      size="xs"
-                      className="fr-text-mention--grey"
-                    >
+                    <Text as="span" size="xs" className="fr-text-mention--grey">
                       {intl.formatMessage(
                         { id: `search.top.${api}.result` },
                         { count: total, query: currentQuery }
@@ -183,12 +178,12 @@ export default function Search() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                    <ItemComponent
-                      data={data}
-                      highlight={highlight}
-                      key={data.id}
-                    />
-                  ))
+                      <ItemComponent
+                        data={data}
+                        highlight={highlight}
+                        key={data.id}
+                      />
+                    ))
                   : null}
               </div>
             </Container>

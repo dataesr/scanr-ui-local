@@ -36,7 +36,6 @@ export default function PatentFilings({ data }: { data: Patent }) {
             >
               {geo[patent.office]}
             </Badge>
-
             <Row className="fr-mt-3v">
               <Text className="fr-card__detail" size="sm">
                 <i>

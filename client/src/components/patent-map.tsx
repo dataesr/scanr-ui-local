@@ -5,6 +5,8 @@
 import { useMemo } from "react";
 import { divIcon, latLngBounds } from "leaflet";
 import { GeoJSON } from "react-leaflet";
+import customGeoJSON from "./custom.geo.json";
+import { EP, EA, AP, WO } from "./map-utils";
 
 import "leaflet/dist/leaflet.css";
 import {
@@ -33,6 +35,15 @@ export type MapProps = {
   onMarkerDragEnd?: (e: DragEvent) => void;
   width?: string;
   zoom?: number;
+  iso2Codes?: string[];
+};
+
+const colorMap = {
+  france: "#000091",
+  "pink-macaron-main-689": "#E18B76",
+  "blue-ecume-main-400": "#465F9D",
+  "green-bourgeon-975": "#e6feda",
+  "yellow-tournesol-main-731": "#C8AA39",
 };
 
 const getIcon = (color = "#0078f3") =>
@@ -50,6 +61,9 @@ const getIcon = (color = "#0078f3") =>
     iconAnchor: [18, 36],
   });
 
+const iso2Codes = customGeoJSON.features.map(
+  (features: any) => features.properties.iso_a2
+);
 function SetMap({ markers }: SetMapProps) {
   const map = useMap();
   if (markers.length) {
@@ -60,7 +74,7 @@ function SetMap({ markers }: SetMapProps) {
   return null;
 }
 
-export default function Map({
+export default function PatentMap({
   height,
   markers,
   onMarkerDragEnd,
@@ -82,6 +96,28 @@ export default function Map({
       ? "dark"
       : "sunny";
 
+  const getFillColor = (iso2Code) => {
+    const colorMapping = {
+      FR: colorMap["france"],
+      WO: colorMap["pink-macaron-main-689"],
+      EP: colorMap["blue-ecume-main-400"],
+      EA: colorMap["green-bourgeon-975"],
+      AP: colorMap["yellow-tournesol-main-731"],
+    };
+
+    if (iso2Code === "FR") return colorMapping.FR;
+    if (iso2Codes.includes(iso2Code)) return "#d64d00";
+    if (iso2Codes.includes("EP") && EP.includes(iso2Code))
+      return colorMapping.EP;
+    if (iso2Codes.includes("WO") && WO.includes(iso2Code))
+      return colorMapping.WO;
+    if (iso2Codes.includes("EA") && EA.includes(iso2Code))
+      return colorMapping.EA;
+    if (iso2Codes.includes("AP") && AP.includes(iso2Code))
+      return colorMapping.AP;
+    return "gray";
+  };
+
   return (
     <MapContainer
       attributionControl
@@ -90,11 +126,20 @@ export default function Map({
       style={{ height, width }}
       zoom={zoom}
     >
-      <TileLayer
-        attribution="<a href='https://www.jawg.io' target='_blank'>&copy; Jawg</a>"
-        url={`https://tile.jawg.io/jawg-${theme}/{z}/{x}/{y}.png?access-token=5V4ER9yrsLxoHQrAGQuYNu4yWqXNqKAM6iaX5D1LGpRNTBxvQL3enWXpxMQqTrY8`}
+      <GeoJSON
+        data={customGeoJSON}
+        style={(feature: any) => {
+          const iso2Code = feature.properties.iso_a2;
+          const fillColor = getFillColor(iso2Code);
+          return {
+            fillColor,
+            weight: 1,
+            opacity: 1,
+            color: "white",
+            fillOpacity: 0.7,
+          };
+        }}
       />
-
       {markers?.map((marker, i) => (
         <Marker
           zIndexOffset={marker?.zIndexOffset || 10000}

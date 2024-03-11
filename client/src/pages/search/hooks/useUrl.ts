@@ -79,14 +79,16 @@ export function filtersToElasticQuery(
 
 const getAPI = (pathname: string) => {
   const api = pathname.split("/")?.[2];
-  if (pathname.split("/")?.[1] === 'trouver-des-partenaires-pour-horizon-europe') return 'he'
+  if (
+    pathname.split("/")?.[1] === "trouver-des-partenaires-pour-horizon-europe"
+  )
+    return "he";
   return api as ApiTypes;
-}
+};
 
 export default function useUrl() {
   const { pathname } = useLocation();
   const api = getAPI(pathname);
-  
   const [searchParams, setSearchParams] = useSearchParams();
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));

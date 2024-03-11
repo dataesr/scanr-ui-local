@@ -1,8 +1,8 @@
-import { projectsIndex, postHeaders } from '../../../config/api'
-import { ExportArgs } from '../../../types/commons'
-import { ExportProject } from '../../../types/project';
-import csvify from '../../utils/csvify';
-import { FIELDS } from '../_utils/constants';
+import { projectsIndex, postHeaders } from "../../../config/api";
+import { ExportArgs } from "../../../types/commons";
+import { ExportProject } from "../../../types/project";
+import csvify from "../../utils/csvify";
+import { FIELDS } from "../_utils/constants";
 
 const EXPORT_SOURCE = [
   "id",
@@ -17,29 +17,28 @@ const EXPORT_SOURCE = [
   "call",
   "action",
   "duration",
-]
+];
 
 const CSVFormatter = (data: ExportProject[], ctx: string) => {
   const cols = [
-    'Identifiant',
-    'Label',
-    'Type',
-    'Date de début',
-    'Date de fin',
-    'Budget total',
-    'Budget financé',
-    'URL',
-    'URL du project',
-    'Nombre de participant',
+    "Identifiant",
+    "Label",
+    "Type",
+    "Date de début",
+    "Date de fin",
+    "Budget total",
+    "Budget financé",
+    "URL",
+    "URL du project",
+    "Nombre de participant",
     "Nom de l'appel à projet",
     "Label de l'action",
-    'Durée',
-    'Lien vers fiche scanR',
+    "Durée",
+    "Lien vers fiche scanR",
     "Date d'export",
-    'Contexte de recherche',
-
+    "Contexte de recherche",
   ];
-  const rows = data.map(item => [
+  const rows = data.map((item) => [
     item.id,
     item.label && (item.label.default || item.label.fr || item.label.en),
     item.type,
@@ -57,16 +56,22 @@ const CSVFormatter = (data: ExportProject[], ctx: string) => {
     new Date().toISOString(),
     ctx,
   ]);
-  return new Blob([csvify(rows, cols)], { type: 'text/csv' });
+  return new Blob([csvify(rows, cols)], { type: "text/csv" });
 };
 const JSONFormatter = (data: ExportProject[]) => {
-  return new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  return new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
 };
 
-const exporter = (format) => format === 'csv' ? CSVFormatter : JSONFormatter;
+const exporter = (format) => (format === "csv" ? CSVFormatter : JSONFormatter);
 
-
-export async function exportProjects({ query, filters, format = 'csv', ctx }: ExportArgs): Promise<Blob> {
+export async function exportProjects({
+  query,
+  filters,
+  format = "csv",
+  ctx,
+}: ExportArgs): Promise<Blob> {
   const body: any = {
     _source: EXPORT_SOURCE,
     size: 1000,
@@ -75,23 +80,26 @@ export async function exportProjects({ query, filters, format = 'csv', ctx }: Ex
         must: [
           {
             query_string: {
-              query: query || '*',
+              query: query || "*",
               fields: FIELDS,
             },
-          }
-        ]
-      }
+          },
+        ],
+      },
     },
-  }
+  };
   if (filters) body.query.bool.filter = filters;
-  const res = await fetch(
-    `${projectsIndex}/_search`,
-    { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
+  const res = await fetch(`${projectsIndex}/_search`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: postHeaders,
+  });
   if (res.status !== 200) {
-    throw new Error(`Elasticsearch error: ${res.status}`)
+    throw new Error(`Elasticsearch error: ${res.status}`);
   }
-  const json = await res.json()
-  const data: ExportProject[] = json?.hits?.hits.map(hit => hit._source) || [];
+  const json = await res.json();
+  const data: ExportProject[] =
+    json?.hits?.hits.map((hit) => hit._source) || [];
   const blob = exporter(format)(data, ctx);
-  return blob
+  return blob;
 }
