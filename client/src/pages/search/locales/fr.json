@@ -29,6 +29,7 @@
   "search.top.organizations.filters.result-count": "{count, plural, =0 {# structures} one {# structure} other {# structures}}",
   "search.top.projects.filters.result-count": "{count, plural, =0 {# financements} one {# financements} other {# financements}}",
   "search.top.patents.filters.result-count": "{count, plural, =0 {# brevets} one {# brevets} other {# brevets}}",
+  "search.patents.detail.badge.count": "{count, plural,  one {# dépôt} other {# dépôts}}",
   "search.top.authors.filters.result-count": "{count, plural, =0 {# auteurs} one {# auteur} other {# auteurs}}",
   "search.filters.publications.by-year": "Filtrer par année",
   "search.filters.publications.by-year-description": "Période séléctionée {min} - {max}",

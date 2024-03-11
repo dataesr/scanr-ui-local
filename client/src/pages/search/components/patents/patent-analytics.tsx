@@ -1,4 +1,3 @@
-// import BarLink from "../../../../components/bar-link";
 import { useIntl } from "react-intl";
 import useSearchData from "../../hooks/useSearchData";
 import AnalyticsSkeleton from "../../../../components/skeleton/analytics-skeleton";
@@ -19,11 +18,14 @@ export default function PatentAnalytics() {
 
   const { byYear } = data as PatentAggregations;
 
+  const filteredByYear = byYear.filter((item) => item.count > 100);
+
   const yearOptions = getYearChartOptions({
-    data: byYear,
+    data: filteredByYear,
     colors: ["var(--artwork-minor-purple-glycine)"],
   });
 
+  console.log(filteredByYear);
   return (
     <Row>
       <Col xs="12">

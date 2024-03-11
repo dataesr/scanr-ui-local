@@ -55,11 +55,12 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
             color="green-bourgeon"
             style={{ marginRight: "10px" }}
           >
-            {`${patent.patents.length} ${
-              patent.patents.length > 1
-                ? intl.formatMessage({ id: "search.top.patent.badge_plural" })
-                : intl.formatMessage({ id: "search.top.patent.badge_singular" })
-            }`}
+            {`${intl.formatMessage(
+              {
+                id: "search.patents.detail.badge.count",
+              },
+              { count: patent.patents.length }
+            )}`}
           </Badge>
         </BadgeGroup>
         <span onMouseEnter={() => prefetchPatent(patent.id)}>

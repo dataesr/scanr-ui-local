@@ -1,6 +1,8 @@
 import {
   Badge,
   BadgeGroup,
+  Button,
+  ButtonGroup,
   Col,
   Container,
   Row,
@@ -202,6 +204,27 @@ export default function PatentPage({ data }: { data: Patent }) {
             </PageSection>
             <PageSection show title="Partager la page">
               <Share />
+            </PageSection>
+            <PageSection
+              title={intl.formatMessage({
+                id: "patents.section.contribute.title",
+              })}
+              show
+            >
+              <ButtonGroup>
+                <Button
+                  as="a"
+                  href={`/bugs/patents/${data.id}`}
+                  color="error"
+                  variant="tertiary"
+                  icon="bug-line"
+                  iconPosition="left"
+                >
+                  {intl.formatMessage({
+                    id: "patents.section.contribute.button-label",
+                  })}
+                </Button>
+              </ButtonGroup>
             </PageSection>
           </PageContent>
           <hr className="fr-my-3w" />
