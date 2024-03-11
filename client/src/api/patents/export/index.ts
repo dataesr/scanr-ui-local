@@ -88,7 +88,6 @@ export async function exportPatents({
   }
   const json = await res.json();
   const data: ExportPatent[] = json?.hits?.hits.map((hit) => hit._source) || [];
-  console.log(data);
   const blob = exporter(format)(data, ctx);
   return blob;
 }

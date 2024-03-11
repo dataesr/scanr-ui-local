@@ -124,6 +124,7 @@
   "search.analytics.authors.by-award.title": "Top 10 des prix obtenus",
   "search.analytics.authors.by-award.description": "Calculé à partir des résultats de la recherche",
   "search.analytics.publications.by-year.title": "Nombre de publications par année",
+  "search.analytics.patent.by-year.title": "Nombre de brevet par année",
   "search.analytics.publications.by-year.description": "Calculé à partir des résultats de la recherche",
   "search.analytics.publications.by-authors.title": "Top 10 des auteurs",
   "search.analytics.publications.by-authors.description": "Calculé à partir des résultats de la recherche",

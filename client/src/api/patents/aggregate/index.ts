@@ -40,7 +40,6 @@ export async function aggregatePatents({
   if (filters.length > 0) {
     body.query.bool.filter = filters;
   }
-  console.log(body);
   const res = await fetch(`${patentsIndex}/_search`, {
     method: "POST",
     body: JSON.stringify(body),

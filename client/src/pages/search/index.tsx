@@ -39,6 +39,7 @@ import PatentItem from "./components/patents/patent-item";
 import { ObjectModel } from "../../types/commons";
 import { ItemProps } from "./types";
 import PatentFilters from "./components/patents/filters";
+import PatentAnalytics from "./components/patents/patent-analytics";
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -75,7 +76,7 @@ const API_MAPPING = {
   },
   patents: {
     item: PatentItem,
-    analytics: () => <></>,
+    analytics: PatentAnalytics,
     filters: PatentFilters,
   },
 };

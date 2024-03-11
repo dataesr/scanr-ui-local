@@ -13,8 +13,6 @@ export default function PatentYearFilter() {
     return null;
   }
 
-  //  DANS L'IDEAL AJOUTER UN FILTRE SUR DATE DE PUBLICATION (PUBLICATIONDATE) ET UN AUTRE SUR SUMBMISSIONDATE (DATE DE DEPOT)
-
   return (
     <>
       <Text bold size="md" className="fr-mb-1v">
@@ -23,7 +21,6 @@ export default function PatentYearFilter() {
       <Text className="fr-card__detail fr-mb-2w" size="sm">
         <FormattedMessage id="search.filters.patent.by-year-description" />
       </Text>
-      {console.log(data)}
       <RangeSlider
         aria-label="Années de publication"
         minValue={byYear[0].value}
@@ -39,6 +36,7 @@ export default function PatentYearFilter() {
             filterType: "range",
           })
         }
+        tooltipLabel={undefined}
       />
     </>
   );
