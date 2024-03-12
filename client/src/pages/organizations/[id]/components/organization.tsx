@@ -17,6 +17,7 @@ import Identifiers from "../../../../components/identifiers";
 import MoreLikeThis from "../../../../components/more-like-this";
 import NetworksNotice from "../../../../components/networks-notice";
 import getLangFieldValue from "../../../../utils/lang";
+import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -41,6 +42,8 @@ export default function OrganizationPresentation({
   const networkBadges = data.badges?.filter((b) =>
     NETWORK_BADGES_CODES.includes(b.code.toLowerCase())
   );
+  const networkFilter = stringifySearchFiltersForURL({ 'affiliations.id': { operator: 'or', type: 'terms', values: [{ value: data?.id, label: data?.label?.default }] } })
+  const networkUrl = `/networks?q=&tab=institutions&filters=${networkFilter}`
 
   return (
     <>
@@ -209,7 +212,7 @@ export default function OrganizationPresentation({
                     icon="links-fill"
                   />
                   {!!publications.publicationsCount && (
-                    <NetworksNotice url="/networks" />
+                    <NetworksNotice url={networkUrl} />
                   )}
                 </PageSection>
                 <PageSection
