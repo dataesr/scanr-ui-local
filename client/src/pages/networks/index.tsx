@@ -98,7 +98,12 @@ function NetworksPage() {
             <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
               <Home currentTab={label} />
               <Graph currentTab={label} computeClusters={clustersTabs[label]} />
-              <ClustersButton currentTab={label} enabled={clustersTabs[label]} handleChange={handleClustersChange} />
+              <ClustersButton
+                currentTab={label}
+                enabled={clustersTabs[label]}
+                handleChange={handleClustersChange}
+                show={import.meta.env.DEV}
+              />
               <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
             </Tab>
           ))}

@@ -3,11 +3,22 @@ import { Container, Row, Button, Spinner } from "@dataesr/dsfr-plus"
 import useSearchClusters from "../hooks/useSearchClusters"
 import useSearchData from "../hooks/useSearchData"
 
-export default function ClustersButton({ currentTab, enabled, handleChange }: { currentTab: string; enabled: boolean; handleChange: any }) {
+export default function ClustersButton({
+  currentTab,
+  enabled,
+  handleChange,
+  show,
+}: {
+  currentTab: string
+  enabled: boolean
+  handleChange: any
+  show: boolean
+}) {
   const intl = useIntl()
   const { search } = useSearchData(currentTab)
   const { search: searchClusters } = useSearchClusters(currentTab, enabled)
 
+  if (!show) return <></>
   if (!search?.data || search.isFetching) return <></>
 
   return (
