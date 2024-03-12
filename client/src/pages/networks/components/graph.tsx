@@ -6,13 +6,13 @@ import useSearchClusters from "../hooks/useSearchClusters"
 import Error204 from "./error204"
 
 export default function Graph({ currentTab, computeClusters }: { currentTab: string; computeClusters: boolean }) {
-  const { search, currentQuery, currentFilters } = useSearchData(currentTab)
+  const { search, currentQuery, filters } = useSearchData(currentTab)
   const { search: searchClusters } = useSearchClusters(currentTab, computeClusters)
   const keyClusters = searchClusters.isFetching ? false : computeClusters
   const vosviewer = keyClusters ? searchClusters?.data : search?.data
   const key = useMemo(
-    () => JSON.stringify({ currentTab, currentQuery, currentFilters, keyClusters }),
-    [currentTab, currentQuery, currentFilters, keyClusters]
+    () => JSON.stringify({ currentTab, currentQuery, filters, keyClusters }),
+    [currentTab, currentQuery, filters, keyClusters]
   )
 
   if (currentQuery === null) return <></>

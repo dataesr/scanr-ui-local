@@ -1,10 +1,10 @@
 import { useIntl } from "react-intl"
 import { Container, Row, Col, Title } from "@dataesr/dsfr-plus"
-import useSearchData from "../hooks/useSearchData"
+import useUrl from "../hooks/useUrl"
 
 export default function Home({ currentTab }: { currentTab: string }) {
   const intl = useIntl()
-  const { currentQuery } = useSearchData(currentTab)
+  const { currentQuery } = useUrl()
 
   if (currentQuery !== null) return <></>
 

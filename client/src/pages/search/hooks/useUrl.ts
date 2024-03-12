@@ -83,12 +83,14 @@ const getAPI = (pathname: string) => {
     pathname.split("/")?.[1] === "trouver-des-partenaires-pour-horizon-europe"
   )
     return "he";
+  if (pathname === '/networks') return 'publications'
   return api as ApiTypes;
 };
 
 export default function useUrl() {
   const { pathname } = useLocation();
   const api = getAPI(pathname);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));
@@ -171,11 +173,9 @@ export default function useUrl() {
   );
 
   const clearFilters = useCallback(() => {
-    setSearchParams({
-      q: currentQuery,
-      filters: stringifySearchFiltersForURL({}),
-    });
-  }, [setSearchParams, currentQuery]);
+    searchParams.delete('filters')
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams]);
 
   const values = useMemo(() => {
     return {

@@ -2,9 +2,11 @@ import { useMemo } from "react"
 import { Container } from "@dataesr/dsfr-plus"
 import { NetworkData } from "../../../types/network"
 import useSearchClusters from "../hooks/useSearchClusters"
+import useUrl from "../hooks/useUrl";
 
 export default function ClustersTable({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
-  const { search, currentQuery, currentFilters } = useSearchClusters(currentTab, enabled)
+  const { currentQuery, currentFilters } = useUrl()
+  const { search } = useSearchClusters(currentTab, enabled)
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const key = useMemo(
@@ -34,10 +36,10 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
               <td>
                 {community?.domains
                   ? Object.entries(community.domains)
-                      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
-                      .slice(0, 5)
-                      .map(([domain]) => `${domain}`)
-                      .join(", ")
+                    .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([domain]) => `${domain}`)
+                    .join(", ")
                   : ""}
               </td>
               <td>{community.maxWeightNodes.join(", ")}</td>
