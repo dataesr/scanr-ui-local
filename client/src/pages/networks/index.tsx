@@ -1,13 +1,14 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
+import useUrl from "../search/hooks/useUrl"
 import useTab from "./hooks/useTab"
 import useClusters from "./hooks/useClusters"
-import useSearchFilter from "./hooks/useSearchFilter"
-import NetworkFilters from "./components/filter"
 import Graph from "./components/graph"
 import Home from "./components/home"
 import ClustersTable from "./components/table"
 import ClustersButton from "./components/button"
+import NetworkFilters from "./components/filters"
+import PublicationFilters from "../search/components/publications/filters"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -56,7 +57,7 @@ const networkTabsLabels = networkTabs.map(({ label }) => label)
 function NetworksPage() {
   const intl = useIntl()
   const { currentTab, handleTabChange } = useTab()
-  const { currentQuery, handleQueryChange } = useSearchFilter()
+  const { currentQuery, handleQueryChange } = useUrl();
   const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
 
   return (
@@ -84,6 +85,7 @@ function NetworksPage() {
               />
             </Col>
             <Col xs="12" sm="4" lg="2">
+              <PublicationFilters />
               <NetworkFilters />
             </Col>
           </Row>
