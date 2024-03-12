@@ -1,6 +1,6 @@
 const GRAPH_MODELS = {
   authors: {
-    url: "http://localhost:5173/authors",
+    url: "/authors",
     aggregations: [{ name: "domains", field: "co_domains.keyword" }],
     terminology: {
       item: "author",
@@ -14,7 +14,7 @@ const GRAPH_MODELS = {
     },
   },
   institutions: {
-    url: "http://localhost:5173/organizations",
+    url: "/organizations",
     aggregations: [
       { name: "authors", field: "co_authors.keyword" },
       { name: "domains", field: "co_domains.keyword" },
@@ -31,7 +31,7 @@ const GRAPH_MODELS = {
     },
   },
   structures: {
-    url: "http://localhost:5173/organizations",
+    url: "/organizations",
     aggregations: [
       { name: "authors", field: "co_authors.keyword" },
       { name: "domains", field: "co_domains.keyword" },
@@ -48,7 +48,7 @@ const GRAPH_MODELS = {
     },
   },
   domains: {
-    url: "http://localhost:5173/search/publications",
+    url: "/search/publications",
     aggregations: [{ name: "publications", field: "title.default.keyword" }],
     terminology: {
       item: "domain",
@@ -62,7 +62,7 @@ const GRAPH_MODELS = {
     },
   },
   software: {
-    url: "http://localhost:5173/search/publications",
+    url: "/search/publications",
     aggregations: [{ name: "domains", field: "co_domains.keyword" }],
     terminology: {
       item: "software",
