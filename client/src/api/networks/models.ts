@@ -1,7 +1,6 @@
 const GRAPH_MODELS = {
   authors: {
     url: "/authors",
-    aggregations: [{ name: "domains", field: "co_domains.keyword" }],
     terminology: {
       item: "author",
       items: "authors",
@@ -10,15 +9,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   institutions: {
     url: "/organizations",
-    aggregations: [
-      { name: "authors", field: "co_authors.keyword" },
-      { name: "domains", field: "co_domains.keyword" },
-    ],
     terminology: {
       item: "institution",
       items: "institutions",
@@ -27,15 +22,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   structures: {
     url: "/organizations",
-    aggregations: [
-      { name: "authors", field: "co_authors.keyword" },
-      { name: "domains", field: "co_domains.keyword" },
-    ],
     terminology: {
       item: "structure",
       items: "structures",
@@ -44,12 +35,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   domains: {
     url: "/search/publications",
-    aggregations: [{ name: "publications", field: "title.default.keyword" }],
     terminology: {
       item: "domain",
       items: "domains",
@@ -58,12 +48,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   software: {
     url: "/search/publications",
-    aggregations: [{ name: "domains", field: "co_domains.keyword" }],
     terminology: {
       item: "software",
       items: "software",
@@ -72,11 +61,10 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
 }
 
 export const graphGetConf = (model: string) => GRAPH_MODELS?.[model] ?? {}
-export const graphGetAggs = (model: string) => GRAPH_MODELS?.[model]?.aggregations ?? []
 export const graphGetTerminology = (model: string) => GRAPH_MODELS?.[model]?.terminology ?? {}
