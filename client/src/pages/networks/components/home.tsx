@@ -1,11 +1,10 @@
 import { useIntl } from "react-intl"
-import { useSearchParams } from "react-router-dom"
 import { Container, Row, Col, Title } from "@dataesr/dsfr-plus"
+import useUrl from "../hooks/useUrl"
 
 export default function Home({ currentTab }: { currentTab: string }) {
   const intl = useIntl()
-  const [searchParams] = useSearchParams();
-  const currentQuery = searchParams.get("q")
+  const { currentQuery } = useUrl()
 
   if (currentQuery !== null) return <></>
 

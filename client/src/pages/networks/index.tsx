@@ -1,7 +1,6 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
-import useUrl from "../search/hooks/useUrl"
-import useTab from "./hooks/useTab"
+import useUrl from "./hooks/useUrl"
 import useClusters from "./hooks/useClusters"
 import Graph from "./components/graph"
 import Home from "./components/home"
@@ -56,8 +55,7 @@ const networkTabsLabels = networkTabs.map(({ label }) => label)
 
 function NetworksPage() {
   const intl = useIntl()
-  const { currentTab, handleTabChange } = useTab()
-  const { currentQuery, handleQueryChange } = useUrl();
+  const { currentQuery, handleQueryChange, currentTab, handleTabChange } = useUrl();
   const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
 
   return (

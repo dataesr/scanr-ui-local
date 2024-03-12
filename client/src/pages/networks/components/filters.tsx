@@ -1,6 +1,6 @@
 import { Row, Col, Text, Button, ButtonGroup, Tag } from "@dataesr/dsfr-plus";
 import { useIntl } from "react-intl";
-import useUrl from "../../search/hooks/useUrl";
+import useUrl from "../hooks/useUrl";
 import useAggregateData from "../../search/hooks/useAggregationData";
 
 export default function NetworkFilters() {
