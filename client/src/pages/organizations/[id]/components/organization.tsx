@@ -42,8 +42,13 @@ export default function OrganizationPresentation({
   const networkBadges = data.badges?.filter((b) =>
     NETWORK_BADGES_CODES.includes(b.code.toLowerCase())
   );
-  const networkFilter = stringifySearchFiltersForURL({ 'affiliations.id': { operator: 'or', type: 'terms', values: [{ value: data?.id, label: data?.label?.default }] } })
-  const networkUrl = `/networks?q=&tab=institutions&filters=${networkFilter}`
+  const networkFilter = stringifySearchFiltersForURL({
+    "affiliations.id": { type: "terms", values: [{ value: data?.id, label: data?.label?.default }] },
+  })
+  const networkTab = data?.externalIds?.find((id) => id?.type === "rnsr")?.id === data?.id ? "structures" : "institutions"
+  const networkUrl = `/networks?q=&tab=${networkTab}&filters=${networkFilter}`
+
+  console.log("organization", data)
 
   return (
     <>
