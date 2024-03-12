@@ -25,7 +25,6 @@
     "graphology-types": "^0.24.7",
     "highcharts": "^11.3.0",
     "highcharts-react-official": "^3.2.1",
-    "iwanthue": "^2.0.0",
     "leaflet": "^1.9.4",
     "openai": "^4.28.4",
     "react": "^18.2.0",

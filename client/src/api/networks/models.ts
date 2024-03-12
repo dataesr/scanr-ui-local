@@ -1,7 +1,6 @@
 const GRAPH_MODELS = {
   authors: {
-    url: "http://localhost:5173/authors",
-    aggregations: [{ name: "domains", field: "co_domains.keyword" }],
+    url: "/authors",
     terminology: {
       item: "author",
       items: "authors",
@@ -10,15 +9,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   institutions: {
-    url: "http://localhost:5173/organizations",
-    aggregations: [
-      { name: "authors", field: "co_authors.keyword" },
-      { name: "domains", field: "co_domains.keyword" },
-    ],
+    url: "/organizations",
     terminology: {
       item: "institution",
       items: "institutions",
@@ -27,15 +22,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   structures: {
-    url: "http://localhost:5173/organizations",
-    aggregations: [
-      { name: "authors", field: "co_authors.keyword" },
-      { name: "domains", field: "co_domains.keyword" },
-    ],
+    url: "/organizations",
     terminology: {
       item: "structure",
       items: "structures",
@@ -44,12 +35,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   domains: {
-    url: "http://localhost:5173/search/publications",
-    aggregations: [{ name: "publications", field: "title.default.keyword" }],
+    url: "/search/publications",
     terminology: {
       item: "domain",
       items: "domains",
@@ -58,12 +48,11 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
   software: {
-    url: "http://localhost:5173/search/publications",
-    aggregations: [{ name: "domains", field: "co_domains.keyword" }],
+    url: "/search/publications",
     terminology: {
       item: "software",
       items: "software",
@@ -72,11 +61,10 @@ const GRAPH_MODELS = {
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
-      total_link_strength: "publications",
+      total_link_strength: "co-publications links",
     },
   },
 }
 
 export const graphGetConf = (model: string) => GRAPH_MODELS?.[model] ?? {}
-export const graphGetAggs = (model: string) => GRAPH_MODELS?.[model]?.aggregations ?? []
 export const graphGetTerminology = (model: string) => GRAPH_MODELS?.[model]?.terminology ?? {}

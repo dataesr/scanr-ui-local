@@ -167,15 +167,17 @@ export default function useUrl() {
 
   const handleQueryChange = useCallback(
     (query) => {
-      setSearchParams({ q: query });
+      searchParams.delete("filters")
+      searchParams.set("q", query)
+      setSearchParams(searchParams)
     },
-    [setSearchParams]
-  );
+    [searchParams, setSearchParams]
+  )
 
   const clearFilters = useCallback(() => {
-    searchParams.delete('filters')
-    setSearchParams(searchParams);
-  }, [searchParams, setSearchParams]);
+    searchParams.delete("filters")
+    setSearchParams(searchParams)
+  }, [searchParams, setSearchParams])
 
   const values = useMemo(() => {
     return {

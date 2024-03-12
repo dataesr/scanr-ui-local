@@ -1,12 +1,12 @@
 import { useIntl } from "react-intl"
 import { Container, Row, Col, Title } from "@dataesr/dsfr-plus"
-import useUrl from "../hooks/useUrl"
+import useUrl from "../../search/hooks/useUrl"
 
 export default function Home({ currentTab }: { currentTab: string }) {
   const intl = useIntl()
   const { currentQuery } = useUrl()
 
-  if (currentQuery !== null) return <></>
+  if (currentQuery) return <></>
 
   return (
     <Container className="fr-mt-5w" style={{ height: "200px" }}>

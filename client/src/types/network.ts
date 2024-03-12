@@ -1,4 +1,5 @@
 import { LangField } from "./commons"
+
 export type Network = {
   network: NetworkData
   config?: NetworkConfig
@@ -33,17 +34,6 @@ export type NetworkHitsBody = {
   query: any
   _source: Array<string>
 }
-export type NetworkFilterArgs = {
-  query?: string | unknown
-}
-
-// export type NetworkAggregation = {
-//   authors: Aggregation[]
-//   institutions: Aggregation[]
-//   structures: Aggregation[]
-//   domaines: Aggregation[]
-//   software: Aggregation[]
-// }
 
 export type Community = {
   index: number

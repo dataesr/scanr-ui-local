@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { Container } from "@dataesr/dsfr-plus"
 import { NetworkData } from "../../../types/network"
 import useSearchClusters from "../hooks/useSearchClusters"
-import useUrl from "../hooks/useUrl";
+import useUrl from "../../search/hooks/useUrl"
 
 export default function ClustersTable({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
   const { currentQuery, currentFilters } = useUrl()

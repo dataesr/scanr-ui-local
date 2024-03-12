@@ -1,12 +1,11 @@
 import { graphGetConf } from "./models"
 
 export default function nodeGetUrl(model: string, key: string, attr: any): string {
-  const conf = graphGetConf(model)
+  const modelUrl = graphGetConf(model)?.url
+  if (!modelUrl) return ""
 
-  if (!conf) return ""
+  const baseUrl = window.location.href.split("/networks")[0]
+  const targetUrl = model === "domains" || model === "software" ? `?q="${attr.label.replace(/ /g, "+")}"` : `/${key}`
 
-  const url =
-    model === "domains" || model === "software" ? `${conf?.url}?q="${attr.label.replace(/ /g, "+")}"` : `${conf?.url}/${key}`
-
-  return url
+  return baseUrl + modelUrl + targetUrl
 }
