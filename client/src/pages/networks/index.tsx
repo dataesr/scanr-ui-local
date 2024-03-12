@@ -1,5 +1,6 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
+import useScreenSize from "../../hooks/useScreenSize"
 import useUrl from "./hooks/useUrl"
 import useClusters from "./hooks/useClusters"
 import Graph from "./components/graph"
@@ -55,8 +56,11 @@ const networkTabsLabels = networkTabs.map(({ label }) => label)
 
 function NetworksPage() {
   const intl = useIntl()
-  const { currentQuery, handleQueryChange, currentTab, handleTabChange } = useUrl();
+  const { screen } = useScreenSize()
+  const { currentQuery, handleQueryChange, currentTab, handleTabChange } = useUrl()
   const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
+
+  const isMobile = screen === "sm" || screen === "xs"
 
   return (
     <>
@@ -68,7 +72,7 @@ function NetworksPage() {
             </Link>
             <Link current>{intl.formatMessage({ id: "networks.top.breadcrumb.explore" })}</Link>
           </Breadcrumb>
-          <Row gutters>
+          <Row gutters className="fr-pb-4w fr-mb-2w">
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
@@ -84,30 +88,39 @@ function NetworksPage() {
             </Col>
             <Col xs="12" sm="4" lg="2">
               <PublicationFilters />
-              <NetworkFilters />
             </Col>
           </Row>
+          {isMobile && <NetworkFilters />}
         </Container>
       </Container>
-      <Container className="fr-mt-2w">
-        <Tabs
-          defaultActiveIndex={networkTabFindIndex(currentTab)}
-          onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
-        >
-          {networkTabs.map(({ label, icon }) => (
-            <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
-              <Home currentTab={label} />
-              <Graph currentTab={label} computeClusters={clustersTabs[label]} />
-              <ClustersButton
-                currentTab={label}
-                enabled={clustersTabs[label]}
-                handleChange={handleClustersChange}
-                show={import.meta.env.DEV}
-              />
-              <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
-            </Tab>
-          ))}
-        </Tabs>
+      <Container className="fr-mt-4w">
+        <Row>
+          <Col xs="12" lg="8">
+            <Container fluid as="section">
+              <Tabs
+                defaultActiveIndex={networkTabFindIndex(currentTab)}
+                onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
+              >
+                {networkTabs.map(({ label, icon }) => (
+                  <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
+                    <Home currentTab={label} />
+                    <Graph currentTab={label} computeClusters={clustersTabs[label]} />
+                    <ClustersButton
+                      currentTab={label}
+                      enabled={clustersTabs[label]}
+                      handleChange={handleClustersChange}
+                      show={import.meta.env.DEV}
+                    />
+                    <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
+                  </Tab>
+                ))}
+              </Tabs>
+            </Container>
+          </Col>
+          <Col xs="12" lg="4">
+            <Container className="fr-ml-1w">{!isMobile && <NetworkFilters />}</Container>
+          </Col>
+        </Row>
       </Container>
     </>
   )
