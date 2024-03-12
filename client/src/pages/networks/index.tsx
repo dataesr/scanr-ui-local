@@ -1,7 +1,8 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../hooks/useScreenSize"
-import useUrl from "./hooks/useUrl"
+import useUrl from "../search/hooks/useUrl"
+import useTab from "./hooks/useTab"
 import useClusters from "./hooks/useClusters"
 import Graph from "./components/graph"
 import Home from "./components/home"
@@ -49,6 +50,8 @@ const NETWORK_TABS_MAPPING = {
     icon: "terminal-box-line",
   },
 }
+
+const networkQuery = (query) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 const networkTabFindIndex = (label) => networkTabs.findIndex((tab) => tab.label === label)
 const networkTabFindLabel = (index) => networkTabs[index].label
@@ -57,7 +60,8 @@ const networkTabsLabels = networkTabs.map(({ label }) => label)
 function NetworksPage() {
   const intl = useIntl()
   const { screen } = useScreenSize()
-  const { currentQuery, handleQueryChange, currentTab, handleTabChange } = useUrl()
+  const { currentQuery, handleQueryChange } = useUrl()
+  const { currentTab, handleTabChange } = useTab()
   const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
 
   const isMobile = screen === "sm" || screen === "xs"
@@ -81,7 +85,7 @@ function NetworksPage() {
                 defaultValue={currentQuery || ""}
                 placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 onSearch={(value) => {
-                  handleQueryChange(value)
+                  handleQueryChange(networkQuery(value))
                   resetClusters()
                 }}
               />

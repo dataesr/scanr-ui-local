@@ -1,11 +1,11 @@
 import { Row, Col, Text, Title, Button, ButtonGroup, Tag } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import useUrl from "../hooks/useUrl"
+import useUrl from "../../search/hooks/useUrl"
 import useAggregateData from "../../search/hooks/useAggregationData"
 
 export default function NetworkFilters() {
   const intl = useIntl()
-  const { currentFilters, handleFilterChange, handleDeleteFilter, clearFilters } = useUrl()
+  const { currentQuery, currentFilters, handleFilterChange, handleDeleteFilter, clearFilters } = useUrl()
   const { isLoading, isError } = useAggregateData("filters")
 
   return (
@@ -87,7 +87,7 @@ export default function NetworkFilters() {
             as="button"
             aria-controls="publications-filters"
             data-fr-opened="false"
-            disabled={isLoading || isError}
+            disabled={!currentQuery || isLoading || isError}
             variant="secondary"
           >
             {intl.formatMessage({ id: "networks.filters.add" })}
