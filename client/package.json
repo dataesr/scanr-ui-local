@@ -21,6 +21,8 @@
     "graphology": "^0.25.4",
     "graphology-communities-louvain": "^2.0.1",
     "graphology-components": "^1.5.4",
+    "graphology-layout": "^0.6.1",
+    "graphology-layout-forceatlas2": "^0.10.1",
     "graphology-operators": "^1.6.0",
     "graphology-types": "^0.24.7",
     "highcharts": "^11.3.0",

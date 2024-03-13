@@ -1,6 +1,8 @@
 import UndirectedGraph from "graphology"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
+import random from "graphology-layout/random"
+import forceAtlas2 from "graphology-layout-forceatlas2"
 import { NetworkData } from "../../types/network"
 import communitiesCreate from "./communities"
 import nodeGetUrl from "./url"
@@ -73,6 +75,12 @@ export default async function networkCreate(
   // }
   // console.log("Edge weight threshold :", edgeWeightThresh)
 
+  // Add forceAtlas layout
+  random.assign(graph) // Needs a starting layout for forceAtlas to work
+  const sensibleSettings = forceAtlas2.inferSettings(graph)
+  forceAtlas2.assign(graph, { iterations: 100, settings: sensibleSettings })
+  console.log("Atlas2 settings", sensibleSettings)
+
   // Add communities
   const communities = await communitiesCreate(graph, computeClusters)
 
@@ -83,6 +91,8 @@ export default async function networkCreate(
   const network = {
     items: graph.mapNodes((key, attr) => ({
       id: key,
+      x: attr.x,
+      y: attr.y,
       label: attr.label,
       cluster: attr.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key) },

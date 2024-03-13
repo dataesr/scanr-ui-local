@@ -33,7 +33,6 @@ export default function Graph({ currentTab, computeClusters }: { currentTab: str
 
   const theme = document.documentElement.getAttribute("data-fr-scheme")
   const parameters = {
-    attraction: 1,
     largest_component: false,
     dark_ui: theme === "dark",
     simple_ui: false,
