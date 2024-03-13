@@ -1,0 +1,53 @@
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 100%;
+    position: absolute;
+    border: 5px solid var(--background-contrast-grey);
+    border-radius: 5px;
+    top: 0;
+    left: 0;
+  }
+
+}
+
+.timeline-item {
+  position: relative;
+  --bulletColor: var(--background-contrast-grey);
+
+
+}
+
+.timeline-item--application {
+  --bulletColor: var(--background-contrast-pink-macaron-active)
+}
+
+.timeline-item--publication {
+  --bulletColor: var(--background-contrast-yellow-tournesol-active)
+}
+
+.timeline-item--grant {
+  --bulletColor: var(--background-contrast-green-emeraude-active)
+}
+
+.timeline-item__bullet {
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    border: 5px solid var(--bulletColor);
+    background-color: var(--bulletColor);
+    border-radius: 5px;
+    top: .5rem;
+    left: -1.5rem;
+  }
+}

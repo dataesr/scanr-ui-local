@@ -23,6 +23,26 @@ import { Aggregation, LangField } from "./commons";
 //   }[];
 // };
 
+export type PatentsData = {
+  id: string;
+  isPriority: boolean;
+  ipType: string;
+  office: string;
+  applicationDate: string;
+  applicationNumber: string;
+  internatApplicationNumber: string;
+  publicationDate: number;
+  publicationNumber: string;
+  grantedDate: string;
+  links: [
+    {
+      type: string;
+      url: string;
+      label: string;
+    }
+  ];
+}
+
 export type Patent = {
   isGrandted: boolean;
   isOeb: boolean;
@@ -48,26 +68,7 @@ export type Patent = {
       default: string;
     };
   }[];
-  patents: [
-    {
-      id: string;
-      isPriority: boolean;
-      ipType: string;
-      office: string;
-      applicationDate: string;
-      applicationNumber: string;
-      internatApplicationNumber: string;
-      publicationDate: number;
-      publicationNumber: string;
-      links: [
-        {
-          type: string;
-          url: string;
-          label: string;
-        }
-      ];
-    }
-  ];
+  patents: PatentsData[];
 };
 
 export type PatentActorsData = {
@@ -77,6 +78,7 @@ export type PatentActorsData = {
   rolePatent: RolePatent[];
   fullName: string;
   role?: string;
+  country?: string;
 };
 
 export type RolePatent = {

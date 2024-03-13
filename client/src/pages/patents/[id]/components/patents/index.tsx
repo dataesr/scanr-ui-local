@@ -21,24 +21,25 @@ import PatentActors from "../actors";
 import Share from "../../../../../components/share";
 import getLangFieldValue from "../../../../../utils/lang";
 import PatentCPC from "../cpc";
-import PatentFilings from "../patents-filings";
-import Identifiers from "../identifier";
-import MapLegend from "../utils/map-legend";
-import PatentMap from "../../../../../components/patent-map";
+import PatentMap from "../coverage-map/patent-map";
 import Truncate from "../../../../../components/truncate";
+import PatentTimeline from "../timeline";
+import Websites from "../../../../../components/websites";
 
-const options: Intl.DateTimeFormatOptions = {
-  day: "numeric",
-  year: "numeric",
-  month: "long",
-};
 
 export default function PatentPage({ data }: { data: Patent }) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
   const { screen } = useScreenSize();
   const patentActors = data.authors;
-  const iso2Codes = data.patents.map((patent) => patent.office);
+  const priority = data.patents.find((patent) => patent.isPriority);
+  const espaceNetUrl = priority
+    ? priority.links?.[0]?.url
+    : data.patents.sort(
+      (a, b) => new Date(b.applicationDate).getTime() - new Date(a.applicationDate).getTime()
+    )?.[0]?.links?.[0]?.url;
+  const inpiId = data.patents.find((patent) => patent.office === "FR")?.publicationNumber?.split("A")[0];
+  const inpiUrl = inpiId && `https://data.inpi.fr/brevets/FR${inpiId}`
 
   return (
     <Container fluid>
@@ -97,6 +98,7 @@ export default function PatentPage({ data }: { data: Patent }) {
           </Container>
           <Container fluid>
             <PageContent>
+
               <PageSection
                 show
                 size="lead"
@@ -119,25 +121,13 @@ export default function PatentPage({ data }: { data: Patent }) {
                 show
                 size="lead"
                 title={intl.formatMessage({
-                  id: "patents.section.family",
+                  id: "patents.section.map.title",
+                })}
+                description={intl.formatMessage({
+                  id: "patents.section.map.description",
                 })}
               >
-                <PatentFilings data={data} />
-              </PageSection>
-              <PageSection
-                show
-                size="lead"
-                title={intl.formatMessage({
-                  id: "patents.section.map",
-                })}
-              >
-                <MapLegend />
-                <PatentMap
-                  height="500px"
-                  markers={[]}
-                  iso2Codes={iso2Codes}
-                  zoom={2}
-                />
+                <PatentMap patents={data.patents} />
               </PageSection>
               <PageSection
                 title="Data JSON"
@@ -150,62 +140,56 @@ export default function PatentPage({ data }: { data: Patent }) {
               </PageSection>
             </PageContent>
           </Container>
-        </Col>
+        </Col >
         <Col xs="12" md="4" xl="3" offsetXl="1">
           <PageContent>
             <PageSection
-              title={intl.formatMessage({ id: "patents.section.info" })}
-              show
-              icon="calendar-event-fill"
-            >
-              <Text className="fr-card__detail" size="sm">
-                <i>
-                  {intl.formatMessage({ id: "patents.section.first.dep" })}{" "}
-                  {new Date(data.submissionDate).toLocaleDateString(
-                    locale,
-                    options
-                  )}
-                  <br />
-                  {intl.formatMessage({ id: "patents.section.first.pub" })}{" "}
-                  {new Date(data.publicationDate).toLocaleDateString(
-                    locale,
-                    options
-                  )}
-                  <br />
-                  {data.grantedDate && (
-                    <>
-                      {intl.formatMessage({ id: "patents.section.issued" })}
-                      {new Date(data.grantedDate).toLocaleDateString(
-                        locale,
-                        options
-                      )}
-                    </>
-                  )}
-                </i>
-              </Text>
-            </PageSection>
-            <PageSection
-              show
+              show={!!data.domains.length}
               title={intl.formatMessage({
-                id: `patents.section.cpc`,
+                id: "patents.section.cpc.title",
               })}
               description={intl.formatMessage({
-                id: `patents.section.description.cpc`,
+                id: "patents.section.cpc.description",
               })}
             >
-              <PatentCPC data={data} />
+              <PatentCPC domains={data.domains} />
             </PageSection>
             <PageSection
-              show
+              show={!!data.patents.length}
               title={intl.formatMessage({
-                id: `patents.id.title`,
+                id: "patents.section.timeline.title",
               })}
               description={intl.formatMessage({
-                id: `patents.copy`,
+                id: "patents.section.timeline.description",
+              })}
+            >
+              <PatentTimeline patents={data.patents} />
+            </PageSection>
+            <PageSection
+              show={!!(espaceNetUrl || inpiUrl)}
+              title={intl.formatMessage({
+                id: "patents.section.website.title",
+              })}
+              description={intl.formatMessage({
+                id: "patents.section.website.description",
+              })}
+            >
+              <Websites data={[
+                { type: "espacenet", url: espaceNetUrl },
+                { type: "inpi", url: inpiUrl },
+              ].filter((link) => link.url)} />
+            </PageSection>
+            {/* <PageSection
+              show
+              title={intl.formatMessage({
+                id: "patents.id.title",
+              })}
+              description={intl.formatMessage({
+                id: "patents.copy",
               })}
             >
               <Identifiers />
-            </PageSection>
+            </PageSection> */}
             <PageSection show title="Partager la page">
               <Share />
             </PageSection>
@@ -231,9 +215,8 @@ export default function PatentPage({ data }: { data: Patent }) {
               </ButtonGroup>
             </PageSection>
           </PageContent>
-          <hr className="fr-my-3w" />
         </Col>
-      </Row>
-    </Container>
+      </Row >
+    </Container >
   );
 }

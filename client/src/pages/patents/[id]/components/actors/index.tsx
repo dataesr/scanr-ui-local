@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getAuthorById } from "../../../../../api/authors/[id]";
 import LinkCard from "../../../../../components/link-card";
 import { PatentActorsData } from "../../../../../types/patent";
+import { useIntl } from "react-intl";
 
 function ActorsCard({
   actor,
@@ -10,6 +11,7 @@ function ActorsCard({
   actor: PatentActorsData;
   type: "inv" | "dep";
 }) {
+  const intl = useIntl();
   const queryClient = useQueryClient();
 
   function prefetch(id: string) {
@@ -30,13 +32,6 @@ function ActorsCard({
       type={cardType}
       icon={iconType}
     >
-      <Text className="fr-card__detail" size="sm">
-        <i>
-          {actor.rolePatent.map((role) =>
-            role.role === "dep" ? "Déposant " : "Inventeurs"
-          )}
-        </i>
-      </Text>
       {actor.typeParticipant === "pm" && actor.affiliations.length > 0 ? (
         <Link
           className="fr-text--bold"
@@ -49,6 +44,11 @@ function ActorsCard({
           {actor.fullName}
         </Text>
       )}
+      {actor.country && <Text className="fr-card__detail" size="sm">
+        <i>
+          {intl.formatMessage({ id: `${actor.country}` })}
+        </i>
+      </Text>}
     </LinkCard>
   );
 }

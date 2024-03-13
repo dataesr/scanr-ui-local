@@ -19,5 +19,7 @@
   "websites.types.CanalU": "CanalU",
   "websites.types.Hypotheses": "Hypotheses",
   "websites.types.Icalendar": "Icalendar",
-  "websites.types.Présentation": "Présentation"
+  "websites.types.Présentation": "Présentation",
+  "websites.types.espacenet": "Espacenet",
+  "websites.types.inpi": "INPI"
 }
