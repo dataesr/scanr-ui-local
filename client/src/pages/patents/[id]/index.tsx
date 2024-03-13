@@ -38,6 +38,7 @@ export default function Patents() {
           <Link href="/search/patents">
             {intl.formatMessage({ id: "patents.breadcrumb.search" })}
           </Link>
+          <Link>{data?.id}</Link>
         </Breadcrumb>
         {isLoading || !data ? <PageSkeleton /> : <PatentPage data={data} />}
       </Container>

@@ -1,8 +1,9 @@
 import { Text, Toggle } from "@dataesr/dsfr-plus";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useUrl from "../../../hooks/useUrl";
 
 export default function PatentRegionFilter() {
+  const intl = useIntl();
   const { handleFilterChange } = useUrl();
 
   return (
@@ -16,10 +17,11 @@ export default function PatentRegionFilter() {
             field: "isInternational",
             value: true,
             filterType: "bool",
-            label: "Les brevets internationaux",
           })
         }
-        label="Les brevets internationaux"
+        label={intl.formatMessage({
+          id: "search.filters.patents.WO",
+        })}
       />
       <Toggle
         onClick={() =>
@@ -27,10 +29,21 @@ export default function PatentRegionFilter() {
             field: "isOeb",
             value: true,
             filterType: "bool",
-            label: "Les brevets de l'Office européen des brevets",
           })
         }
-        label="Les brevets de l'Office européen des brevets"
+        label={intl.formatMessage({
+          id: "search.filters.patents.EP",
+        })}
+      />
+      <Toggle
+        onClick={() =>
+          handleFilterChange({
+            field: "isGrandted",
+            value: true,
+            filterType: "bool",
+          })
+        }
+        label="Les brevets protégés uniquement"
       />
     </>
   );

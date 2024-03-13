@@ -23,12 +23,6 @@ export async function aggregatePatents({
       },
     },
     aggs: {
-      byType: {
-        terms: {
-          field: "type.keyword",
-          size: 500,
-        },
-      },
       byYear: {
         terms: {
           field: "year",
@@ -46,6 +40,7 @@ export async function aggregatePatents({
     headers: postHeaders,
   });
   const result = await res.json();
+
   const { aggregations: data } = result;
   const _100Year =
     data?.byYear?.buckets &&
@@ -63,15 +58,5 @@ export async function aggregatePatents({
       .sort((a, b) => a.label - b.label)
       .reduce(fillWithMissingYears, []) || [];
 
-  const byType =
-    data?.byType?.buckets
-      ?.map((element) => {
-        return {
-          value: element.key,
-          label: element.key,
-          count: element.doc_count,
-        };
-      })
-      .filter((el) => el) || [];
-  return { byYear, byType };
+  return { byYear };
 }

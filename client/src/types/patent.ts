@@ -24,9 +24,10 @@ import { Aggregation, LangField } from "./commons";
 // };
 
 export type Patent = {
-  isOeb: any;
+  isGrandted: boolean;
+  isOeb: boolean;
   affiliations: any;
-  isInternational: any;
+  isInternational: boolean;
   type: string;
   _id: string;
   id: string;
@@ -70,7 +71,7 @@ export type Patent = {
 };
 
 export type PatentActorsData = {
-  affiliations: string[];
+  affiliations: { siren: string; idref: string }[];
   person: string;
   typeParticipant: string;
   rolePatent: RolePatent[];
@@ -84,7 +85,6 @@ export type RolePatent = {
 };
 
 export type PatentAggregations = {
-  byType: Aggregation[];
   byYear: Aggregation[];
 };
 

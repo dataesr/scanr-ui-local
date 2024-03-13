@@ -1,4 +1,8 @@
+import { useIntl } from "react-intl";
+
 export default function MapLegend() {
+  const intl = useIntl();
+
   return (
     <div
       style={{
@@ -23,7 +27,12 @@ export default function MapLegend() {
             borderRadius: "50%",
           }}
         ></div>
-        <span>Pays sans dépôt</span>
+        <span>
+          {" "}
+          {intl.formatMessage({
+            id: "patents.map.noCountries",
+          })}
+        </span>
       </div>
       <div
         style={{

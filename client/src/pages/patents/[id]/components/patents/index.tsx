@@ -57,7 +57,9 @@ export default function PatentPage({ data }: { data: Patent }) {
                   color="blue-ecume"
                   style={{ marginRight: "10px" }}
                 >
-                  International
+                  {intl.formatMessage({
+                    id: "patents.section.badge.international",
+                  })}
                 </Badge>
               )}
               {data.isOeb && (
@@ -66,7 +68,9 @@ export default function PatentPage({ data }: { data: Patent }) {
                   color="blue-ecume"
                   style={{ marginRight: "10px" }}
                 >
-                  Office européen
+                  {intl.formatMessage({
+                    id: "patents.section.badge.isOeb",
+                  })}
                 </Badge>
               )}
               <Badge

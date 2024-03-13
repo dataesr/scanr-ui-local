@@ -14,8 +14,8 @@ export type SearchArgs = {
 export type ExportArgs = {
   query?: string;
   filters?: Record<string, unknown>[];
-  format?: 'csv' | 'json';
-  ctx?: string
+  format?: "csv" | "json";
+  ctx?: string;
 };
 
 export type AggregationArgs = {

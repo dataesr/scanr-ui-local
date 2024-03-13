@@ -1,17 +1,25 @@
 import { Text } from "@dataesr/dsfr-plus";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useAggregateData from "../../../hooks/useAggregationData";
 import { RangeSlider } from "../../../../../components/year-range-sliders";
 import useUrl from "../../../hooks/useUrl";
 import { PatentAggregations } from "../../../../../types/patent";
 
+const KEEP_PATENTS_AFTER = 2009;
+
 export default function PatentYearFilter() {
   const { handleFilterChange } = useUrl();
+  const intl = useIntl();
   const { data = { byYear: [] } } = useAggregateData("filters");
   const { byYear } = data as PatentAggregations;
+
   if (!byYear.length) {
     return null;
   }
+
+  const _byYear = byYear.filter(
+    (year) => parseInt(year.value, 10) > KEEP_PATENTS_AFTER
+  );
 
   return (
     <>
@@ -23,12 +31,12 @@ export default function PatentYearFilter() {
       </Text>
       <RangeSlider
         aria-label="Années de publication"
-        minValue={byYear[0].value}
-        maxValue={byYear[byYear.length - 1].value}
+        minValue={_byYear[0].value}
+        maxValue={_byYear[_byYear.length - 1].value}
         step={1}
-        data={byYear.map((year) => year.normalizedCount)}
+        data={_byYear.map((year) => year.count)}
         color="green-emeraude"
-        defaultValue={[byYear[0].value, byYear[byYear.length - 1].value]}
+        defaultValue={[_byYear[0].value, _byYear[_byYear.length - 1].value]}
         onChangeEnd={(value) =>
           handleFilterChange({
             field: "year",
@@ -36,7 +44,16 @@ export default function PatentYearFilter() {
             filterType: "range",
           })
         }
-        tooltipLabel={undefined}
+        tooltipLabel={(value, year) => (
+          <>
+            {intl.formatMessage(
+              { id: "search.filters.patents.by-year-tooltip" },
+              { year }
+            )}
+            <br />
+            {value}
+          </>
+        )}
       />
     </>
   );

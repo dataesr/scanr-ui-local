@@ -42,12 +42,16 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
           </Badge>
           {patent.isInternational && (
             <Badge size="sm" color="blue-ecume" style={{ marginRight: "10px" }}>
-              International
+              {intl.formatMessage({
+                id: "search.patent.family.badge.isInternational",
+              })}
             </Badge>
           )}
           {patent.isOeb && (
             <Badge size="sm" color="blue-ecume" style={{ marginRight: "10px" }}>
-              Office européen
+              {intl.formatMessage({
+                id: "search.patent.family.badge.isOeb",
+              })}
             </Badge>
           )}
           <Badge
@@ -62,6 +66,13 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
               { count: patent.patents.length }
             )}`}
           </Badge>
+          {patent.isGrandted && (
+            <Badge size="sm" color="success" style={{ marginRight: "10px" }}>
+              {intl.formatMessage({
+                id: "search.top.patent.family.grandtedBadge",
+              })}
+            </Badge>
+          )}
         </BadgeGroup>
         <span onMouseEnter={() => prefetchPatent(patent.id)}>
           <Link href={`/patents/${patent.id}`} className="fr-link">
@@ -89,7 +100,10 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
           onMouseEnter={() => prefetchPatent(patent.id)}
         >
           <i>
-            Date de publication {formatPublicationDate(patent.publicationDate)}
+            {intl.formatMessage({
+              id: "search.top.patent.date",
+            })}
+            {formatPublicationDate(patent.publicationDate)}
           </i>
         </Text>
       </div>

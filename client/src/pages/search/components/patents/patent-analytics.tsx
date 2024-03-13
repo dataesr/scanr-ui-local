@@ -14,18 +14,16 @@ export default function PatentAnalytics() {
     search: { data: searchData },
   } = useSearchData();
   if (isError) return null;
+
   if (isLoading || !searchData?.length) return <AnalyticsSkeleton />;
 
   const { byYear } = data as PatentAggregations;
 
-  const filteredByYear = byYear.filter((item) => item.count > 100);
-
   const yearOptions = getYearChartOptions({
-    data: filteredByYear,
+    data: byYear,
     colors: ["var(--artwork-minor-purple-glycine)"],
   });
 
-  console.log(filteredByYear);
   return (
     <Row>
       <Col xs="12">

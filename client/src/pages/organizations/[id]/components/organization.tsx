@@ -1,5 +1,12 @@
 import { useIntl } from "react-intl";
-import { Button, ButtonGroup, Col, Container, Row, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Row,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import { Organization } from "../../../../types/organization";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import OrganizationPublications from "./publications";
@@ -34,7 +41,9 @@ const NETWORK_BADGES_CODES = [
 
 export default function OrganizationPresentation({
   data,
-}: { data: Organization }) {
+}: {
+  data: Organization;
+}) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
   const { publications, projects, patents } = data;
@@ -43,12 +52,16 @@ export default function OrganizationPresentation({
     NETWORK_BADGES_CODES.includes(b.code.toLowerCase())
   );
   const networkFilter = stringifySearchFiltersForURL({
-    "affiliations.id": { type: "terms", values: [{ value: data?.id, label: data?.label?.default }] },
-  })
-  const networkTab = data?.externalIds?.find((id) => id?.type === "rnsr")?.id === data?.id ? "structures" : "institutions"
-  const networkUrl = `/networks?q=&tab=${networkTab}&filters=${networkFilter}`
-
-  console.log("organization", data)
+    "affiliations.id": {
+      type: "terms",
+      values: [{ value: data?.id, label: data?.label?.default }],
+    },
+  });
+  const networkTab =
+    data?.externalIds?.find((id) => id?.type === "rnsr")?.id === data?.id
+      ? "structures"
+      : "institutions";
+  const networkUrl = `/networks?q=&tab=${networkTab}&filters=${networkFilter}`;
 
   return (
     <>
@@ -234,9 +247,21 @@ export default function OrganizationPresentation({
                     )
                   }
                 >
-                  <OrganizationPublications data={publications} value={data.id} label={getLangFieldValue(locale)(data.label)} />
-                  <OrganizationProjects data={projects} value={data.id} label={getLangFieldValue(locale)(data.label)} />
-                  <OrganizationPatents data={patents} value={data.id} label={getLangFieldValue(locale)(data.label)} />
+                  <OrganizationPublications
+                    data={publications}
+                    value={data.id}
+                    label={getLangFieldValue(locale)(data.label)}
+                  />
+                  <OrganizationProjects
+                    data={projects}
+                    value={data.id}
+                    label={getLangFieldValue(locale)(data.label)}
+                  />
+                  <OrganizationPatents
+                    data={patents}
+                    value={data.id}
+                    label={getLangFieldValue(locale)(data.label)}
+                  />
                 </PageSection>
                 <PageSection
                   size="lead"
@@ -248,12 +273,15 @@ export default function OrganizationPresentation({
                 >
                   <MoreLikeThis id={data._id} api="organizations" />
                 </PageSection>
-                <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
+                <PageSection
+                  title="Data JSON"
+                  description=""
+                  show={import.meta.env.DEV}
+                >
                   <div>
                     <pre>{JSON.stringify(data || "", null, 2)}</pre>
                   </div>
                 </PageSection>
-
               </PageContent>
             </Container>
           </Col>
