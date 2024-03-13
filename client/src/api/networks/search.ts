@@ -2,7 +2,7 @@ import { publicationsIndex, postHeaders } from "../../config/api"
 import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits } from "../../types/network"
 import networkCreate from "./network"
 import configCreate from "./config"
-// import { openAiLabeledClusters } from "./openai"
+import infoCreate from "./info"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
@@ -46,12 +46,15 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
 
   const aggregation = res.aggregations?.[model].buckets
   const computeClusters = options?.computeClusters ?? false
+
   const network = await networkCreate(query, model, aggregation, computeClusters)
   const config = configCreate(model)
+  const info = infoCreate(query, model)
 
   const data = {
     network: network,
     config: config,
+    info: info,
   }
 
   console.log("data", data)

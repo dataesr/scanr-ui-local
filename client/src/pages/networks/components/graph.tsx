@@ -37,7 +37,6 @@ export default function Graph({ currentTab, computeClusters }: { currentTab: str
     largest_component: false,
     dark_ui: theme === "dark",
     simple_ui: false,
-    show_info: true,
   }
 
   return (

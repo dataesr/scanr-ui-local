@@ -15,6 +15,10 @@ export type NetworkConfig = {
   templates?: object
   styles?: object
 }
+export type NetworkInfo = {
+  title: string
+  description: string
+}
 
 export type NetworkSearchBody = {
   size: number
