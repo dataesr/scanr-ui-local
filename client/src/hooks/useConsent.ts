@@ -23,7 +23,7 @@ export default function useConsent(defaultConsent: Consent = {}): UseConsent {
   const readValue = (): Consent => {
     const storedConsentString = localStorage.getItem(consentKey);
     const storedConsent = storedConsentString ? JSON.parse(storedConsentString) : null;
-    setSet(!!storedConsent);    
+    setSet(!!storedConsent);
     return storedConsent || defaultConsent;
   }
   const [innerConsent, setInnerConsent] = useState<Consent>(() => readValue());

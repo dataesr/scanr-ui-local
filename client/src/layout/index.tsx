@@ -5,6 +5,7 @@ import MainFooter from './Footer';
 import { IntlProvider } from 'react-intl';
 import Consent from './consent';
 import ErrorBoundary from '../components/errors/error-boundary';
+import APIDeprecationBanner from '../components/api-deprecation-banner';
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 const messages = Object.keys(modules).reduce((acc, key) => {
@@ -21,12 +22,13 @@ export default function Layout() {
     <IntlProvider locale={locale} messages={messages[locale]}>
       <Consent />
       <Header />
+      <APIDeprecationBanner />
       <Container as="main" role="main" fluid>
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>
       </Container>
       <MainFooter />
-    </IntlProvider>
+    </IntlProvider >
   );
 }
