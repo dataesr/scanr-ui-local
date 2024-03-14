@@ -3,6 +3,57 @@ import { AggregationArgs } from "../../../types/commons"
 import { OrganizationAggregations } from "../../../types/organization"
 import { DEFAULT_FILTERS, FIELDS } from "../_utils/constants"
 import { getMatchPhrases } from "../_utils/get-match-phrases"
+import { toAggregationModel } from "../../utils/helpers"
+
+const AGGS = {
+  byNature: {
+    terms: {
+      field: "nature.keyword",
+      size: 50,
+    }
+  },
+  byLevel: {
+    terms: {
+      field: "level.keyword",
+      size: 50,
+    }
+  },
+  byKind: {
+    terms: {
+      field: "kind.keyword",
+    }
+  },
+  byLocalization: {
+    terms: {
+      field: "address.urbanUnitLabel.keyword",
+      size: 10
+    },
+  },
+  byFundings: {
+    terms: {
+      field: "projects.type.keyword",
+      size: 100
+    },
+  },
+  byTags: {
+    terms: {
+      field: "badges.label.fr.keyword",
+      size: 100
+    },
+  },
+  byAwards: {
+    terms: {
+      field: "awards.label.keyword",
+      size: 100
+    },
+  },
+  byAgreements: {
+    terms: {
+      field: "agreements.type.keyword",
+      size: 100
+    },
+  },
+}
 
 
 export async function aggregateOrganizations(
@@ -22,43 +73,7 @@ export async function aggregateOrganizations(
         ]
       }
     },
-    aggs: {
-      byNature: {
-        terms: {
-          field: "nature.keyword",
-          size: 50,
-        }
-      },
-      byLevel: {
-        terms: {
-          field: "level.keyword",
-          size: 50,
-        }
-      },
-      byKind: {
-        terms: {
-          field: "kind.keyword",
-        }
-      },
-      byLocalization: {
-        terms: {
-          field: "address.urbanUnitLabel.keyword",
-          size: 10
-        },
-      },
-      byFundings: {
-        terms: {
-          field: "projects.type.keyword",
-          size: 100
-        },
-      },
-      byTags: {
-        terms: {
-          field: "badges.label.fr.keyword",
-          size: 100
-        },
-      },
-    }
+    aggs: AGGS
   }
   if (filters.length > 0) {
     body.query.bool.filter = [...filters, ...DEFAULT_FILTERS]
@@ -67,60 +82,13 @@ export async function aggregateOrganizations(
   }
   const res = await fetch(
     `${organizationsIndex}/_search`,
-    { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
-  const result = await res.json()
-  const { aggregations: data} = result;
-  
-  const byKind = data?.byKind?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }) || [];
-  const byNature = data?.byNature?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
+    { method: 'POST', body: JSON.stringify(body), headers: postHeaders });
+  const result = await res.json();
+  const { aggregations } = result || {};
 
-  const byLevel = data?.byLevel?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-
-  const byFundings = data?.byFundings?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-
-  const byTags = data?.byTags?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-
-  const byLocalization = data?.byLocalization?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-  
-  
-  
-  return { byKind, byNature, byLevel, byLocalization, byFundings, byTags}
+  const data = Object.entries(aggregations)
+    .reduce((acc, [key, aggreg]: [string, any]) => ({...acc, [key]: toAggregationModel(aggreg?.buckets)}) , {});
+  return data as OrganizationAggregations;
 }
 
 export async function aggregateOrganizationsForHe(
@@ -135,98 +103,16 @@ export async function aggregateOrganizationsForHe(
         filter: [...filters || [], { term: { status: "active" } }]
       }
     },
-    aggs: {
-      byNature: {
-        terms: {
-          field: "nature.keyword",
-          size: 50,
-        }
-      },
-      byLevel: {
-        terms: {
-          field: "level.keyword",
-          size: 50,
-        }
-      },
-      byKind: {
-        terms: {
-          field: "kind.keyword",
-        }
-      },
-      byLocalization: {
-        terms: {
-          field: "address.urbanUnitLabel.keyword",
-          size: 10
-        },
-      },
-      byFundings: {
-        terms: {
-          field: "projects.type.keyword",
-          size: 100
-        },
-      },
-      byTags: {
-        terms: {
-          field: "badges.label.fr.keyword",
-          size: 100
-        },
-      },
-    }
+    aggs: AGGS
   }
   const res = await fetch(
     `${organizationsIndex}/_search`,
-    { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
-  const result = await res.json()
-  const { aggregations: data} = result;
-  
-  const byKind = data?.byKind?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }) || [];
-  const byNature = data?.byNature?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
+    { method: 'POST', body: JSON.stringify(body), headers: postHeaders });
+  const result = await res.json(); 
+  const { aggregations } = result || {};
 
-  const byLevel = data?.byLevel?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-
-  const byFundings = data?.byFundings?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-
-  const byTags = data?.byTags?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
-
-  const byLocalization = data?.byLocalization?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      label: element.key,
-      count: element.doc_count,
-    }
-  }).filter(el => el) || [];
+  const data = Object.entries(aggregations)
+    .reduce((acc, [key, aggreg]) => ({...acc, [key]: toAggregationModel(aggreg)}) , {});
+  return data as OrganizationAggregations;
   
-  
-  
-  return { byKind, byNature, byLevel, byLocalization, byFundings, byTags}
 }

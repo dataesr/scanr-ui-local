@@ -17,7 +17,6 @@ export default function PublicationPage({ data }: { data: Publication }) {
   const { screen } = useScreenSize();
 
   const authors = data.authors?.filter((author) => author.role === "author") || [];
-  // const keywords = data?.domains?.filter((domain) => domain.type === "keyword").map((domain) => domain.label?.default) || [];
   const wikis = data?.domains?.filter((domain) => domain.type === "wikidata");
 
   const affiliations = data?.authors
@@ -107,15 +106,15 @@ export default function PublicationPage({ data }: { data: Publication }) {
           <PageContent>
             <PageSection
               title={intl.formatMessage({ id: "publications.section.access" })}
-              show
+              show={!!(data.pdfUrl || data.landingPage)}
             >
               <ButtonGroup size="sm">
-                {data.isOa && <Button as="a" href={data.oaEvidence.url} target="_blank" icon="file-download-line" iconPosition="right">
+                {data.pdfUrl && <Button as="a" href={data.pdfUrl} target="_blank" icon="file-download-line" iconPosition="right">
                   {intl.formatMessage({ id: "publications.section.access.download" })}
                 </Button>}
-                <Button as="a" href={data.doiUrl} target="_blank" variant="tertiary" icon="external-link-line" iconPosition="right">
+                {data.landingPage && <Button as="a" href={data.landingPage} target="_blank" variant="tertiary" icon="external-link-line" iconPosition="right">
                   {intl.formatMessage({ id: "publications.section.access.visit" })}
-                </Button>
+                </Button>}
               </ButtonGroup>
             </PageSection>
             <PageSection
@@ -142,28 +141,12 @@ export default function PublicationPage({ data }: { data: Publication }) {
               show
             >
               <ButtonGroup>
-                {/* <Button data-fr-opened="false" aria-controls="funding-add" variant="tertiary" icon="links-line" iconPosition="left">
-                  {intl.formatMessage({ id: "publications.signals.fundings" })}
-                </Button> */}
-                {/* <Button data-fr-opened="false" aria-controls="authors-identification" variant="tertiary" icon="links-line" iconPosition="left" >
-                  {intl.formatMessage({ id: "publications.signals.author" })}
-                </Button> */}
                 <Button as="a" href={`/bugs/publications/${encode(data.id)}`} color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
                   {intl.formatMessage({ id: "publications.signals.bug" })}
                 </Button>
               </ButtonGroup>
             </PageSection>
           </PageContent>
-          {/* <Modal id="authors-identification" title={intl.formatMessage({ id: "publications.signals.author" })}>
-            {authors.map((author, i) => (
-              <div className="fr-mb-3w" key={i}>
-                <TextInput label={author.fullName} disableAutoValidation defaultValue={author.person || ""} />
-              </div>
-            ))}
-          </Modal>
-          <Modal id="fundings-add" title={intl.formatMessage({ id: "publications.signals.fundings" })}>
-            <TextInput disableAutoValidation label="Rechercher un financement" />
-          </Modal> */}
         </Col>
       </Row >
     </Container >

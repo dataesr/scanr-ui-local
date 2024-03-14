@@ -110,10 +110,17 @@ export default function These({ data }) {
         </Col>
         <Col md="4" lg="3" offsetLg="1">
           <PageContent>
-            <PageSection title={intl.formatMessage({ id: "publications.section.access" })} show>
+            <PageSection
+              title={intl.formatMessage({ id: "publications.section.access" })}
+              show={!!(data.pdfUrl || data.landingPage)}
+            >
               <ButtonGroup size="sm">
-                {data.isOa && <Button variant="tertiary" icon="file-download-line" iconPosition="right">Télécharger la thèse</Button>}
-                <Button variant="tertiary" icon="external-link-line" iconPosition="right">Voir sur thèse.fr</Button>
+                {data.pdfUrl && <Button as="a" href={data.pdfUrl} target="_blank" icon="file-download-line" iconPosition="right">
+                  {intl.formatMessage({ id: "publications.section.access.download-thesis" })}
+                </Button>}
+                {data.landingPage && <Button as="a" href={data.landingPage} target="_blank" variant="tertiary" icon="external-link-line" iconPosition="right">
+                  {intl.formatMessage({ id: "publications.section.access.visit-thesis" })}
+                </Button>}
               </ButtonGroup>
             </PageSection>
             <PageSection title="Mots-clés" show={!!keywords?.length}>
@@ -147,12 +154,6 @@ export default function These({ data }) {
               show
             >
               <ButtonGroup>
-                {/* <Button data-fr-opened="false" aria-controls="funding-add" variant="tertiary" icon="links-line" iconPosition="left">
-                  {intl.formatMessage({ id: "publications.signals.fundings" })}
-                </Button> */}
-                {/* <Button data-fr-opened="false" aria-controls="authors-identification" variant="tertiary" icon="links-line" iconPosition="left" >
-                  {intl.formatMessage({ id: "publications.signals.author" })}
-                </Button> */}
                 <Button as="a" href={`/bugs/publications/${encode(data.id)}`} color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
                   {intl.formatMessage({ id: "publications.signals.bug" })}
                 </Button>

@@ -25,6 +25,8 @@ import MoreLikeThis from "../../../../components/more-like-this";
 import NetworksNotice from "../../../../components/networks-notice";
 import getLangFieldValue from "../../../../utils/lang";
 import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
+import OrganizationAgreements from "./agreements";
+import OrganizationAwards from "./awards";
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -73,6 +75,24 @@ export default function OrganizationPresentation({
             </Container>
             <Container fluid>
               <PageContent>
+                <PageSection
+                  size="lead"
+                  title={intl.formatMessage({
+                    id: "organizations.section.agreements.title",
+                  })}
+                  show={!!data?.agreements?.length}
+                >
+                  <OrganizationAgreements agreements={data?.agreements} />
+                </PageSection>
+                <PageSection
+                  size="lead"
+                  title={intl.formatMessage({
+                    id: "organizations.section.awards.title",
+                  })}
+                  show={!!data?.awards?.length}
+                >
+                  <OrganizationAwards awards={data?.awards} />
+                </PageSection>
                 <PageSection
                   size="lead"
                   icon="team-line"

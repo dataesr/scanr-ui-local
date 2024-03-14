@@ -11,7 +11,8 @@ import OrganizationLevelFilter from "./level";
 import OrganizationSupervisorsFilter from "./supervisors";
 import OrganizationLocalisationsFilter from "./localisation";
 import OrganizationFunderFilter from "./funders";
-import OrganizationTagsFilter from "./tags";
+import OrganizationAgreementsFilter from "./agreements";
+import OrganizationAwardsFilter from "./awards";
 
 
 
@@ -63,7 +64,9 @@ export default function OrganizationFilters() {
           <hr className="fr-mt-3w" />
           <OrganizationFunderFilter />
           <hr className="fr-mt-3w" />
-          <OrganizationTagsFilter />
+          <OrganizationAgreementsFilter />
+          <hr className="fr-mt-3w" />
+          <OrganizationAwardsFilter />
           <hr className="fr-mt-3w" />
         </Container>
       </Modal>

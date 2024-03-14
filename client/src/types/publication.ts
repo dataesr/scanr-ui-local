@@ -49,8 +49,9 @@ export type LightPublication = BasePublication & {
 export type Publication = BasePublication & {
   _id: string;
   summary: LangField;
-  doiUrl?: string;
   domains: DomainsData[];
+  landingPage?: string;
+  pdfUrl?: string;
   affiliations: {
     name: string;
     id: string;

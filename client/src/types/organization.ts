@@ -57,6 +57,21 @@ export type OrganizationBadgesData = {
   code: string;
   label: LangField;
 };
+export type OrganizationAwardsData = {
+  label: string,
+  year: number,
+  domain?: {
+    id: string,
+    label: string
+  }
+}
+export type OrganizationAgreementsData = {
+  type: string,
+  start: number,
+  end: number,
+  years: number[],
+  label: string,
+}
 
 export type Organization = {
   _id: string;
@@ -84,6 +99,8 @@ export type Organization = {
   publications: OrganizationPublicationsData;
   projects: OrganizationProjectsData;
   patents: OrganizationPatentsData;
+  awards: OrganizationAwardsData[];
+  agreements: OrganizationAgreementsData[];
 };
 
 export type OrganizationAggregations = {
@@ -93,6 +110,8 @@ export type OrganizationAggregations = {
   byLevel: Aggregation[];
   byFundings: Aggregation[];
   byTags: Aggregation[];
+  byAwards: Aggregation[];
+  byAgreements: Aggregation[];
 };
 
 export type LightOrganization = {
