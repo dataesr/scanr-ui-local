@@ -47,11 +47,6 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <Text className="fr-m-0" size="sm">{getLangFieldValue(locale)(data?.description)}</Text>
         </Truncate>
       </Row>
-      {data.awards?.length && <Row>
-        <Truncate lines={8} className="fr-mt-2w">
-          <Text className="fr-m-0" size="sm">{getLangFieldValue(locale)(data?.description)}</Text>
-        </Truncate>
-      </Row>}
     </section>
   )
 }

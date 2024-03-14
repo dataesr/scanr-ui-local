@@ -60,8 +60,8 @@ export type Address = {
   postcode?: string;
   country?: string;
   gps?: {
-    lat: number;
-    lon: number;
+    lat?: number;
+    lon?: number;
   };
 };
 

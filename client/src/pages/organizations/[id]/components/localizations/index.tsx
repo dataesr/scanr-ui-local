@@ -5,13 +5,14 @@ import './styles.scss';
 
 export default function OrganizationLocalizations({ data: localizations }: { data: Address[] }) {
   if (!localizations?.length) return null;
-  const mainAdress = localizations.find((element) => element.main)
+  const mainAddress = localizations.find((element) => element.main)
   const markers = localizations.map((address) => ({
     latLng: [address?.gps?.lat, address?.gps?.lon],
-    address: `${address?.address},
-          ${address?.postcode}, ${address?.city},
-          ${address?.country}`,
-  }))
+    address: [address?.address, address?.postcode, address?.city, address?.country]
+      .filter((element) => element)
+      .join(', '),
+  })).filter((marker) => marker.latLng[0] && marker.latLng[1]);
+  if (!mainAddress.address) return null;
   return (
     <div className="fr-card fr-card--no-border fr-card--sm fr-mt-1w fix-height">
       <div style={{ padding: "0" }} className="fr-card__body">
@@ -19,9 +20,9 @@ export default function OrganizationLocalizations({ data: localizations }: { dat
           <ul style={{ listStyle: "none" }}>
             <li key="main" >
               <Text bold size="sm" className="fr-card__detail fr-icon-map-pin-2-fill fr-pb-1w fr-pr-1w">
-                {mainAdress.address}
-                {mainAdress.address && <br />}
-                {[mainAdress?.postcode, mainAdress?.city, mainAdress?.country].filter((element) => element).join(', ')}
+                {mainAddress.address}
+                {mainAddress.address && <br />}
+                {[mainAddress?.postcode, mainAddress?.city, mainAddress?.country].filter((element) => element).join(', ')}
               </Text>
               <hr className="fr-pb-1w" style={{ marginLeft: "10%", width: "90%" }} />
             </li>
@@ -39,11 +40,11 @@ export default function OrganizationLocalizations({ data: localizations }: { dat
           </ul>
         </div>
       </div>
-      <div className="fr-card__header">
+      {!!markers.length && <div className="fr-card__header">
         <div className="fr-card__img">
           <Map markers={markers} height="250px" />
         </div>
-      </div>
+      </div>}
     </div>
   )
 }
