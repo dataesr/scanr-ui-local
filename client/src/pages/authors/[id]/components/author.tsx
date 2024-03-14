@@ -101,7 +101,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                 icon="heart-pulse-line"
               >
                 <AuthorsPublications data={others} titleKey="authors.section.activity.publications" />
-                {!!others.length && (
+                {!!data?.publications?.publicationsCount && (
                   <div className="fr-mt-2w">
                     <NetworksNotice url={networkUrl} />
                   </div>
