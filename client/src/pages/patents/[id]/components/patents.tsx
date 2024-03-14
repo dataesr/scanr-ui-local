@@ -11,27 +11,26 @@ import {
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
 import { useIntl } from "react-intl";
-import { Patent } from "../../../../../types/patent";
-import useScreenSize from "../../../../../hooks/useScreenSize";
+import { Patent } from "../../../../types/patent";
+import useScreenSize from "../../../../hooks/useScreenSize";
 import {
   PageContent,
   PageSection,
-} from "../../../../../components/page-content";
-import PatentActors from "../actors";
-import Share from "../../../../../components/share";
-import getLangFieldValue from "../../../../../utils/lang";
-import PatentCPC from "../cpc";
-import PatentMap from "../coverage-map/patent-map";
-import Truncate from "../../../../../components/truncate";
-import PatentTimeline from "../timeline";
-import Websites from "../../../../../components/websites";
+} from "../../../../components/page-content";
+import PatentActors from "./actors";
+import Share from "../../../../components/share";
+import getLangFieldValue from "../../../../utils/lang";
+import PatentCPC from "./cpc";
+import PatentMap from "./coverage-map";
+import Truncate from "../../../../components/truncate";
+import PatentTimeline from "./timeline";
+import Websites from "../../../../components/websites";
 
 
 export default function PatentPage({ data }: { data: Patent }) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
   const { screen } = useScreenSize();
-  const patentActors = data.authors;
   const priority = data.patents.find((patent) => patent.isPriority);
   const espaceNetUrl = priority
     ? priority.links?.[0]?.url
@@ -98,24 +97,23 @@ export default function PatentPage({ data }: { data: Patent }) {
           </Container>
           <Container fluid>
             <PageContent>
-
               <PageSection
-                show
+                show={!!data.authors.filter((author) => author.rolePatent.some((role) => role.role === "dep")).length}
                 size="lead"
                 title={intl.formatMessage({
                   id: "patents.section.dep",
                 })}
               >
-                <PatentActors data={patentActors} type="dep" />
+                <PatentActors data={data.authors} type="dep" />
               </PageSection>
               <PageSection
-                show
+                show={!!data.authors.filter((author) => author.rolePatent.some((role) => role.role === "inv")).length}
                 size="lead"
                 title={intl.formatMessage({
                   id: "patents.section.inv",
                 })}
               >
-                <PatentActors data={patentActors} type="inv" />
+                <PatentActors data={data.authors} type="inv" />
               </PageSection>
               <PageSection
                 show

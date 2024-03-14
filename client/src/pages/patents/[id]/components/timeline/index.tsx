@@ -32,6 +32,8 @@ export default function PatentTimeline({ patents }: { patents: PatentsData[] }) 
     const margin = (new Date(spreaded?.[i + 1]?.date).getTime() - new Date(element.date).getTime()) / range * 100
     return { ...element, mb: margin }
   })
+
+
   return (
     <div className="timeline">
       {_spreaded.map((element, i) => (

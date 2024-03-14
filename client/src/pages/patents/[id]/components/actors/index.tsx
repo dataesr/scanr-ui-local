@@ -1,41 +1,45 @@
 import { Row, Col, Text, Link } from "@dataesr/dsfr-plus";
-import { useQueryClient } from "@tanstack/react-query";
-import { getAuthorById } from "../../../../../api/authors/[id]";
+// import { useQueryClient } from "@tanstack/react-query";
+// import { getAuthorById } from "../../../../../api/authors/[id]";
+// import { getOrganizationById } from "../../../../../api/organizations/[id]";
 import LinkCard from "../../../../../components/link-card";
 import { PatentActorsData } from "../../../../../types/patent";
 import { useIntl } from "react-intl";
 
-function ActorsCard({
-  actor,
-}: {
-  actor: PatentActorsData;
-  type: "inv" | "dep";
-}) {
+function ActorsCard({ actor }: { actor: PatentActorsData }) {
   const intl = useIntl();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  function prefetch(id: string) {
-    if (!id) return;
-    queryClient.prefetchQuery({
-      queryKey: ["author", id],
-      queryFn: () => getAuthorById(id),
-    });
-  }
+  // function prefetchAuthor(id: string) {
+  //   if (!id) return;
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["author", id],
+  //     queryFn: () => getAuthorById(id),
+  //   });
+  // }
 
-  const cardType = actor.typeParticipant === "pm" ? "organization" : "author";
-  const iconType =
-    actor.typeParticipant === "pm" ? "building-line" : "user-line";
+  // function prefetchOrganization(id: string) {
+  //   if (!id) return;
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["organization", id],
+  //     queryFn: () => getOrganizationById(id),
+  //   });
+  // }
+
+  const isPm = actor.typeParticipant === "pm";
+  // const id = isPm ? actor.affiliations?.[0]?.siren : `idref${actor.affiliations?.[0]?.idref}`;
+  // const prefetch = isPm ? prefetchOrganization : prefetchAuthor;
 
   return (
     <LinkCard
-      prefetch={actor.person ? () => prefetch(actor.person) : undefined}
-      type={cardType}
-      icon={iconType}
+      // prefetch={id ? () => prefetch(id) : undefined}
+      type={isPm ? "organization" : "author"}
+      icon={isPm ? "building-line" : "user-line"}
     >
-      {actor.typeParticipant === "pm" && actor.affiliations.length > 0 ? (
+      {actor.affiliations.length > 0 ? (
         <Link
           className="fr-text--bold"
-          href={`/organizations/${actor.affiliations[0]}`}
+          href={`/${isPm ? 'organizations' : 'authors'}/${actor.affiliations[0]}`}
         >
           {actor.fullName}
         </Link>
@@ -62,14 +66,16 @@ export default function PatentActors({
 }) {
   const filteredActors = actors.filter((actor) =>
     actor.rolePatent.some((role) => role.role === type)
-  );
+  ).map(({ typeParticipant, country, fullName, affiliations }) => {
+    return {
+      typeParticipant: typeParticipant,
+      country: country,
+      affiliations: affiliations,
+      fullName: fullName,
+    };
+  });
 
-  const uniqueActors = filteredActors.filter((actor1) =>
-    filteredActors.every((actor2) => {
-      if (actor1 === actor2) return true;
-      return !actor2.fullName.includes(actor1.fullName);
-    })
-  );
+  const uniqueActors = [...new Set(filteredActors.map(i => JSON.stringify(i)))].map(i => JSON.parse(i));
 
   if (!uniqueActors.length) return null;
 
@@ -78,7 +84,7 @@ export default function PatentActors({
       <Row gutters>
         {uniqueActors.map((actor, index) => (
           <Col xs="12" md="6" key={index}>
-            <ActorsCard actor={actor} type={type} />
+            <ActorsCard actor={actor} />
           </Col>
         ))}
       </Row>

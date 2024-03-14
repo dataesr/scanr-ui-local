@@ -38,6 +38,14 @@
   --bulletColor: var(--background-contrast-green-emeraude-active)
 }
 
+.timeline-item--publication.timeline-item--grant {
+  background: linear-gradient(to right,
+      --background-contrast-yellow-tournesol-active 0%,
+      --background-contrast-yellow-tournesol-active 50%,
+      --background-contrast-green-emeraude-active 50%,
+      --background-contrast-green-emeraude-active 100%);
+}
+
 .timeline-item__bullet {
   &::before {
     content: '';
