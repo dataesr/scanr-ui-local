@@ -11,30 +11,39 @@ import AuthorAwards from "./awards";
 import Identifiers from "../../../../components/identifiers";
 import { Author } from "../../../../types/author";
 import RecentAffiliations from "./recent-affiliations";
-
+import NetworksNotice from "../../../../components/networks-notice"
+import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl"
 
 function getOaInfo(publi) {
-  const oaCount = publi?.filter((publi) => publi.isOa)?.length;
-  const oaTotal = publi?.length;
-  return { oaPercent: Math.ceil(oaCount / oaTotal * 100), oaCount, oaTotal };
+  const oaCount = publi?.filter((publi) => publi.isOa)?.length
+  const oaTotal = publi?.length
+  return { oaPercent: Math.ceil((oaCount / oaTotal) * 100), oaCount, oaTotal }
 }
 
 export default function AuthorPage({ data }: { data: Author }) {
-  const intl = useIntl();
-  const { publications: publicationsObject, awards } = data;
-  const { wikis, coAuthors, reviews, byYear, publications } = publicationsObject;
+  const intl = useIntl()
+  const { publications: publicationsObject, awards } = data
+  const { wikis, coAuthors, reviews, byYear, publications } = publicationsObject
 
-  const maxCommonPublications = coAuthors && Math.max(...coAuthors.map((el) => el.count));
-  const maxReviews = reviews && Math.max(...reviews.map((el) => el.count));
+  const maxCommonPublications = coAuthors && Math.max(...coAuthors.map((el) => el.count))
+  const maxReviews = reviews && Math.max(...reviews.map((el) => el.count))
   const thesis = publications?.filter((publi) => {
-    return (publi.type === 'these') && publi.authors.find((author) => author.person === data.id)?.role === 'author';
-  });
+    return publi.type === "these" && publi.authors.find((author) => author.person === data.id)?.role === "author"
+  })
   const thesisParticipations = publications?.filter((publi) => {
-    return (publi.type === 'these') && publi.authors.find((author) => author.person === data.id)?.role !== 'author';
-  });
-  const others = publications?.filter((publi) => publi.type !== 'these');
+    return publi.type === "these" && publi.authors.find((author) => author.person === data.id)?.role !== "author"
+  })
+  const others = publications?.filter((publi) => publi.type !== "these")
 
-  const { oaPercent } = getOaInfo(publications);
+  const networkFilter = stringifySearchFiltersForURL({
+    "authors.person": {
+      type: "terms",
+      values: [{ value: data?.id, label: data?.fullName }],
+    },
+  })
+  const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`
+
+  const { oaPercent } = getOaInfo(publications)
 
   return (
     <Container fluid>
@@ -43,9 +52,13 @@ export default function AuthorPage({ data }: { data: Author }) {
           <Row gutters>
             <Col xs="12">
               <BadgeGroup>
-                <Badge variant="info" noIcon>Auteur</Badge>
+                <Badge variant="info" noIcon>
+                  Auteur
+                </Badge>
               </BadgeGroup>
-              <Title className="fr-mb-3w" as="h1" look="h4">{data?.fullName}</Title>
+              <Title className="fr-mb-3w" as="h1" look="h4">
+                {data?.fullName}
+              </Title>
             </Col>
             <PageContent>
               <PageSection
@@ -84,13 +97,15 @@ export default function AuthorPage({ data }: { data: Author }) {
               <PageSection
                 size="lead"
                 show={!!others?.length}
-                title={intl.formatMessage(
-                  { id: "authors.section.activity.publications" },
-                  { count: others.length },
-                )}
+                title={intl.formatMessage({ id: "authors.section.activity.publications" }, { count: others.length })}
                 icon="heart-pulse-line"
               >
                 <AuthorsPublications data={others} titleKey="authors.section.activity.publications" />
+                {!!others.length && (
+                  <div className="fr-mt-2w">
+                    <NetworksNotice url={networkUrl} />
+                  </div>
+                )}
               </PageSection>
               <PageSection
                 size="lead"
@@ -98,16 +113,14 @@ export default function AuthorPage({ data }: { data: Author }) {
                 show={!!thesisParticipations?.length}
                 title={intl.formatMessage(
                   { id: "authors.section.activity.thesis-participations" },
-                  { count: thesisParticipations.length },
+                  { count: thesisParticipations.length }
                 )}
               >
                 <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
               </PageSection>
               <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                 <div>
-                  <pre>
-                    {JSON.stringify(data || "", null, 2)}
-                  </pre>
+                  <pre>{JSON.stringify(data || "", null, 2)}</pre>
                 </div>
               </PageSection>
             </PageContent>
@@ -150,7 +163,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                   key={i}
                   name={coAuthor.label}
                   count={coAuthor.count}
-                  width={coAuthor.count * 100 / maxCommonPublications}
+                  width={(coAuthor.count * 100) / maxCommonPublications}
                   href={`/authors/${coAuthor.value}`}
                 />
               ))}
@@ -165,7 +178,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                   key={i}
                   name={review.label}
                   count={review.count}
-                  width={review.count * 100 / maxReviews}
+                  width={(review.count * 100) / maxReviews}
                   href={`/search/publications?q="${review.label}"`}
                 />
               ))}
@@ -173,15 +186,25 @@ export default function AuthorPage({ data }: { data: Author }) {
             <PageSection show title={intl.formatMessage({ id: "authors.section.share" })}>
               <Share />
             </PageSection>
-            <PageSection
-              title={intl.formatMessage({ id: "authors.section.contribute.title" })}
-              show
-            >
+            <PageSection title={intl.formatMessage({ id: "authors.section.contribute.title" })} show>
               <ButtonGroup>
-                <Button as="a" href={`/suggest/${data.id}?q="${data?.fullName}"`} variant="tertiary" icon="links-line" iconPosition="left" >
+                <Button
+                  as="a"
+                  href={`/suggest/${data.id}?q="${data?.fullName}"`}
+                  variant="tertiary"
+                  icon="links-line"
+                  iconPosition="left"
+                >
                   {intl.formatMessage({ id: "authors.signals.publications" })}
                 </Button>
-                <Button as="a" href={`/bugs/authors/${data.id}`} color="error" variant="tertiary" icon="bug-line" iconPosition="left" >
+                <Button
+                  as="a"
+                  href={`/bugs/authors/${data.id}`}
+                  color="error"
+                  variant="tertiary"
+                  icon="bug-line"
+                  iconPosition="left"
+                >
                   {intl.formatMessage({ id: "authors.signals.bug" })}
                 </Button>
               </ButtonGroup>
