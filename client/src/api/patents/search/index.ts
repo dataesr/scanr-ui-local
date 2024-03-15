@@ -18,8 +18,10 @@ const HIGHLIGHT = {
   pre_tags: ["<strong>"],
   post_tags: ["</strong>"],
   fields: {
-    "title.default": {},
-    "summary.default": {},
+    "title.fr": {},
+    "title.en": {},
+    "summary.fr": {},
+    "summary.en": {},
   },
 };
 
