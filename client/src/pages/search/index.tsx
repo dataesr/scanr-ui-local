@@ -35,7 +35,7 @@ import ResultExports from "./components/commons/exports";
 import useScreenSize from "../../hooks/useScreenSize";
 import ProjectAnalytics from "./components/projects/projects-analytics";
 import AuthorAnalytics from "./components/authors/author-analytics";
-import PatentItem from "./components/patents/patent-item";
+import PatentItem from "./components/patents/patent-item/index.tsx";
 import { ObjectModel } from "../../types/commons";
 import { ItemProps } from "./types";
 import PatentFilters from "./components/patents/filters";
@@ -179,12 +179,12 @@ export default function Search() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                      <ItemComponent
-                        data={data}
-                        highlight={highlight}
-                        key={data.id}
-                      />
-                    ))
+                    <ItemComponent
+                      data={data}
+                      highlight={highlight}
+                      key={data.id}
+                    />
+                  ))
                   : null}
               </div>
             </Container>

@@ -13,6 +13,7 @@ import { Author } from "../../../../types/author";
 import RecentAffiliations from "./recent-affiliations";
 import NetworksNotice from "../../../../components/networks-notice"
 import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl"
+import MoreLikeThis from "../../../../components/more-like-this";
 
 function getOaInfo(publi) {
   const oaCount = publi?.filter((publi) => publi.isOa)?.length
@@ -117,6 +118,16 @@ export default function AuthorPage({ data }: { data: Author }) {
                 )}
               >
                 <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
+              </PageSection>
+              <PageSection
+                size="lead"
+                title={intl.formatMessage({
+                  id: "authors.section.more-like-this",
+                })}
+                icon="shopping-cart-2-line"
+                show
+              >
+                <MoreLikeThis id={data._id} api="authors" />
               </PageSection>
               <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                 <div>

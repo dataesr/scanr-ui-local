@@ -5,20 +5,8 @@ import {
   ElasticResult,
 } from "../../../types/commons";
 import { LightProject } from "../../../types/project";
-import { FIELDS } from "../_utils/constants";
+import { FIELDS, LIGHT_SOURCE } from "../_utils/constants";
 
-const SOURCE = [
-  "label.*",
-  "publications",
-  "participants.label",
-  "participants.structure.id",
-  "participants.structure.label.*",
-  "participants.structure.mainAddress.*",
-  "year",
-  "type",
-  "id",
-  "keywords.*",
-];
 const SORTER = [
   // requires a second field to sort on for elastic to return a cursor
   { _score: { order: "desc" } },
@@ -30,7 +18,7 @@ const HIGHLIGHT = {
   pre_tags: ["<strong>"],
   post_tags: ["</strong>"],
   fields: {
-    "title.default": {},
+    "label.default": {},
     "description.default": {},
     "domains.label.default": {},
   },
@@ -43,7 +31,7 @@ export async function searchProjects({
   size,
 }: SearchArgs): Promise<SearchResponse<LightProject>> {
   const body: any = {
-    _source: SOURCE,
+    _source: LIGHT_SOURCE,
     sort: SORTER,
     highlight: HIGHLIGHT,
     query: {
@@ -94,6 +82,9 @@ export async function searchProjects({
     body: JSON.stringify(body),
     headers: postHeaders,
   });
+  if (res.status !== 200) {
+    throw new Error(`Elasticsearch error: ${res.status}`);
+  }
   const json = await res.json();
   const nextCursor: string =
     json?.hits?.hits[json.hits.hits.length - 1]?.sort || "";

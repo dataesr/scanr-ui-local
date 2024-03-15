@@ -8,7 +8,7 @@ const PUBLICATION_LIGHT_SOURCE = [
 ]
 
 const AUTHOR_SOURCE = [
-  "id", "idref", "orcid", "fullName", 
+  "_id", "id", "idref", "orcid", "fullName", 
   "externalIds", "awards", "recentAffiliations",
 ]
 
@@ -109,6 +109,7 @@ export async function getAuthorById(id: string): Promise<Author> {
   const publicationsQuery = getAuthorsPublicationsById(id)
   const [author, publications] = await Promise.all([authorQuery, publicationsQuery])
   const authorData = author?.hits?.hits?.[0]?._source || {}
+  const _id = author?.hits?.hits?.[0]?._id
   if (!Object.keys(authorData).length) throw new Error('404');
-  return { ...authorData, publications }
+  return { ...authorData, _id, publications }
 }

@@ -44,7 +44,7 @@ export type PatentsData = {
 }
 
 export type Patent = {
-  isGrandted: boolean;
+  isGranted: boolean;
   isOeb: boolean;
   affiliations: any;
   isInternational: boolean;

@@ -2,9 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { createIntl } from "react-intl";
 import { Notice, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
 import SearchResultListSkeleton from "../skeleton/search-result-list-skeleton";
+import { getMoreAuthorsLikeThis } from "../../api/authors/more-like-this";
+import { getMoreOrganizationsLikeThis } from "../../api/organizations/more-like-this";
+import { getMorePatentsLikeThis } from "../../api/patents/more-like-this";
+import { getMoreProjectsLikeThis } from "../../api/projects/more-like-this";
+import { getMorePublicationsLikeThis } from "../../api/publications/more-like-this";
 import PublicationItem from "../../pages/search/components/publications/publication-item";
-import { getMoreOrganizationsLikeThis, getMorePublicationsLikeThis } from "./api";
 import OrganizationItem from "../../pages/search/components/organizations/organization-item";
+import AuthorItem from "../../pages/search/components/authors/author-item";
+import PatentItem from "../../pages/search/components/patents/patent-item/index.tsx";
+import ProjectItem from "../../pages/search/components/projects/project-item";
 
 const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
 const messages = Object.keys(modules).reduce((acc, key) => {
@@ -24,10 +31,25 @@ const API_MAPPER = {
     item: PublicationItem,
     fn: getMorePublicationsLikeThis
   },
+  authors: {
+    item: AuthorItem,
+    fn: getMoreAuthorsLikeThis
+  },
+  patents: {
+    item: PatentItem,
+    fn: getMorePatentsLikeThis
+  },
+  projects: {
+    item: ProjectItem,
+    fn: getMoreProjectsLikeThis
+
+  }
 }
 
+type API = keyof typeof API_MAPPER;
 
-export default function MoreLikeThis({ id, api }: { id: string, api: "organizations" | "publications" }) {
+
+export default function MoreLikeThis({ id, api }: { id: string, api: API }) {
   const { locale } = useDSFRConfig();
   const intl = createIntl({ locale, messages: messages[locale] })
   const Component = API_MAPPER[api].item;

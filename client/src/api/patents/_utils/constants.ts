@@ -1,36 +1,9 @@
-export const FIELDS = ["title.*^3", "summary.*^3", "domains.label.*", "domains.code^10", "id^10", "patents.id^10"];
+export const FIELDS = [
+  "title.*^3", "summary.*^3", "domains.label.*",
+  "domains.code^10", "id.keyword^10", "patents.id^10"
+];
 export const LIGHT_SOURCE = [
-  "label.*",
-  "acronym.*",
-  "address.main",
-  "address.city",
-  "kind",
-  "level",
-  "nature",
-  "id",
-  "creationYear",
-  "isFrench",
-  "active",
+  "title", "id", "publicationDate", "authors", "patents"
 ];
-export const SORTER = [
-  // requires a second field to sort on for elastic to return a cursor
-  { _score: { order: "desc" } },
-  // { "id.keyword": { order: "desc" } },
-];
-export const HIGHLIGHT = {
-  number_of_fragments: 3,
-  fragment_size: 125,
-  pre_tags: ["<strong>"],
-  post_tags: ["</strong>"],
-  fields: {
-    "label.default": {},
-    "acronym.default": {},
-    "publications.title.default": {},
-    "publications.summary.default": {},
-  },
-};
 
-export const DEFAULT_FILTERS = [
-  { term: { isFrench: true } },
-  { term: { status: "active" } },
-];
+

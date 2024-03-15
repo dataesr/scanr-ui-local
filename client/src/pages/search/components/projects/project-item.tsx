@@ -46,7 +46,9 @@ export default function ProjectItem({
         </BadgeGroup>
         <span onMouseEnter={() => prefetchAuthor(project.id)}>
           <Link href={`/projects/${project.id}`} className="fr-link">
-            {getLangFieldValue(locale)(project.label)}
+            {highlight?.["label.default"]
+              ? (<span dangerouslySetInnerHTML={{ __html: highlight?.["label.default"] }} />)
+              : getLangFieldValue(locale)(project.label)}
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">

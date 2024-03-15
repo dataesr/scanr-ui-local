@@ -1,5 +1,5 @@
-import { publicationsIndex, postHeaders } from "../../../../config/api";
-import { LIGHT_SOURCE } from "../../_utils/constants";
+import { publicationsIndex, postHeaders } from "../../../config/api";
+import { LIGHT_SOURCE } from "../_utils/constants";
 
 
 export async function getMorePublicationsLikeThis(id: string) {

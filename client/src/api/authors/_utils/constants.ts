@@ -10,3 +10,8 @@ export const FIELDS = [
   "recentAffiliations.structure.id",
   "awards.label.*"
 ]
+
+export const LIGHT_SOURCE = [
+  "id", "fullName", "domains", "orcid",
+  "idref", "recent_affiliations", "topDomains",
+]

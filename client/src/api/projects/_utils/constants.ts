@@ -14,3 +14,15 @@ export const FIELDS = [
   "action.id",
   "action.label.*",
 ]
+export const LIGHT_SOURCE = [
+  "label.*",
+  "publications",
+  "participants.label",
+  "participants.structure.id",
+  "participants.structure.label.*",
+  "participants.structure.mainAddress.*",
+  "year",
+  "type",
+  "id",
+  "keywords.*",
+];

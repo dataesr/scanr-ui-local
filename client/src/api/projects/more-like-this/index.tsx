@@ -1,7 +1,7 @@
-import { patentsIndex, postHeaders } from "../../../config/api";
+import { projectsIndex, postHeaders } from "../../../config/api";
 import { LIGHT_SOURCE } from "../_utils/constants";
 
-export async function getMorePatentsLikeThis(id: string) {
+export async function getMoreProjectsLikeThis(id: string) {
   const body = JSON.stringify({
     _source: LIGHT_SOURCE,
     size: 3,
@@ -9,7 +9,7 @@ export async function getMorePatentsLikeThis(id: string) {
       bool: {
         must: [{
           more_like_this: {
-            fields: ["title.*", "summary.*"],
+            fields: ["label.*", "publications.title.*", "description.*"],
             like: [{ _id: id }],
             min_term_freq: 1,
             max_query_terms: 12,
@@ -18,7 +18,7 @@ export async function getMorePatentsLikeThis(id: string) {
       }
     }
   })
-  const res = await fetch(`${patentsIndex}/_search`, { method: 'POST', body, headers: postHeaders })
+  const res = await fetch(`${projectsIndex}/_search`, { method: 'POST', body, headers: postHeaders })
   const data = await res.json();
   return data?.hits?.hits?.map(({ _source }) => _source) || []
 }

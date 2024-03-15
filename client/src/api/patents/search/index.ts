@@ -5,7 +5,7 @@ import {
   SearchResponse,
 } from "../../../types/commons";
 import { Patent } from "../../../types/patent";
-import { FIELDS } from "../_utils/constants";
+import { FIELDS, LIGHT_SOURCE } from "../_utils/constants";
 
 const SORTER = [
   // requires a second field to sort on for elastic to return a cursor
@@ -30,15 +30,7 @@ export async function searchPatents({
   size,
 }: SearchArgs): Promise<SearchResponse<Patent>> {
   const body: any = {
-    // _source: [
-    //   "id",
-    //   "title",
-    //   "summary",
-    //   "submissionDate",
-    //   "publicationDate",
-    //   "grantedDate",
-    //   "authors.fullName",
-    // ],
+    _source: LIGHT_SOURCE,
     sort: SORTER,
     highlight: HIGHLIGHT,
     query: {

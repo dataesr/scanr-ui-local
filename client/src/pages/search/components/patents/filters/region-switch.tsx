@@ -38,7 +38,7 @@ export default function PatentRegionFilter() {
       <Toggle
         onClick={() =>
           handleFilterChange({
-            field: "isGrandted",
+            field: "isGranted",
             value: true,
             filterType: "bool",
           })

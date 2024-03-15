@@ -25,6 +25,7 @@ import PatentMap from "./coverage-map";
 import Truncate from "../../../../components/truncate";
 import PatentTimeline from "./timeline";
 import Websites from "../../../../components/websites";
+import MoreLikeThis from "../../../../components/more-like-this";
 
 
 export default function PatentPage({ data }: { data: Patent }) {
@@ -126,6 +127,16 @@ export default function PatentPage({ data }: { data: Patent }) {
                 })}
               >
                 <PatentMap patents={data.patents} />
+              </PageSection>
+              <PageSection
+                size="lead"
+                title={intl.formatMessage({
+                  id: "patents.section.more-like-this",
+                })}
+                icon="shopping-cart-2-line"
+                show
+              >
+                <MoreLikeThis id={data._id} api="patents" />
               </PageSection>
               <PageSection
                 title="Data JSON"

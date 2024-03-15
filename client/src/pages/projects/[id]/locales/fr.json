@@ -27,5 +27,6 @@
   "projects.section.participants.map-title": "Carte des participants",
   "projects.section.participants.financed": "Financé à hauteur de {funding} €",
   "projects.section.publications": "{count, plural, one {# publication} other {Dernières publications (#)}}",
-  "projects.section.publications.open-modal-button": "Voir toutes les publications"
+  "projects.section.publications.open-modal-button": "Voir toutes les publications",
+  "projects.section.more-like-this": "Financements similaires"
 }

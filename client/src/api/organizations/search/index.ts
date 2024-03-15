@@ -1,7 +1,7 @@
 import { organizationsIndex, postHeaders } from '../../../config/api'
 import { ElasticResult, SearchArgs, SearchResponse } from '../../../types/commons'
 import { LightOrganization } from '../../../types/organization';
-import { FIELDS, LIGHT_SOURCE } from '../_utils/constants';
+import { DEFAULT_FILTERS, FIELDS, LIGHT_SOURCE } from '../_utils/constants';
 import { getMatchPhrases } from '../_utils/get-match-phrases';
 
 const SORTER = [
@@ -21,11 +21,6 @@ const HIGHLIGHT = {
     "publications.summary.default": {},
   }
 }
-
-const DEFAULT_FILTERS = [
-  { term: { isFrench: true } },
-  { term: { status: "active" } },
-]
 
 
 export async function searchOrganizations({ cursor, query, filters, size }: SearchArgs): Promise<SearchResponse<LightOrganization>> {

@@ -1,0 +1,10 @@
+{
+  "patents.item.badges.main": "Famille de brevet",
+  "patents.item.badges.isInternational": "International",
+  "patents.item.badges.isOeb": "Office européen",
+  "patents.item.badges.application-count": "{count, plural,  one {# dépôt} other {# dépôts}}",
+  "patents.item.badges.granted": "Brevets délivrés",
+  "patents.item.dep-count": "{count, plural, one {# déposant} other {# déposants}}",
+  "patents.item.inv-count": "{count, plural, one {# inventeur} other {# inventeurs}}",
+  "patents.item.publication-date": "Première publication le {date}"
+}

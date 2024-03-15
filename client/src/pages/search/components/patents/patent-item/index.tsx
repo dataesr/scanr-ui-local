@@ -1,14 +1,26 @@
-import { Fragment } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Text, Link, BadgeGroup, Badge } from "@dataesr/dsfr-plus";
-import { getPatentById } from "../../../../api/patents/[id]";
-import { ItemProps } from "../../types";
-import { Patent } from "../../../../types/patent";
-import { useIntl } from "react-intl";
+import { Text, Link, BadgeGroup, Badge, useDSFRConfig } from "@dataesr/dsfr-plus";
+import { getPatentById } from "../../../../../api/patents/[id]";
+import { ItemProps } from "../../../types";
+import { Patent } from "../../../../../types/patent";
+import { RawIntlProvider, createIntl } from "react-intl";
 
-export default function PatentItem({ data: patent }: ItemProps<Patent>) {
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] };
+  }
+  return acc;
+}, {});
+
+export default function PatentItem({ data: patent, highlight }: ItemProps<Patent>) {
   const queryClient = useQueryClient();
-  const intl = useIntl();
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
 
   function prefetchPatent(id: string) {
     queryClient.prefetchQuery({
@@ -16,12 +28,6 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
       queryFn: () => getPatentById(id),
     });
   }
-  const formatPublicationDate = (dateString: string | number | Date) => {
-    const date = new Date(dateString);
-    const formattedDay = ("0" + date.getDate()).slice(-2);
-    const formattedMonth = ("0" + (date.getMonth() + 1)).slice(-2);
-    return `${formattedDay}/${formattedMonth}/${date.getFullYear()}`;
-  };
 
   const numberOfDep = patent.authors.filter((author) => {
     return author.rolePatent.some((role) => role.role === "dep");
@@ -32,25 +38,25 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
   }).length;
 
   return (
-    <Fragment key={patent.id}>
+    <RawIntlProvider value={intl}>
       <div className="result-item" key={patent.id}>
         <BadgeGroup>
           <Badge size="sm" color="purple-glycine">
             {intl.formatMessage({
-              id: "search.top.patent.family.badge",
+              id: "patents.item.badges.main",
             })}
           </Badge>
           {patent.isInternational && (
             <Badge size="sm" color="blue-ecume" style={{ marginRight: "10px" }}>
               {intl.formatMessage({
-                id: "search.patent.family.badge.isInternational",
+                id: "patents.item.badges.isInternational",
               })}
             </Badge>
           )}
           {patent.isOeb && (
             <Badge size="sm" color="blue-ecume" style={{ marginRight: "10px" }}>
               {intl.formatMessage({
-                id: "search.patent.family.badge.isOeb",
+                id: "patents.item.badges.isOeb",
               })}
             </Badge>
           )}
@@ -61,15 +67,15 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
           >
             {`${intl.formatMessage(
               {
-                id: "search.patents.detail.badge.count",
+                id: "patents.item.badges.application-count",
               },
               { count: patent.patents.length }
             )}`}
           </Badge>
-          {patent.isGrandted && (
+          {patent.isGranted && (
             <Badge size="sm" color="success" style={{ marginRight: "10px" }}>
               {intl.formatMessage({
-                id: "search.top.patent.family.grandtedBadge",
+                id: "patents.item.badges.granted",
               })}
             </Badge>
           )}
@@ -79,34 +85,40 @@ export default function PatentItem({ data: patent }: ItemProps<Patent>) {
             {patent.title.fr ? patent.title.fr : patent.title.en}
           </Link>
         </span>
-        <Text bold as="span" size="sm" className="fr-card__detail fr-mb-0">
+        <Text bold size="sm" className="fr-mb-0">
           {`${intl.formatMessage(
             {
-              id: "search.patents.detail.dep.count",
+              id: "patents.item.dep-count",
             },
             { count: numberOfDep }
           )} & 
            ${intl.formatMessage(
-             {
-               id: "search.patents.detail.inv.count",
-             },
-             { count: numberOfInv }
-           )}
+            {
+              id: "patents.item.inv-count",
+            },
+            { count: numberOfInv }
+          )}
           `}
         </Text>
         <Text
           size="sm"
-          className="fr-card__detail fr-mb-0"
+          className="fr-text-mention--grey fr-mb-0"
           onMouseEnter={() => prefetchPatent(patent.id)}
         >
           <i>
             {intl.formatMessage({
-              id: "search.top.patent.date",
+              id: "patents.item.publication-date",
+            }, {
+              date: new Date(patent.publicationDate).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })
             })}
-            {formatPublicationDate(patent.publicationDate)}
           </i>
         </Text>
+        {Object.values(highlight || {}).map((value, i) => (
+          <Text key={i} size="sm" className="fr-mb-0">
+            <span dangerouslySetInnerHTML={{ __html: value }} />
+          </Text>
+        ))}
       </div>
-    </Fragment>
+    </RawIntlProvider>
   );
 }

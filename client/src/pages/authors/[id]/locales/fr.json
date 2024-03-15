@@ -26,5 +26,6 @@
   "authors.section.recent-affiliations.publication-count": "{count, plural, one {# publication} other {# publications}}",
   "authors.section.recent-affiliations.between": "entre {min} et {max}",
   "authors.section.recent-affiliations.title": "Affiliations récentes",
-  "authors.section.recent-affiliations.description": "Les affiliations récentes présentées ici sont basées sur les publications répertoriées dans scanR. Elles ne sont pas exhaustives."
+  "authors.section.recent-affiliations.description": "Les affiliations récentes présentées ici sont basées sur les publications répertoriées dans scanR. Elles ne sont pas exhaustives.",
+  "authors.section.more-like-this": "Auteurs similaires"
 }

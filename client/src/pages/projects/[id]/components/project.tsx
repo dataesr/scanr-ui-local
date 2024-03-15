@@ -13,6 +13,7 @@ import ProjectParticipants from "./participants";
 import Websites from "../../../../components/websites";
 import ProjectProgram from "./programs";
 import Share from "../../../../components/share";
+import MoreLikeThis from "../../../../components/more-like-this";
 
 function calculateAccomplishment(startDate, endDate) {
   if (!startDate || !endDate) return null;
@@ -203,6 +204,16 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 )}
               >
                 <ProjectsPublications data={data?.publications} titleKey="projects.section.publications" />
+              </PageSection>
+              <PageSection
+                size="lead"
+                title={intl.formatMessage({
+                  id: "projects.section.more-like-this",
+                })}
+                icon="shopping-cart-2-line"
+                show
+              >
+                <MoreLikeThis id={data._id} api="projects" />
               </PageSection>
               <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                 <div>

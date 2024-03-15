@@ -1,12 +1,9 @@
 import { authorsIndex, postHeaders } from "../../../config/api";
 import { LightAuthor } from "../../../types/author";
 import { SearchArgs, SearchResponse, ElasticResult } from "../../../types/commons";
-import { FIELDS } from "../_utils/constants";
+import { FIELDS, LIGHT_SOURCE } from "../_utils/constants";
 
-const SOURCE = [
-  "id", "fullName", "domains", "orcid",
-  "idref", "recent_affiliations", "topDomains",
-]
+
 const SORTER = [
   // requires a second field to sort on for elastic to return a cursor
   { _score: { order: "desc" } },
@@ -25,7 +22,7 @@ const HIGHLIGHT = {
 }
 export async function searchAuthors({ cursor, query, filters, size }: SearchArgs): Promise<SearchResponse<LightAuthor>> {
   const body: any = {
-    _source: SOURCE,
+    _source: LIGHT_SOURCE,
     sort: SORTER,
     highlight: HIGHLIGHT,
     query: {

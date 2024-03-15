@@ -29,6 +29,6 @@ export default function Layout() {
         </ErrorBoundary>
       </Container>
       <MainFooter />
-    </IntlProvider >
+    </IntlProvider>
   );
 }
