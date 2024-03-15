@@ -24,7 +24,7 @@ const HIGHLIGHT = {
     "summary.en": {},
   },
 };
-
+// TODO: USE A LightPatent type here
 export async function searchPatents({
   cursor,
   query,

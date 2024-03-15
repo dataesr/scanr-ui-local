@@ -46,27 +46,11 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<LightA
             .map((id, i) => <CopyBadge key={id} size="sm" copyText={id}>{(i === 0) ? 'idref' : 'orcid'} : {id}</CopyBadge>)
           }
         </div>
-        {highlight?.["domains.label.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            Mots clés:
-            {' '}
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["domains.label.default"] }} />
+        {Object.values(highlight || {}).map((value, i) => (
+          <Text key={i} size="sm" className="fr-mb-0">
+            <span dangerouslySetInnerHTML={{ __html: value }} />
           </Text>
-        )}
-        {highlight?.["publications.title.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["summary.default"] }} />
-            ...
-          </Text>
-        )}
-        {highlight?.["publications.summary.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["summary.default"] }} />
-            ...
-          </Text>
-        )}
+        ))}
       </div>
     </Fragment>
   )

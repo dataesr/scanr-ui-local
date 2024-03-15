@@ -51,20 +51,11 @@ export default function PublicationItem({ data: publication, highlight }: ItemPr
             {publication?.source?.publisher && `, ${publication?.source?.publisher}`}
           </i>
         </Text>
-        {highlight?.["domains.label.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            Mots clés:
-            {' '}
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["domains.label.default"] }} />
+        {Object.values(highlight || {}).map((value, i) => (
+          <Text key={i} size="sm" className="fr-mb-0">
+            <span dangerouslySetInnerHTML={{ __html: value }} />
           </Text>
-        )}
-        {highlight?.["summary.default"] && (
-          <Text size="sm" className="fr-mb-0">
-            ...
-            <span dangerouslySetInnerHTML={{ __html: highlight?.["summary.default"] }} />
-            ...
-          </Text>
-        )}
+        ))}
       </div>
     </Fragment>
   )
