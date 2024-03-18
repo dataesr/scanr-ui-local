@@ -21,7 +21,7 @@
   "search.filters.publications.by-year-description": "Sélectionnez une période",
   "search.filters.publications.by-project": "Filtrer par type de financements",
   "search.filters.publications.by-project-description": "Sélectionnez un ou plusieurs types de financements",
-  "search.filters.publications.by-type": "Filter par type de publication",
+  "search.filters.publications.by-type": "Filtrer par type de publication",
   "search.filters.publications.by-type-description": "Sélectionnez un ou plusieurs types de publications",
   "search.filters.publications.filters-modal-title": "Filtres",
   "search.filters.publications.delete-all-filters": "Réinitialiser les filtres",

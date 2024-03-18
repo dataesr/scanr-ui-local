@@ -37,7 +37,7 @@ export default function OrganizationSupervisorsFilter() {
         <OperatorButton operator={operator} setOperator={(key) => setOperator('institutions.structure', (key === 'and') ? 'and' : 'or')} />
       </div>
       {filter ? (<Text bold size="sm" className="fr-mb-1v">
-        Séléctionnées:
+        Sélectionnées:
       </Text>) : null}
       <TagGroup>
         {filter?.values?.map(({ value, label }) => (

@@ -35,7 +35,7 @@ export default function PublicationAuthorFilter() {
         <OperatorButton operator={operator} setOperator={(key) => setOperator('authors.person', (key === 'and') ? 'and' : 'or')} />
       </div>
       {currentFilters?.['authors.person'] ? (<Text bold size="sm" className="fr-mb-1v">
-        Séléctionnées:
+        Sélectionnées:
       </Text>) : null}
       <TagGroup>
         {currentFilters?.['authors.person']?.values?.map(({ value, label }) => (

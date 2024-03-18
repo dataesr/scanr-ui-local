@@ -35,7 +35,7 @@ export default function OrganizationLocalisationsFilter() {
         <OperatorButton operator={operator} setOperator={(key) => setOperator('address.localisationSuggestions', (key === 'and') ? 'and' : 'or')} />
       </div>
       {filter ? (<Text bold size="sm" className="fr-mb-1v">
-        Séléctionnées:
+        Sélectionnées:
       </Text>) : null}
       <TagGroup>
         {filter?.values?.map(({ value, label }) => (
