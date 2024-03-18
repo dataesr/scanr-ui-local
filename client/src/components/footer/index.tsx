@@ -111,12 +111,12 @@ export function Footer({
                       <li>
                         <Link
                           className="fr-footer__top-link"
-                          href="https://github.com/dataesr/scanr"
+                          href="https://twitter.com/dataESR"
                           target="_blank"
                           icon="twitter-x-fill"
                           iconPosition="left"
                         >
-                          Twitter
+                          X
                         </Link>
                       </li>
                       <li>
