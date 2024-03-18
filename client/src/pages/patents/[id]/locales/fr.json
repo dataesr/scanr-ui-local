@@ -50,7 +50,7 @@
   "patents.section.map.fieldset.legend": "Choisissez un type",
   "patents.section.map.fieldset.application": "Dépôt",
   "patents.section.map.fieldset.publication": "Publication",
-  "patents.section.map.fieldset.grant": "Délivrance",
+  "patents.section.map.fieldset.granted": "Délivrance",
   "patents.section.map.legend.noCountries": "Pays sans dépôt",
   "patents.section.map.legend.WO": "Brevets de l'Organisation mondiale de la propriété intellectuelle",
   "patents.section.map.legend.EP": "Brevets de l'Office européen des brevets",
