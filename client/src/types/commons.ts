@@ -1,6 +1,6 @@
 import { LightAuthor } from "./author";
 import { LightOrganization } from "./organization";
-import { Patent } from "./patent";
+import { LightPatent } from "./patent";
 import { LightProject } from "./project";
 import { LightPublication } from "./publication";
 
@@ -81,7 +81,7 @@ export type ObjectModel =
   | LightAuthor
   | LightProject
   | LightOrganization
-  | Patent;
+  | LightPatent;
 
 export type ApiTypes =
   | "publications"

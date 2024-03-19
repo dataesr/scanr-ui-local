@@ -1,27 +1,15 @@
 import { Aggregation, LangField } from "./commons";
 
-// export type LightPatent = {
-//   id: string;
-//   creationYear: string;
-//   kind: array;
-//   isFrench: boolean;
-//   recent_affiliations: {
-//     label: string;
-//     id: string;
-//   }[];
-//   topDomains: {
-//     label: LangField;
-//     code: string;
-//     type: string;
-//     count: number;
-//   }[];
-//   domains: {
-//     label: LangField;
-//     code: string;
-//     type: string;
-//     count: number;
-//   }[];
-// };
+export type LightPatent = {
+  id: string;
+  title: LangField;
+  fullName: string;
+  submissionDate: number;
+  publicationDate: number;
+  grantedDate: number;
+  authors: PatentActorsData[];
+  patents: PatentsData[];
+};
 
 export type PatentsData = {
   id: string;
@@ -41,7 +29,7 @@ export type PatentsData = {
       label: string;
     }
   ];
-}
+};
 
 export type Patent = {
   isGranted: boolean;

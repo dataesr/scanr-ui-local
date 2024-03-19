@@ -4,7 +4,7 @@ import {
   SearchArgs,
   SearchResponse,
 } from "../../../types/commons";
-import { Patent } from "../../../types/patent";
+import { LightPatent, Patent } from "../../../types/patent";
 import { FIELDS, LIGHT_SOURCE } from "../_utils/constants";
 
 const SORTER = [
@@ -24,13 +24,13 @@ const HIGHLIGHT = {
     "summary.en": {},
   },
 };
-// TODO: USE A LightPatent type here
+
 export async function searchPatents({
   cursor,
   query,
   filters,
   size,
-}: SearchArgs): Promise<SearchResponse<Patent>> {
+}: SearchArgs): Promise<SearchResponse<LightPatent>> {
   const body: any = {
     _source: LIGHT_SOURCE,
     sort: SORTER,
