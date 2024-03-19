@@ -1,5 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Text, Link, BadgeGroup, Badge, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Text,
+  Link,
+  BadgeGroup,
+  Badge,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import { getPatentById } from "../../../../../api/patents/[id]";
 import { ItemProps } from "../../../types";
 import { Patent } from "../../../../../types/patent";
@@ -17,7 +23,10 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   return acc;
 }, {});
 
-export default function PatentItem({ data: patent, highlight }: ItemProps<Patent>) {
+export default function PatentItem({
+  data: patent,
+  highlight,
+}: ItemProps<Patent>) {
   const queryClient = useQueryClient();
   const { locale } = useDSFRConfig();
   const intl = createIntl({ locale, messages: messages[locale] });
@@ -29,13 +38,13 @@ export default function PatentItem({ data: patent, highlight }: ItemProps<Patent
     });
   }
 
-  const numberOfDep = patent.authors.filter((author) => {
-    return author.rolePatent.some((role) => role.role === "dep");
-  }).length;
+  const numberOfDep = patent.authors.filter((author) =>
+    author.rolePatent.some((role) => role.role === "dep")
+  ).length;
 
-  const numberOfInv = patent.authors.filter((author) => {
-    return author.rolePatent.some((role) => role.role === "inv");
-  }).length;
+  const numberOfInv = patent.authors.filter((author) =>
+    author.rolePatent.some((role) => role.role === "inv")
+  ).length;
 
   return (
     <RawIntlProvider value={intl}>
@@ -46,14 +55,14 @@ export default function PatentItem({ data: patent, highlight }: ItemProps<Patent
               id: "patents.item.badges.main",
             })}
           </Badge>
-          {patent.isInternational && (
+          {patent.patents.some((el) => el.office === "WO") && (
             <Badge size="sm" color="blue-ecume" style={{ marginRight: "10px" }}>
               {intl.formatMessage({
                 id: "patents.item.badges.isInternational",
               })}
             </Badge>
           )}
-          {patent.isOeb && (
+          {patent.patents.some((el) => el.office === "EP") && (
             <Badge size="sm" color="blue-ecume" style={{ marginRight: "10px" }}>
               {intl.formatMessage({
                 id: "patents.item.badges.isOeb",
@@ -82,7 +91,7 @@ export default function PatentItem({ data: patent, highlight }: ItemProps<Patent
         </BadgeGroup>
         <span onMouseEnter={() => prefetchPatent(patent.id)}>
           <Link href={`/patents/${patent.id}`} className="fr-link">
-            {patent.title.fr ? patent.title.fr : patent.title.en}
+            {patent.title.fr || patent.title.en}{" "}
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
@@ -93,11 +102,11 @@ export default function PatentItem({ data: patent, highlight }: ItemProps<Patent
             { count: numberOfDep }
           )} & 
            ${intl.formatMessage(
-            {
-              id: "patents.item.inv-count",
-            },
-            { count: numberOfInv }
-          )}
+             {
+               id: "patents.item.inv-count",
+             },
+             { count: numberOfInv }
+           )}
           `}
         </Text>
         <Text
@@ -106,11 +115,31 @@ export default function PatentItem({ data: patent, highlight }: ItemProps<Patent
           onMouseEnter={() => prefetchPatent(patent.id)}
         >
           <i>
-            {intl.formatMessage({
-              id: "patents.item.publication-date",
-            }, {
-              date: new Date(patent.publicationDate).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })
-            })}
+            {intl.formatMessage(
+              {
+                id: "patents.item.submission-date",
+              },
+              {
+                date: new Date(patent.submissionDate).toLocaleDateString(
+                  locale,
+                  { year: "numeric", month: "long", day: "numeric" }
+                ),
+              }
+            )}
+          </i>
+          <br />
+          <i>
+            {intl.formatMessage(
+              {
+                id: "patents.item.publication-date",
+              },
+              {
+                date: new Date(patent.publicationDate).toLocaleDateString(
+                  locale,
+                  { year: "numeric", month: "long", day: "numeric" }
+                ),
+              }
+            )}
           </i>
         </Text>
         {Object.values(highlight || {}).map((value, i) => (

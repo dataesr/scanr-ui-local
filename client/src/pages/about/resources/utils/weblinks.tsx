@@ -6,22 +6,6 @@ export const websiteURL = (id: string) => {
         wikipedia:
           "https://fr.wikipedia.org/wiki/Agence_nationale_de_la_recherche",
       };
-    case "casdar":
-      return {
-        website: "https://rd-agri.fr/",
-        wikipedia:
-          "https://fr.wikipedia.org/wiki/Compte_d%E2%80%99affectation_sp%C3%A9ciale_d%C3%A9veloppement_agricole_et_rural",
-      };
-    case "datainfogreffe":
-      return {
-        website: "https://www.infogreffe.fr/",
-        wikipedia: "https://fr.wikipedia.org/wiki/Infogreffe",
-      };
-    case "swh":
-      return {
-        website: "https://www.softwareheritage.org/",
-        wikipedia: "https://fr.wikipedia.org/wiki/Software_Heritage",
-      };
     case "core":
       return {
         website: "https://www.open.ac.uk/",

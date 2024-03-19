@@ -1,5 +1,18 @@
 export const questions = [
   {
+    key: "q1",
+    groupkey: "general",
+    icon: "fas fa-question-circle",
+    label: {
+      fr: "Quelle est la nature du lien entre scanR et le Baromètre de la Science Ouverte ?",
+      en: "What is the link between scanR and the Open Science Barometer?",
+    },
+    definition: {
+      fr: "Le baromètre de la science ouverte (BSO) a pour objectif de mesurer les progrès de l’accès ouvert aux ressources scientifiques : publications, données, code. Publié pour la première fois par le ministère de l’Enseignement supérieur, de la Recherche et de l’Innovation en 2019, il se concentre à ce jour sur les seules publications scientifiques disposant d'un DOI. Pour les travaux avec DOI, scanR reprend l'information sur le statut d'ouverture utilisée pour le BSO \n*Le périmètre des travaux de recherche restitués dans scanR est plus large* puisqu'il couvre également les thèses soutenues depuis 1990 (theses.fr), les ouvrages et monographies (SUDOC) parus depuis 2013 ainsi que toutes les publications déposées dans HAL (et publiées après 2013), notamment celles sans DOI. La multiplicité d'identifiants engendrée peut ainsi être à la source de doublons dans scanR, mais c'est au bénéfice de la couverture et donc de l'exploration possible dans scanR.",
+      en: "The Open Science Barometer (OSB) aims to measure progress in open access to scientific resources: publications, data, code. First published by the Ministry of Higher Education, Research and Innovation in 2019, it focuses to date only on scientific publications with a DOI. For research publications with DOI, scanR includes the opening status information used for the BSO \n*The scope of the research work returned in scanR is broader* since it also covers PhD thesis defended since 1990 (theses.fr), books and monographs (SUDOC) published since 2013 as well as all publications uploaded in HAL (and published after 2013), particularly those without DOI. The multiplicity of identifiers generated can thus be at the source of duplicates in scanR, but this is to the benefit of coverage and user experience in scanR.",
+    },
+  },
+  {
     key: "q2",
     groupkey: "general",
     icon: "fas fa-question-circle",

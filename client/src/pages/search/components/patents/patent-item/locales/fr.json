@@ -6,5 +6,6 @@
   "patents.item.badges.granted": "Brevets délivrés",
   "patents.item.dep-count": "{count, plural, one {# déposant} other {# déposants}}",
   "patents.item.inv-count": "{count, plural, one {# inventeur} other {# inventeurs}}",
-  "patents.item.publication-date": "Première publication le {date}"
+  "patents.item.publication-date": "Première publication le {date}",
+  "patents.item.submission-date": "Premier dépôt le {date}"
 }

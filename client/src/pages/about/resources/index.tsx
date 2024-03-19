@@ -74,14 +74,6 @@ export default function Resources() {
           <Col xs="3" lg="3" className="centered-col">
             <Link
               className="fr-footer__bottom-link"
-              href="/about/resources/grid"
-            >
-              <img src="/img/logo/logo-grid.svg" alt="Logo grid" />
-            </Link>
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <Link
-              className="fr-footer__bottom-link"
               href="/about/resources/insee"
             >
               <img src="/img/logo/logo-insee.svg" alt="Logo insee" />
@@ -125,6 +117,14 @@ export default function Resources() {
               href="/about/resources/cpc"
             >
               <img src="/img/logo/logo-cpc.jpg" alt="Logo cpc" />
+            </Link>
+          </Col>
+          <Col xs="3" lg="3" className="solo-centered-col">
+            <Link
+              className="fr-footer__bottom-link"
+              href="/about/resources/adg"
+            >
+              <img src="/img/logo/logo-adresse-data-gouv.svg" alt="Logo adg" />
             </Link>
           </Col>
         </Row>
@@ -183,7 +183,7 @@ export default function Resources() {
               className="fr-footer__bottom-link"
               href="/about/resources/bso"
             >
-              <img src="/img/logo/logo-bso.svg" alt="Logo bso" />
+              <img src="/img/logo/logo-bso.png" alt="Logo bso" />
             </Link>
           </Col>
           <Col xs="3" lg="3" className="centered-col">
@@ -245,41 +245,6 @@ export default function Resources() {
           <Col xs="3" lg="3" className="centered-col">
             <Link
               className="fr-footer__bottom-link"
-              href="/about/resources/core"
-            >
-              <img src="/img/logo/logo-core.png" alt="Logo core" />
-            </Link>
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <Link
-              className="fr-footer__bottom-link"
-              href="/about/resources/swh"
-            >
-              <img src="/img/logo/logo-swh.jpg" alt="Logo swh" />
-            </Link>
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <Link
-              className="fr-footer__bottom-link"
-              href="/about/resources/datainfogreffe"
-            >
-              <img
-                src="/img/logo/logo-datainfogreffe.svg"
-                alt="Logo datainfogreffe"
-              />
-            </Link>
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <Link
-              className="fr-footer__bottom-link"
-              href="/about/resources/casdar"
-            >
-              <img src="/img/logo/logo-casdar.png" alt="Logo casdar" />
-            </Link>
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <Link
-              className="fr-footer__bottom-link"
               href="/about/resources/anr"
             >
               <img src="/img/logo/logo-anr.svg" alt="Logo anr" />
@@ -293,33 +258,6 @@ export default function Resources() {
               <img src="/img/logo/logo-phc.svg" alt="Logo phc" />
             </Link>
           </Col>
-        </Row>
-        <Row horizontalAlign="center" className="bordered-row">
-          <Col xs="12" lg="12" className="search-object fr-mb-5w">
-            <svg
-              className="fr-artwork"
-              aria-hidden="true"
-              viewBox="0 0 80 80"
-              width="150px"
-              height="100px"
-            >
-              <use
-                className="fr-artwork-decorative"
-                href="/artwork/pictograms/digital/internet.svg#artwork-decorative"
-              />
-              <use
-                className="fr-artwork-minor"
-                href="/artwork/pictograms/digital/internet.svg#artwork-minor"
-              />
-              <use
-                className="fr-artwork-major"
-                href="/artwork/pictograms/digital/internet.svg#artwork-major"
-              />
-            </svg>
-            <Title as="h5" className="fr-mb-1w">
-              {intl.formatMessage({ id: "app.resources.indirect.source" })}
-            </Title>
-          </Col>
           <Col xs="3" lg="3" className="centered-col">
             <Link
               className="fr-footer__bottom-link"
@@ -328,90 +266,8 @@ export default function Resources() {
               <img src="/img/logo/logo-pubmed.svg" alt="Logo pubmed" />
             </Link>
           </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <Link
-              className="fr-footer__bottom-link"
-              href="/about/resources/arxiv"
-            >
-              <img src="/img/logo/logo-arxiv.svg" alt="Logo arxiv" />
-            </Link>
-          </Col>
         </Row>
         <hr className="fr-pb-2w" />
-        <Row horizontalAlign="center" className="bordered-row">
-          <Col xs="12" lg="12" className="search-object fr-mb-5w">
-            <svg
-              className="fr-artwork"
-              aria-hidden="true"
-              viewBox="0 0 80 80"
-              width="150px"
-              height="100px"
-            >
-              <use
-                className="fr-artwork-decorative"
-                href="/artwork/pictograms/system/system.svg#artwork-decorative"
-              />
-              <use
-                className="fr-artwork-minor"
-                href="/artwork/pictograms/system/system.svg#artwork-minor"
-              />
-              <use
-                className="fr-artwork-major"
-                href="/artwork/pictograms/system/system.svg#artwork-major"
-              />
-            </svg>
-            <Title as="h5" className="fr-mb-1w">
-              {intl.formatMessage({ id: "app.resources.tools" })}
-            </Title>
-          </Col>
-          <Col xs="3" lg="3" className="solo-centered-col">
-            <Link
-              className="fr-footer__bottom-link"
-              href="/about/resources/adg"
-            >
-              <img src="/img/logo/logo-adresse-data-gouv.svg" alt="Logo adg" />
-            </Link>
-          </Col>
-        </Row>
-        <Row className="bordered-row">
-          <Col xs="12" lg="12" className="search-object fr-mb-5w">
-            <svg
-              className="fr-artwork"
-              aria-hidden="true"
-              viewBox="0 0 80 80"
-              width="150px"
-              height="100px"
-            >
-              <use
-                className="fr-artwork-decorative"
-                href="/artwork/pictograms/environment/human-cooperation.svg#artwork-decorative"
-              />
-              <use
-                className="fr-artwork-minor"
-                href="/artwork/pictograms/environment/human-cooperation.svg#artwork-minor"
-              />
-              <use
-                className="fr-artwork-major"
-                href="/artwork/pictograms/environment/human-cooperation.svg#artwork-major"
-              />
-            </svg>
-            <Title as="h5" className="fr-mb-1w">
-              {intl.formatMessage({ id: "app.resources.contributors" })}
-            </Title>
-          </Col>
-          <Col xs="3" lg="3" className="solo-centered-col">
-            <img src="/img/logo/logo-3cr.svg" alt="Logo 3cr" />
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <img src="/img/logo/logo-afssi.svg" alt="Logo afssi" />
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <img src="/img/logo/logo-asrc.svg" alt="Logo asrc" />
-          </Col>
-          <Col xs="3" lg="3" className="centered-col">
-            <img src="/img/logo/logo-simv.svg" alt="Logo simv" />
-          </Col>
-        </Row>
         <Row className="bordered-row">
           <Col xs="12" lg="12" className="search-object fr-mb-5w">
             <svg
