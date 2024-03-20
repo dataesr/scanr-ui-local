@@ -28,16 +28,21 @@ const formating = {
       {chunks}
     </Title>
   ),
+  br: () => <br />,
   p: (chunks: any) => <p>{chunks}</p>,
   ul: (chunks: any) => <ul>{chunks}</ul>,
   li: (chunks: any) => <li>{chunks}</li>,
   b: (chunks: any) => <b>{chunks}</b>,
-  aScanR: (chunks: any) => (
-    <a href="medias" target="_blank" rel="noopener noreferrer">
+  aGazette: (chunks: any) => (
+    <a
+      href="https://www.lagazettedescommunes.com/510770/participez-aux-trophees-de-lopendata-pour-les-territoires-deuxieme-edition/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {chunks}
     </a>
   ),
-  aOgp: (chunks: any) => (
+  aPgp: (chunks: any) => (
     <a
       href="https://www.opengovpartnership.org/fr/documents/france-action-plan-2018-2020/"
       target="_blank"
@@ -46,16 +51,16 @@ const formating = {
       {chunks}
     </a>
   ),
-  aEsR: (chunks: any) => (
+  aEsr: (chunks: any) => (
     <a
-      href="https://www.enseignementsup-recherche.gouv.fr/cid132529/le-plan-national-pour-la-science-ouverte-les-resultats-de-la-recherche-scientifique-ouverts-a-tous-sans-entrave-sans-delai-sans-paiement.html"
+      href="https://www.enseignementsup-recherche.gouv.fr/fr/le-plan-national-pour-la-science-ouverte-les-resultats-de-la-recherche-scientifique-ouverts-tous-49241"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aR: (chunks: any) => (
+  aRs: (chunks: any) => (
     <a
       href="https://researchalps.eu/"
       target="_blank"
@@ -64,87 +69,78 @@ const formating = {
       {chunks}
     </a>
   ),
-  aBSO: (chunks: any) => (
-    <a
-      href="https://bso.esr.gouv.fr/"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {chunks}
-    </a>
-  ),
   aEIG: (chunks: any) => (
     <a
-      href="https://entrepreneur-interet-general.etalab.gouv.fr/"
+      href="https://www.eig.numerique.gouv.fr/"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aWDD: (chunks: any) => (
+  aCoexya: (chunks: any) => (
     <a
-      href="https://www.wedodata.fr/"
+      href="https://www.coexya.eu/en/"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aUm: (chunks: any) => (
-    <a href="https://www.unimore.it" target="_blank" rel="noopener noreferrer">
-      {chunks}
-    </a>
-  ),
-  aBes: (chunks: any) => (
-    <a href="http://www.abes.fr/" target="_blank" rel="noopener noreferrer">
-      {chunks}
-    </a>
-  ),
-  aTeg: (chunks: any) => (
+  aMit: (chunks: any) => (
     <a
-      href="https://www.team.etalab.gouv.fr/"
+      href="https://direct.mit.edu/qss/article/3/1/18/109245/Identifying-scientific-publications-countrywide"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aM: (chunks: any) => (
+  aWdd: (chunks: any) => (
+    <a href="https://wedodata.fr/" target="_blank" rel="noopener noreferrer">
+      {chunks}
+    </a>
+  ),
+  aDsfr: (chunks: any) => (
     <a
-      href="https://www.miur.gov.it/"
+      href="https://www.systeme-de-design.gouv.fr/"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aUmtg: (chunks: any) => (
+  aElastic: (chunks: any) => (
+    <a href="https://www.elastic.co/" target="_blank" rel="noopener noreferrer">
+      {chunks}
+    </a>
+  ),
+  aCwts: (chunks: any) => (
+    <a href="https://www.cwts.nl/" target="_blank" rel="noopener noreferrer">
+      {chunks}
+    </a>
+  ),
+  aWos: (chunks: any) => (
     <a
-      href="https://www.unimontagnait/"
+      href="https://www.vosviewer.com/"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aUnimi: (chunks: any) => (
-    <a href="https://www.unimi.it" target="_blank" rel="noopener noreferrer">
-      {chunks}
-    </a>
-  ),
-  aSt: (chunks: any) => (
+  aOvh: (chunks: any) => (
     <a
-      href="https://wwwsidetrade.com"
+      href="https://www.ovhcloud.com/fr/"
       target="_blank"
       rel="noopener noreferrer"
     >
       {chunks}
     </a>
   ),
-  aSW: (chunks: any) => (
+  aGit: (chunks: any) => (
     <a
-      href="https://www.sword-group.com/"
+      href="https://github.com/orgs/dataesr/repositories?q=scanr"
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -178,21 +174,139 @@ export default function Team() {
         </Container>
       </Container>
       <Container>
-        <Row gutters>
-          <Col xs="12" md="10" lg="9" xl="10" className="fr-mb-2w">
+        <Row>
+          <Col xs="12" md="8" lg="8" xl="8" className="fr-mb-2w">
             <FormattedMessage id="app.team.project" values={formating} />
           </Col>
-          <Col xs="12" md="10" lg="9" xl="10" className="fr-mb-2w">
+          <Col xs="4" xl="4" className="search-object fr-mb-5w">
+            <svg
+              className="fr-artwork"
+              aria-hidden="true"
+              viewBox="0 0 80 80"
+              width="200px"
+              height="300px"
+            >
+              <use
+                className="fr-artwork-decorative"
+                href="/artwork/pictograms/digital/internet.svg#artwork-decorative"
+              />
+              <use
+                className="fr-artwork-minor"
+                href="/artwork/pictograms/digital/internet.svg#artwork-minor"
+              />
+              <use
+                className="fr-artwork-major"
+                href="/artwork/pictograms/digital/internet.svg#artwork-major"
+              />
+            </svg>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="4" xl="4" className="search-object fr-mb-5w ">
+            <svg
+              className="fr-artwork"
+              aria-hidden="true"
+              viewBox="0 0 80 80"
+              width="250px"
+              height="300px"
+            >
+              <use
+                className="fr-artwork-decorative"
+                href="/artwork/pictograms/digital/data-visualization.svg#artwork-decorative"
+              />
+              <use
+                className="fr-artwork-minor"
+                href="/artwork/pictograms/digital/data-visualization.svg#artwork-minor"
+              />
+              <use
+                className="fr-artwork-major"
+                href="/artwork/pictograms/digital/data-visualization.svg#artwork-major"
+              />
+            </svg>
+          </Col>
+          <Col xs="12" md="8" lg="8" xl="8" className="fr-mb-2w">
             <FormattedMessage id="app.team.scanr" values={formating} />
           </Col>
-          <Col xs="12" md="10" lg="9" xl="10" className="fr-mb-2w">
-            <FormattedMessage id="app.team.topo" values={formating} />
-          </Col>
-          <Col xs="12" md="10" lg="9" xl="10" className="fr-mb-2w">
+        </Row>
+        <Row>
+          <Col xs="12" md="8" lg="8" xl="8" className="fr-mb-2w">
             <FormattedMessage id="app.team.version" values={formating} />
           </Col>
-          <Col xs="12" md="10" lg="9" xl="10" className="fr-mb-2w">
+          <Col xs="4" xl="4" className="search-object fr-mb-5w">
+            <svg
+              className="fr-artwork"
+              aria-hidden="true"
+              viewBox="0 0 80 80"
+              width="300px"
+              height="300px"
+            >
+              <use
+                className="fr-artwork-decorative"
+                href="/artwork/pictograms/environment/environment.svg#artwork-decorative"
+              />
+              <use
+                className="fr-artwork-minor"
+                href="/artwork/pictograms/environment/environment.svg#artwork-minor"
+              />
+              <use
+                className="fr-artwork-major"
+                href="/artwork/pictograms/environment/environment.svg#artwork-major"
+              />
+            </svg>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="4" xl="4" className="search-object fr-mb-5w">
+            <svg
+              className="fr-artwork"
+              aria-hidden="true"
+              viewBox="0 0 80 80"
+              width="300px"
+              height="200px"
+            >
+              <use
+                className="fr-artwork-decorative"
+                href="/artwork/pictograms/environment/tree.svg#artwork-decorative"
+              />
+              <use
+                className="fr-artwork-minor"
+                href="/artwork/pictograms/environment/tree.svg#artwork-minor"
+              />
+              <use
+                className="fr-artwork-major"
+                href="/artwork/pictograms/environment/tree.svg#artwork-major"
+              />
+            </svg>
+          </Col>
+          <Col xs="12" md="8" lg="8" xl="8" className="fr-mb-2w">
+            <FormattedMessage id="app.team.topo" values={formating} />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" md="8" lg="8" xl="8" className="fr-mb-2w">
             <FormattedMessage id="app.team.team" values={formating} />
+          </Col>
+          <Col xs="4" xl="4" className="search-object fr-mb-5w">
+            <svg
+              className="fr-artwork"
+              aria-hidden="true"
+              viewBox="0 0 80 80"
+              width="300px"
+              height="200px"
+            >
+              <use
+                className="fr-artwork-decorative"
+                href="/artwork/pictograms/environment/human-cooperation.svg#artwork-decorative"
+              />
+              <use
+                className="fr-artwork-minor"
+                href="/artwork/pictograms/environment/human-cooperation.svg#artwork-minor"
+              />
+              <use
+                className="fr-artwork-major"
+                href="/artwork/pictograms/environment/human-cooperation.svg#artwork-major"
+              />
+            </svg>
           </Col>
         </Row>
       </Container>
