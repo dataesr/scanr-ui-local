@@ -42,7 +42,7 @@ function ObjectsBanner() {
     <Container className="bg-grey" fluid>
       <Container className="fr-py-10w">
         <Row horizontalAlign="center">
-          <Title as="h3" look="h5">
+          <Title as="h2" look="h5">
             {intl.formatMessage({ id: "home.objects.title" })}
           </Title>
         </Row>
@@ -69,7 +69,7 @@ function ObjectsBanner() {
                   href="/artwork/pictograms/buildings/school.svg#artwork-major"
                 />
               </svg>
-              <Title as="h5" className="fr-mb-1w">
+              <Title as="h3" className="fr-mb-1w">
                 {intl.formatMessage({ id: "home.objects.organizations" })}
               </Title>
               <hr className="fr-pb-2w" style={{ width: "60px" }} />
@@ -103,7 +103,7 @@ function ObjectsBanner() {
                   href="/artwork/pictograms/digital/avatar.svg#artwork-major"
                 />
               </svg>
-              <Title as="h5" className="fr-mb-1w">
+              <Title as="h3" className="fr-mb-1w">
                 {intl.formatMessage({ id: "home.objects.authors" })}
               </Title>
               <hr className="fr-pb-2w" style={{ width: "60px" }} />
@@ -137,7 +137,7 @@ function ObjectsBanner() {
                   href="/artwork/pictograms/institutions/money.svg#artwork-major"
                 />
               </svg>
-              <Title as="h5" className="fr-mb-1w">
+              <Title as="h3" className="fr-mb-1w">
                 {intl.formatMessage({ id: "home.objects.projects" })}
               </Title>
               <hr className="fr-pb-2w" style={{ width: "60px" }} />
@@ -171,7 +171,7 @@ function ObjectsBanner() {
                   href="/artwork/pictograms/leisure/book.svg#artwork-major"
                 />
               </svg>
-              <Title as="h5" className="fr-mb-1w">
+              <Title as="h3" className="fr-mb-1w">
                 {intl.formatMessage({ id: "home.objects.publications" })}
               </Title>
               <hr className="fr-pb-2w" style={{ width: "60px" }} />
@@ -205,7 +205,7 @@ function ObjectsBanner() {
                   href="/artwork/pictograms/document/contract.svg#artwork-major"
                 />
               </svg>
-              <Title as="h5" className="fr-mb-1w">
+              <Title as="h3" className="fr-mb-1w">
                 {intl.formatMessage({ id: "home.objects.patents" })}
               </Title>
               <hr className="fr-pb-2w" style={{ width: "60px" }} />

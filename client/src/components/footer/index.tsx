@@ -1,8 +1,8 @@
 import React from "react";
-import cn from 'classnames';
+import cn from "classnames";
 import { Col, Container, Link, Logo, Row, Title } from "@dataesr/dsfr-plus";
 import { IntlProvider, createIntl } from "react-intl";
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -34,8 +34,11 @@ export function Footer({
             <Row gutters verticalAlign="middle">
               <Col xs={12} lg={4}>
                 <Row horizontalAlign="left">
-                  <div className={styles['text-left']}>
-                    <Title as="h3" className={cn("fr-footer__top-cat", styles['text-left'])}>
+                  <div className={styles["text-left"]}>
+                    <Title
+                      as="h3"
+                      className={cn("fr-footer__top-cat", styles["text-left"])}
+                    >
                       {intl.formatMessage({
                         id: "layout.footer.top.about.help",
                       })}
@@ -49,7 +52,10 @@ export function Footer({
                         </Link>
                       </li>
                       <li>
-                        <Link className="fr-footer__top-link" href="/about/team">
+                        <Link
+                          className="fr-footer__top-link"
+                          href="/about/team"
+                        >
                           {intl.formatMessage({
                             id: "layout.footer.top.about.team",
                           })}
@@ -101,8 +107,14 @@ export function Footer({
               </Col>
               <Col xs={12} lg={4}>
                 <Row horizontalAlign="center">
-                  <div className={styles['text-center']}>
-                    <Title as="h3" className={cn("fr-footer__top-cat", styles['text-center'])}>
+                  <div className={styles["text-center"]}>
+                    <Title
+                      as="h3"
+                      className={cn(
+                        "fr-footer__top-cat",
+                        styles["text-center"]
+                      )}
+                    >
                       {intl.formatMessage({
                         id: "layout.footer.top.about.follow",
                       })}
@@ -147,8 +159,11 @@ export function Footer({
               </Col>
               <Col xs={12} lg={4}>
                 <Row horizontalAlign="right">
-                  <div className={styles['text-right']}>
-                    <Title as="h3" className={cn("fr-footer__top-cat", styles['text-right'])}>
+                  <div className={styles["text-right"]}>
+                    <Title
+                      as="h3"
+                      className={cn("fr-footer__top-cat", styles["text-right"])}
+                    >
                       {intl.formatMessage({
                         id: "layout.footer.top.about.also",
                       })}

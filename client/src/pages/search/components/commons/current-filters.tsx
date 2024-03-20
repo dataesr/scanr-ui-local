@@ -27,7 +27,7 @@ export default function CurrentFilters() {
       <Col xs="12">
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flexGrow: 1 }}>
-            <Title as="h2" className="fr-text--lg fr-text--bold fr-m-0">
+            <Title as="h1" className="fr-text--lg fr-text--bold fr-m-0">
               Filtres
             </Title>
           </div>

@@ -2,5 +2,6 @@
   "app.resources.breadcrumb.current": "Ressources",
   "app.resources.ref": "RÉFÉRENTIELS",
   "app.resources.source": "SOURCES",
+  "app.resources.source.title": "Les sources de données",
   "app.resources.intervenants.contributors": "ONT CONTRIBUÉ AU REPÉRAGE DE LEURS PROPRES PARTICIPANTS DES PROJETS H2020"
 }

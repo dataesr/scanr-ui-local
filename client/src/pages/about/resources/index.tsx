@@ -31,12 +31,17 @@ export default function Resources() {
   return (
     <IntlProvider messages={messages} locale="fr" defaultLocale="fr">
       <Container>
-        <Breadcrumb>
-          <Link href="/">Accueil</Link>
-          <Link>
-            {intl.formatMessage({ id: "app.resources.breadcrumb.current" })}
-          </Link>
-        </Breadcrumb>
+        <Container>
+          <Breadcrumb>
+            <Link href="/">Accueil</Link>
+            <Link>
+              {intl.formatMessage({ id: "app.resources.breadcrumb.current" })}
+            </Link>
+          </Breadcrumb>
+          <Title as="h1" look="h3" className="fr-mb-5w">
+            {intl.formatMessage({ id: "app.resources.source.title" })}
+          </Title>
+        </Container>
         <Row className="bordered-row ">
           <Col xs="12" lg="12" className="search-object fr-mb-5w">
             <svg
@@ -59,7 +64,7 @@ export default function Resources() {
                 href="/artwork/pictograms/digital/search.svg#artwork-major"
               />
             </svg>
-            <Title as="h5" className="fr-mb-1w">
+            <Title as="h2" className="fr-mb-1w">
               {intl.formatMessage({ id: "app.resources.ref" })}
             </Title>
           </Col>
@@ -150,7 +155,7 @@ export default function Resources() {
                 href="/artwork/pictograms/digital/data-visualization.svg#artwork-major"
               />
             </svg>
-            <Title as="h5" className="fr-mb-1w">
+            <Title as="h2" className="fr-mb-1w">
               {intl.formatMessage({ id: "app.resources.source" })}
             </Title>
           </Col>
@@ -290,7 +295,7 @@ export default function Resources() {
                 href="/artwork/pictograms/digital/search.svg#artwork-major"
               />
             </svg>
-            <Title as="h5" className="fr-mb-1w">
+            <Title as="h2" className="fr-mb-1w">
               {intl.formatMessage({
                 id: "app.resources.intervenants.contributors",
               })}
