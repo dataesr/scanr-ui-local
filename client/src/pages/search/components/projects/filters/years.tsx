@@ -7,14 +7,16 @@ import useUrl from "../../../hooks/useUrl";
 
 export default function ProjectYearFilter() {
   const intl = useIntl();
-  const { handleFilterChange, currentFilters } = useUrl();
+  const { handleRangeFilterChange, currentFilters } = useUrl();
   const { data = { byYear: [] } } = useAggregateData('filters')
-  const { byYear } = data as ProjectAggregations
-  if (!byYear.length) {
-    return null
-  }
+  const { byYear = [] } = data as ProjectAggregations
+
+  if (!byYear.length) return null;
   const min = currentFilters?.year?.values?.[0]?.value || byYear[0].value;
   const max = currentFilters?.year?.values?.[1]?.value || byYear[byYear.length - 1].value;
+
+  const defaultValues = [byYear[0].value, byYear[byYear.length - 1].value]
+
   return (
     <>
       <Text bold size="md" className="fr-mb-1v">
@@ -24,15 +26,15 @@ export default function ProjectYearFilter() {
         {intl.formatMessage({ id: "search.filters.projects.by-year-description" }, { min, max })}
       </Text>
       <RangeSlider
-        aria-label="Années de publication"
-        minValue={byYear[0].value}
-        maxValue={byYear[byYear.length - 1].value}
+        aria-label="Années de financement"
+        minValue={defaultValues[0]}
+        maxValue={defaultValues[1]}
         step={1}
-        height="80px"
+        height="100px"
         data={byYear.map((year) => year.count)}
         color="green-emeraude"
-        defaultValue={[byYear[0].value, byYear[byYear.length - 1].value]}
-        onChangeEnd={(value) => handleFilterChange({ field: 'year', value: value, filterType: 'range' })}
+        defaultValue={defaultValues}
+        onChangeEnd={(value) => handleRangeFilterChange({ field: 'year', value: value })}
         tooltipLabel={(value, year) => (
           <>
             {intl.formatMessage({ id: "search.filters.projects.by-year-tooltip" }, { year })}

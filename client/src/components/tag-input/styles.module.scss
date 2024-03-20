@@ -1,0 +1,51 @@
+.taginput-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 2.75rem;
+  max-height: fit-content !important;
+
+  &:focus-within {
+    outline-offset: 2px;
+    outline-width: 2px;
+    outline-color: #0a76f6;
+    outline-style: solid;
+  }
+
+  .fr-tags-group {
+    display: centents;
+
+    .fr-badge {
+      text-transform: none !important;
+    }
+  }
+}
+
+.taginput-input {
+  flex-grow: 1;
+
+  &:focus {
+    outline-style: none !important;
+  }
+}
+
+.taginput-close {
+  border-radius: 10000px;
+  flex: 0 0 auto;
+  display: inline-block;
+  --icon-size: 1.625rem;
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.taginput-badge-close {
+  flex: 0 0 auto;
+  display: inline-block;
+  --icon-size: 1.25rem;
+  width: var(--icon-size);
+  height: var(--icon-size);
+
+  &:hover {
+    background-color: transparent !important;
+  }
+}

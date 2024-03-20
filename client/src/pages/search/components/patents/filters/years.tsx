@@ -8,19 +8,19 @@ import { PatentAggregations } from "../../../../../types/patent";
 const KEEP_PATENTS_AFTER = 2009;
 
 export default function PatentYearFilter() {
-  const { handleFilterChange } = useUrl();
+  const { handleRangeFilterChange } = useUrl();
   const intl = useIntl();
   const { data = { byYear: [] } } = useAggregateData("filters");
   const { byYear } = data as PatentAggregations;
 
-  if (!byYear.length) {
-    return null;
-  }
 
-  const _byYear = byYear.filter(
+  const _byYear = byYear?.filter(
     (year) => parseInt(year.value, 10) > KEEP_PATENTS_AFTER
   );
 
+  if (!_byYear.length) {
+    return null;
+  }
   return (
     <>
       <Text bold size="md" className="fr-mb-1v">
@@ -30,18 +30,18 @@ export default function PatentYearFilter() {
         <FormattedMessage id="search.filters.patent.by-year-description" />
       </Text>
       <RangeSlider
-        aria-label="Années de publication"
+        aria-label="Années de première publication"
         minValue={_byYear[0].value}
         maxValue={_byYear[_byYear.length - 1].value}
         step={1}
+        height="100px"
         data={_byYear.map((year) => year.count)}
-        color="green-emeraude"
+        color="purple-glycine"
         defaultValue={[_byYear[0].value, _byYear[_byYear.length - 1].value]}
         onChangeEnd={(value) =>
-          handleFilterChange({
+          handleRangeFilterChange({
             field: "year",
             value: value,
-            filterType: "range",
           })
         }
         tooltipLabel={(value, year) => (

@@ -34,7 +34,6 @@ const NETWORK_BADGES_CODES = [
   "gifas",
   "gicat",
   "rescurie",
-  "allenvi",
   "itagricole",
   "irt",
   "polecompetitivite",
@@ -228,6 +227,8 @@ export default function OrganizationPresentation({
                     titleKey="organizations.section.networks.eat.title"
                     icon="community-fill"
                   />
+                  {/* 
+                  TODO: Uncomment when the data is available
                   <OrganizationNetworks
                     data={data.relations?.filter(
                       (item) =>
@@ -243,7 +244,7 @@ export default function OrganizationPresentation({
                     )}
                     titleKey="organizations.section.networks.spinnof-of.title"
                     icon="community-fill"
-                  />
+                  /> */}
                   <OrganizationNetworksBadges
                     data={networkBadges}
                     titleKey="organizations.section.networks.badges.title"

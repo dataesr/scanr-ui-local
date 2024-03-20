@@ -4,7 +4,7 @@ import useUrl from "../../../hooks/useUrl";
 
 export default function PublicationAccessFilter() {
   const intl = useIntl();
-  const { currentFilters, handleFilterChange } = useUrl()
+  const { currentFilters, handleBoolFilterChange } = useUrl()
 
   return (
     <>
@@ -14,9 +14,10 @@ export default function PublicationAccessFilter() {
       <Toggle
         className="fr-mb-2w"
         label={intl.formatMessage({ id: "search.filters.publications.by-is-oa-label" })}
-        value={currentFilters.isOa?.values?.[0]?.value}
-        onChange={(e) => handleFilterChange({ field: 'isOa', value: e.target.checked, filterType: "bool", label: "Open access seulement" })}
-
+        checked={!!currentFilters.isOa?.values?.[0]?.value}
+        onChange={(e) => handleBoolFilterChange(
+          { field: 'isOa', value: e.target.checked, label: "Open access seulement" })
+        }
       />
     </>
   )

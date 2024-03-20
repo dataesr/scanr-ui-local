@@ -76,10 +76,10 @@ export default function PublicationPage({ data }: { data: Publication }) {
                 size="lead"
                 title={intl.formatMessage({ id: "publications.section.fundings" })}
                 icon="money-euro-circle-line"
-                show={!!data?.projects?.length}
+                show={!!data?.projects?.filter(p => p.label)?.length}
               >
                 <div className="result-list">
-                  {data?.projects?.map((project) => (
+                  {data?.projects?.filter(p => p.label)?.map((project) => (
                     <ProjectItem data={project} key={project.id} />
                   ))}
                 </div>

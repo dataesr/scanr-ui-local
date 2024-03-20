@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useLayoutEffect, useMemo } from "react";
 import cn from "classnames";
 import {
   useSliderThumb,
@@ -45,6 +45,7 @@ function Thumb(props) {
 export function RangeSlider({ color, data: counts, height = "80px", tooltipLabel, ...props }) {
   const trackRef = React.useRef(null);
   const [tooltip, setTooltip] = React.useState(null);
+  const [margins, setMargins] = React.useState(0);
 
   const numberFormatter = useNumberFormatter(props.formatOptions);
   const state = useSliderState({ ...props, numberFormatter });
@@ -67,9 +68,18 @@ export function RangeSlider({ color, data: counts, height = "80px", tooltipLabel
     return count * 100 / _100;
   })
 
+  useLayoutEffect(() => {
+    const barWidth = document.getElementsByClassName(styles.histogram__bar)?.[0].getBoundingClientRect().width;
+    if (barWidth) {
+      setMargins(barWidth / 2);
+    }
+  }, []);
+
+
+
   return (
-    <div {...groupProps} className={cn(styles.slider, styles[`slider--${color}`])}>
-      {data.length ? <div className={cn(styles.histogram)} style={{ height }}>
+    <div {...groupProps} className={cn(styles.slider, styles[`slider--${color}`])} style={{ paddingLeft: `${margins}px`, paddingRight: `${margins}px` }}>
+      {data.length ? <div className={cn(styles.histogram)} style={{ height, marginLeft: `-${margins}px`, marginRight: `-${margins}px` }}>
         {data.map((count, i) => (
           <div
             onMouseEnter={() => setTooltip(`tooltip-${i}`)}
@@ -79,7 +89,7 @@ export function RangeSlider({ color, data: counts, height = "80px", tooltipLabel
             aria-describedby={`tooltip-${i}`}
           >
             <div
-              className={cn(styles.histogram__bar, { [styles.unselected]: isUnselected(rangeArray?.[i]) })}
+              className={cn(styles.histogram__bar, { [styles.selected]: !isUnselected(rangeArray?.[i]), [styles.unselected]: isUnselected(rangeArray?.[i]) })}
               style={{ height: `${count}%` }}
             >
               {tooltipLabel && (<span

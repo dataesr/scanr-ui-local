@@ -22,7 +22,7 @@ export default function PublicationTypeFilter() {
           <SelectableTag
             selected={currentFilters.type?.values?.map(v => v.value)?.includes(type.value)}
             key={type.value}
-            onClick={() => handleFilterChange({ field: 'type', value: type.value })}
+            onClick={() => handleFilterChange({ field: 'type', value: type.value, label: type.label })}
           >
             {type.label}
           </SelectableTag>

@@ -4,12 +4,13 @@ import { ApiTypes } from "../../../types/commons";
 
 type FilterValues = {
   label?: string;
-  value: string | number;
+  value: string | number | boolean;
 }[];
 export type Filter = {
   type: "terms" | "range" | "bool";
   values: FilterValues;
   operator?: "and" | "or";
+  reset?: [number | string, number | string];
 };
 export type Filters = {
   [key: string]: Filter;
@@ -23,13 +24,15 @@ export function parseSearchFiltersFromURL(
 }
 
 export function stringifySearchFiltersForURL(filters: Filters): string {
+  
   if (!filters) return "";
+  if (!Object.keys(filters).length) return "";
   return encodeURIComponent(JSON.stringify(filters));
 }
 
 function fromFilterToElasticQuery(
   field: string,
-  value: (string | number)[],
+  value: (string | number | boolean)[],
   type
 ): Record<string, unknown> {
   if (type === "bool") {
@@ -95,24 +98,61 @@ export default function useUrl() {
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));
   const filters = filtersToElasticQuery(currentFilters);
+  
+  const handleDeleteFilter = useCallback(
+    ({ field }: { field: string}) => {
+      const { [field]: currentField, ...nextFilters } = currentFilters;
+      if (!currentField) return;
+      if (!Object.keys(nextFilters).length) {
+        searchParams.delete("filters");
+        return setSearchParams(searchParams);
+      }
+      searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
+      return setSearchParams(searchParams);
+    },
+    [currentFilters, searchParams, setSearchParams]
+  );
+
+  const handleRangeFilterChange = useCallback(
+    ({ field, value }: { field: string, value?: [number, number] }) => {
+      const prev = { ...currentFilters };
+      if (!value) return handleDeleteFilter({ field });
+      const nextFilters: Filters = {
+        ...prev,
+        [field]: {
+          values: [{ value: value?.[0] }, { value: value?.[1] }],
+          type: "range" as const,
+        },
+      };
+      searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
+      return setSearchParams(searchParams);
+    },
+    [currentFilters, handleDeleteFilter, searchParams, setSearchParams]
+  );
+
+  const handleBoolFilterChange = useCallback(
+    ({ field, value, label }: { field: string, value: boolean, label?: string }) => {
+      const prev = { ...currentFilters };      
+      if (!value) return handleDeleteFilter({ field });
+      const nextFilters = {
+        ...prev,
+        [field]: {
+          values: [{ value, label }],
+          type: "bool" as const,
+        },
+      };
+      searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
+      return setSearchParams(searchParams);
+      
+    },
+    [currentFilters, handleDeleteFilter, searchParams, setSearchParams]
+  );
 
   const handleFilterChange = useCallback(
     ({ field, value, filterType = "terms", label = null }) => {
       if (!field || !value) return;
       const prev = { ...currentFilters };
       const filter = prev?.[field];
-      if (filterType === "range") {
-        const nextFilters = {
-          ...prev,
-          [field]: {
-            values: [{ value: value?.[0] }, { value: value?.[1] }],
-            type: filterType,
-          },
-        };
-        searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
-        setSearchParams(searchParams);
-        return;
-      }
       if (!filter) {
         const nextFilters = {
           ...prev,
@@ -131,6 +171,9 @@ export default function useUrl() {
         ?.includes(value)
         ? filter?.values?.filter((el) => el.value !== value)
         : [...filter.values, { value, label }];
+      if (!nextFilterValues.length && filter?.operator !== "and") {
+        return handleDeleteFilter({ field });
+      }
       const nextFilters = {
         ...prev,
         [field]: { ...filter, values: nextFilterValues },
@@ -139,20 +182,9 @@ export default function useUrl() {
       searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
       setSearchParams(searchParams);
     },
-    [currentFilters, searchParams, setSearchParams]
+    [currentFilters, handleDeleteFilter, searchParams, setSearchParams]
   );
 
-  const handleDeleteFilter = useCallback(
-    ({ field }) => {
-      if (!field) return;
-      const prev = { ...currentFilters };
-      const { [field]: currentField, ...nextFilters } = prev;
-      if (!currentField) return;
-      searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
-      setSearchParams(searchParams);
-    },
-    [currentFilters, searchParams, setSearchParams]
-  );
 
   const setOperator = useCallback(
     (field, operator = "and") => {
@@ -190,6 +222,8 @@ export default function useUrl() {
       filters,
       setOperator,
       handleDeleteFilter,
+      handleRangeFilterChange,
+      handleBoolFilterChange,
     };
   }, [
     api,
@@ -201,6 +235,8 @@ export default function useUrl() {
     currentQuery,
     setOperator,
     handleDeleteFilter,
+    handleRangeFilterChange,
+    handleBoolFilterChange,
   ]);
 
   return values;

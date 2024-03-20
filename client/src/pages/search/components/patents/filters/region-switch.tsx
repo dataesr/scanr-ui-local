@@ -4,7 +4,7 @@ import useUrl from "../../../hooks/useUrl";
 
 export default function PatentRegionFilter() {
   const intl = useIntl();
-  const { handleFilterChange, currentFilters } = useUrl();
+  const { handleBoolFilterChange, currentFilters } = useUrl();
 
   return (
     <>
@@ -12,42 +12,38 @@ export default function PatentRegionFilter() {
         <FormattedMessage id="search.filters.patents.regions" />
       </Text>
       <Toggle
-        className="fr-mb-2w"
         label={intl.formatMessage({
           id: "search.filters.patents.WO",
         })}
-        value={currentFilters.isInternational?.values?.[0]?.value}
+        checked={!!currentFilters.isInternational?.values?.[0]?.value}
         onChange={(e) =>
-          handleFilterChange({
+          handleBoolFilterChange({
             field: "isInternational",
             value: e.target.checked,
-            filterType: "bool",
             label: "Brevets internationaux seulement",
           })
         }
       />
 
       <Toggle
-        className="fr-mb-2w"
         label={intl.formatMessage({
           id: "search.filters.patents.EP",
         })}
-        value={currentFilters.isOeb?.values?.[0]?.value}
+        checked={!!currentFilters.isOeb?.values?.[0]?.value}
         onChange={(e) =>
-          handleFilterChange({
+          handleBoolFilterChange({
             field: "isOeb",
             value: e.target.checked,
-            filterType: "bool",
             label: "Brevets européens seulement",
           })
         }
       />
       <Toggle
+        checked={!!currentFilters.isGranted?.values?.[0]?.value}
         onClick={() =>
-          handleFilterChange({
+          handleBoolFilterChange({
             field: "isGranted",
             value: true,
-            filterType: "bool",
             label: "Les brevets protégés uniquement",
           })
         }

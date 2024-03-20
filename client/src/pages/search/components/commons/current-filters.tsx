@@ -18,10 +18,10 @@ export default function CurrentFilters() {
     handleFilterChange,
     handleDeleteFilter,
     clearFilters,
+    handleRangeFilterChange,
     api,
   } = useUrl();
   const { isLoading, isError } = useAggregateData("filters");
-
   return (
     <Row gutters className="fr-mb-1w">
       <Col xs="12">
@@ -60,19 +60,37 @@ export default function CurrentFilters() {
             </Text>
             <br />
             <Row verticalAlign="middle">
-              {filter.type !== "range" ? (
+              {filter.type === "range" && (
+                <Tag
+                  as="button"
+                  className="fr-mb-1v custom-dismissible-tag"
+                  onClick={() => handleRangeFilterChange({ field })}
+                >
+                  {filter.values?.[0]?.value} - {filter.values?.[1]?.value}
+                </Tag>
+              )}
+              {filter.type === "bool" && (
+                filter.values?.map(({ value, label }) => (
+                  <>
+                    <Tag
+                      as="button"
+                      key={value.toString()}
+                      className="fr-mb-1v custom-dismissible-tag"
+                      onClick={() => handleDeleteFilter({ field })}
+                    >
+                      {label || value?.toString()}
+                    </Tag>
+                  </>
+                ))
+              )}
+              {filter.type === "terms" && (
                 filter.values?.map(({ value, label }, i) => (
                   <>
                     <Tag
                       as="button"
-                      icon="delete-bin-line"
-                      iconPosition="right"
-                      key={value}
-                      className="fr-mb-1v"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleFilterChange({ field, value });
-                      }}
+                      key={value.toString()}
+                      className="fr-mb-1v custom-dismissible-tag"
+                      onClick={() => handleFilterChange({ field, value })}
                     >
                       {label || value?.toString()}
                     </Tag>
@@ -81,19 +99,6 @@ export default function CurrentFilters() {
                       : null}
                   </>
                 ))
-              ) : (
-                <Tag
-                  as="button"
-                  icon="delete-bin-line"
-                  iconPosition="right"
-                  className="fr-mb-1v"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleDeleteFilter({ field });
-                  }}
-                >
-                  {filter.values?.[0]?.value} - {filter.values?.[1]?.value}
-                </Tag>
               )}
             </Row>
           </Col>
