@@ -4,7 +4,7 @@ import { ApiTypes } from "../../../types/commons";
 
 type FilterValues = {
   label?: string;
-  value: string | number | boolean;
+  value: string | number;
 }[];
 export type Filter = {
   type: "terms" | "range" | "bool";
@@ -137,7 +137,7 @@ export default function useUrl() {
       const nextFilters = {
         ...prev,
         [field]: {
-          values: [{ value, label }],
+          values: [{ value: value.toString(), label }],
           type: "bool" as const,
         },
       };
