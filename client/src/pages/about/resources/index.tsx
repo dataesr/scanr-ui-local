@@ -116,6 +116,14 @@ export default function Resources() {
               <img src="/img/logo/logo-wikidata.svg" alt="Logo wikidata" />
             </Link>
           </Col>
+          <Col xs="3" lg="3" className="solo-centered-col">
+            <Link
+              className="fr-footer__bottom-link"
+              href="/about/resources/vos"
+            >
+              <img src="/img/logo/vos-logo.png" alt="Logo vos" />
+            </Link>
+          </Col>
           <Col xs="3" lg="3" className="centered-col">
             <Link
               className="fr-footer__bottom-link"

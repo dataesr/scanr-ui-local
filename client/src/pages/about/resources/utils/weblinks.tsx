@@ -11,6 +11,12 @@ export const websiteURL = (id: string) => {
         website: "https://www.open.ac.uk/",
         wikipedia: "https://fr.wikipedia.org/wiki/Open_University",
       };
+    //   A REMPLACER
+    // case "vos":
+    //   return {
+    //     website: "https://www.open.ac.uk/",
+    //     wikipedia: "https://fr.wikipedia.org/wiki/Open_University",
+    //   };
     case "patstat":
       return {
         website: "https://www.epo.org/en",

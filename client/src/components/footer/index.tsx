@@ -81,7 +81,7 @@ export function Footer({
                         })}
                       </Link>
                     </li> */}
-                      <li>
+                      {/* <li>
                         <Link
                           className="fr-footer__top-link"
                           href="/about/glossary"
@@ -90,7 +90,7 @@ export function Footer({
                             id: "layout.footer.top.about.glossary",
                           })}
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link
                           className="fr-footer__top-link"

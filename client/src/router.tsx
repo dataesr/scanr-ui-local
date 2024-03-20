@@ -18,7 +18,7 @@ import HEPartners from "./pages/search/he";
 import Resources from "./pages/about/resources";
 import ResourcesInformations from "./pages/about/resources/[id]";
 import Tutorial from "./pages/about/tutorial";
-import Glossary from "./pages/about/glossary";
+// import Glossary from "./pages/about/glossary";
 import ContactPage from "./pages/about/contact";
 import BugsReport from "./pages/bugs/[api]/[id]";
 import PublicationIdParser from "./components/publication-id-parser";
@@ -53,7 +53,7 @@ export default function Router() {
             element={<ResourcesInformations />}
           />
           {/* <Route path="/about/tutorial" element={<Tutorial />} /> */}
-          <Route path="/about/glossary" element={<Glossary />} />
+          {/* <Route path="/about/glossary" element={<Glossary />} /> */}
           <Route path="/bugs/:api/:id" element={<BugsReport />} />
           <Route path="/publications/:id" element={<Publication />} />
           <Route path="/publication/:id" element={<PublicationIdParser />} />
