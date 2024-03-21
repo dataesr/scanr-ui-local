@@ -12,7 +12,7 @@ type Data = Participant & {
 
 type ProjectParticipantsProps = {
   data: Data[],
-  title: string,
+  title?: string,
   description?: React.ReactNode,
   icon?: string,
   size?: "hero" | "lead" | "lg" | "md" | "sm" | "xs"
@@ -45,7 +45,7 @@ export default function ProjectParticipants({ title, description, size, icon, da
 
   return (
     <div>
-      <TitlePart />
+      {title && <TitlePart />}
       <div className="fr-py-3w">
         {
           data?.map((part, i) => (
@@ -55,9 +55,9 @@ export default function ProjectParticipants({ title, description, size, icon, da
                   {
                     part.structure?.id ? (
                       <Link href={`/organizations/${part.structure?.id}`}>
-                        {getLangFieldValue(locale)(part.structure?.label)}
+                        {getLangFieldValue(locale)(part.structure?.label) || part.label?.default?.split('__')?.[0]}
                       </Link>
-                    ) : part.label?.default?.split('__')[0]
+                    ) : part.label?.default?.split('__')?.[0]
                   }
                   {part.funding && <Text className="fr-card__detail" size="sm">
                     <i>
@@ -78,7 +78,7 @@ export default function ProjectParticipants({ title, description, size, icon, da
                           <Link href={`/organizations/${subPart.structure?.id}`}>
                             {getLangFieldValue(locale)(subPart.structure?.label)}
                           </Link>
-                        ) : subPart.label?.default?.split('__')[0]
+                        ) : subPart.label?.default?.split('__')?.[0]
                       }
                     </Text>
                   </LinkCard>

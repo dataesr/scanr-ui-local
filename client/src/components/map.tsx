@@ -2,10 +2,7 @@
 /* eslint-disable */
 // disable typescript for this file
 // @ts-nocheck
-import { useMemo } from "react";
 import { divIcon, latLngBounds } from "leaflet";
-import { GeoJSON } from "react-leaflet";
-
 import "leaflet/dist/leaflet.css";
 import {
   MapContainer,
@@ -30,7 +27,6 @@ export type SetMapProps = {
 export type MapProps = {
   height?: string;
   markers: MapMarkers[];
-  onMarkerDragEnd?: (e: DragEvent) => void;
   width?: string;
   zoom?: number;
 };
@@ -63,20 +59,13 @@ function SetMap({ markers }: SetMapProps) {
 export default function Map({
   height,
   markers,
-  onMarkerDragEnd,
   width,
   zoom = 6,
-  iso2Codes = [],
-  mapInstance,
 }: MapProps) {
-  const eventHandlers = useMemo(
-    () => ({
-      dragend(e: DragEvent) {
-        return onMarkerDragEnd(e);
-      },
-    }),
-    [onMarkerDragEnd]
-  );
+
+  console.log("MARKERS", markers);
+
+
   const theme =
     window.localStorage.getItem("prefers-color-scheme") === "dark"
       ? "dark"
@@ -84,7 +73,7 @@ export default function Map({
 
   return (
     <MapContainer
-      attributionControl
+      attributionControl={false}
       center={[48.866667, 2.333333]}
       scrollWheelZoom={false}
       style={{ height, width }}
@@ -99,8 +88,6 @@ export default function Map({
         <Marker
           zIndexOffset={marker?.zIndexOffset || 10000}
           icon={getIcon(marker.color)}
-          draggable={!!onMarkerDragEnd}
-          eventHandlers={eventHandlers}
           key={i}
           position={marker.latLng}
         >

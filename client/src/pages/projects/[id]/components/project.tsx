@@ -154,11 +154,6 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                   {data.domains?.filter(({ type }) => type === "priorities").map(({ label }) => getLangFieldValue(locale)(label)).join(' – ')}
                 </ProjectProgram>
               </PageSection>
-              {/* <PageSection size="md" show title={intl.formatMessage({ id: "projects.section.programs" })} description="">
-                <Notice type="info" closeMode="disallow">
-                  Ici seront listés les appels à projets et programmes du projet.
-                </Notice>
-              </PageSection> */}
               <PageSection
                 size="lead"
                 show={!!participantsWithSubParticipants?.length}
@@ -179,9 +174,9 @@ export default function ProjectPresentation({ data }: { data: Project }) {
               >
                 <Row gutters>
                   <Col xs="12">
-                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.french" })} description="" data={frenchParticipants} />
-                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.foreign" })} description="" data={foreignParticipants} />
-                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.undefined" })} description="" data={undefinedParticipants} />
+                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.french" })} data={frenchParticipants} />
+                    <ProjectParticipants size="md" title={intl.formatMessage({ id: "projects.section.participants.foreign" })} data={foreignParticipants} />
+                    <ProjectParticipants size="md" data={undefinedParticipants} />
                   </Col>
                   {markers.length > 0 ? (
                     <Modal id="participants-map" size="xl" title={intl.formatMessage({ id: "projects.section.participants.map-title" })}>

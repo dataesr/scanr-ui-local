@@ -12,7 +12,8 @@ export default function OrganizationLocalizations({ data: localizations }: { dat
       .filter((element) => element)
       .join(', '),
   })).filter((marker) => marker.latLng[0] && marker.latLng[1]);
-  if (!mainAddress.address) return null;
+  console.log(localizations, markers, mainAddress);
+
   return (
     <div className="fr-card fr-card--no-border fr-card--sm fr-mt-1w fix-height">
       <div style={{ padding: "0" }} className="fr-card__body">
@@ -20,8 +21,8 @@ export default function OrganizationLocalizations({ data: localizations }: { dat
           <ul style={{ listStyle: "none" }}>
             <li key="main" >
               <Text bold size="sm" className="fr-card__detail fr-icon-map-pin-2-fill fr-pb-1w fr-pr-1w">
-                {mainAddress.address}
-                {mainAddress.address && <br />}
+                {mainAddress?.address}
+                {mainAddress?.address && <br />}
                 {[mainAddress?.postcode, mainAddress?.city, mainAddress?.country].filter((element) => element).join(', ')}
               </Text>
               <hr className="fr-pb-1w" style={{ marginLeft: "10%", width: "90%" }} />
@@ -29,8 +30,8 @@ export default function OrganizationLocalizations({ data: localizations }: { dat
             {localizations?.filter((a) => !a.main)?.map((address, i) => (
               <li key={i}>
                 <Text size="sm" className="fr-card__detail fr-icon-map-pin-2-line fr-pb-1w fr-pr-1w">
-                  {address.address}
-                  {address.address && <br />}
+                  {address?.address}
+                  {address?.address && <br />}
                   {[address?.postcode, address?.city, address?.country].filter((element) => element).join(', ')}
                 </Text>
                 <hr className="fr-pb-1w" style={{ marginLeft: "10%", width: "90%" }} />
