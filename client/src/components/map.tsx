@@ -56,15 +56,8 @@ function SetMap({ markers }: SetMapProps) {
   return null;
 }
 
-export default function Map({
-  height,
-  markers,
-  width,
-  zoom = 6,
-}: MapProps) {
-
+export default function Map({ height, markers, width, zoom = 6 }: MapProps) {
   console.log("MARKERS", markers);
-
 
   const theme =
     window.localStorage.getItem("prefers-color-scheme") === "dark"
@@ -98,7 +91,9 @@ export default function Map({
                 <br />
               </>
             )}
-            {marker.address}
+            {marker.address
+              .replace(/undefined,/g, " ")
+              .replace(/undefined/g, " ")}
           </Tooltip>
         </Marker>
       ))}
