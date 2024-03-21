@@ -62,7 +62,7 @@ export default function Truncate({ children, className, lines = 5 }: { children:
         <div ref={truncateInnerEl}>
           {children}
         </div>
-      </div >
+      </div>
       {clamp && (<Row horizontalAlign="center">
         <Button
           className="fr-mt-2w"
