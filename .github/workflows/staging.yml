@@ -8,7 +8,7 @@ on:
 env:
   DEPLOYMENT: scanr-next-gen
   DEPLOYMENT_NAMESPACE: scanr
-  DEPLOYMENT_URL: https://bso.staging.dataesr.ovh
+  DEPLOYMENT_URL: https://scanr.staging.dataesr.ovh
   MM_NOTIFICATION_CHANNEL: bots
 
 jobs:
@@ -61,13 +61,13 @@ jobs:
           restart: ${{ env.DEPLOYMENT }}
     
 
-  # notify:
-  #   needs: deploy
-  #   if: always()
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: dataesr/mm-notifier-action@v1.0.2
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN}}
-  #         mattermost_webhook_url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-  #         mattermost_channel: ${{ env.MM_NOTIFICATION_CHANNEL}}
+  notify:
+    needs: deploy
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dataesr/mm-notifier-action@v1.0.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN}}
+          mattermost_webhook_url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+          mattermost_channel: ${{ env.MM_NOTIFICATION_CHANNEL}}
