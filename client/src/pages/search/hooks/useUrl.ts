@@ -98,19 +98,21 @@ export default function useUrl() {
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));
   const filters = filtersToElasticQuery(currentFilters);
+
+  const clearFilters = useCallback(() => {
+    searchParams.delete("filters")
+    setSearchParams(searchParams)
+  }, [searchParams, setSearchParams])
   
   const handleDeleteFilter = useCallback(
     ({ field }: { field: string}) => {
       const { [field]: currentField, ...nextFilters } = currentFilters;
       if (!currentField) return;
-      if (!Object.keys(nextFilters).length) {
-        searchParams.delete("filters");
-        return setSearchParams(searchParams);
-      }
+      if (!Object.keys(nextFilters).length) return clearFilters();
       searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
       return setSearchParams(searchParams);
     },
-    [currentFilters, searchParams, setSearchParams]
+    [clearFilters, currentFilters, searchParams, setSearchParams]
   );
 
   const handleRangeFilterChange = useCallback(
@@ -205,11 +207,6 @@ export default function useUrl() {
     },
     [searchParams, setSearchParams]
   )
-
-  const clearFilters = useCallback(() => {
-    searchParams.delete("filters")
-    setSearchParams(searchParams)
-  }, [searchParams, setSearchParams])
 
   const values = useMemo(() => {
     return {

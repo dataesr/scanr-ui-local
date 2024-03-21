@@ -109,6 +109,7 @@
   "search.filters.current.patents.isInternational": "Région selectionnée",
   "search.filters.current.patents.isOeb": "Région selectionnée",
   "search.filters.current.patents.isGranted": "Les brevets délivrés",
+  "search.filters.current.patents.affiliations.id": "Filtrer par déposant",
   "search.top.patent.family.grandtedBadge": "Brevets délivrés",
   "search.filters.see-more": "En voir plus ({count})",
   "search.filters.see-less": "Réduire",
