@@ -31,6 +31,7 @@ function calculateAccomplishment(startDate, endDate) {
 const typeLogoMapping = {
   anr: '/img/logo/logo-anr.svg',
   h2020: '/img/logo/logo-europe.svg',
+  'horizon europe': '/img/logo/logo-europe.svg',
   fp7: '/img/logo/logo-fp7.svg',
 }
 
