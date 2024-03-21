@@ -1,0 +1,14 @@
+{
+  "contact.thanks.message": "Merci pour votre message, nous vous répondrons dans les plus brefs délais.",
+  "contact.thanks.return": "Retour",
+  "contact.error.message": "Une erreur est survenue lors de l'envoi de votre message, veuillez réessayer ultérieurement.",
+  "contact.error.return": "Retour",
+  "contact.error.retry": "Réessayer",
+  "contact.form.name": "Votre nom et prénom",
+  "contact.form.email": "Renseignez votre email",
+  "contact.form.email.hint": "Cet email sera utilisé que pour vous informer de la prise en compte de votre contribution.",
+  "contact.form.organization": "Votre organisation",
+  "contact.form.position": "Votre fonction",
+  "contact.form.message": "Votre message",
+  "contact.form.submit": "Envoyer le message"
+}

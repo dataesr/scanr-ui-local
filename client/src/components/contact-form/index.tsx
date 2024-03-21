@@ -1,8 +1,18 @@
-import { Button, ButtonGroup, Notice, TextArea, TextInput } from "@dataesr/dsfr-plus";
+import { Button, ButtonGroup, Notice, TextArea, TextInput, useDSFRConfig } from "@dataesr/dsfr-plus";
 import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { createIntl, RawIntlProvider } from "react-intl";
+
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
 
 type FormState = {
   name?: string;
@@ -36,6 +46,8 @@ type Props = {
 
 
 export default function ContactForm({ id, type }: Props) {
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
   const navigate = useNavigate();
   const api = (id && type) ? "contribute" : "contact"
   const [thanks, setThanks] = useState(false);
@@ -61,101 +73,106 @@ export default function ContactForm({ id, type }: Props) {
 
   if (thanks) {
     return (
-      <div>
+      <RawIntlProvider value={intl}>
         <Notice className="fr-mb-2w" type="success" closeMode="disallow">
-          <span>Merci pour votre message, nous vous répondrons dans les plus brefs délais.</span>
+          <span>{intl.formatMessage({ id: "contact.thanks.message" })}</span>
           <ButtonGroup className="fr-mt-5w" isInlineFrom="xs">
             <Button
               variant="secondary"
               onClick={() => navigate(-1)}
             >
-              Retour
+              {intl.formatMessage({ id: "contact.thanks.return" })}
             </Button>
           </ButtonGroup>
         </Notice>
-      </div >
+      </RawIntlProvider >
     );
   }
   if (isError) {
     return (
-      <div>
+      <RawIntlProvider value={intl}>
         <Notice className="fr-mb-2w" type="error" closeMode="disallow">
-          <span>Une erreur s'est produite. Veuillez réessayer plus tard.</span>
+          <span>
+            {intl.formatMessage({ id: "contact.error.message" })}
+          </span>
           <ButtonGroup className="fr-mt-5w" isInlineFrom="xs">
             <Button
               onClick={() => {
                 setThanks(false)
               }}
             >
-              Réessayer
+              {intl.formatMessage({ id: "contact.error.retry" })}
             </Button>
             <Button
               variant="secondary"
               onClick={() => navigate(-1)}
             >
-              Retour
+              {intl.formatMessage({ id: "contact.error.return" })}
             </Button>
           </ButtonGroup>
         </Notice>
-      </div >
+      </RawIntlProvider >
     );
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        mutate(form)
-      }
-      }
-    >
-      <TextInput
-        value={form.name}
-        onChange={(e) => updateForm({ name: e.target.value })}
-        label="Votre nom et prénom"
-        required
-        type="text"
-        message={errors?.name}
-        messageType={errors?.name ? "error" : undefined}
-        disableAutoValidation
+    <RawIntlProvider value={intl}>
 
-      />
-      <TextInput
-        value={form.email}
-        onChange={(e) => updateForm({ email: e.target.value })}
-        label="Renseignez votre email"
-        required
-        type="email"
-        hint="Cet email sera utilisé que pour vous informer de la prise en compte de votre contribution."
-        disableAutoValidation
-        message={errors?.email}
-        messageType={errors?.email ? "error" : undefined}
-      />
-      <TextInput
-        value={form.organization}
-        onChange={(e) => updateForm({ organization: e.target.value })}
-        label="Votre organisation"
-        type="text"
-        disableAutoValidation
-      />
-      <TextInput
-        value={form.fonction}
-        onChange={(e) => updateForm({ fonction: e.target.value })}
-        label="Votre fonction"
-        type="text"
-        disableAutoValidation
-      />
-      <TextArea
-        value={form.message}
-        onChange={(e) => updateForm({ message: e.target.value })}
-        label="Votre message"
-        required
-        rows={10}
-        message={errors?.message}
-        messageType={errors?.message ? "error" : undefined}
-        disableAutoValidation
-      />
-      <Button disabled={isPending} type="submit">Envoyer le message</Button>
-    </form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutate(form)
+        }}
+      >
+        <TextInput
+          value={form.name}
+          onChange={(e) => updateForm({ name: e.target.value })}
+          label={intl.formatMessage({ id: "contact.form.name" })}
+          required
+          type="text"
+          message={errors?.name}
+          messageType={errors?.name ? "error" : undefined}
+          disableAutoValidation
+
+        />
+        <TextInput
+          value={form.email}
+          onChange={(e) => updateForm({ email: e.target.value })}
+          label={intl.formatMessage({ id: "contact.form.email" })}
+          required
+          type="email"
+          hint={intl.formatMessage({ id: "contact.form.email.hint" })}
+          disableAutoValidation
+          message={errors?.email}
+          messageType={errors?.email ? "error" : undefined}
+        />
+        <TextInput
+          value={form.organization}
+          onChange={(e) => updateForm({ organization: e.target.value })}
+          label={intl.formatMessage({ id: "contact.form.organization" })}
+          type="text"
+          disableAutoValidation
+        />
+        <TextInput
+          value={form.fonction}
+          onChange={(e) => updateForm({ fonction: e.target.value })}
+          label={intl.formatMessage({ id: "contact.form.fonction" })}
+          type="text"
+          disableAutoValidation
+        />
+        <TextArea
+          value={form.message}
+          onChange={(e) => updateForm({ message: e.target.value })}
+          label={intl.formatMessage({ id: "contact.form.message" })}
+          required
+          rows={10}
+          message={errors?.message}
+          messageType={errors?.message ? "error" : undefined}
+          disableAutoValidation
+        />
+        <Button disabled={isPending} type="submit">Envoyer le message</Button>
+      </form>
+    </RawIntlProvider >
+
   );
 }
