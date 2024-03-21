@@ -1,3 +1,4 @@
+// TODO: SearchBar is volontarly commented out, as it is not yet implemented but should be back in the future
 import { useLocation } from 'react-router-dom';
 import {
   Header as HeaderWrapper,
@@ -8,38 +9,39 @@ import {
   Nav,
   FastAccess,
   Button,
-  Autocomplete,
-  AutocompleteItem,
-  useAutocompleteList,
-  useDSFRConfig,
+  // Autocomplete,
+  // AutocompleteItem,
+  // useAutocompleteList,
+  // useDSFRConfig,
 } from '@dataesr/dsfr-plus';
 import { FormattedMessage, useIntl } from 'react-intl';
 import SwitchLanguage from '../components/switch-language';
-import { autocompleteOrganizations } from '../api/organizations/autocomplete';
-import { LightOrganization } from '../types/organization';
-import getLangFieldValue from '../utils/lang';
+// import { autocompleteOrganizations } from '../api/organizations/autocomplete';
+// import { LightOrganization } from '../types/organization';
+// import getLangFieldValue from '../utils/lang';
 
 const languages = [
   { shortName: 'FR', fullName: 'Français', key: 'fr' },
   { shortName: 'EN', fullName: 'English', key: 'en' },
-  { shortName: 'DE', fullName: 'Deutsch', key: 'de' },
-  { shortName: 'ES', fullName: 'Español', key: 'es' },
+  // TODO: Uncomment when translations are available
+  // { shortName: 'DE', fullName: 'Deutsch', key: 'de' },
+  // { shortName: 'ES', fullName: 'Español', key: 'es' },
 ];
 
 export default function Header() {
-  const { locale } = useDSFRConfig();
+  // const { locale } = useDSFRConfig();
   const { pathname } = useLocation();
   const intl = useIntl();
 
-  const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
-    async load({ filterText }) {
-      if (!filterText) {
-        return { items: [] };
-      }
-      const res = await autocompleteOrganizations({ query: filterText })
-      return { items: res.data?.map((org) => org._source) };
-    }
-  });
+  // const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
+  //   async load({ filterText }) {
+  //     if (!filterText) {
+  //       return { items: [] };
+  //     }
+  //     const res = await autocompleteOrganizations({ query: filterText })
+  //     return { items: res.data?.map((org) => org._source) };
+  //   }
+  // });
 
   return (
     <HeaderWrapper>
@@ -51,7 +53,7 @@ export default function Header() {
         </Button>
         <SwitchLanguage languages={languages} />
       </FastAccess>
-      <Autocomplete
+      {/* <Autocomplete
         label="Rechercher des structures"
         items={authorsAutocompletedList.items}
         inputValue={authorsAutocompletedList.filterText}
@@ -73,7 +75,7 @@ export default function Header() {
             </span>
           </AutocompleteItem>
         )}
-      </Autocomplete>
+      </Autocomplete> */}
       <Nav>
         <Link current={pathname === "/"} href='/'><FormattedMessage id="layout.header.nav.home" /></Link>
         <NavItem
