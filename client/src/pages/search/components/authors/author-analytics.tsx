@@ -17,7 +17,7 @@ export default function AuthorAnalytics() {
 
   const { byAward } = data as AuthorsAggregations
 
-  const AwardsOptions = getBarChartOptions({ data: byAward.slice(0, 10), colors: ['var(--background-contrast-orange-terre-battue)'] });
+  const AwardsOptions = getBarChartOptions({ data: byAward.slice(0, 10), colors: ['var(--authors-analytics)'] });
 
   return (
     <Row>

@@ -19,8 +19,8 @@ export default function OrganizationsAnalytics() {
   const { byFundings, byLocalization, byKind } = data as OrganizationAggregations
 
   const kindOptions = getDonutOptions({ data: byKind });
-  const fundingsOptions = getBarChartOptions({ data: byFundings, colors: ['var(--background-contrast-yellow-tournesol)'] });
-  const localizationOptions = getBarChartOptions({ data: byLocalization, colors: ['var(--background-contrast-yellow-tournesol)'] });
+  const fundingsOptions = getBarChartOptions({ data: byFundings, colors: ['var(--organizations-analytics)'] });
+  const localizationOptions = getBarChartOptions({ data: byLocalization, colors: ['var(--organizations-analytics)'] });
 
 
   return (

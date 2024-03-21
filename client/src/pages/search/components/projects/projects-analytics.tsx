@@ -18,8 +18,8 @@ export default function ProjectsAnalytics() {
 
   const { byType, byYear } = data as ProjectAggregations
 
-  const typeOptions = getBarChartOptions({ data: byType, colors: ['var(--background-contrast-green-emeraude)'] });
-  const yearsOptions = getYearChartOptions({ data: byYear, colors: ['var(--background-contrast-green-emeraude)'] });
+  const typeOptions = getBarChartOptions({ data: byType, colors: ['var(--projects-analytics)'] });
+  const yearsOptions = getYearChartOptions({ data: byYear, colors: ['var(--projects-analytics)'] });
 
   return (
     <Row>

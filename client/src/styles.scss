@@ -1,3 +1,19 @@
+:root[data-fr-theme="light"] {
+  --publications-analytics: var(--background-contrast-purple-glycine);
+  --projects-analytics: var(--background-contrast-green-emeraude);
+  --organizations-analytics: var(--background-contrast-yellow-tournesol);
+  --authors-analytics: var(--background-contrast-orange-terre-battue);
+  --patents-analytics: var(--background-contrast-purple-glycine);
+}
+
+:root[data-fr-theme="dark"] {
+  --publications-analytics: var(--artwork-minor-purple-glycine);
+  --projects-analytics: var(--artwork-minor-green-emeraude);
+  --organizations-analytics: var(--artwork-minor-yellow-tournesol);
+  --authors-analytics: var(--artwork-minor-orange-terre-battue);
+  --patents-analytics: var(--artwork-minor-purple-glycine);
+}
+
 .fr-tag.filter-tag-button {
   position: relative;
   width: 100% !important;
@@ -98,6 +114,10 @@
 
 .highcharts-legend-item text {
   fill: var(--text-default-grey) !important;
+}
+
+.highcharts-tooltip text {
+  fill: #3a3a3a !important;
 }
 
 .highcharts-title,

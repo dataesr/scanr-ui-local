@@ -19,8 +19,8 @@ export default function PublicationAnalytics() {
   const { byYear, byAuthors, byReview } = data as PublicationAggregations
 
   const yearOptions = getYearChartOptions({ data: byYear, colors: ['var(--artwork-minor-purple-glycine)'] });
-  const authorsOptions = getBarChartOptions({ data: byAuthors.slice(0, 10), colors: ['var(--background-contrast-purple-glycine)'] });
-  const reviewOptions = getBarChartOptions({ data: byReview.slice(0, 10), colors: ['var(--background-contrast-purple-glycine)'] });
+  const authorsOptions = getBarChartOptions({ data: byAuthors.slice(0, 10), colors: ['var(--publications-analytics)'] });
+  const reviewOptions = getBarChartOptions({ data: byReview.slice(0, 10), colors: ['var(--publications-analytics)'] });
 
   // const _100TopAuthors = Math.max(...byAuthors.map((el) => el.count | 0));
 
