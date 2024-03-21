@@ -250,7 +250,7 @@ export default function OrganizationPresentation({
                     titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
-                  {!!publications.publicationsCount && (
+                  {(publications.publicationsCount > 3) && (
                     <NetworksNotice url={networkUrl} />
                   )}
                 </PageSection>

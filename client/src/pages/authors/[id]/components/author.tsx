@@ -102,7 +102,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                 icon="heart-pulse-line"
               >
                 <AuthorsPublications data={others} titleKey="authors.section.activity.publications" />
-                {!!data?.publications?.publicationsCount && (
+                {(data?.publications?.publicationsCount > 3) && (
                   <div className="fr-mt-2w">
                     <NetworksNotice url={networkUrl} />
                   </div>
