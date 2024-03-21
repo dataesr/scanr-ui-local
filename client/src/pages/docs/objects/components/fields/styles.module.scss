@@ -1,0 +1,19 @@
+.vr {
+  position: relative;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 100%;
+    position: absolute;
+    border: 3px solid var(--background-contrast-grey);
+    border-radius: 3px;
+    top: 0;
+    left: 0;
+  }
+}
