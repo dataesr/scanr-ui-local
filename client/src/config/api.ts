@@ -11,4 +11,4 @@ export const organizationsIndex = `${API_URL}/scanr-organizations`;
 export const projectsIndex = `${API_URL}/scanr-projects`;
 export const patentsIndex = `${API_URL}/scanr-patents`;
 export const localisationIndex = `${API_URL}/scanr-localisations`;
-export const topicsURL = `${TOPICS_URL}/topics`;
+export const topicsURL = TOPICS_URL ? `${TOPICS_URL}/topics` : '/topics';
