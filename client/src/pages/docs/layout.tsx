@@ -18,6 +18,9 @@ export function DocsLayout() {
               <Link current={is('objects/publications')} href="/docs/objects/publications">
                 Publications
               </Link>
+              <Link current={is('objects/projects')} href="/docs/objects/projects">
+                Projects
+              </Link>
             </SideMenuItem>
           </SideMenu>
         </Col>

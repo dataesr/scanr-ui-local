@@ -3,7 +3,7 @@ import Share from "../../../../components/share";
 import BarLink from "../../../../components/bar-link";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import TagCloud from "../../../../components/tag-cloud";
-import OpenAccessDonut from "../../../../components/oa-donut/donut";
+import OpenAccessDonut from "../../../../components/oa-donut";
 import YearBars from "../../../../components/year-bars";
 import AuthorsPublications from "./publications";
 import { useIntl } from "react-intl";

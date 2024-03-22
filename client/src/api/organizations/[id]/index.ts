@@ -28,7 +28,7 @@ export async function getOrganizationById(id: string): Promise<Organization> {
   return { ...structureData, _id, publications, projects, patents }
 }
 
-export async function getStructurePublicationsById(id: string): Promise<any> {
+async function getStructurePublicationsById(id: string): Promise<any> {
   const body = {
     _source: ["title.*", "authors.fullName", "authors.person", "authors.role", "source.*", "isOa", 'type', 'id', 'year'],
     query: { bool: { filter: [{ term: { "affiliations.id.keyword": id } }] } },
@@ -122,7 +122,7 @@ export async function getStructurePublicationsById(id: string): Promise<any> {
   return { publicationsCount, byYear, byType, bySource, byAuthors, byWiki } || {}
 }
 
-export async function getStructureProjectsById(id: string): Promise<any> {
+async function getStructureProjectsById(id: string): Promise<any> {
   const body: any = {
     size: 0,
     query: { bool: { filter: [{ term: { "participants.structure.id.keyword": id } }] } },
@@ -190,7 +190,7 @@ export async function getStructureProjectsById(id: string): Promise<any> {
   return { byYear, byType, byKeywords, projectsCount }
 }
 
-export async function getStructurePatentsById(id: string): Promise<any> {
+async function getStructurePatentsById(id: string): Promise<any> {
   const body: any = {
     size: 0,
     query: { bool: { filter: [{ term: { "affiliations.id.keyword": id } }] } },

@@ -1,34 +1,7 @@
-import { Fragment } from "react";
 
 export function encode(value: string): string {
   if (!value) return value;
   return value.replace(/\//g, "%2F");
-}
-
-export function highlighter(
-  string: string,
-  separator?: string
-): JSX.Element | string {
-  return (
-    [
-      ...string.matchAll(/(.*?)<strong>(?<highlighted>.*?)<\/strong>(.*?)/g),
-    ]?.reduce(
-      (acc, match) => (
-        <>
-          {acc}
-          {match?.[1]}
-          <span className={"fr-text--bold fr-text--md"}>{match?.[2]}</span>
-          {match?.[3]}
-          {separator || null}
-        </>
-      ),
-      <Fragment />
-    ) || string
-  );
-}
-
-export function parsePublicationId(id: string): string {
-  return id.replace(/^(hal|doi|nnt)/, "");
 }
 
 export const publicationTypeMapping = {
@@ -79,10 +52,10 @@ export function toString(date, time = false, isCompact = false) {
   if (time) options = { ...options, ...timeOptions };
   if (isCompact) options.month = "numeric";
   if (date?.length === 4) {
-    delete options.month;
-    delete options.day;
+    options.month = undefined;
+    options.day = undefined;
   } else if (date?.length === 7) {
-    delete options.day;
+    options.day = undefined;
   }
   return new Date(date).toLocaleDateString("fr-FR");
 }

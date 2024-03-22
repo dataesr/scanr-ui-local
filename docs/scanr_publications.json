@@ -1,22 +1,36 @@
 {
-  "index": "scanr-publications",
-  "fields": {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
     "id": {
       "type": "string",
       "description": "Main PID of the production. This id is a concatenation of the id type (e.g `doi` and the id itself)."
     },
     "externalIds": {
-      "type": "array of objects",
+      "type": "array",
       "description": "Lists the known external identifiers",
-      "fields": {
-        "type": {
-          "type": "string",
-          "description": "Possible values are: 'nnt' (for French thesis, 'nnt' stands for 'Numéro National de Thèse') \n `doi` (Digital Object Identifier) \n `hal` (if present in HAL) \n 'pmid' (if present in PubMed)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "doi",
+              "hal",
+              "pmid",
+              "nnt"
+            ],
+            "type": "string",
+            "description": "`nnt` (for French thesis, 'nnt' stands for 'Numéro National de Thèse'), `doi` (Digital Object Identifier), `hal` (if present in HAL) or 'pmid' (if present in PubMed)"
+          },
           "id": {
             "type": "string",
             "description": "Corresponding PID"
           }
-        }
+        },
+        "required": [
+          "type",
+          "id"
+        ]
       }
     },
     "publicationDate": {
@@ -25,11 +39,11 @@
       "example": "2020-01-01T00:00:00"
     },
     "year": {
-      "type": "int",
+      "type": "integer",
       "description": "Year part of the publication Date"
     },
     "productionType": {
-      "type": "enum",
+      "type": "string",
       "enum": [
         "publication",
         "thesis"
@@ -37,7 +51,7 @@
       "description": "String for type of production. Possible values: `publications`, `thesis`."
     },
     "type": {
-      "type": "enum",
+      "type": "string",
       "enum": [
         "journal-article",
         "book",
@@ -50,52 +64,68 @@
       "description": "String for more fine-grained type."
     },
     "keywords.default": {
-      "type": "array of strings",
-      "description": "List of string. Keywords (not normalized) chosen by the authors. These keywords are also present in the `domains` with type=`keyword`."
+      "type": "array",
+      "description": "List of string. Keywords (not normalized) chosen by the authors. These keywords are also present in the `domains` with type=`keyword`.",
+      "items": {
+        "type": "string"
+      }
     },
     "domains": {
-      "type": "array of objects",
+      "type": "array",
       "description": "Lists detected scientific domains",
-      "fields": {
-        "label.default": {
-          "type": "string",
-          "description": "Label of the scientific domain"
+      "items": {
+        "type": "object",
+        "properties": {
+          "label.default": {
+            "type": "string",
+            "description": "Label of the scientific domain"
+          },
+          "code": {
+            "type": "string",
+            "description": "Code ID of this domain, if any (depends on `type`)"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of label. Possible values: `wikidata`, `keyword`, `sudoc`. Wikidata domains are automatically detected within the title, abstract and keywords. Keywords domain are exactly the free-text keywords that have been harvested (not normalized)."
+          },
+          "id_name": {
+            "type": "string",
+            "description": "Concatenation of code and label, separated by `##`",
+            "example": "wikidata##Q13442896"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of times this code has been detected within the title, abstract and keywords."
+          },
+          "naturalKey": {
+            "type": "string",
+            "description": "Normalized version of the label string (no accent, no space ...)"
+          }
         },
-        "code": {
-          "type": "string",
-          "description": "Code ID of this domain, if any (depends on `type`)"
-        },
-        "type": {
-          "type": "string",
-          "description": "Type of label. Possible values: `wikidata`, `keyword`, `sudoc`. Wikidata domains are automatically detected within the title, abstract and keywords. Keywords domain are exactly the free-text keywords that have been harvested (not normalized)."
-        },
-        "id_name": {
-          "type": "string",
-          "description": "Concatenation of code and label, separated by `##`",
-          "example": "wikidata##Q13442896"
-        },
-        "count": {
-          "type": "int",
-          "description": "Number of times this code has been detected within the title, abstract and keywords."
-        },
-        "naturalKey": {
-          "type": "string",
-          "description": "Normalized version of the label string (no accent, no space ...)"
-        }
+        "required": [
+          "label.default",
+          "type"
+        ]
       }
     },
     "affiliations": {
-      "type": "array of objects",
+      "type": "array",
       "description": "Lists all detected affiliations",
-      "fields": {
-        "id": {
-          "type": "string",
-          "description": "PID of an affiliation. Can be the only field of the object if this affiliation is not mapped in the organization index.Otherwise, if present, some fields are denormalized: `mainAddress`, `label`, `acronym`, `kind`, `level`, `status`, `isFrench`, `id_name`. See the documention of the organization index for more details on these fields."
-        }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "PID of an affiliation. Can be the only field of the object if this affiliation is not mapped in the organization index.Otherwise, if present, some fields are denormalized: `mainAddress`, `label`, `acronym`, `kind`, `level`, `status`, `isFrench`, `id_name`. See the documention of the organization index for more details on these fields."
+          }
+        },
+        "required": [
+          "id"
+        ]
       }
     },
     "authorsCount": {
-      "type": "int",
+      "type": "integer",
       "description": "Number of authors."
     },
     "landingPage": {
@@ -109,7 +139,7 @@
     "source": {
       "type": "object",
       "description": "Describes the source (generally journal) of the production",
-      "fields": {
+      "properties": {
         "title": {
           "type": "string",
           "description": "Title of the source"
@@ -119,8 +149,11 @@
           "description": "Normalized version of the publisher."
         },
         "journalIssns": {
-          "type": "array of string",
-          "description": "Arrays of ISSNs (print, electronic ...)"
+          "type": "array",
+          "description": "Arrays of ISSNs (print, electronic ...)",
+          "items": {
+            "type": "string"
+          }
         },
         "isOa": {
           "type": "boolean",
@@ -139,9 +172,9 @@
     "oaEvidence": {
       "type": "object",
       "description": "Describes the open access version (if any)",
-      "fields": {
+      "properties": {
         "hostType": {
-          "type": "enum",
+          "type": "string",
           "enum": [
             "publisher",
             "repository"
@@ -168,78 +201,121 @@
           "type": "string",
           "description": "Landing page URL (from Unpaywall data)"
         }
-      }
+      },
+      "required": [
+        "hostType"
+      ]
     },
     "authors": {
-      "type": "array of objects",
+      "type": "array",
       "description": " List the authors / contributor",
-      "fields": {
-        "firstName": {
-          "type": "string",
-          "description": "first name"
-        },
-        "lastName": {
-          "type": "string",
-          "description": "last name"
-        },
-        "fullName": {
-          "type": "string",
-          "description": "full name"
-        },
-        "denormalized": {
-          "type": "object",
-          "description": "PID of the author (`id` (with idref prefix), `id_hal`, `orcid`)"
-        },
-        "id_name": {
-          "type": "string",
-          "description": "Concatenation of the `id` and `fullName` separated by `###`."
-        },
-        "role": {
-          "type": "string",
-          "default": "author",
-          "description": "Role of the contributor. Default value is `author`. A different value only if present in source (theses.fr or HAL)."
-        },
-        "affiliations": {
-          "type": "array of objects",
-          "description": "List of objects object describing the authors's affiliations",
-          "fields": {
-            "name": {
-              "type": "string",
-              "description": "Raw affiliation string"
-            },
-            "datasource": {
-              "type": "string",
-              "description": "Source of the raw affiliation string"
-            },
-            "ids": {
-              "type": "array of objects",
-              "description": "List of automatic match PIDS (object with field `id` and `type`).",
-              "fields": {
-                "id": {
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "last name"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "full name"
+          },
+          "denormalized": {
+            "type": "object",
+            "description": "PID of the author (`id` (with idref prefix), `id_hal`, `orcid`)"
+          },
+          "id_name": {
+            "type": "string",
+            "description": "Concatenation of the `id` and `fullName` separated by `###`."
+          },
+          "role": {
+            "type": "string",
+            "default": "author",
+            "description": "Role of the contributor. Default value is `author`. A different value only if present in source (theses.fr or HAL)."
+          },
+          "affiliations": {
+            "type": "array",
+            "description": "List of objects object describing the authors's affiliations",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
                   "type": "string",
-                  "description": "PID of the affiliation"
+                  "description": "Raw affiliation string"
                 },
-                "type": {
+                "datasource": {
                   "type": "string",
-                  "description": "Type of the affiliation"
+                  "description": "Source of the raw affiliation string"
+                },
+                "ids": {
+                  "type": "array",
+                  "description": "List of automatic match PIDS (object with field `id` and `type`)",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "PID of the affiliation"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of the affiliation"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type"
+                    ]
+                  }
                 }
-              }
+              },
+              "required": [
+                "name",
+                "datasource",
+                "ids"
+              ]
             }
           }
-        }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "fullName"
+        ]
       }
     },
     "summary": {
-      "type": "array of objects",
-      "description": "summary / abstract by language (with `default` only if unknown)"
+      "type": "array",
+      "description": "summary / abstract by language (with `default` only if unknown)",
+      "items": {
+        "type": "object"
+      }
     },
     "autocompleted": {
-      "type": "array of strings",
-      "description": "array of strings used for autocompletion"
+      "type": "array",
+      "description": "array of strings used for autocompletion",
+      "items": {
+        "type": "string"
+      }
     },
     "vector_text": {
-      "type": "array of floats",
-      "description": "Embeddings of the `domains` labels with the `distiluse-base-multilingual-cased-v1` model (dim 512)"
+      "type": "array",
+      "description": "Embeddings of the `domains` labels with the `distiluse-base-multilingual-cased-v1` model (dim 512)",
+      "items": {
+        "type": "number"
+      }
     }
-  }
+  },
+  "required": [
+    "id",
+    "publicationDate",
+    "year",
+    "productionType",
+    "type",
+    "authorsCount"
+  ]
 }
