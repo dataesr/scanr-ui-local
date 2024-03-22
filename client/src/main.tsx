@@ -12,7 +12,7 @@ const { VITE_APP_MATOMO_BASE_URL, VITE_APP_MATOMO_SITE_ID } = import.meta.env;
 const matomo = createInstance({
   urlBase: VITE_APP_MATOMO_BASE_URL,
   siteId: VITE_APP_MATOMO_SITE_ID,
-  disabled: !VITE_APP_MATOMO_BASE_URL || !VITE_APP_MATOMO_SITE_ID,
+  disabled: import.meta.env.DEV,
   configurations: {
     disableCookies: true,
   },

@@ -47,7 +47,7 @@ export default function HEPartners() {
     ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK
     : false;
 
-  const [keywords, setKeywords] = useState<string[]>(() => currentQuery.split('|'))
+  const [keywords, setKeywords] = useState<string[]>(currentQuery?.split('|'))
 
 
   if (isError || dataError) return <Error500 error={error} />

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import { getTopics } from "../../../api/topics";
 
 type TopicData = {
   TopicDetails: TopicsDetails,
@@ -27,10 +28,7 @@ export default function useHeData() {
 
   const { data, isFetching, isError, error } = useQuery<TopicData>({
     queryKey: ["he-call-data", id],
-    queryFn: async () => {
-      const res = await fetch(`https://scanr.dataesr.ovh/topics/${id}`);
-      return res.json();
-    },
+    queryFn: () => getTopics(id),
     enabled: !!id,
   });
 
