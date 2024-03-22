@@ -1,11 +1,9 @@
-import { postHeaders } from "../config/api";
+import { localisationIndex, postHeaders } from "../config/api";
 import { SearchArgs, SearchResponse, ElasticResult } from "../types/commons";
 
 export type LocalisationAutocomplete = {
   autocompleted: string[];
 }
-
-const index = "https://cluster-production.elasticsearch.dataesr.ovh/scanr-localisations"
 
 export async function autocompleteLocalisations({ query }: SearchArgs): Promise<Pick<SearchResponse<LocalisationAutocomplete>, "data">> {
   const body: any = {
@@ -17,7 +15,7 @@ export async function autocompleteLocalisations({ query }: SearchArgs): Promise<
     }
   }
   const res = await fetch(
-    `${index}/_search`,
+    `${localisationIndex}/_search`,
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const data = await res.json()
 

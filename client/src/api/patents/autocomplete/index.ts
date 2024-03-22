@@ -34,6 +34,7 @@
 //     },
 //   };
 //   const res = await fetch(
+// TODO: No url inside code use environment variable instead
 //     "https://cluster-production.elasticsearch.dataesr.ovh/scanr-patents-test/_search",
 //     { method: "POST", body: JSON.stringify(body), headers: postHeaders }
 //   );

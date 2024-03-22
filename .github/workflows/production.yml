@@ -2,13 +2,13 @@ name: Build and deploy staging
 
 on:
   push:
-    branches:
-      - staging
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 env:
   DEPLOYMENT: scanr-next-gen
   DEPLOYMENT_NAMESPACE: scanr
-  DEPLOYMENT_URL: https://scanr.staging.dataesr.ovh
+  DEPLOYMENT_URL: https://scanr.dataesr.ovh
   MM_NOTIFICATION_CHANNEL: bots
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
         run: |
           cd client
           npm ci
-          npm run build -- --mode staging
+          npm run build -- --mode production
 
       - name: 🏷️ Get tag
         id: tag
@@ -38,13 +38,43 @@ jobs:
           cd client
           IMAGE_ID=ghcr.io/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          docker build -f Dockerfile -t $IMAGE_ID:${{ steps.tag.outputs.tag }} .
+          docker build -f Dockerfile -t $IMAGE_ID:${{ steps.tag.outputs.tag }} -t $IMAGE_ID:latest .
 
       - name: 📦 Push Docker image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           docker push --all-tags $IMAGE_ID
+
+  release:
+    name: Create new Github release
+    runs-on: ubuntu-latest
+    needs: publish-ghcr
+    steps:
+      - name: 🏁 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏷️ Get tag
+        id: tag
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config_file: .github/config/changelog.cjs
+
+      - name: 📦 Create release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ steps.tag.outputs.tag }}
+          body: ${{ steps.changelog.outputs.changes }}
 
   deploy:
     name: 💭 Update staging deployment
