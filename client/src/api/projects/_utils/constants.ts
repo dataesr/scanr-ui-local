@@ -4,15 +4,23 @@ export const FIELDS = [
   "acronym.*^3",
   "description.*^2",
   "domains.label.*",
+  "call.id",
+  "call.label",
+  "action.id",
+  "action.label.*",
+  "keywords.*",
+
+  "publications.id",
   "publications.title.*",
-  "publications.summary.*",
+  "publications.authors.fullName",
+  "publications.authors.person",
+  "publications.domains.label.*",
+  "publications.domains.code",
+
   "participants.structure.label.*",
   "participants.structure.acronym.*",
   "participants.structure.id",
-  "call.label",
-  "keywords.*",
-  "action.id",
-  "action.label.*",
+  "participants.label.*",
 ]
 export const LIGHT_SOURCE = [
   "label.*",

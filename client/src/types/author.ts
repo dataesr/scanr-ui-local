@@ -4,7 +4,8 @@ import { LightPublication } from "./publication";
 export type LightAuthor = {
   id: string;
   idref: string;
-  orcid: string;
+  orcid?: string;
+  id_hal?: string;
   fullName: string;
   recent_affiliations: {
     label: string;

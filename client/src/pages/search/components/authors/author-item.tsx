@@ -41,9 +41,12 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<LightA
             )}
         </Text>
         <div className="fr-mt-1w fr-badge-group">
-          {[author.id.replace("idref", ""), author.orcid]
-            ?.filter((id) => id)
-            .map((id, i) => <CopyBadge key={id} size="sm" copyText={id}>{(i === 0) ? 'idref' : 'orcid'} : {id}</CopyBadge>)
+          {[
+            { id: author.id.replace("idref", ""), type: "idref" },
+            { id: author.orcid, type: 'orcid' },
+            { id: author.id_hal, type: 'idhal' }]
+            .filter((identifier) => identifier.id)
+            .map(({ id, type }) => <CopyBadge key={id} size="sm" copyText={id}>{type} : {id}</CopyBadge>)
           }
         </div>
         {Object.values(highlight || {}).map((value, i) => (
