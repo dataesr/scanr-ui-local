@@ -1,8 +1,8 @@
-import { publicationsIndex, postHeaders } from "../../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits } from "../../types/network"
-import networkCreate from "./network"
-import configCreate from "./config"
-import infoCreate from "./info"
+import { publicationsIndex, postHeaders } from "../../../config/api"
+import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits } from "../../../types/network"
+import networkCreate from "../network/network"
+import configCreate from "../network/config"
+import infoCreate from "../network/info"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]

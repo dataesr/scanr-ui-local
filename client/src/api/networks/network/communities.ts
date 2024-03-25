@@ -1,8 +1,8 @@
 import Graph from "graphology-types"
 import louvain from "graphology-communities-louvain"
-import { arrayPush, labelClean } from "./utils"
-import { networkSearchHits } from "./search"
-import { ElasticHits } from "../../types/network"
+import { arrayPush, labelClean } from "../_utils/functions"
+import { networkSearchHits } from "../search/search"
+import { ElasticHits } from "../../../types/network"
 import { openAiLabeledClusters } from "./openai"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
