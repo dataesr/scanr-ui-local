@@ -10,8 +10,10 @@ export default function Jury({ authors }) {
   if (!authors.length) return null;
   const directors = authors?.filter((author) => author.role === "directeurthese") || [];
   const president = authors?.filter((author) => author.role === "presidentjury")?.[0] || {};
-  // const membres = authors?.filter((author) => author.role === "membrejury") || [];
   const rapporteurs = authors?.filter((author) => author.role === "rapporteur") || [];
+  const membres = authors?.filter(
+    (author) => author.role === "membrejury" && !authors.some(a => (a.role !== "membrejury" && (a.fullName === author.fullName || a.person === author.person)))
+  ) || [];
 
 
   function prefetch(id: string) {
@@ -89,6 +91,30 @@ export default function Jury({ authors }) {
                 ) : (
                   <Text bold className="fr-m-0">
                     {rapporteur.fullName}
+                  </Text>
+                )}
+              </LinkCard>
+            </Col>
+          ))}
+        </Row>
+        <Row gutters>
+          {membres.map((membre) => (
+            <Col key={membre.fullName} xs="12" md="6">
+              <LinkCard
+                prefetch={membre.person ? () => prefetch(membre.person) : undefined}
+                type="author"
+                icon="user-line"
+              >
+                <Text className="fr-text-mention--grey fr-mb-0" size="sm">
+                  <i>{intl.formatMessage({ id: `publications.section.jury.${membre.role}` })}</i>
+                </Text>
+                {membre.person ? (
+                  <Link className="fr-text--bold" href={`/authors/${membre.person}`}>
+                    {membre.fullName}
+                  </Link>
+                ) : (
+                  <Text bold className="fr-m-0">
+                    {membre.fullName}
                   </Text>
                 )}
               </LinkCard>
