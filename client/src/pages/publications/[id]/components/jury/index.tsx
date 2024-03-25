@@ -27,7 +27,7 @@ export default function Jury({ authors }) {
       <Col xs="12">
         <Row gutters>
           <Col key={president.fullName} xs="12" md="6">
-            <LinkCard
+            {president?.fullName && (<LinkCard
               prefetch={president.person ? () => prefetch(president.person) : undefined}
               type="author"
               icon="user-star-line"
@@ -44,7 +44,7 @@ export default function Jury({ authors }) {
                   {president.fullName}
                 </Text>
               )}
-            </LinkCard>
+            </LinkCard>)}
           </Col>
         </Row>
         <Row gutters>

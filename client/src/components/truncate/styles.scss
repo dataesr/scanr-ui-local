@@ -1,3 +1,13 @@
+:root[data-fr-theme="light"] {
+  --truncate-from-color: rgba(16, 16, 16, 0);
+  --truncate-to-color: rgba(255, 255, 255, 1);
+}
+
+:root[data-fr-theme="dark"] {
+  --truncate-from-color: rgba(16, 16, 16, 0);
+  --truncate-to-color: rgb(16, 16, 16, 1);
+}
+
 .truncate {
   position: relative;
   display: -webkit-box;
@@ -14,7 +24,7 @@
   right: 0px;
   height: 50%;
   bottom: 0px;
-  background: linear-gradient(180deg, rgba(139, 167, 32, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background: linear-gradient(180deg, var(--truncate-from-color) 0%, var(--truncate-to-color) 100%);
   pointer-events: none;
 }
 

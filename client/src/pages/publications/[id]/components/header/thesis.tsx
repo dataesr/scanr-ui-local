@@ -35,7 +35,7 @@ export default function ThesisHeader({ data }) {
             {directors.map((director, index) => (
               <>
                 <Link key={index} href={`/authors/${director.id}`}>{director.fullName}</Link>
-                {((directors.length <= 2 && index === 0) || index === (directors.length - 2))
+                {((directors.length === 2 && index === 0) || index === (directors.length - 2))
                   ? intl.formatMessage({ id: "publications.header.thesis.and" })
                   : (index < directors.length - 1)
                     ? ', '
