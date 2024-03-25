@@ -1,4 +1,4 @@
-name: Build and deploy staging
+name: Build and deploy production
 
 on:
   push:

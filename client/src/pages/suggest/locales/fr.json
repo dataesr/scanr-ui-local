@@ -33,6 +33,8 @@
   "search.results.pagination.next": "Afficher plus de résultats",
   "search.results.pagination.end": "Pas de résultats supplémentaires pour la recherche « {query} »",
   "suggest.list.title": "Liste de publications suggérées",
+  "suggest.list.success": "La liste a été envoyée avec succès",
+  "suggest.list.error": "Une erreur est survenue lors de l'envoi de la liste",
   "suggest.items.add": "Ajouter à la liste",
   "suggest.items.remove": "Retirer de la liste"
 }

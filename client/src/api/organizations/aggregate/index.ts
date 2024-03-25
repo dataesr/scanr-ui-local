@@ -94,9 +94,9 @@ export async function aggregateOrganizations(
 export async function aggregateOrganizationsForHe(
   {query, filters = []}: AggregationArgs
   ): Promise<OrganizationAggregations> {
-  const body: any = {
-    size: 0,
-    query: {
+    const body: any = {
+      size: 0,
+      query: {
       bool: {
         minimum_should_match: 1,
         should: getMatchPhrases(query?.split('|')),
@@ -108,11 +108,11 @@ export async function aggregateOrganizationsForHe(
   const res = await fetch(
     `${organizationsIndex}/_search`,
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders });
-  const result = await res.json(); 
-  const { aggregations } = result || {};
-
+    const result = await res.json(); 
+    const { aggregations } = result || {};
+    
   const data = Object.entries(aggregations)
-    .reduce((acc, [key, aggreg]) => ({...acc, [key]: toAggregationModel(aggreg)}) , {});
+    .reduce((acc, [key, aggreg]: [string, any]) => ({...acc, [key]: toAggregationModel(aggreg?.buckets)}) , {});
   return data as OrganizationAggregations;
   
 }

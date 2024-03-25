@@ -14,7 +14,7 @@ import CurrentFilters from "./components/commons/current-filters";
 import OrganizationsAnalytics from "./components/organizations/organization-analytics";
 import useSearchData from "./hooks/useSearchData";
 import useUrl from "./hooks/useUrl";
-import OrganizationFilters from "./components/organizations/filters";
+import OrganizationFilters from "./components/organizations/filters/index-for-he";
 import { LightOrganization } from "../../types/organization";
 
 
@@ -29,15 +29,88 @@ const messages = Object.keys(modules).reduce((acc, key) => {
 }, {});
 
 
+function KeywordsManager({ tags = [], suggestedTags = [] }: { tags: string[], suggestedTags: string[] }) {
+  const { handleQueryChange } = useUrl();
+  const [keywords, setKeywords] = useState<string[]>(tags)
+  if (!keywords?.length) return null;
+  return (
+    <Modal id="add-keywords" title="Ajouter des mot-clés">
+      <TextInput
+        disableAutoValidation
+        placeholder="Ajouter des mots-clés"
+        className="fr-mb-1w"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            setKeywords([...new Set([...keywords, e.currentTarget.value])])
+            e.currentTarget.value = ''
+          }
+        }}
+      />
+      <TagGroup>
+        {keywords?.map((keyword) => (
+          <Tag
+            as="button"
+            icon="delete-bin-line"
+            iconPosition="right"
+            onClick={() => setKeywords(keywords.filter((k) => k !== keyword))}
+            key={keyword}
+          >
+            {keyword}
+          </Tag>
+        ))}
+      </TagGroup>
+      {(!!suggestedTags.length) && (
+        <>
+          <Text bold className="fr-mb-1w">
+            Mot clés suggérés
+          </Text>
+          <Text size="sm" className="fr-card__detail fr-mb-1w">
+            Sélectionnez les mots-clés qui vous intéressent pour les ajouter à votre recherche
+          </Text>
+          <TagGroup>
+            {suggestedTags.map((flag) => (
+              <Tag size="sm" as="button" onClick={() => setKeywords([...new Set([...keywords, flag])])} key={flag}>{flag}</Tag>
+            ))}
+          </TagGroup>
+        </>
+      )}
+      <div className="fr-modal__footer fr-px-0">
+        <ButtonGroup>
+          <Button
+            onClick={() => {
+              handleQueryChange(keywords?.join('|'))
+              const element = document.getElementById("add-keywords")
+              // @ts-expect-error dsfr does not have types
+              window.dsfr(element).modal.conceal()
+            }}
+            variant="primary"
+          >
+            Relancer la recherche
+          </Button>
+        </ButtonGroup>
+      </div>
+    </Modal>
+  )
+}
+
+
 
 export default function HEPartners() {
   const { locale } = useDSFRConfig();
   const [ref, inView] = useInView();
   const intl = createIntl({ locale, messages: messages[locale] })
   const { data: heData, isFetching, isError, error } = useHeData();
-  const { currentQuery, handleQueryChange } = useUrl();
+  const { currentQuery } = useUrl();
   const { search } = useSearchData();
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching: isFetchingData, error: dataError } = search;
+  const {
+    data,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isFetching: isFetchingData,
+    error: dataError
+  } = search;
   useEffect(() => {
     if (inView) {
       fetchNextPage()
@@ -47,9 +120,9 @@ export default function HEPartners() {
     ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK
     : false;
 
-  const [keywords, setKeywords] = useState<string[]>(currentQuery?.split('|'))
+  const keywords = currentQuery?.split('|')?.filter((k) => k);
 
-
+  if (!keywords?.length) return null;
   if (isError || dataError) return <Error500 error={error} />
   return (
     <RawIntlProvider value={intl}>
@@ -68,9 +141,11 @@ export default function HEPartners() {
         <Container fluid>
           <Container fluid className="fr-mt-3w">
             <Row>
-              <Col xs="12" lg="8">
+              <Col xs="12" sm="8" lg="7">
                 <Title className="fr-mb-0" as="h1" look="h4">
-                  {heData?.title} - {heData?.identifier}
+                  <Text as="span" size="sm">{heData?.identifier}</Text>
+                  <br />
+                  {heData?.title}
                 </Title>
                 <Text className="fr-card__detail fr-mb-2w" size="sm">
                   <i>
@@ -100,56 +175,8 @@ export default function HEPartners() {
                     </TagGroup>
                   </div>
                 </div>
-                <Modal id="add-keywords" title="Ajouter des mot-clés">
-                  <TextInput
-                    disableAutoValidation
-                    placeholder="Ajouter des mots-clés"
-                    className="fr-mb-1w"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        setKeywords([...new Set([...keywords, e.currentTarget.value])])
-                        e.currentTarget.value = ''
-                      }
-                    }}
-                  />
-                  <TagGroup>
-                    {keywords?.map((keyword) => (
-                      <Tag
-                        as="button"
-                        icon="delete-bin-line"
-                        iconPosition="right"
-                        onClick={() => setKeywords(keywords.filter((k) => k !== keyword))}
-                        key={keyword}
-                      >
-                        {keyword}
-                      </Tag>
-                    ))}
-                  </TagGroup>
-                  {(heData?.tags?.length > 0) ? (
-                    <>
-                      <Text bold className="fr-mb-1w">
-                        Mot clés suggérés
-                      </Text>
-                      <Text size="sm" className="fr-card__detail fr-mb-1w">
-                        Sélectionnez les mots-clés qui vous intéressent pour les ajouter à votre recherche
-                      </Text>
-                      <TagGroup>
-                        {heData?.tags?.map((flag) => (
-                          <Tag size="sm" as="button" onClick={() => setKeywords([...new Set([...keywords, flag])])} key={flag}>{flag}</Tag>
-                        ))}
-                      </TagGroup>
-                    </>
-                  ) : null}
-                  <div className="fr-modal__footer fr-px-0">
-                    <ButtonGroup>
-                      <Button onClick={() => handleQueryChange(keywords?.join('|'))} variant="primary">Relancer la recherche</Button>
-                    </ButtonGroup>
-                  </div>
-                </Modal>
+                <KeywordsManager tags={keywords} suggestedTags={heData?.tags} />
                 <OrganizationFilters />
-              </Col>
-              <Col xs="12" sm="8" lg="7">
                 <Text bold size="lg" className="fr-mb-1w">
                   Résultats
                 </Text>

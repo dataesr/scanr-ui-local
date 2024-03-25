@@ -34,6 +34,7 @@ export const publicationTypeMapping = {
   "report-series": "autre",
   software: "autre",
   standard: "autre",
+  thesis: "these",
   these: "these",
   video: "autre",
 };

@@ -22,7 +22,7 @@ export const FIELDS = [
   "badges.label.*",
   "badges.code",
 
-  "patents.id^2",
+  "patents.id.keyword^2",
   "patents.title.*^2",
 
   "agreements.type^2",

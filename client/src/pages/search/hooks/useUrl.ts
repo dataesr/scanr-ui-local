@@ -133,9 +133,9 @@ export default function useUrl() {
   );
 
   const handleBoolFilterChange = useCallback(
-    ({ field, value, label }: { field: string, value: boolean, label?: string }) => {
+    ({ field, value, label, forceValue = false }: { field: string, value: boolean, label?: string, forceValue?: boolean }) => {
       const prev = { ...currentFilters };      
-      if (!value) return handleDeleteFilter({ field });
+      if (!value && !forceValue) return handleDeleteFilter({ field });
       const nextFilters = {
         ...prev,
         [field]: {
