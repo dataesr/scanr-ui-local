@@ -1,0 +1,15 @@
+{
+  "contact.thanks.message": "Thank you for your message, we will respond to you as soon as possible.",
+  "contact.thanks.return": "Go back",
+  "contact.error.message": "An error occurred while sending your message, please try again later.",
+  "contact.error.return": "Go back",
+  "contact.error.retry": "Retry",
+  "contact.form.name": "Your name and surname",
+  "contact.form.email": "Enter your email",
+  "contact.form.email.hint": "This email will only be used to inform you about the processing of your contribution.",
+  "contact.form.organization": "Your organization",
+  "contact.form.fonction": "Your role",
+  "contact.form.position": "Your position",
+  "contact.form.message": "Your message",
+  "contact.form.submit": "Send message"
+}
