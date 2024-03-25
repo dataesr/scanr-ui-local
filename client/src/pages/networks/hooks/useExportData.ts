@@ -27,7 +27,9 @@ function csvify(rows: Array<any>, columns: Array<any>) {
 
 const CSVFormatter = (network: any) => {
   const cols = ["id", "label", "degree", "weight", "cluster"]
-  const rows = network.items.map((item) => [item.id, item.label, item.degree, item.weight, item.cluster])
+  const rows = network.items
+    .sort((a, b) => b.weight - a.weight)
+    .map((item) => [item.id, item.label, item.degree, item.weight, item.cluster])
   return new Blob([csvify(rows, cols)], { type: "text/csv" })
 }
 
