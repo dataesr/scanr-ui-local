@@ -10,6 +10,7 @@ import ClustersTable from "./components/table"
 import ClustersButton from "./components/button"
 import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
+import NetworkExports from "./components/exports"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -122,7 +123,11 @@ function NetworksPage() {
             </Container>
           </Col>
           <Col xs="12" lg="4">
-            <Container className="fr-ml-1w">{!isMobile && <NetworkFilters />}</Container>
+            <Container className="fr-ml-1w">
+              {!isMobile && <NetworkFilters />}
+              <hr />
+              <NetworkExports />
+            </Container>
           </Col>
         </Row>
       </Container>
