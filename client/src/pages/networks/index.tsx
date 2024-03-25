@@ -110,12 +110,6 @@ function NetworksPage() {
                   <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
                     <Home currentTab={label} />
                     <Graph currentTab={label} computeClusters={clustersTabs[label]} />
-                    <ClustersButton
-                      currentTab={label}
-                      enabled={clustersTabs[label]}
-                      handleChange={handleClustersChange}
-                      show={import.meta.env.DEV}
-                    />
                     <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
                   </Tab>
                 ))}
@@ -127,6 +121,12 @@ function NetworksPage() {
               {!isMobile && <NetworkFilters />}
               <hr />
               <NetworkExports />
+              <hr />
+              <ClustersButton
+                states={clustersTabs}
+                handleChange={handleClustersChange}
+                show={import.meta.env.DEV}
+              />
             </Container>
           </Col>
         </Row>
