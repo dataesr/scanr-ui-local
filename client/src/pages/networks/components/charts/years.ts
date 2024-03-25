@@ -17,7 +17,7 @@ export default function getYearsChartOptions({ data, height = "250px", title = "
     title: { text: title },
     subtitle: { text: subtitle },
     xAxis: {
-      // crosshair: true,
+      crosshair: true,
       accessibility: {
         description: "Years",
       },
@@ -26,7 +26,7 @@ export default function getYearsChartOptions({ data, height = "250px", title = "
       min: 0,
       max: maxValue,
       opposite: true,
-      // crosshair: true,
+      crosshair: true,
       accessibility: {
         description: "Number",
       },
