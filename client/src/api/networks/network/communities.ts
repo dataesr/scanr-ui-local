@@ -4,6 +4,7 @@ import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits } from "../search/search"
 import { ElasticHits } from "../../../types/network"
 import { openAiLabeledClusters } from "./openai"
+import { vosColors } from "../_utils/constants"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
@@ -67,7 +68,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
 
       const community = {
         index: index,
-        label: `Unnamed ${index}`,
+        label: `Unnamed ${index + 1}`,
+        color: vosColors[index] ?? "#e2e2e2",
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
