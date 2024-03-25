@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl"
-import { Container, Row, Button, Spinner } from "@dataesr/dsfr-plus"
+import { Container, Row, Button } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import useTab from "../hooks/useTab"
 
@@ -33,8 +33,6 @@ export default function ClustersButton({
           })}
         </Button>
       </Row>
-      {search.isFetching &&
-        <Row><Spinner size={30} /></Row>}
     </Container >
   )
 }
