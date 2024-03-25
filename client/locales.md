@@ -1,4 +1,9 @@
-| Path                                        | Status | Coder | Languages          |
-| ------------------------------------------- | :----: | :---: | -----------------: |
-| /components/api-deprecation-banner          | OK     | FRED  | FR,EN              |
-| /components/contact-form                    | OK     | FRED  | FR,EN              |
+| Path                               | Status | Coder  |   Languages |
+| ---------------------------------- | :----: | :----: | ----------: |
+| /components/api-deprecation-banner |   OK   |  FRED  |       FR,EN |
+| /components/contact-form           |   OK   |  FRED  |       FR,EN |
+| /pages/about/contact               |   OK   | Mihoub | FR,EN,ES,DE |
+| /pages/about/resources             |   OK   | Mihoub | FR,EN,ES,DE |
+| /pages/about/team                  |   OK   | Mihoub | FR,EN,ES,DE |
+| /pages/patents                     |  TODO  | Mihoub |          FR |
+| /pages/search/patent               |  TODO  | Mihoub |          FR |
