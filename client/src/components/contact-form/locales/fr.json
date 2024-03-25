@@ -8,6 +8,7 @@
   "contact.form.email": "Renseignez votre email",
   "contact.form.email.hint": "Cet email sera utilisé que pour vous informer de la prise en compte de votre contribution.",
   "contact.form.organization": "Votre organisation",
+  "contact.form.fonction": "Votre fonction",
   "contact.form.position": "Votre fonction",
   "contact.form.message": "Votre message",
   "contact.form.submit": "Envoyer le message"
