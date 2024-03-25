@@ -1,7 +1,8 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 
 const ENABLED = false
-const mistral = new MistralClient("OpLulxlAWDbZuIUNOLtdQwlNaXw8iKNw")
+const { VITE_MISTRAL_API_KEY } = import.meta.env
+const mistral = new MistralClient(VITE_MISTRAL_API_KEY)
 
 async function mistralLabelsFromDomains(domains: any): Promise<string> {
   const completion = await mistral.chat({
