@@ -10,7 +10,7 @@ export default function getSizeChartOptions({ data, height = "250px", title = ""
       type: "category",
       crosshair: true,
       accessibility: {
-        description: "Clusters",
+        description: "Communities",
       },
     },
     yAxis: {

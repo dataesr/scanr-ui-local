@@ -10,7 +10,7 @@ export default function getOaChartOptions({ data, height = "250px", title = "", 
       type: "category",
       crosshair: true,
       accessibility: {
-        description: "Clusters",
+        description: "Communities",
       },
     },
     yAxis: {
@@ -20,9 +20,15 @@ export default function getOaChartOptions({ data, height = "250px", title = "", 
       opposite: true,
       crosshair: true,
       accessibility: {
-        description: "Size",
+        description: "Percentage",
       },
       title: { enabled: false },
+    },
+    tooltip: {
+      headerFormat: "",
+      pointFormat:
+        '<span style="font-size:10px">{point.name}</span><br/><span style="color:{point.color}">\u25CF</span> \
+        {series.name}: <b>{point.y:.1f} %</b>',
     },
     plotOptions: {
       column: {

@@ -12,8 +12,8 @@
     "networks.header.tab.structures": "Laboratoires",
     "networks.header.tab.domains": "Thématiques",
     "networks.header.tab.software": "Logiciels",
-    "networks.clusters.button.rm": "Cacher les informations des communautées",
-    "networks.clusters.button.add": "Ajouter les informations des communautées",
+    "networks.clusters.button.rm": "Cacher les informations des communautés",
+    "networks.clusters.button.add": "Ajouter les informations des communautés",
     "networks.search.error204.title": "Pas de résultats",
     "networks.search.error204.text": "Cette recherche ne retourne aucune donnée.",
     "networks.exports.title": "Exporter les résultats",
@@ -51,5 +51,11 @@
     "search.filters.publications.by-organization-description": "Sélectionnez une ou plusieurs affiliations",
     "search.top.publications.filters.result-count": "{count, plural, =0 {# publication} one {# publication} other {# publications}}",
     "search.top.filters.display": "Afficher les résultats",
-    "search.top.result-more-than": "Plus de "
+    "search.top.result-more-than": "Plus de ",
+    "networks.analytics.clusters.size.title": "Nombre d'élements des communautés",
+    "networks.analytics.clusters.size.description": "Calculé à partir des résulats de la recherche",
+    "networks.analytics.clusters.oa.title": "Pourcentage d'accès ouvert",
+    "networks.analytics.clusters.oa.description": "Calculé à partir des résultats de la recherche",
+    "networks.analytics.clusters.years.title": "Nombre de publications par année",
+    "networks.analytics.clusters.years.description": "Calculé à partir des résultats de la recherche"
 }
