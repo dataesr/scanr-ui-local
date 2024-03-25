@@ -1,0 +1,25 @@
+{
+  "name": "scanr-next-gen",
+  "version": "0.0.5",
+  "description": "scanR next generation",
+  "main": "null",
+  "workspaces": [
+    "client"
+  ],
+  "scripts": {
+    "deploy": "git switch main && git pull origin main --rebase --tags && git merge origin/staging && npm version $npm_config_level --workspaces --include-workspace-root && git push origin main --tags && git switch staging"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dataesr/scanr-next-gen.git"
+  },
+  "keywords": [
+    "scanR"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dataesr/scanr-next-gen/issues"
+  },
+  "homepage": "https://github.com/dataesr/scanr-next-gen#readme"
+}
