@@ -1,10 +1,14 @@
-import React, { useEffect, useLayoutEffect, ReactNode } from 'react';
-import ReactDOM from 'react-dom/client';
-import { createInstance, MatomoProvider, useMatomo } from '@jonkoops/matomo-tracker-react';
-import { BrowserRouter, Link, useLocation } from 'react-router-dom';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { DSFRConfig } from '@dataesr/dsfr-plus';
+import React, { useEffect, useLayoutEffect, ReactNode } from "react";
+import ReactDOM from "react-dom/client";
+import {
+  createInstance,
+  MatomoProvider,
+  useMatomo,
+} from "@jonkoops/matomo-tracker-react";
+import { BrowserRouter, Link, useLocation } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DSFRConfig } from "@dataesr/dsfr-plus";
 import "./styles.scss";
 
 const { VITE_APP_MATOMO_BASE_URL, VITE_APP_MATOMO_SITE_ID } = import.meta.env;
@@ -18,8 +22,8 @@ const matomo = createInstance({
   },
 });
 
-import Router from './router';
-import './styles/index.scss';
+import Router from "./router";
+import "./styles/index.scss";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,7 +41,7 @@ type RouterLinkProps = {
   replace?: boolean;
   target?: string;
   children?: ReactNode;
-}
+};
 
 const PageTracker = () => {
   const { pathname } = useLocation();
@@ -48,12 +52,12 @@ const PageTracker = () => {
   }, [pathname, trackPageView]);
 
   return null;
-}
+};
 
 const RouterLink = ({ href, replace, target, ...props }: RouterLinkProps) => {
-  if (target === "_blank") return <a href={href} target={target} {...props} />
-  return <Link to={href} replace={replace} {...props} />
-}
+  if (target === "_blank") return <a href={href} target={target} {...props} />;
+  return <Link to={href} replace={replace} {...props} />;
+};
 
 const ScrollToTop = (): ReactNode => {
   const { pathname } = useLocation();
@@ -61,15 +65,18 @@ const ScrollToTop = (): ReactNode => {
     document.documentElement.scrollTo(0, 0);
   }, [pathname]);
   return null;
-}
+};
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MatomoProvider value={matomo}>
       <BrowserRouter>
         <PageTracker />
         <ScrollToTop />
-        <DSFRConfig routerComponent={RouterLink}>
+        <DSFRConfig
+          routerComponent={RouterLink}
+          extendOptionalFieldsLabelsWith={null}
+        >
           <QueryClientProvider client={queryClient}>
             <ReactQueryDevtools />
             <Router />
@@ -77,5 +84,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </DSFRConfig>
       </BrowserRouter>
     </MatomoProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
