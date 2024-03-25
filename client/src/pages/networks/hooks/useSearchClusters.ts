@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import useUrl from "../../search/hooks/useUrl"
 import useTab from "./useTab"
-import { networkSearch } from "../../../api/networks/search"
+import { networkSearch } from "../../../api/networks/search/search"
 
 export default function useSearchClusters(networkTab: string, computeClusters: boolean) {
   const { currentQuery, filters } = useUrl()
