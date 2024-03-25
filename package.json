@@ -1,6 +1,6 @@
 {
   "name": "scanr-next-gen",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "scanR next generation",
   "main": "null",
   "workspaces": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "preversion": "git switch main && git pull origin main --rebase --tags && git merge origin/staging",
-    "version": "git add . && git commit -m 'deploy: version $npm_package_version",
+    "version": "git add . && git commit -m 'deploy: version $npm_package_version'",
     "postversion": "git push origin main --tags && git switch staging",
     "deploy": "npm version $npm_config_level --workspaces --include-workspace-root"
   },
