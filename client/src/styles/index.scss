@@ -177,6 +177,7 @@
   mask-image: url("/icons/business/links-line.svg");
 }
 
+// Overwriting the default MUI Paper HR style for networks
 .MuiPaper-root HR {
   unicode-bidi: isolate;
   margin-block-start: 0.5em;
