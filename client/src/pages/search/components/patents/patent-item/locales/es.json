@@ -1,0 +1,11 @@
+{
+    "patents.item.badges.main": "Familia de Patentes",
+    "patents.item.badges.isInternational": "Internacional",
+    "patents.item.badges.isOeb": "Oficina Europea",
+    "patents.item.badges.application-count": "{count, plural, one {# solicitud} other {# solicitudes}}",
+    "patents.item.badges.granted": "Patentes Concedidas",
+    "patents.item.dep-count": "{count, plural, one {# solicitante} other {# solicitantes}}",
+    "patents.item.inv-count": "{count, plural, one {# inventor} other {# inventores}}",
+    "patents.item.publication-date": "Publicado por primera vez el {date}",
+    "patents.item.submission-date": "Presentado por primera vez el {date}"
+}

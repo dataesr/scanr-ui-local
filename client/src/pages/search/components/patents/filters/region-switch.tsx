@@ -20,7 +20,9 @@ export default function PatentRegionFilter() {
           handleBoolFilterChange({
             field: "isInternational",
             value: e.target.checked,
-            label: "Brevets internationaux seulement",
+            label: intl.formatMessage({
+              id: "search.filters.only.WO",
+            }),
           })
         }
       />
@@ -34,7 +36,9 @@ export default function PatentRegionFilter() {
           handleBoolFilterChange({
             field: "isOeb",
             value: e.target.checked,
-            label: "Brevets européens seulement",
+            label: intl.formatMessage({
+              id: "search.filters.only.EP",
+            }),
           })
         }
       />
@@ -44,10 +48,14 @@ export default function PatentRegionFilter() {
           handleBoolFilterChange({
             field: "isGranted",
             value: true,
-            label: "Les brevets protégés uniquement",
+            label: intl.formatMessage({
+              id: "search.filters.only.granted",
+            }),
           })
         }
-        label="Les brevets protégés uniquement"
+        label={intl.formatMessage({
+          id: "search.filters.only.granted",
+        })}
       />
     </>
   );
