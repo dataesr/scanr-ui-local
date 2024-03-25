@@ -41,12 +41,19 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
-  }).then((response) => response.json())
-  console.log("endOfSearch", res)
+  })
+  if (res.status !== 200) {
+    throw new Error(`Elasticsearch error: ${res.status}`);
+  }
+  const json = await res.json()
+  console.log("endOfSearch", json)
 
-  const aggregation = res.aggregations?.[model].buckets
+  const aggregation = json.aggregations?.[model].buckets
+  if (!aggregation?.length) {
+    throw new Error(`Elasticsearch error: no ${model} aggregation found for query ${query}`)
+  }
+
   const computeClusters = options?.computeClusters ?? false
-
   const network = await networkCreate(query, model, aggregation, computeClusters)
   const config = configCreate(model)
   const info = infoCreate(query, model)
