@@ -11,6 +11,7 @@ import ClustersButton from "./components/button"
 import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
 import NetworkExports from "./components/exports"
+import ClustersAnalytics from "./components/analytics"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -122,11 +123,8 @@ function NetworksPage() {
               <hr />
               <NetworkExports />
               <hr />
-              <ClustersButton
-                states={clustersTabs}
-                handleChange={handleClustersChange}
-                show={import.meta.env.DEV}
-              />
+              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={import.meta.env.DEV} />
+              <ClustersAnalytics clustersTabs={clustersTabs} show={import.meta.env.DEV} />
             </Container>
           </Col>
         </Row>
