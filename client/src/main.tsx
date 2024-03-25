@@ -9,6 +9,8 @@ import { BrowserRouter, Link, useLocation } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DSFRConfig } from "@dataesr/dsfr-plus";
+import Router from "./router";
+import "./styles/index.scss";
 import "./styles.scss";
 
 const { VITE_APP_MATOMO_BASE_URL, VITE_APP_MATOMO_SITE_ID } = import.meta.env;
@@ -22,8 +24,6 @@ const matomo = createInstance({
   },
 });
 
-import Router from "./router";
-import "./styles/index.scss";
 
 const queryClient = new QueryClient({
   defaultOptions: {
