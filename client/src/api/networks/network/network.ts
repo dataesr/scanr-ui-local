@@ -104,12 +104,10 @@ export default async function networkCreate(
       target_id: target,
       strength: attr?.weight,
     })),
-    ...(communities && {
-      clusters: communities.map((community) => ({
-        ...community,
-        cluster: community.index + 1,
-      })),
-    }),
+    clusters: communities.map((community) => ({
+      ...community,
+      cluster: community.index + 1,
+    })),
   }
 
   console.log("network", network)
