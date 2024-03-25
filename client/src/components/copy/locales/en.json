@@ -1,0 +1,5 @@
+{
+  "copy-badge.copy": "Copy value to clipboard",
+  "copy-badge.copied": "Value copied to clipboard",
+  "copy-badge.error": "Error copying value to clipboard"
+}
