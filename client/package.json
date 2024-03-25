@@ -26,6 +26,7 @@
     "graphology-layout-forceatlas2": "^0.10.1",
     "graphology-operators": "^1.6.0",
     "graphology-types": "^0.24.7",
+    "hex-color-to-color-name": "^1.0.2",
     "highcharts": "^11.3.0",
     "highcharts-react-official": "^3.2.1",
     "leaflet": "^1.9.4",
