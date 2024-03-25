@@ -1,12 +1,17 @@
 import { Row, Col, Text, Title, Button, ButtonGroup, Tag } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import useUrl from "../../search/hooks/useUrl"
+import useTab from "../hooks/useTab"
 import useAggregateData from "../../search/hooks/useAggregationData"
+import useSearchData from "../hooks/useSearchData"
 
 export default function NetworkFilters() {
   const intl = useIntl()
-  const { currentQuery, currentFilters, handleFilterChange, handleDeleteFilter, clearFilters } = useUrl()
+  const { currentTab } = useTab()
+  const { currentQuery, currentFilters, handleFilterChange, handleDeleteFilter, clearFilters, handleRangeFilterChange } =
+    useUrl()
   const { isLoading, isError } = useAggregateData("filters")
+  const { search } = useSearchData(currentTab, false)
 
   return (
     <Row gutters className="fr-mb-1w">
@@ -43,39 +48,42 @@ export default function NetworkFilters() {
             </Text>
             <br />
             <Row verticalAlign="middle">
-              {filter.type !== "range" ? (
+              {filter.type === "range" && (
+                <Tag
+                  as="button"
+                  className="fr-mb-1v custom-dismissible-tag"
+                  onClick={() => handleRangeFilterChange({ field })}
+                >
+                  {filter.values?.[0]?.value} - {filter.values?.[1]?.value}
+                </Tag>
+              )}
+              {filter.type === "bool" &&
+                filter.values?.map(({ value, label }) => (
+                  <>
+                    <Tag
+                      as="button"
+                      key={value.toString()}
+                      className="fr-mb-1v custom-dismissible-tag"
+                      onClick={() => handleDeleteFilter({ field })}
+                    >
+                      {label || value?.toString()}
+                    </Tag>
+                  </>
+                ))}
+              {filter.type === "terms" &&
                 filter.values?.map(({ value, label }, i) => (
                   <>
                     <Tag
                       as="button"
-                      icon="delete-bin-line"
-                      iconPosition="right"
-                      key={value}
-                      className="fr-mb-1v"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        handleFilterChange({ field, value })
-                      }}
+                      key={value.toString()}
+                      className="fr-mb-1v custom-dismissible-tag"
+                      onClick={() => handleFilterChange({ field, value })}
                     >
                       {label || value?.toString()}
                     </Tag>
                     {i !== filter.values?.length - 1 ? `${filter?.operator === "and" ? " & " : " | "}` : null}
                   </>
-                ))
-              ) : (
-                <Tag
-                  as="button"
-                  icon="delete-bin-line"
-                  iconPosition="right"
-                  className="fr-mb-1v"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleDeleteFilter({ field })
-                  }}
-                >
-                  {filter.values?.[0]?.value} - {filter.values?.[1]?.value}
-                </Tag>
-              )}
+                ))}
             </Row>
           </Col>
         ))}
@@ -87,7 +95,7 @@ export default function NetworkFilters() {
             as="button"
             aria-controls="publications-filters"
             data-fr-opened="false"
-            disabled={!currentQuery || isLoading || isError}
+            disabled={Boolean(search.error) || search.isFetching || !currentQuery || isLoading || isError}
             variant="secondary"
           >
             {intl.formatMessage({ id: "networks.filters.add" })}

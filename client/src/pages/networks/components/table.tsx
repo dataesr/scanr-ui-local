@@ -1,12 +1,12 @@
 import { useMemo } from "react"
-import { Container } from "@dataesr/dsfr-plus"
+import { Container, Spinner } from "@dataesr/dsfr-plus"
 import { NetworkData } from "../../../types/network"
-import useSearchClusters from "../hooks/useSearchClusters"
+import useSearchData from "../hooks/useSearchData"
 import useUrl from "../../search/hooks/useUrl"
 
 export default function ClustersTable({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
   const { currentQuery, currentFilters } = useUrl()
-  const { search } = useSearchClusters(currentTab, enabled)
+  const { search } = useSearchData(currentTab, enabled)
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const key = useMemo(
@@ -14,7 +14,9 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
     [currentTab, currentQuery, currentFilters, enabled]
   )
 
-  if (!enabled || search.isFetching || !communities) return <></>
+  if (!enabled) return null
+
+  if (search.isFetching) return <Spinner />
 
   return (
     <Container className="fr-mt-5w" key={key}>
@@ -36,14 +38,14 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
               <td>
                 {community?.domains
                   ? Object.entries(community.domains)
-                    .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
-                    .slice(0, 5)
-                    .map(([domain]) => `${domain}`)
-                    .join(", ")
+                      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+                      .slice(0, 5)
+                      .map(([domain]) => `${domain}`)
+                      .join(", ")
                   : ""}
               </td>
               <td>{community.maxWeightNodes.join(", ")}</td>
-              <td>{community?.publications ? community.publications : 0}</td>
+              <td>{community.hits}</td>
               <td>{community?.oaPercent ? `${community.oaPercent.toFixed(1)} %` : ""}</td>
               <td>{community.maxYear}</td>
             </tbody>

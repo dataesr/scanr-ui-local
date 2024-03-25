@@ -3,9 +3,9 @@ import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
 import random from "graphology-layout/random"
 import forceAtlas2 from "graphology-layout-forceatlas2"
-import { NetworkData } from "../../types/network"
+import { NetworkData } from "../../../types/network"
 import communitiesCreate from "./communities"
-import nodeGetUrl from "./url"
+import { configGetItemUrl } from "./config"
 
 export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
@@ -97,19 +97,17 @@ export default async function networkCreate(
       cluster: attr.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key) },
       scores: { "Last activity": attr?.maxYear },
-      page: nodeGetUrl(model, key, attr),
+      page: configGetItemUrl(model, key, attr),
     })),
     links: graph.mapEdges((_, attr, source, target) => ({
       source_id: source,
       target_id: target,
       strength: attr?.weight,
     })),
-    ...(communities && {
-      clusters: communities.map((community) => ({
-        ...community,
-        cluster: community.index + 1,
-      })),
-    }),
+    clusters: communities.map((community) => ({
+      ...community,
+      cluster: community.index + 1,
+    })),
   }
 
   console.log("network", network)

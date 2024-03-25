@@ -1,4 +1,4 @@
-import { NetworkInfo } from "../../types/network"
+import { NetworkInfo } from "../../../types/network"
 
 export default function infoCreate(query: string, model: string): NetworkInfo {
   const title = `Co-${model} network `

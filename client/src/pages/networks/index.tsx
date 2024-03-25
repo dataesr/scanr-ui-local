@@ -10,6 +10,8 @@ import ClustersTable from "./components/table"
 import ClustersButton from "./components/button"
 import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
+import NetworkExports from "./components/exports"
+import ClustersAnalytics from "./components/analytics"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -109,12 +111,6 @@ function NetworksPage() {
                   <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
                     <Home currentTab={label} />
                     <Graph currentTab={label} computeClusters={clustersTabs[label]} />
-                    <ClustersButton
-                      currentTab={label}
-                      enabled={clustersTabs[label]}
-                      handleChange={handleClustersChange}
-                      show={import.meta.env.DEV}
-                    />
                     <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
                   </Tab>
                 ))}
@@ -122,7 +118,14 @@ function NetworksPage() {
             </Container>
           </Col>
           <Col xs="12" lg="4">
-            <Container className="fr-ml-1w">{!isMobile && <NetworkFilters />}</Container>
+            <Container className="fr-ml-1w">
+              {!isMobile && <NetworkFilters />}
+              <hr />
+              <NetworkExports />
+              <hr />
+              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={import.meta.env.DEV} />
+              <ClustersAnalytics clustersTabs={clustersTabs} show={import.meta.env.DEV} />
+            </Container>
           </Col>
         </Row>
       </Container>

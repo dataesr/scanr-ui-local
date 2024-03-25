@@ -1,6 +1,8 @@
-const GRAPH_MODELS = {
+import { NetworkConfig } from "../../../types/network"
+
+const CONFIG = {
   authors: {
-    url: "/authors",
+    url: (key: string) => `/authors/${key}`,
     terminology: {
       item: "author",
       items: "authors",
@@ -13,7 +15,7 @@ const GRAPH_MODELS = {
     },
   },
   institutions: {
-    url: "/organizations",
+    url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "institution",
       items: "institutions",
@@ -26,7 +28,7 @@ const GRAPH_MODELS = {
     },
   },
   structures: {
-    url: "/organizations",
+    url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "structure",
       items: "structures",
@@ -39,7 +41,7 @@ const GRAPH_MODELS = {
     },
   },
   domains: {
-    url: "/search/publications",
+    url: (_: string, attr: any) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
     terminology: {
       item: "domain",
       items: "domains",
@@ -52,7 +54,7 @@ const GRAPH_MODELS = {
     },
   },
   software: {
-    url: "/search/publications",
+    url: (_: string, attr: any) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
     terminology: {
       item: "software",
       items: "software",
@@ -66,5 +68,29 @@ const GRAPH_MODELS = {
   },
 }
 
-export const graphGetConf = (model: string) => GRAPH_MODELS?.[model] ?? {}
-export const graphGetTerminology = (model: string) => GRAPH_MODELS?.[model]?.terminology ?? {}
+const configGetItemDescription = () =>
+  `<div class='description_heading'><a class='description_url' href={page}>{label}</a></div>`
+const configGetLinkDescription = (model: string) =>
+  `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
+
+export function configGetItemUrl(model: string, key: string, attr: any): string {
+  const targetUrl = CONFIG?.[model]?.url(key, attr) ?? ""
+  const baseUrl = window?.location?.href?.split("/networks")[0] ?? ""
+  return baseUrl + targetUrl
+}
+
+export default function configCreate(model: string): NetworkConfig {
+  const templates = {
+    item_description: configGetItemDescription(),
+    link_description: configGetLinkDescription(model),
+  }
+  const terminology = CONFIG?.[model]?.terminology
+
+  const config = {
+    templates: templates,
+    ...(terminology && { terminology: terminology }),
+  }
+
+  console.log("config", config)
+  return config
+}

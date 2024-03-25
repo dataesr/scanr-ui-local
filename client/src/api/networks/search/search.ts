@@ -1,8 +1,8 @@
-import { publicationsIndex, postHeaders } from "../../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits } from "../../types/network"
-import networkCreate from "./network"
-import configCreate from "./config"
-import infoCreate from "./info"
+import { publicationsIndex, postHeaders } from "../../../config/api"
+import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits } from "../../../types/network"
+import networkCreate from "../network/network"
+import configCreate from "../network/config"
+import infoCreate from "../network/info"
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
@@ -41,15 +41,26 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
-  }).then((response) => response.json())
-  console.log("endOfSearch", res)
+  })
+  if (res.status !== 200) {
+    throw new Error(`Elasticsearch error: ${res.status}`);
+  }
+  const json = await res.json()
+  console.log("endOfSearch", json)
 
-  const aggregation = res.aggregations?.[model].buckets
+  const aggregation = json.aggregations?.[model].buckets
+  if (!aggregation?.length) {
+    throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
+  }
+
   const computeClusters = options?.computeClusters ?? false
-
   const network = await networkCreate(query, model, aggregation, computeClusters)
   const config = configCreate(model)
   const info = infoCreate(query, model)
+
+  if (network.items.length < 3) {
+    throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)
+  }
 
   const data = {
     network: network,

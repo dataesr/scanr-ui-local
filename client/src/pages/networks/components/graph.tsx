@@ -2,12 +2,11 @@ import { useMemo } from "react"
 import { Container, Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import useSearchData from "../hooks/useSearchData"
-import useSearchClusters from "../hooks/useSearchClusters"
 import Error204 from "./error204"
 
 export default function Graph({ currentTab, computeClusters }: { currentTab: string; computeClusters: boolean }) {
-  const { search, currentQuery, filters } = useSearchData(currentTab)
-  const { search: searchClusters } = useSearchClusters(currentTab, computeClusters)
+  const { search, currentQuery, filters } = useSearchData(currentTab, false)
+  const { search: searchClusters } = useSearchData(currentTab, computeClusters)
   const keyClusters = searchClusters.isFetching ? false : computeClusters
   const vosviewer = keyClusters ? searchClusters?.data : search?.data
   const key = useMemo(
@@ -15,7 +14,7 @@ export default function Graph({ currentTab, computeClusters }: { currentTab: str
     [currentTab, currentQuery, filters, keyClusters]
   )
 
-  if (!currentQuery) return <></>
+  if (!currentQuery) return null
 
   if (search.isFetching)
     return (

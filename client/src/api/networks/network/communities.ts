@@ -1,9 +1,11 @@
 import Graph from "graphology-types"
 import louvain from "graphology-communities-louvain"
-import { arrayPush, labelClean } from "./utils"
-import { networkSearchHits } from "./search"
-import { ElasticHits } from "../../types/network"
+import { arrayPush, labelClean } from "../_utils/functions"
+import { networkSearchHits } from "../search/search"
+import { ElasticHits } from "../../../types/network"
 import { openAiLabeledClusters } from "./openai"
+import { vosColors } from "../_utils/constants"
+import { GetColorName } from "hex-color-to-color-name"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
@@ -32,6 +34,15 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   )
   return labels
 }
+
+const communityGetYears = (hits: ElasticHits) =>
+  hits.reduce((acc, hit) => {
+    const year = hit.year
+    acc[year] = acc[year] ? acc[year] + 1 : 1
+    return acc
+  }, {})
+
+// const communityGetPublications = (hits: ElasticHits): Array<string> => hits.map((hit) => hit.title.default)
 
 const communityGetDomains = (hits: ElasticHits): any =>
   hits.reduce((acc, hit) => {
@@ -67,7 +78,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
 
       const community = {
         index: index,
-        label: `Unnamed ${index}`,
+        label: GetColorName(vosColors[index]) ?? `Unnamed ${index + 1}`,
+        color: vosColors[index] ?? "#e2e2e2",
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
@@ -75,7 +87,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         ...(hits && {
           domains: communityGetDomains(hits),
           oaPercent: communityGetOaPercent(hits),
-          publications: hits.length,
+          hits: hits.length,
+          years: communityGetYears(hits),
         }),
       }
       return community
@@ -83,7 +96,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   ).then((c) => c.sort((a, b) => b.size - a.size))
 
   // Add labels with IA
-  const labeledCommunities = await openAiLabeledClusters(query, await communities)
+  const labeledCommunities = await openAiLabeledClusters(await communities)
 
   if (labeledCommunities) return labeledCommunities
 

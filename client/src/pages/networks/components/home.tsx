@@ -6,7 +6,7 @@ export default function Home({ currentTab }: { currentTab: string }) {
   const intl = useIntl()
   const { currentQuery } = useUrl()
 
-  if (currentQuery) return <></>
+  if (currentQuery) return null
 
   return (
     <Container className="fr-mt-5w" style={{ height: "200px" }}>
