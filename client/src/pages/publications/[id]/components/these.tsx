@@ -55,7 +55,7 @@ export default function These({ data }) {
               <PageSection
                 size="lead"
                 title={intl.formatMessage({ id: 'publications.section.affiliations' })}
-                show={!!data.authors?.length}
+                show={!!affiliations?.length}
                 action={(markers.length > 0) && (
                   <Text className="fr-text--sm">
                     <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1v" />
