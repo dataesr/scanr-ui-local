@@ -52,7 +52,7 @@ const exportNetwork = (network: NetworkData) => ({
 
 export default function useExportData() {
   const { currentTab } = useTab()
-  const { search } = useSearchData(currentTab)
+  const { search } = useSearchData(currentTab, false)
   const [isLoading, setIsLoading] = useState(false)
 
   const exportFile = useCallback(
