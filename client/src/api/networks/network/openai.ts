@@ -1,38 +1,38 @@
-import OpenAI from "openai"
+import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 
-const ENABLED = false
-const openai = new OpenAI({ apiKey: "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", dangerouslyAllowBrowser: true })
+const ENABLED = true
+const mistral = new MistralClient("OpLulxlAWDbZuIUNOLtdQwlNaXw8iKNw")
 
-export async function openAiLabelsFromDomains(query: string, domains: any): Promise<string> {
-  const completion = await openai.chat.completions.create({
+async function mistralLabelsFromDomains(domains: any): Promise<string> {
+  const completion = await mistral.chat({
     messages: [
       {
-        role: "system",
-        content: `You are an assistant tasked with naming clusters derived from a network of research publications linked to the query "${query}". \
-        I will provide you with several lists of concepts, with each list corresponding to a single cluster. \
-        Your goal is to generate the most suitable name for each cluster based on its concepts list. \
-        Each cluster name should be unique, consist only of English words, be devoid of punctuation, and not exceed three words. \
-        Your output should be in JSON format.`,
-      },
-      {
         role: "user",
-        content: `Please name the clusters that are defined by the following lists of concepts: ${domains}`,
+        content: `
+        You have been tasked with naming distinct fields of study for several communities of research publications.
+        Below are lists of topics representing each community.
+        Your goal is to provide a unique and descriptive name for each field of study that best encapsulates the essence of the topics within that community.
+        Each name should be unique and as short as possible.
+        Output as JSON object with the list number and the single generated name.
+
+        ${domains}`,
       },
     ],
-    model: "gpt-3.5-turbo",
-    response_format: { type: "json_object" },
-    seed: 42,
+    model: "open-mistral-7b",
+    temperature: 0.3,
+    responseFormat: { type: "json_object" as ResponseFormats },
+    randomSeed: 42,
   })
 
+  console.log("mistral_completion", completion)
   const answer: string = completion.choices[0].message.content
   return answer
 }
 
-export async function openAiLabeledClusters(query: string, clusters: Array<any>) {
+export async function openAiLabeledClusters(clusters: Array<any>) {
   if (!ENABLED) return clusters
 
-  const prefix = "cluster"
-  console.log("clusters", clusters)
+  const prefix = "list"
   const domains = clusters?.reduce((acc, cluster, index) => {
     if (cluster?.domains) {
       const topDomains = Object.entries(cluster.domains)
@@ -41,7 +41,7 @@ export async function openAiLabeledClusters(query: string, clusters: Array<any>)
         .map(([domain]) => `${domain}`)
         .join(", ")
 
-      acc = acc + `${prefix}${index} = [${topDomains}], `
+      acc = acc + `${prefix}${index + 1} = [${topDomains}], `
     }
     return acc
   }, "")
@@ -49,12 +49,12 @@ export async function openAiLabeledClusters(query: string, clusters: Array<any>)
 
   if (!domains) return clusters
 
-  const labels = await openAiLabelsFromDomains(query, domains).then((response) => JSON.parse(response))
-  console.log("labels", labels)
+  const mistral_labels = await mistralLabelsFromDomains(domains).then((response) => JSON.parse(response))
+  console.log("mistral_labels", mistral_labels)
 
-  Object.entries(labels).forEach(([cluster, value]) => {
-    const index = Number(cluster.slice(prefix.length))
-    clusters[index].label = value
+  Object.entries(mistral_labels).forEach((entries, index) => {
+    const value = entries[1]
+    clusters[index].label = Array.isArray(value) ? value[0] : value
   })
 
   return clusters
