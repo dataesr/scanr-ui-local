@@ -1,6 +1,18 @@
 import classNames from 'classnames';
 import useCopyToClipboard from '../../hooks/useCopyToClipboard';
 import styles from './styles.module.scss';
+import { RawIntlProvider, createIntl } from 'react-intl';
+import { useDSFRConfig } from '@dataesr/dsfr-plus';
+
+
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
 
 export type CopyBadgeProps = {
   lowercase?: boolean,
@@ -20,6 +32,8 @@ export default function CopyBadge({
   children,
   ...remainingProps
 }: CopyBadgeProps) {
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
   const { copyStatus, copy } = useCopyToClipboard();
   const _className = classNames(
     'fr-badge',
@@ -35,11 +49,18 @@ export default function CopyBadge({
     className,
   );
 
+  const copyBadgeTitles = [
+    intl.formatMessage({ id: "copy-badge.copy" }),
+    intl.formatMessage({ id: "copy-badge.copied" }),
+    intl.formatMessage({ id: "copy-badge.error" }),
+  ]
 
   return (
-    <button title="Copier" onClick={() => copy(copyText)} type="button" className={_className} {...remainingProps}>
-      {children}
-    </button>
+    <RawIntlProvider value={intl}>
+      <button aria-label={copyBadgeTitles?.[copyStatus]} onClick={() => copy(copyText)} type="button" className={_className} {...remainingProps}>
+        {children}
+      </button>
+    </RawIntlProvider>
   );
 }
 

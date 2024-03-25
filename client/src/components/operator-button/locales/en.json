@@ -1,0 +1,6 @@
+{
+  "operator-button.label.and": "Intersection",
+  "operator-button.label.or": "Union",
+  "operator-button.switch.and": "Switch operator to 'OR'",
+  "operator-button.switch.or": "Switch operator to 'AND'"
+}
