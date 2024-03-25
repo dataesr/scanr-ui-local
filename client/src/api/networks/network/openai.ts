@@ -1,6 +1,6 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 
-const ENABLED = true
+const ENABLED = false
 const mistral = new MistralClient("OpLulxlAWDbZuIUNOLtdQwlNaXw8iKNw")
 
 async function mistralLabelsFromDomains(domains: any): Promise<string> {
