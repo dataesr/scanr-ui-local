@@ -75,11 +75,12 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
       const hits = await networkSearchHits(query, model, communityGetLinks(graph, index))
+      console.log("trois")
 
       const community = {
         index: index,
-        label: GetColorName(vosColors[index]) ?? `Unnamed ${index + 1}`,
-        color: vosColors[index] ?? "#e2e2e2",
+        label: vosColors?.[index] ? GetColorName(vosColors[index]) : `Unnamed ${index + 1}`,
+        color: vosColors?.[index] ?? "#e2e2e2",
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
         maxYear: communityGetMaxYear(graph, index),
