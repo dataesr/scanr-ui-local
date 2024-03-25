@@ -14,7 +14,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
     [currentTab, currentQuery, currentFilters, enabled]
   )
 
-  if (!enabled || search.isFetching || !communities) return <></>
+  if (!enabled || search.isFetching || !communities) return null
 
   return (
     <Container className="fr-mt-5w" key={key}>

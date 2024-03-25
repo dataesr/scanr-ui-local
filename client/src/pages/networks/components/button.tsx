@@ -18,8 +18,8 @@ export default function ClustersButton({
   const { search } = useSearchData(currentTab)
   const { search: searchClusters } = useSearchClusters(currentTab, enabled)
 
-  if (!show) return <></>
-  if (!search?.data || search.isFetching) return <></>
+  if (!show) return null
+  if (!search?.data || search.isFetching) return null
 
   return (
     <Container className="fr-mt-3w">

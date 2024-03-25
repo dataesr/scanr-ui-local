@@ -15,7 +15,7 @@ export default function Graph({ currentTab, computeClusters }: { currentTab: str
     [currentTab, currentQuery, filters, keyClusters]
   )
 
-  if (!currentQuery) return <></>
+  if (!currentQuery) return null
 
   if (search.isFetching)
     return (
