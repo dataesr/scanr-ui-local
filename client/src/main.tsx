@@ -25,6 +25,7 @@ const matomo = createInstance({
 import Router from "./router";
 import "./styles/index.scss";
 
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
