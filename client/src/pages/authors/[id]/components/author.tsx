@@ -29,12 +29,12 @@ export default function AuthorPage({ data }: { data: Author }) {
   const maxCommonPublications = coAuthors && Math.max(...coAuthors.map((el) => el.count))
   const maxReviews = reviews && Math.max(...reviews.map((el) => el.count))
   const thesis = publications?.filter((publi) => {
-    return publi.type === "these" && publi.authors.find((author) => author.person === data.id)?.role === "author"
+    return publi.type === "thesis" && publi.authors.find((author) => author.person === data.id)?.role === "author"
   })
   const thesisParticipations = publications?.filter((publi) => {
-    return publi.type === "these" && publi.authors.find((author) => author.person === data.id)?.role !== "author"
+    return publi.type === "thesis" && publi.authors.find((author) => author.person === data.id)?.role !== "author"
   })
-  const others = publications?.filter((publi) => publi.type !== "these")
+  const others = publications?.filter((publi) => publi.type !== "thesis")
 
   const networkFilter = stringifySearchFiltersForURL({
     "authors.person": {

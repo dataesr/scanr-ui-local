@@ -3,6 +3,7 @@ import { ExportArgs } from '../../../types/commons'
 import { ExportOrganization } from '../../../types/organization';
 import csvify from '../../utils/csvify';
 import { FIELDS, EXPORT_SOURCE } from '../_utils/constants';
+import { getMatchPhrases } from '../_utils/get-match-phrases';
 
 
 const DEFAULT_FILTERS = [
@@ -83,14 +84,9 @@ export async function exportOrganizationsForHe({ query, filters, format = 'csv',
     size: 1000,
     query: {
       bool: {
-        must: [
-          {
-            query_string: {
-              query: query || '*',
-              fields: FIELDS,
-            },
-          }
-        ]
+        minimum_should_match: 1,
+        should: getMatchPhrases(query?.split('|')),
+        filter: [...filters || [], { term: { status: "active" } }]
       }
     },
   }
