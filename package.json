@@ -1,21 +1,13 @@
 {
   "name": "scanr-next-gen",
-<<<<<<< HEAD
-  "version": "1.0.1",
-=======
   "version": "0.0.5",
->>>>>>> 6ae5b26 (add root package.json)
   "description": "scanR next generation",
   "main": "null",
   "workspaces": [
     "client"
   ],
   "scripts": {
-<<<<<<< HEAD
-    "test": "null"
-=======
     "deploy": "git switch main && git pull origin main --rebase --tags && git merge origin/staging && npm version $npm_config_level --workspaces --include-workspace-root && git push origin main --tags && git switch staging"
->>>>>>> 6ae5b26 (add root package.json)
   },
   "repository": {
     "type": "git",
@@ -30,8 +22,4 @@
     "url": "https://github.com/dataesr/scanr-next-gen/issues"
   },
   "homepage": "https://github.com/dataesr/scanr-next-gen#readme"
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6ae5b26 (add root package.json)
