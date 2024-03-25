@@ -7,7 +7,7 @@ import useExportData from "../hooks/useExportData"
 export default function NetworkExports() {
   const intl = useIntl()
   const { currentTab } = useTab()
-  const { search } = useSearchData(currentTab, false)
+  const { search, currentQuery } = useSearchData(currentTab, false)
   const { isExporting, exportFile } = useExportData()
 
   const handleExport = async (key: string) => {
@@ -30,7 +30,9 @@ export default function NetworkExports() {
         </div>
         <div className="fr-pl-2w">
           <MenuButton
-            disabledKeys={isExporting || search.isFetching || Boolean(search.error) ? ["export>json", "export>csv"] : []}
+            disabledKeys={
+              isExporting || search.isFetching || Boolean(search.error) || !currentQuery ? ["export>json", "export>csv"] : []
+            }
             placement="end"
             size="sm"
             aria-label="Options"

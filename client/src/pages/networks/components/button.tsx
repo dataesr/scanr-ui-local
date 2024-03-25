@@ -1,38 +1,41 @@
 import { useIntl } from "react-intl"
-import { Container, Row, Button } from "@dataesr/dsfr-plus"
+import { Row, Col, Button, ButtonGroup } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import useTab from "../hooks/useTab"
 
 export default function ClustersButton({
-  states,
+  clustersTabs,
   handleChange,
   show,
 }: {
-  states: any,
+  clustersTabs: any
   handleChange: any
   show: boolean
 }) {
   const intl = useIntl()
   const { currentTab } = useTab()
-  const { search } = useSearchData(currentTab, show ? false : states[currentTab])
+  const enableClusters = show ? clustersTabs[currentTab] : false
+  const { search, currentQuery } = useSearchData(currentTab, enableClusters)
 
   if (!show) return null
 
   return (
-    <Container fluid>
-      <Row>
-        <Button
-          iconPosition="right"
-          icon={states[currentTab] ? "arrow-up-line" : "arrow-down-line"}
-          variant="secondary"
-          onClick={() => handleChange(currentTab)}
-          disabled={search.isFetching || Boolean(search.error)}
-        >
-          {intl.formatMessage({
-            id: states[currentTab] ? "networks.clusters.button.rm" : "networks.clusters.button.add",
-          })}
-        </Button>
-      </Row>
-    </Container >
+    <Row gutters>
+      <Col xs="12">
+        <ButtonGroup size="md">
+          <Button
+            iconPosition="right"
+            icon={enableClusters ? "arrow-up-line" : "arrow-down-line"}
+            variant="secondary"
+            onClick={() => handleChange(currentTab)}
+            disabled={search.isFetching || Boolean(search.error) || !currentQuery}
+          >
+            {intl.formatMessage({
+              id: enableClusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
+            })}
+          </Button>
+        </ButtonGroup>
+      </Col>
+    </Row>
   )
 }
