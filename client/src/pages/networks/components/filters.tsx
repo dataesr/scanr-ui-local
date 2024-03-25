@@ -10,7 +10,7 @@ export default function NetworkFilters() {
   const { currentTab } = useTab()
   const { currentQuery, currentFilters, handleFilterChange, handleDeleteFilter, clearFilters } = useUrl()
   const { isLoading, isError } = useAggregateData("filters")
-  const { search } = useSearchData(currentTab)
+  const { search } = useSearchData(currentTab, false)
 
   return (
     <Row gutters className="fr-mb-1w">
@@ -91,7 +91,7 @@ export default function NetworkFilters() {
             as="button"
             aria-controls="publications-filters"
             data-fr-opened="false"
-            disabled={search.isFetching || !currentQuery || isLoading || isError}
+            disabled={Boolean(search.error) || search.isFetching || !currentQuery || isLoading || isError}
             variant="secondary"
           >
             {intl.formatMessage({ id: "networks.filters.add" })}

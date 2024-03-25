@@ -1,12 +1,12 @@
 import { useMemo } from "react"
 import { Container } from "@dataesr/dsfr-plus"
 import { NetworkData } from "../../../types/network"
-import useSearchClusters from "../hooks/useSearchClusters"
+import useSearchData from "../hooks/useSearchData"
 import useUrl from "../../search/hooks/useUrl"
 
 export default function ClustersTable({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
   const { currentQuery, currentFilters } = useUrl()
-  const { search } = useSearchClusters(currentTab, enabled)
+  const { search } = useSearchData(currentTab, enabled)
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const key = useMemo(
