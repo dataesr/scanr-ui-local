@@ -32,7 +32,7 @@ export default function PatentAnalytics() {
             id: "search.analytics.patent.by-year.title",
           })}
           description={intl.formatMessage({
-            id: "search.analytics.publications.by-year.description",
+            id: "search.analytics.patents.by-year.description",
           })}
           options={yearOptions}
         />
