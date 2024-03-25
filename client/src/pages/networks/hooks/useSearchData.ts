@@ -18,7 +18,7 @@ export default function useSearchData(networkTab: string, computeClusters: boole
     return {
       currentQuery,
       filters,
-      search: { data: data, isFetching, error },
+      search: { data, isFetching, error },
     }
   }, [currentQuery, filters, data, isFetching, error])
 
