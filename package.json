@@ -7,7 +7,10 @@
     "client"
   ],
   "scripts": {
-    "deploy": "git switch main && git pull origin main --rebase --tags && git merge origin/staging && npm version $npm_config_level --workspaces --include-workspace-root && git push origin main --tags && git switch staging"
+    "preversion": "git switch main && git pull origin main --rebase --tags && git merge origin/staging",
+    "version": "git add . && git commit -m 'deploy: version $npm_package_version",
+    "postversion": "git push origin main --tags && git switch staging",
+    "deploy": "npm version $npm_config_level --workspaces --include-workspace-root"
   },
   "repository": {
     "type": "git",
