@@ -1,4 +1,4 @@
-export const colors = [
+export const vosColors = [
   "#d62728",
   "#2ca02c",
   "#1f77b4",
@@ -17,6 +17,4 @@ export const colors = [
   "#ffbb78",
   "#c49c94",
   "#f7b6d2",
-  "#ffffff",
-  "#ffffff",
 ]
