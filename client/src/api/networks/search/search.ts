@@ -50,13 +50,17 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
 
   const aggregation = json.aggregations?.[model].buckets
   if (!aggregation?.length) {
-    throw new Error(`Elasticsearch error: no ${model} aggregation found for query ${query}`)
+    throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
   }
 
   const computeClusters = options?.computeClusters ?? false
   const network = await networkCreate(query, model, aggregation, computeClusters)
   const config = configCreate(model)
   const info = infoCreate(query, model)
+
+  if (network.items.length < 3) {
+    throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)
+  }
 
   const data = {
     network: network,
