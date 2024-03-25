@@ -83,7 +83,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   ).then((c) => c.sort((a, b) => b.size - a.size))
 
   // Add labels with IA
-  const labeledCommunities = await openAiLabeledClusters(query, await communities)
+  const labeledCommunities = await openAiLabeledClusters(await communities)
 
   if (labeledCommunities) return labeledCommunities
 
