@@ -5,6 +5,7 @@ import { networkSearchHits } from "../search/search"
 import { ElasticHits } from "../../../types/network"
 import { openAiLabeledClusters } from "./openai"
 import { vosColors } from "../_utils/constants"
+import { GetColorName } from "hex-color-to-color-name"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
   graph.reduceNodes(
@@ -33,6 +34,13 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   )
   return labels
 }
+
+const communityGetYears = (hits: ElasticHits) =>
+  hits.reduce((acc, hit) => {
+    const year = hit.year
+    acc[year] = acc[year] ? acc[year] + 1 : 1
+    return acc
+  }, {})
 
 // const communityGetPublications = (hits: ElasticHits): Array<string> => hits.map((hit) => hit.title.default)
 
@@ -70,7 +78,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
 
       const community = {
         index: index,
-        label: `Unnamed ${index + 1}`,
+        label: GetColorName(vosColors[index]) ?? `Unnamed ${index + 1}`,
         color: vosColors[index] ?? "#e2e2e2",
         ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
@@ -80,6 +88,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
           domains: communityGetDomains(hits),
           oaPercent: communityGetOaPercent(hits),
           hits: hits.length,
+          years: communityGetYears(hits),
         }),
       }
       return community
