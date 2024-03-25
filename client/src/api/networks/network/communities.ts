@@ -34,6 +34,8 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   return labels
 }
 
+// const communityGetPublications = (hits: ElasticHits): Array<string> => hits.map((hit) => hit.title.default)
+
 const communityGetDomains = (hits: ElasticHits): any =>
   hits.reduce((acc, hit) => {
     if (hit?.domains) {
@@ -77,7 +79,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         ...(hits && {
           domains: communityGetDomains(hits),
           oaPercent: communityGetOaPercent(hits),
-          publications: hits.length,
+          hits: hits.length,
         }),
       }
       return community

@@ -38,14 +38,14 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
               <td>
                 {community?.domains
                   ? Object.entries(community.domains)
-                    .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
-                    .slice(0, 5)
-                    .map(([domain]) => `${domain}`)
-                    .join(", ")
+                      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+                      .slice(0, 5)
+                      .map(([domain]) => `${domain}`)
+                      .join(", ")
                   : ""}
               </td>
               <td>{community.maxWeightNodes.join(", ")}</td>
-              <td>{community?.publications ? community.publications : 0}</td>
+              <td>{community.hits}</td>
               <td>{community?.oaPercent ? `${community.oaPercent.toFixed(1)} %` : ""}</td>
               <td>{community.maxYear}</td>
             </tbody>
