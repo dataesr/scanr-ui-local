@@ -65,6 +65,7 @@
   "search.filters.organizaitions.is-french.foreign": "Étrangères",
   "search.filters.authors.by-award": "Filtrer par prix",
   "search.filters.authors.by-award-description": "Sélectionnez un ou plusieurs prix",
+  "search.filters.search-tags": "Filtrer par mots-clés",
   "search.filters.projects.by-localisation-description": "Région, Académies, Départements, Unités urbaines, ville d'un participant",
   "search.filters.projects.by-localisation": "Filtre géographique",
   "search.filters.projects.by-organization": "Filtrer par participants",
