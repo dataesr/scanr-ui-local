@@ -1,6 +1,6 @@
 {
   "name": "scanr-next-gen",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "scanR next generation",
   "workspaces": [
     "client"
