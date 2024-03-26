@@ -26,6 +26,7 @@ export function Footer({
   children?: React.ReactNode;
   fluid?: boolean;
 }) {
+  const version = import.meta.env?.VITE_VERSION;
   return (
     <IntlProvider messages={messages} locale="fr" defaultLocale="fr">
       <footer className="fr-footer fr-mt-3w" role="contentinfo" id="footer">
@@ -172,10 +173,11 @@ export function Footer({
                       <li>
                         <Link
                           className="fr-footer__top-link"
-                          href="https://github.com/dataesr/scanr"
+                          href="https://github.com/dataesr/scanr-next-gen"
                           target="_blank"
                         >
                           GitHub
+                          {version && ` – v${version}`}
                         </Link>
                       </li>
                       <li>

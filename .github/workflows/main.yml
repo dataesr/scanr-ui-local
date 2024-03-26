@@ -1,4 +1,4 @@
-name: Build and deploy production
+name: Bump client npm version
 
 on:
   push:
