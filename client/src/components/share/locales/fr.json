@@ -1,0 +1,10 @@
+{
+  "share.facebook": "Partager sur Facebook",
+  "share.twitter": "Partager sur Twitter",
+  "share.linkedin": "Partager sur LinkedIn",
+  "share.email": "Partager par email",
+  "share.copy": "Copier dans le presse-papier",
+  "share.inactive": "- désactivé",
+  "share.cookies": "Personnaliser les cookies",
+  "share.cookies.personalize": "Veuillez <authorize>autoriser le dépot de cookies</authorize> pour partager sur Facebook, Twitter et LinkedIn."
+}

@@ -25,4 +25,4 @@
 | /components/truncate               |   OK   |  FRED  | FR,EN,ES,DE |
 | /components/websites               |   OK   |  FRED  |       FR,EN |
 | /components/wiki                   |   OK   |  FRED  |       FR,EN |
-| /components/share                  |  TODO  |  FRED  |       FR,EN |
+| /components/share                  |   OK   |  FRED  |       FR,EN |
