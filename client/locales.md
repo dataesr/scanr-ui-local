@@ -19,3 +19,4 @@
 | /pages/search/                     |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/search/patents              |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/search/                     |  TODO  | Mihoub | FR,EN,ES,DE |
+| /pages/suggest                     |   OK   | Mihoub | FR,EN,ES,DE |
