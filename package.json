@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "preversion": "git switch main && git pull origin main --rebase --tags && git merge staging && npm run build -w client",
-    "version": "git push origin main --tags",
+    "version": "git add . && git commit -m 'Bump npm version to %s' && git push origin main --tags",
     "postversion": "git switch staging",
-    "deploy": "npm version --include-workspace-root --workspaces"
+    "deploy": "npm version --include-workspace-root --workspaces --git-tag-version=false"
   },
   "repository": {
     "type": "git",
