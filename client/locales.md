@@ -9,7 +9,7 @@
 | /pages/search/patents              |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/suggest                     |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/authors                     |   OK   | Mihoub | FR,EN,ES,DE |
-| /pages/bugs                        |  TODO  | Mihoub | FR,EN,ES,DE |
+| /pages/bugs                        |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/home                        |  TODO  | Mihoub | FR,EN,ES,DE |
 | /pages/organization                |  TODO  | Mihoub | FR,EN,ES,DE |
 | /components/api-deprecation-banner |   OK   |  FRED  |       FR,EN |
