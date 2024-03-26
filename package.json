@@ -1,13 +1,14 @@
 {
   "name": "scanr-next-gen",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "scanR next generation",
   "workspaces": [
     "client"
   ],
   "scripts": {
     "preversion": "git switch main && git pull origin main --rebase --tags && git merge staging && npm run build -w client",
-    "postversion": "git add . && git commit -m 'Bump npm version' && git push origin main --tags && git switch staging",
+    "version": "git add .",
+    "postversion": "git push origin main --tags && git switch staging",
     "deploy": "npm version --include-workspace-root --workspaces"
   },
   "repository": {
