@@ -9,6 +9,11 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout source code'
+        uses: 'actions/checkout@latest'
+        with:
+          ref: ${{ github.ref }}
+
       - name:  'Automated Version Bump'
         uses:  'phips28/gh-action-bump-version@master'
         env:
