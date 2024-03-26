@@ -11,7 +11,7 @@
 | /pages/authors                     |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/bugs                        |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/home                        |   OK   | Mihoub | FR,EN,ES,DE |
-| /pages/organization                |  TODO  | Mihoub | FR,EN,ES,DE |
+| /pages/organization                |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/projects                    |  TODO  | Mihoub | FR,EN,ES,DE |
 | /pages/publications                |  TODO  | Mihoub | FR,EN,ES,DE |
 | /components/api-deprecation-banner |   OK   |  FRED  |       FR,EN |
