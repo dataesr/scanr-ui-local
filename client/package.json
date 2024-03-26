@@ -8,8 +8,7 @@
     "dev:docker": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "deploy": "npm run build && aws s3 sync dist s3://scanr-preview --delete --acl public-read"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@dataesr/dsfr-plus": "^0.0.20",
