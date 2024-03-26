@@ -13,8 +13,7 @@ services:
 
   sng-client:
     container_name: sng-client
-    build: ./client-js
-    env_file: ./client-js/.env
+    build: ./client
     command: "npm run dev:docker"
     ports:
       - "5173:5173"

@@ -75,7 +75,6 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
       const hits = await networkSearchHits(query, model, communityGetLinks(graph, index))
-      console.log("trois")
 
       const community = {
         index: index,
