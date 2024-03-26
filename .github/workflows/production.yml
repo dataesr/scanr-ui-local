@@ -2,8 +2,8 @@ name: Build and deploy production
 
 on:
   push:
-    branches:
-      - "main"
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 env:
   DEPLOYMENT: scanr-next-gen
@@ -12,31 +12,9 @@ env:
   MM_NOTIFICATION_CHANNEL: bots
 
 jobs:
-  bump:
-    name: 🏷️ Bump npm version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-
-      - name: Automated Version Bump
-        uses: phips28/gh-action-bump-version@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          minor-wording: 'MINOR'
-          major-wording: 'MAJOR'
-          patch-wording: 'PATCH'
-          tag-prefix: 'v'
-          check-last-commit-only: 'true'
-          PACKAGEJSON_DIR: 'client'
-
   publish-ghcr:
-    name: 🐳 Publish Docker
+    name: 📦 Publish Docker image
     runs-on: ubuntu-latest
-    needs: bump
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

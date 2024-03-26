@@ -20,7 +20,6 @@ publications_routes = APIRouter(
     description="Rechercher des publications",
 )
 def search_publication(
-
     query: Union[str, None] = '*',
     filters: Annotated[str, Depends(PublicationsFilters)] = None,
     groupby: Annotated[str, Depends(PublicationsGroupBys)] = None,
