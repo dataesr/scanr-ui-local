@@ -1,4 +1,4 @@
-name: Bump client npm version
+name: Bump version
 
 on:
   push:
