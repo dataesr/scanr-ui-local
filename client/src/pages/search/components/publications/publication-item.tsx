@@ -59,7 +59,7 @@ export default function PublicationItem({
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {publication.authors.slice(0, 5).map((author, index) => (
+          {publication?.authors?.slice(0, 5).map((author, index) => (
             <Fragment key={index}>
               {index > 0 && ", "}
               {author.person ? (
@@ -71,7 +71,7 @@ export default function PublicationItem({
               )}
             </Fragment>
           ))}
-          {publication.authors.length > 5 && (
+          {publication?.authors?.length > 5 && (
             <Text bold as="span">
               <i> et al.</i>
             </Text>
