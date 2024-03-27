@@ -168,7 +168,11 @@ export default function Search() {
                     <Text as="span" size="xs" className="fr-text-mention--grey">
                       {intl.formatMessage(
                         { id: `search.top.${api}.result` },
-                        { count: total, query: currentQuery }
+                        { count: total }
+                      )}
+                      {currentQuery && intl.formatMessage(
+                        { id: "search.top.result-for-query" },
+                        { query: currentQuery }
                       )}
                     </Text>
                   ) : isFetchingNextPage ? (
