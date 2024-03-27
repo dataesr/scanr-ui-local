@@ -1,4 +1,13 @@
-import { Badge, BadgeGroup, Button, ButtonGroup, Col, Container, Row, Title } from "@dataesr/dsfr-plus";
+import {
+  Badge,
+  BadgeGroup,
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Row,
+  Title,
+} from "@dataesr/dsfr-plus";
 import Share from "../../../../components/share";
 import BarLink from "../../../../components/bar-link";
 import { PageContent, PageSection } from "../../../../components/page-content";
@@ -11,40 +20,50 @@ import AuthorAwards from "./awards";
 import Identifiers from "../../../../components/identifiers";
 import { Author } from "../../../../types/author";
 import RecentAffiliations from "./recent-affiliations";
-import NetworksNotice from "../../../../components/networks-notice"
-import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl"
+import NetworksNotice from "../../../../components/networks-notice";
+import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
 import MoreLikeThis from "../../../../components/more-like-this";
 
 function getOaInfo(publi) {
-  const oaCount = publi?.filter((publi) => publi.isOa)?.length
-  const oaTotal = publi?.length
-  return { oaPercent: Math.ceil((oaCount / oaTotal) * 100), oaCount, oaTotal }
+  const oaCount = publi?.filter((publi) => publi.isOa)?.length;
+  const oaTotal = publi?.length;
+  return { oaPercent: Math.ceil((oaCount / oaTotal) * 100), oaCount, oaTotal };
 }
 
 export default function AuthorPage({ data }: { data: Author }) {
-  const intl = useIntl()
-  const { publications: publicationsObject, awards } = data
-  const { wikis, coAuthors, reviews, byYear, publications } = publicationsObject
+  const intl = useIntl();
+  const { publications: publicationsObject, awards } = data;
+  const { wikis, coAuthors, reviews, byYear, publications } =
+    publicationsObject;
 
-  const maxCommonPublications = coAuthors && Math.max(...coAuthors.map((el) => el.count))
-  const maxReviews = reviews && Math.max(...reviews.map((el) => el.count))
+  const maxCommonPublications =
+    coAuthors && Math.max(...coAuthors.map((el) => el.count));
+  const maxReviews = reviews && Math.max(...reviews.map((el) => el.count));
   const thesis = publications?.filter((publi) => {
-    return publi.type === "thesis" && publi.authors.find((author) => author.person === data.id)?.role === "author"
-  })
+    return (
+      publi.type === "thesis" &&
+      publi.authors.find((author) => author.person === data.id)?.role ===
+        "author"
+    );
+  });
   const thesisParticipations = publications?.filter((publi) => {
-    return publi.type === "thesis" && publi.authors.find((author) => author.person === data.id)?.role !== "author"
-  })
-  const others = publications?.filter((publi) => publi.type !== "thesis")
+    return (
+      publi.type === "thesis" &&
+      publi.authors.find((author) => author.person === data.id)?.role !==
+        "author"
+    );
+  });
+  const others = publications?.filter((publi) => publi.type !== "thesis");
 
   const networkFilter = stringifySearchFiltersForURL({
     "authors.person": {
       type: "terms",
       values: [{ value: data?.id, label: data?.fullName }],
     },
-  })
-  const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`
+  });
+  const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`;
 
-  const { oaPercent } = getOaInfo(publications)
+  const { oaPercent } = getOaInfo(publications);
 
   return (
     <Container fluid>
@@ -54,7 +73,7 @@ export default function AuthorPage({ data }: { data: Author }) {
             <Col xs="12">
               <BadgeGroup>
                 <Badge variant="info" noIcon>
-                  Auteur
+                  {intl.formatMessage({ id: "authors.section.author" })}
                 </Badge>
               </BadgeGroup>
               <Title className="fr-mb-3w" as="h1" look="h4">
@@ -67,15 +86,21 @@ export default function AuthorPage({ data }: { data: Author }) {
                 size="lead"
                 show={!!wikis?.length}
                 title={intl.formatMessage({ id: "authors.section.wiki.title" })}
-                description={intl.formatMessage({ id: "authors.section.wiki.desc" })}
+                description={intl.formatMessage({
+                  id: "authors.section.wiki.desc",
+                })}
               >
                 <TagCloud data={wikis} order="random" />
               </PageSection>
               <PageSection
                 size="lead"
                 show={!!data.recentAffiliations?.length}
-                title={intl.formatMessage({ id: "authors.section.recent-affiliations.title" })}
-                description={intl.formatMessage({ id: "authors.section.recent-affiliations.description" })}
+                title={intl.formatMessage({
+                  id: "authors.section.recent-affiliations.title",
+                })}
+                description={intl.formatMessage({
+                  id: "authors.section.recent-affiliations.description",
+                })}
               >
                 <RecentAffiliations data={data.recentAffiliations} />
               </PageSection>
@@ -91,17 +116,29 @@ export default function AuthorPage({ data }: { data: Author }) {
                 icon="article-line"
                 size="lead"
                 show={!!thesis?.length}
-                title={intl.formatMessage({ id: "authors.section.activity.thesis" }, { count: thesis.length })}
+                title={intl.formatMessage(
+                  { id: "authors.section.activity.thesis" },
+                  { count: thesis.length }
+                )}
               >
-                <AuthorsPublications data={thesis} titleKey="authors.section.activity.thesis" />
+                <AuthorsPublications
+                  data={thesis}
+                  titleKey="authors.section.activity.thesis"
+                />
               </PageSection>
               <PageSection
                 size="lead"
                 show={!!others?.length}
-                title={intl.formatMessage({ id: "authors.section.activity.publications" }, { count: others.length })}
+                title={intl.formatMessage(
+                  { id: "authors.section.activity.publications" },
+                  { count: others.length }
+                )}
                 icon="heart-pulse-line"
               >
-                <AuthorsPublications data={others} titleKey="authors.section.activity.publications" />
+                <AuthorsPublications
+                  data={others}
+                  titleKey="authors.section.activity.publications"
+                />
                 {data?.publications?.coAuthors?.length > 2 && (
                   <div className="fr-mt-2w">
                     <NetworksNotice url={networkUrl} />
@@ -117,7 +154,10 @@ export default function AuthorPage({ data }: { data: Author }) {
                   { count: thesisParticipations.length }
                 )}
               >
-                <AuthorsPublications data={thesisParticipations} titleKey="authors.section.activity.thesis-participations" />
+                <AuthorsPublications
+                  data={thesisParticipations}
+                  titleKey="authors.section.activity.thesis-participations"
+                />
               </PageSection>
               <PageSection
                 size="lead"
@@ -129,7 +169,11 @@ export default function AuthorPage({ data }: { data: Author }) {
               >
                 <MoreLikeThis id={data._id} api="authors" />
               </PageSection>
-              <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
+              <PageSection
+                title="Data JSON"
+                description=""
+                show={import.meta.env.DEV}
+              >
                 <div>
                   <pre>{JSON.stringify(data || "", null, 2)}</pre>
                 </div>
@@ -141,15 +185,23 @@ export default function AuthorPage({ data }: { data: Author }) {
           <PageContent>
             <PageSection
               show
-              title={intl.formatMessage({ id: "authors.section.identifiers.title" })}
-              description={intl.formatMessage({ id: "authors.section.identifiers.desc" })}
+              title={intl.formatMessage({
+                id: "authors.section.identifiers.title",
+              })}
+              description={intl.formatMessage({
+                id: "authors.section.identifiers.desc",
+              })}
             >
               <Identifiers data={data.externalIds} />
             </PageSection>
             <PageSection
               show={!!byYear?.length}
-              title={intl.formatMessage({ id: "authors.section.by-year.title" })}
-              description={intl.formatMessage({ id: "authors.section.by-year.desc" })}
+              title={intl.formatMessage({
+                id: "authors.section.by-year.title",
+              })}
+              description={intl.formatMessage({
+                id: "authors.section.by-year.desc",
+              })}
             >
               <YearBars
                 name="Publications"
@@ -160,14 +212,20 @@ export default function AuthorPage({ data }: { data: Author }) {
             <PageSection
               show={!!oaPercent}
               title={intl.formatMessage({ id: "authors.section.oa.title" })}
-              description={intl.formatMessage({ id: "authors.section.oa.desc" })}
+              description={intl.formatMessage({
+                id: "authors.section.oa.desc",
+              })}
             >
               <OpenAccessDonut percentage={oaPercent} />
             </PageSection>
             <PageSection
               show={!!coAuthors?.length}
-              title={intl.formatMessage({ id: "authors.section.co-authors.title" })}
-              description={intl.formatMessage({ id: "authors.section.co-authors.desc" })}
+              title={intl.formatMessage({
+                id: "authors.section.co-authors.title",
+              })}
+              description={intl.formatMessage({
+                id: "authors.section.co-authors.desc",
+              })}
             >
               {coAuthors?.slice(0, 6)?.map((coAuthor, i) => (
                 <BarLink
@@ -181,8 +239,12 @@ export default function AuthorPage({ data }: { data: Author }) {
             </PageSection>
             <PageSection
               show={!!reviews?.length}
-              title={intl.formatMessage({ id: "authors.section.reviews.title" })}
-              description={intl.formatMessage({ id: "authors.section.reviews.desc" })}
+              title={intl.formatMessage({
+                id: "authors.section.reviews.title",
+              })}
+              description={intl.formatMessage({
+                id: "authors.section.reviews.desc",
+              })}
             >
               {reviews?.slice(0, 6)?.map((review, i) => (
                 <BarLink
@@ -194,10 +256,18 @@ export default function AuthorPage({ data }: { data: Author }) {
                 />
               ))}
             </PageSection>
-            <PageSection show title={intl.formatMessage({ id: "authors.section.share" })}>
+            <PageSection
+              show
+              title={intl.formatMessage({ id: "authors.section.share" })}
+            >
               <Share />
             </PageSection>
-            <PageSection title={intl.formatMessage({ id: "authors.section.contribute.title" })} show>
+            <PageSection
+              title={intl.formatMessage({
+                id: "authors.section.contribute.title",
+              })}
+              show
+            >
               <ButtonGroup>
                 <Button
                   as="a"
@@ -224,5 +294,5 @@ export default function AuthorPage({ data }: { data: Author }) {
         </Col>
       </Row>
     </Container>
-  )
+  );
 }
