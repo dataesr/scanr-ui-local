@@ -1,8 +1,8 @@
 {
   "websites.types.main": "Site web",
-  "websites.types.wikipedia": "Wikipedia",
+  "websites.types.wikipedia": "Wikipédia",
   "websites.types.RSS": "Flux RSS",
-  "websites.types.Wikipedia": "Wikipedia",
+  "websites.types.Wikipedia": "Wikipédia",
   "websites.types.valid": "Site web",
   "websites.types.HAL": "Page HAL",
   "websites.types.mooc": "MOOC",
