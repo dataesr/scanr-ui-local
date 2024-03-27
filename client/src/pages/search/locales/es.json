@@ -132,7 +132,7 @@
     "search.results.pagination.next": "Mostrar Más Resultados",
     "search.results.pagination.end": "No hay resultados adicionales para el término de búsqueda « {query} »",
     "search.exports.title": "Exportar Resultados",
-    "search.exports.description": "Por razones de rendimiento, scanr solo exporta un máximo de 1000 resultados. Puedes refinar tu búsqueda para obtener una exportación más completa.",
+    "search.exports.description": "Por razones de rendimiento, scanR solo exporta un máximo de 1000 resultados. Puedes refinar tu búsqueda para obtener una exportación más completa.",
     "search.exports.is-exporting": "Descargando datos, por favor espera...",
     "search.exports.csv.title": "CSV",
     "search.exports.csv.description": "Exportar resultados en formato CSV",
