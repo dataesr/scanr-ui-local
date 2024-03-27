@@ -8,7 +8,7 @@ export async function getMorePublicationsLikeThis(id: string) {
     size: 3,
     query: {
       more_like_this: {
-        fields: ["title.default"],
+        fields: ["title.default", "domains.label.*"],
         like: [{ _id: id }],
         min_term_freq: 1,
         max_query_terms: 12,
