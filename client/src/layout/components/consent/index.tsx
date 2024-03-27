@@ -1,14 +1,31 @@
-import useConsent from "../hooks/useConsent";
+import { RawIntlProvider, createIntl } from "react-intl";
+import useConsent from "../../../hooks/useConsent";
+import { useDSFRConfig } from "@dataesr/dsfr-plus";
+
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
 
 export default function Consent() {
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
   const { dialogId, consent, setConsent, set } = useConsent({ twitter: 0, matomo: 0, youtube: 0, facebook: 0, linkedin: 0 });
 
   return (
-    <>
+    <RawIntlProvider value={intl}>
       {!set && <div className="fr-consent-banner">
-        <h2 className="fr-h6">À propos des cookies sur scanr.enseignementsup-recherche.gouv.fr</h2>
+        <h2 className="fr-h6">
+          {intl.formatMessage({ id: "layout.consent.title" })}
+        </h2>
         <div className="fr-consent-banner__content">
-          <p className="fr-text--sm">Bienvenue ! Nous utilisons des cookies pour améliorer votre expérience et les services disponibles sur ce site. Pour en savoir plus, visitez la page <a href="">Données personnelles et cookies</a>. Vous pouvez, à tout moment, avoir le contrôle sur les cookies que vous souhaitez activer.</p>
+          <p className="fr-text--sm">
+            {intl.formatMessage({ id: "layout.consent.content" })}
+          </p>
         </div>
         <ul className="fr-consent-banner__buttons fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-sm">
           <li>
@@ -17,7 +34,7 @@ export default function Consent() {
               title="Autoriser tous les cookies"
               onClick={() => setConsent({ twitter: 1, matomo: 1, youtube: 1, facebook: 1, linkedin: 1 })}
             >
-              Tout accepter
+              {intl.formatMessage({ id: "layout.consent.accept-all" })}
             </button>
           </li>
           <li>
@@ -26,7 +43,7 @@ export default function Consent() {
               title="Refuser tous les cookies"
               onClick={() => setConsent({ twitter: 0, matomo: 0, youtube: 0, facebook: 0, linkedin: 0 })}
             >
-              Tout refuser
+              {intl.formatMessage({ id: "layout.consent.refuse-all" })}
             </button>
           </li>
           <li>
@@ -36,7 +53,7 @@ export default function Consent() {
               aria-controls={dialogId}
               title="Personnaliser les cookies"
             >
-              Personnaliser
+              {intl.formatMessage({ id: "layout.consent.customize" })}
             </button>
           </li>
         </ul>
@@ -49,17 +66,18 @@ export default function Consent() {
               <div className="fr-modal__body">
                 <div className="fr-modal__header">
                   <button className="fr-btn--close fr-btn" aria-controls={dialogId} title="Fermer">
-                    Fermer
+                    {intl.formatMessage({ id: "layout.consent.cookies.close" })}
                   </button>
                 </div>
                 <div className="fr-modal__content">
                   <h1 id="fr-consent-modal-title" className="fr-modal__title">
-                    Panneau de gestion des cookies
+                    {intl.formatMessage({ id: "layout.consent.cookies" })}
                   </h1>
                   <div className="fr-consent-manager">
                     <div className="fr-consent-service fr-consent-manager__header">
                       <fieldset className="fr-fieldset fr-fieldset--inline">
-                        <legend id="finality-legend" className="fr-consent-service__title">Préférences pour tous les services. <a href="">Données personnelles et cookies</a>
+                        <legend id="finality-legend" className="fr-consent-service__title">
+                          {intl.formatMessage({ id: "layout.consent.cookies.preferences" })}
                         </legend>
                         <div className="fr-consent-service__radios">
                           <div className="fr-radio-group">
@@ -77,7 +95,7 @@ export default function Consent() {
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-all-accept">
-                              Tout accepter
+                              {intl.formatMessage({ id: "layout.consent.accept-all" })}
                             </label>
                           </div>
                           <div className="fr-radio-group">
@@ -95,7 +113,7 @@ export default function Consent() {
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-all-refuse">
-                              Tout refuser
+                              {intl.formatMessage({ id: "layout.consent.refuse-all" })}
                             </label>
                           </div>
                         </div>
@@ -103,7 +121,9 @@ export default function Consent() {
                     </div>
                     <div className="fr-consent-service">
                       <fieldset aria-labelledby="finality-1-legend finality-1-desc" role="group" className="fr-fieldset fr-fieldset--inline">
-                        <legend id="finality-1-legend" className="fr-consent-service__title">Statistique</legend>
+                        <legend id="finality-1-legend" className="fr-consent-service__title">
+                          {intl.formatMessage({ id: "layout.consent.cookies.finality.stats" })}
+                        </legend>
                         <div className="fr-consent-service__radios">
                           <div className="fr-radio-group">
                             <input
@@ -114,7 +134,7 @@ export default function Consent() {
                               onChange={() => { consent.matomo = 1 }}
                             />
                             <label className="fr-label" htmlFor="consent-finality-1-accept">
-                              Accepter
+                              {intl.formatMessage({ id: "layout.consent.cookies.accept" })}
                             </label>
                           </div>
                           <div className="fr-radio-group">
@@ -126,18 +146,20 @@ export default function Consent() {
                               onChange={() => { consent.matomo = 0 }}
                             />
                             <label className="fr-label" htmlFor="consent-finality-1-refuse">
-                              Refuser
+                              {intl.formatMessage({ id: "layout.consent.cookies.refuse" })}
                             </label>
                           </div>
                         </div>
                         <p id="finality-1-desc" className="fr-consent-service__desc">
-                          Les cookies statistiques aident, par la collecte d'informations anonymisées, à comprendre comment les visiteurs interagissent avec scanR.
+                          {intl.formatMessage({ id: "layout.consent.cookies.finality.stats.desc" })}
                         </p>
                       </fieldset>
                     </div>
                     <div className="fr-consent-service">
                       <fieldset aria-labelledby="share-legend share-desc" role="group" className="fr-fieldset fr-fieldset--inline">
-                        <legend id="share-legend" className="fr-consent-service__title">Partage</legend>
+                        <legend id="share-legend" className="fr-consent-service__title">
+                          {intl.formatMessage({ id: "layout.consent.cookies.finality.share" })}
+                        </legend>
                         <div className="fr-consent-service__radios">
                           <div className="fr-radio-group">
                             <input
@@ -152,7 +174,7 @@ export default function Consent() {
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-share-accept">
-                              Accepter
+                              {intl.formatMessage({ id: "layout.consent.cookies.accept" })}
                             </label>
                           </div>
                           <div className="fr-radio-group">
@@ -169,20 +191,57 @@ export default function Consent() {
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-share-refuse">
-                              Refuser
+                              {intl.formatMessage({ id: "layout.consent.cookies.refuse" })}
                             </label>
                           </div>
                         </div>
                         <p id="share-desc" className="fr-consent-service__desc">
-                          Afin de pouvoir partager les pages de scanR, il est nécessaire d'accepter les cookies de partage des réseaux sociaux.
+                          {intl.formatMessage({ id: "layout.consent.cookies.finality.share.desc" })}
                         </p>
                         <div className="fr-consent-service__collapse">
-                          <button className="fr-consent-service__collapse-btn" aria-expanded="false" aria-describedby="share-legend" aria-controls="share-collapse"> Voir plus de détails</button>
+                          <button className="fr-consent-service__collapse-btn" aria-expanded="false" aria-describedby="share-legend" aria-controls="share-collapse">
+                            {intl.formatMessage({ id: "layout.consent.cookies.finality.toggle" })}
+                          </button>
                         </div>
                         <div className="fr-consent-services fr-collapse" id="share-collapse">
                           <div className="fr-consent-service">
                             <fieldset className="fr-fieldset fr-fieldset--inline">
-                              <legend id="share-facebook-legend" className="fr-consent-service__title">Facebook</legend>
+                              <legend id="share-youtube-legend" className="fr-consent-service__title">
+                                Youtube
+                              </legend>
+                              <div className="fr-consent-service__radios fr-fieldset--inline">
+                                <div className="fr-radio-group">
+                                  <input
+                                    type="radio"
+                                    id="consent-share-youtube-accept"
+                                    name="consent-share-youtube"
+                                    checked={!!consent.youtube}
+                                    onChange={() => { consent.youtube = 1 }}
+                                  />
+                                  <label className="fr-label" htmlFor="consent-share-youtube-accept">
+                                    {intl.formatMessage({ id: "layout.consent.cookies.accept" })}
+                                  </label>
+                                </div>
+                                <div className="fr-radio-group">
+                                  <input
+                                    type="radio"
+                                    id="consent-share-youtube-refuse"
+                                    name="consent-share-youtube"
+                                    checked={!consent.youtube}
+                                    onChange={() => { consent.youtube = 0 }}
+                                  />
+                                  <label className="fr-label" htmlFor="consent-share-youtube-refuse">
+                                    {intl.formatMessage({ id: "layout.consent.cookies.refuse" })}
+                                  </label>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div className="fr-consent-service">
+                            <fieldset className="fr-fieldset fr-fieldset--inline">
+                              <legend id="share-facebook-legend" className="fr-consent-service__title">
+                                Facebook
+                              </legend>
                               <div className="fr-consent-service__radios fr-fieldset--inline">
                                 <div className="fr-radio-group">
                                   <input
@@ -193,7 +252,7 @@ export default function Consent() {
                                     onChange={() => { consent.facebook = 1 }}
                                   />
                                   <label className="fr-label" htmlFor="consent-share-facebook-accept">
-                                    Accepter
+                                    {intl.formatMessage({ id: "layout.consent.cookies.accept" })}
                                   </label>
                                 </div>
                                 <div className="fr-radio-group">
@@ -205,7 +264,7 @@ export default function Consent() {
                                     onChange={() => { consent.facebook = 0 }}
                                   />
                                   <label className="fr-label" htmlFor="consent-share-facebook-refuse">
-                                    Refuser
+                                    {intl.formatMessage({ id: "layout.consent.cookies.refuse" })}
                                   </label>
                                 </div>
                               </div>
@@ -226,7 +285,7 @@ export default function Consent() {
                                     onChange={() => { consent.twitter = 1 }}
                                   />
                                   <label className="fr-label" htmlFor="consent-share-twitter-accept">
-                                    Accepter
+                                    {intl.formatMessage({ id: "layout.consent.cookies.accept" })}
                                   </label>
                                 </div>
                                 <div className="fr-radio-group">
@@ -238,7 +297,7 @@ export default function Consent() {
                                     onChange={() => { consent.twitter = 0 }}
                                   />
                                   <label className="fr-label" htmlFor="consent-share-twitter-refuse">
-                                    Refuser
+                                    {intl.formatMessage({ id: "layout.consent.cookies.refuse" })}
                                   </label>
                                 </div>
                               </div>
@@ -258,7 +317,7 @@ export default function Consent() {
                                     onChange={() => { consent.linkedin = 1 }}
                                   />
                                   <label className="fr-label" htmlFor="consent-share-linkedin-accept">
-                                    Accepter
+                                    {intl.formatMessage({ id: "layout.consent.cookies.accept" })}
                                   </label>
                                 </div>
                                 <div className="fr-radio-group">
@@ -270,7 +329,7 @@ export default function Consent() {
                                     onChange={() => { consent.linkedin = 0 }}
                                   />
                                   <label className="fr-label" htmlFor="consent-share-linkedin-refuse">
-                                    Refuser
+                                    {intl.formatMessage({ id: "layout.consent.cookies.refuse" })}
                                   </label>
                                 </div>
                               </div>
@@ -301,6 +360,6 @@ export default function Consent() {
           </div>
         </div>
       </dialog>
-    </>
+    </RawIntlProvider>
   )
 }

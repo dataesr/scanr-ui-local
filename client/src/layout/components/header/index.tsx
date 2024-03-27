@@ -9,16 +9,27 @@ import {
   Nav,
   FastAccess,
   Button,
+  useDSFRConfig,
   // Autocomplete,
   // AutocompleteItem,
   // useAutocompleteList,
   // useDSFRConfig,
 } from '@dataesr/dsfr-plus';
-import { FormattedMessage, useIntl } from 'react-intl';
-import SwitchLanguage from '../components/switch-language';
+import { createIntl } from 'react-intl';
+import SwitchLanguage from '../../../components/switch-language';
 // import { autocompleteOrganizations } from '../api/organizations/autocomplete';
 // import { LightOrganization } from '../types/organization';
 // import getLangFieldValue from '../utils/lang';
+
+const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] }
+  }
+  return acc;
+}, {});
+
 
 const languages = [
   { shortName: 'FR', fullName: 'Français', key: 'fr' },
@@ -29,9 +40,9 @@ const languages = [
 ];
 
 export default function Header() {
-  // const { locale } = useDSFRConfig();
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
   const { pathname } = useLocation();
-  const intl = useIntl();
 
   // const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
   //   async load({ filterText }) {
@@ -49,7 +60,7 @@ export default function Header() {
       <Service name="scanR" tagline={intl.formatMessage({ id: "layout.header.tagline" })} />
       <FastAccess>
         <Button className="fr-btn fr-icon-theme-fill" aria-controls="fr-theme-modal" data-fr-opened="false">
-          {intl.formatMessage({ id: "layout.switch-theme" })}
+          {intl.formatMessage({ id: "layout.header.switch-theme" })}
         </Button>
         <SwitchLanguage languages={languages} />
       </FastAccess>
@@ -77,25 +88,27 @@ export default function Header() {
         )}
       </Autocomplete> */}
       <Nav>
-        <Link current={pathname === "/"} href='/'><FormattedMessage id="layout.header.nav.home" /></Link>
+        <Link current={pathname === "/"} href='/'>
+          {intl.formatMessage({ id: "layout.header.nav.home" })}
+        </Link>
         <NavItem
           current={pathname.split('/').includes('search')}
           title={intl.formatMessage({ id: "layout.header.nav.search" })}
         >
           <Link current={pathname.split('/').includes('organizations')} href="/search/organizations">
-            <FormattedMessage id="layout.header.nav.search.organizations" />
+            {intl.formatMessage({ id: "layout.header.nav.search.organizations" })}
           </Link>
           <Link current={pathname.split('/').includes('authors')} href="/search/authors">
-            <FormattedMessage id="layout.header.nav.search.authors" />
+            {intl.formatMessage({ id: "layout.header.nav.search.authors" })}
           </Link>
           <Link current={pathname.split('/').includes('projects')} href="/search/projects">
-            <FormattedMessage id="layout.header.nav.search.projects" />
+            {intl.formatMessage({ id: "layout.header.nav.search.projects" })}
           </Link>
           <Link current={pathname.split('/').includes('publications')} href="/search/publications">
-            <FormattedMessage id="layout.header.nav.search.publications" />
+            {intl.formatMessage({ id: "layout.header.nav.search.publications" })}
           </Link>
           <Link current={pathname.split('/').includes('patents')} href="/search/patents">
-            <FormattedMessage id="layout.header.nav.search.patents" />
+            {intl.formatMessage({ id: "layout.header.nav.search.patents" })}
           </Link>
         </NavItem>
         <Link current={pathname.startsWith('/networks')} href="/networks">

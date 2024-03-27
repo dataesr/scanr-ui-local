@@ -26,3 +26,4 @@
 | /components/websites               |   OK   |  FRED  |       FR,EN |
 | /components/wiki                   |   OK   |  FRED  |       FR,EN |
 | /components/share                  |   OK   |  FRED  |       FR,EN |
+| /layout/*                          |   OK   |  FRED  |       FR,EN |
