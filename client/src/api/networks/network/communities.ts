@@ -2,19 +2,19 @@ import Graph from "graphology-types"
 import louvain from "graphology-communities-louvain"
 import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits } from "../search/search"
-import { ElasticHits } from "../../../types/network"
+import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
 import { openAiLabeledClusters } from "./openai"
 import { vosColors } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 
-const communityGetAttribute = (graph: Graph, community: number, name: string): Array<any> =>
+const communityGetAttribute = (graph: Graph, community: number, name: string): Array<string> | Array<number> =>
   graph.reduceNodes(
     (acc, _, attr) => (attr.community === community && attr?.[name] ? (acc = arrayPush(acc, attr[name])) : acc),
     []
   )
 
 const communityGetLinks = (graph: Graph, community: number): Array<string> => [
-  ...new Set(communityGetAttribute(graph, community, "links").flat(1)),
+  ...new Set(communityGetAttribute(graph, community, "links").flat(1).map(String)),
 ]
 
 const communityGetIds = (graph: Graph, community: number): Array<string> =>
@@ -24,10 +24,10 @@ const communityGetSize = (graph: Graph, community: number): number =>
   graph.filterNodes((_, attr) => attr?.community === community).length
 
 const communityGetMaxYear = (graph: Graph, community: number): number =>
-  Math.max(...communityGetAttribute(graph, community, "maxYear"))
+  Math.max(...communityGetAttribute(graph, community, "maxYear").map(Number))
 
 const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<string> => {
-  const maxWeight = Math.max(...communityGetAttribute(graph, community, "weight"))
+  const maxWeight = Math.max(...communityGetAttribute(graph, community, "weight").map(Number))
   const labels = graph.reduceNodes(
     (acc, _, attr) => (acc = attr?.community === community && attr?.weight === maxWeight ? [...acc, attr.label] : acc),
     []
@@ -35,7 +35,7 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   return labels
 }
 
-const communityGetYears = (hits: ElasticHits) =>
+const communityGetYears = (hits: ElasticHits): Record<string, number> =>
   hits.reduce((acc, hit) => {
     const year = hit.year
     acc[year] = acc[year] ? acc[year] + 1 : 1
@@ -44,7 +44,7 @@ const communityGetYears = (hits: ElasticHits) =>
 
 // const communityGetPublications = (hits: ElasticHits): Array<string> => hits.map((hit) => hit.title.default)
 
-const communityGetDomains = (hits: ElasticHits): any =>
+const communityGetDomains = (hits: ElasticHits): Record<string, number> =>
   hits.reduce((acc, hit) => {
     if (hit?.domains) {
       hit.domains.forEach(({ label, count }) => {
@@ -58,9 +58,10 @@ const communityGetDomains = (hits: ElasticHits): any =>
 const communityGetOaPercent = (hits: ElasticHits): number =>
   (hits.map((hit) => hit.isOa).filter(Boolean).length / hits.length) * 100
 
-export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<any> {
-  const query = graph.getAttribute("query")
-  const model = graph.getAttribute("model")
+export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
+  const query: string = graph.getAttribute("query")
+  const model: string = graph.getAttribute("model")
+  const filters: NetworkFilters = graph.getAttribute("filters")
 
   // Assign communities
   louvain.assign(graph)
@@ -74,21 +75,22 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   // Create communities array
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
-      const hits = await networkSearchHits(query, model, communityGetLinks(graph, index))
+      // Get elastic publications
+      const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
 
       const community = {
-        index: index,
+        cluster: index,
         label: vosColors?.[index] ? GetColorName(vosColors[index]) : `Unnamed ${index + 1}`,
         color: vosColors?.[index] ?? "#e2e2e2",
-        ids: communityGetIds(graph, index),
         size: communityGetSize(graph, index),
+        ids: communityGetIds(graph, index),
         maxYear: communityGetMaxYear(graph, index),
         maxWeightNodes: communityGetMaxWeightNodes(graph, index),
         ...(hits && {
-          domains: communityGetDomains(hits),
-          oaPercent: communityGetOaPercent(hits),
           hits: hits.length,
           years: communityGetYears(hits),
+          domains: communityGetDomains(hits),
+          oaPercent: communityGetOaPercent(hits),
         }),
       }
       return community

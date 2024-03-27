@@ -1,5 +1,5 @@
 import { publicationsIndex, postHeaders } from "../../../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits } from "../../../types/network"
+import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits, NetworkSearchHitsArgs } from "../../../types/network"
 import networkCreate from "../network/network"
 import configCreate from "../network/config"
 import infoCreate from "../network/info"
@@ -43,7 +43,7 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
     headers: postHeaders,
   })
   if (res.status !== 200) {
-    throw new Error(`Elasticsearch error: ${res.status}`);
+    throw new Error(`Elasticsearch error: ${res.status}`)
   }
   const json = await res.json()
   console.log("endOfSearch", json)
@@ -54,7 +54,7 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   }
 
   const computeClusters = options?.computeClusters ?? false
-  const network = await networkCreate(query, model, aggregation, computeClusters)
+  const network = await networkCreate(query, model, filters, aggregation, computeClusters)
   const config = configCreate(model)
   const info = infoCreate(query, model)
 
@@ -72,7 +72,8 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   return data
 }
 
-export async function networkSearchHits(query: string, model: string, links: Array<string>): Promise<ElasticHits> {
+export async function networkSearchHits({ model, query, filters, links }: NetworkSearchHitsArgs): Promise<ElasticHits> {
+  const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
   const body = {
     size: DEFAULT_SIZE,
     _source: HIT_FIELDS,
@@ -86,11 +87,7 @@ export async function networkSearchHits(query: string, model: string, links: Arr
             },
           },
         ],
-        filter: {
-          terms: {
-            [`co_${model}.keyword`]: links,
-          },
-        },
+        filter: filters.concat(linksFilter),
       },
     },
   }

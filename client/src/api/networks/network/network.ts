@@ -3,7 +3,7 @@ import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
 import random from "graphology-layout/random"
 import forceAtlas2 from "graphology-layout-forceatlas2"
-import { NetworkData } from "../../../types/network"
+import { ElasticBuckets, NetworkFilters, NetworkData } from "../../../types/network"
 import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
 
@@ -15,13 +15,15 @@ const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear
 export default async function networkCreate(
   query: string,
   model: string,
-  aggregation: Array<any>,
+  filters: NetworkFilters,
+  aggregation: ElasticBuckets,
   computeClusters: boolean
 ): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
   graph.setAttribute("query", query)
   graph.setAttribute("model", model)
+  graph.setAttribute("filters", filters)
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -88,7 +90,7 @@ export default async function networkCreate(
   console.log("Graph nodes", Array.from(graph.nodeEntries()))
 
   // Create network
-  const network = {
+  const network: NetworkData = {
     items: graph.mapNodes((key, attr) => ({
       id: key,
       x: attr.x,
@@ -102,15 +104,11 @@ export default async function networkCreate(
     links: graph.mapEdges((_, attr, source, target) => ({
       source_id: source,
       target_id: target,
-      strength: attr?.weight,
+      strength: attr.weight,
     })),
-    clusters: communities.map((community) => ({
-      ...community,
-      cluster: community.index + 1,
-    })),
+    clusters: communities,
   }
 
   console.log("network", network)
-
   return network
 }
