@@ -79,7 +79,7 @@
   "search.filters.projects.by-type": "Filtrer par type de financement",
   "search.filters.projects.by-type-description": "Sélectionnez un ou plusieurs types de financements",
   "search.filters.projects.by-year": "Filtrer par année",
-  "search.filters.patents.by-year": "Filtrer par date de dépot",
+  "search.filters.patents.by-year": "Filtrer par date de dépôt",
   "search.filters.current.patents.year": "Années de publication du brevet",
   "search.filters.patent.by-year-description": "Sélectionnez une période",
   "search.filters.patents.regions": "Caractéristiques de la famille de brevet",

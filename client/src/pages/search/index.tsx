@@ -183,12 +183,12 @@ export default function Search() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                    <ItemComponent
-                      data={data}
-                      highlight={highlight}
-                      key={data.id}
-                    />
-                  ))
+                      <ItemComponent
+                        data={data}
+                        highlight={highlight}
+                        key={data.id}
+                      />
+                    ))
                   : null}
               </div>
             </Container>
