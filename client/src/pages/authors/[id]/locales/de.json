@@ -28,5 +28,8 @@
     "authors.section.recent-affiliations.between": "zwischen {min} und {max}",
     "authors.section.recent-affiliations.title": "Aktuelle Zugehörigkeiten",
     "authors.section.recent-affiliations.description": "Die hier angezeigten aktuellen Zugehörigkeiten basieren auf den in scanR aufgeführten Veröffentlichungen. Sie sind nicht erschöpfend.",
-    "authors.section.more-like-this": "Ähnliche Autoren"
+    "authors.section.more-like-this": "Ähnliche Autoren",
+    "search.publications.openAccess": "Offener Zugang",
+    "search.publications.closedAccess": "Geschlossener Zugang",
+    "search.publications.other": "Andere"
 }

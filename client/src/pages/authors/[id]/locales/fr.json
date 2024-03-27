@@ -28,5 +28,8 @@
   "authors.section.recent-affiliations.between": "entre {min} et {max}",
   "authors.section.recent-affiliations.title": "Affiliations récentes",
   "authors.section.recent-affiliations.description": "Les affiliations récentes présentées ici sont basées sur les publications répertoriées dans scanR. Elles ne sont pas exhaustives.",
-  "authors.section.more-like-this": "Auteurs similaires"
+  "authors.section.more-like-this": "Auteurs similaires",
+  "search.publications.openAccess": "Accés ouvert",
+  "search.publications.closedAccess": "Accés fermé",
+  "search.publications.other": "Autre"
 }
