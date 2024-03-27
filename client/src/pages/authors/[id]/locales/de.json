@@ -31,5 +31,6 @@
     "authors.section.more-like-this": "Ähnliche Autoren",
     "search.publications.openAccess": "Offener Zugang",
     "search.publications.closedAccess": "Geschlossener Zugang",
-    "search.publications.other": "Andere"
+    "search.publications.other": "Andere",
+    "search.section.author.badge": "Autor"
 }

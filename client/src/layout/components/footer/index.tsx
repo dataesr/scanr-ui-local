@@ -1,17 +1,33 @@
 import cn from "classnames";
-import { Col, Container, Link, Logo, Row, Title, useDSFRConfig } from "@dataesr/dsfr-plus";
-import { Footer, FooterBody, FooterBottom, FooterTop } from "../../../components/footer";
+import {
+  Col,
+  Container,
+  Link,
+  Logo,
+  Row,
+  Title,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
+import {
+  Footer,
+  FooterBody,
+  FooterBottom,
+  FooterTop,
+} from "../../../components/footer";
 import { RawIntlProvider, createIntl } from "react-intl";
 import SwitchTheme from "../switch-theme";
 import useConsent from "../../../hooks/useConsent";
 import { version } from "react";
 import styles from "./styles.module.scss";
 
-const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
 const messages = Object.keys(modules).reduce((acc, key) => {
   const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
   if (locale) {
-    return { ...acc, [locale]: modules[key] }
+    return { ...acc, [locale]: modules[key] };
   }
   return acc;
 }, {});
@@ -261,7 +277,7 @@ export default function MainFooter() {
           </Link>
         </FooterBody>
         <FooterBottom>
-          <Link className="fr-footer__bottom-link" href="#">
+          {/* <Link className="fr-footer__bottom-link" href="#">
             {intl.formatMessage({
               id: "layout.footer.legal-notice",
             })}
@@ -275,7 +291,7 @@ export default function MainFooter() {
             {intl.formatMessage({
               id: "layout.footer.accessibility",
             })}
-          </Link>
+          </Link> */}
           <button
             className="fr-footer__bottom-link"
             data-fr-opened="false"
