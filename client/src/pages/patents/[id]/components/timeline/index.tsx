@@ -22,7 +22,7 @@ export default function PatentTimeline({ patents }: { patents: PatentsData[] }) 
       return [...acc, application, publication, grant]
     }, [])
     .filter((element) => element.date)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .map((element, i, arr) => {
       const hasBullet = i === 0 || arr?.[i - 1]?.date !== element.date;
       return { ...element, hasBullet }
