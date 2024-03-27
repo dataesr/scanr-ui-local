@@ -168,7 +168,11 @@ export default function Search() {
                     <Text as="span" size="xs" className="fr-text-mention--grey">
                       {intl.formatMessage(
                         { id: `search.top.${api}.result` },
-                        { count: total, query: currentQuery }
+                        { count: total }
+                      )}
+                      {currentQuery && intl.formatMessage(
+                        { id: "search.top.result-for-query" },
+                        { query: currentQuery }
                       )}
                     </Text>
                   ) : isFetchingNextPage ? (
@@ -179,12 +183,12 @@ export default function Search() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                    <ItemComponent
-                      data={data}
-                      highlight={highlight}
-                      key={data.id}
-                    />
-                  ))
+                      <ItemComponent
+                        data={data}
+                        highlight={highlight}
+                        key={data.id}
+                      />
+                    ))
                   : null}
               </div>
             </Container>

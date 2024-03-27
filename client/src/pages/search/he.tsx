@@ -129,10 +129,10 @@ export default function HEPartners() {
       <Container>
         <Breadcrumb>
           <Link href="/">
-            <FormattedMessage id="he.breadcrumb.home" />
+            <FormattedMessage id="search.top.breadcrumb.home" />
           </Link>
           <Link href="/search/organizations">
-            <FormattedMessage id="he.breadcrumb.find-partners" />
+            <FormattedMessage id="search.top.breadcrumb.find-partners" />
           </Link>
           <Link>
             {heData?.title}

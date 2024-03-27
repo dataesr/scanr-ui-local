@@ -1,8 +1,9 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
+import { NetworkCommunities } from "../../../types/network"
 
 const ENABLED = false
 
-async function mistralLabelsFromDomains(domains: any): Promise<string> {
+async function mistralLabelsFromDomains(domains: string): Promise<string> {
   const { VITE_MISTRAL_API_KEY } = import.meta.env
 
   if (!VITE_MISTRAL_API_KEY) {
@@ -35,7 +36,7 @@ async function mistralLabelsFromDomains(domains: any): Promise<string> {
   return answer
 }
 
-export async function openAiLabeledClusters(clusters: Array<any>) {
+export async function openAiLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
   if (!ENABLED) return clusters
 
   const prefix = "list"
@@ -50,7 +51,7 @@ export async function openAiLabeledClusters(clusters: Array<any>) {
       acc = acc + `${prefix}${index + 1} = [${topDomains}], `
     }
     return acc
-  }, "")
+  }, "") as string
   console.log("domains", domains)
 
   if (!domains) return clusters

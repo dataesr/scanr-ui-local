@@ -317,6 +317,8 @@ function ServicesBanner() {
                       as="a"
                       variant="secondary"
                       href="https://barometredelascienceouverte.esr.gouv.fr/"
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
                       {intl.formatMessage({
                         id: "home.services.barometre.link",
@@ -355,6 +357,8 @@ function ServicesBanner() {
                       as="a"
                       variant="secondary"
                       href="https://curiexplore.enseignementsup-recherche.gouv.fr/"
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
                       {intl.formatMessage({ id: "home.services.curie.link" })}
                     </Button>
@@ -393,6 +397,8 @@ function ServicesBanner() {
                       as="a"
                       variant="secondary"
                       href="https://data.esr.gouv.fr/FR/"
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
                       {intl.formatMessage({ id: "home.services.dataesr.link" })}
                     </Button>
@@ -424,6 +430,8 @@ function OpendataBanner() {
                 as="a"
                 variant="secondary"
                 href="https://data.esr.gouv.fr/FR/"
+                target="_blank"
+                rel="noreferrer noopener"
               >
                 {intl.formatMessage({ id: "home.opendata.link" })}
               </Button>

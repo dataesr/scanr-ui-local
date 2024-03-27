@@ -1,0 +1,12 @@
+{
+  "layout.header.nav.home": "Home",
+  "layout.header.tagline": "Explore the world of French Research and Innovation",
+  "layout.header.switch-theme": "Display Settings",
+  "layout.header.nav.search": "Search",
+  "layout.header.nav.search.organizations": "Organizations",
+  "layout.header.nav.search.publications": "Publications",
+  "layout.header.nav.search.projects": "Fundings",
+  "layout.header.nav.search.authors": "Authors",
+  "layout.header.nav.search.patents": "Patents",
+  "layout.header.nav.networks": "Explore Networks"
+}

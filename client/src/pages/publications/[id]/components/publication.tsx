@@ -10,6 +10,7 @@ import Identifiers from "../../../../components/identifiers";
 import MoreLikeThis from "../../../../components/more-like-this";
 import { Publication } from "../../../../types/publication";
 import { encode } from "../../../../utils/string";
+import Softwares from "./softwares";
 
 
 export default function PublicationPage({ data }: { data: Publication }) {
@@ -83,6 +84,15 @@ export default function PublicationPage({ data }: { data: Publication }) {
                     <ProjectItem data={project} key={project.id} />
                   ))}
                 </div>
+              </PageSection>
+              <PageSection
+                size="lead"
+                icon="code-s-slash-line"
+                title={intl.formatMessage({ id: "publications.section.softwares.title" })}
+                description={intl.formatMessage({ id: "publications.section.softwares.legend" })}
+                show={!!data?.softwares?.length}
+              >
+                <Softwares softwares={data?.softwares} />
               </PageSection>
               <PageSection
                 size="lead"

@@ -2,6 +2,7 @@
     "authors.breadcrumb.home": "Inicio",
     "authors.breadcrumb.search": "Autores",
     "authors.section.wiki.title": "Conceptos de Wikipedia",
+    "authors.section.author": "Autor",
     "authors.section.wiki.desc": "Identificados en las publicaciones del autor. Haz clic para buscar otras publicaciones que contengan la palabra clave",
     "authors.section.prizes": "Premios y distinciones",
     "authors.section.activity": "Actividad de investigación",
@@ -27,5 +28,9 @@
     "authors.section.recent-affiliations.between": "entre {min} y {max}",
     "authors.section.recent-affiliations.title": "Afiliaciones recientes",
     "authors.section.recent-affiliations.description": "Las afiliaciones recientes mostradas aquí se basan en las publicaciones listadas en scanR. No son exhaustivas.",
-    "authors.section.more-like-this": "Autores similares"
+    "authors.section.more-like-this": "Autores similares",
+    "search.publications.openAccess": "Acceso abierto",
+    "search.publications.closedAccess": "Acceso cerrado",
+    "search.publications.other": "Otro",
+    "search.section.author.badge": "Autor"
 }

@@ -1,0 +1,12 @@
+{
+  "layout.header.nav.home": "Accueil",
+  "layout.header.tagline": "Explorer le monde de la Recherche et de l'Innovation françaises",
+  "layout.header.switch-theme": "Paramètres d'affichage",
+  "layout.header.nav.search": "Rechercher",
+  "layout.header.nav.search.organizations": "Structures",
+  "layout.header.nav.search.publications": "Publications",
+  "layout.header.nav.search.projects": "Financements",
+  "layout.header.nav.search.authors": "Auteurs",
+  "layout.header.nav.search.patents": "Brevets",
+  "layout.header.nav.networks": "Explorer les réseaux"
+}

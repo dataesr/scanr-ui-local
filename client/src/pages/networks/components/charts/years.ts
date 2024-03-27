@@ -5,10 +5,6 @@ export default function getYearsChartOptions({ data, height = "250px", title = "
   const maxValue = Math.max(..._data.flatMap((d) => Object.values(d.years)))
   const range = [...Array(maxYear - minYear + 1).keys()].map((y) => y + minYear)
 
-  console.log("years", minYear, maxYear)
-  console.log("range", range)
-  console.log("maxValue", maxValue)
-
   return {
     chart: {
       type: "spline",

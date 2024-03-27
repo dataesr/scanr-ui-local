@@ -2,6 +2,7 @@
     "authors.breadcrumb.home": "Startseite",
     "authors.breadcrumb.search": "Autoren",
     "authors.section.wiki.title": "Wikipedia-Konzepte",
+    "authors.section.author": "Autor",
     "authors.section.wiki.desc": "In den Veröffentlichungen des Autors identifiziert. Klicken Sie hier, um nach weiteren Veröffentlichungen zu suchen, die das Stichwort enthalten.",
     "authors.section.prizes": "Preise und Auszeichnungen",
     "authors.section.activity": "Forschungsaktivität",
@@ -27,5 +28,9 @@
     "authors.section.recent-affiliations.between": "zwischen {min} und {max}",
     "authors.section.recent-affiliations.title": "Aktuelle Zugehörigkeiten",
     "authors.section.recent-affiliations.description": "Die hier angezeigten aktuellen Zugehörigkeiten basieren auf den in scanR aufgeführten Veröffentlichungen. Sie sind nicht erschöpfend.",
-    "authors.section.more-like-this": "Ähnliche Autoren"
+    "authors.section.more-like-this": "Ähnliche Autoren",
+    "search.publications.openAccess": "Offener Zugang",
+    "search.publications.closedAccess": "Geschlossener Zugang",
+    "search.publications.other": "Andere",
+    "search.section.author.badge": "Autor"
 }

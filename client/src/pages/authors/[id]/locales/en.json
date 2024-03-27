@@ -2,6 +2,7 @@
     "authors.breadcrumb.home": "Home",
     "authors.breadcrumb.search": "Authors",
     "authors.section.wiki.title": "Wikipedia Concepts",
+    "authors.section.author": "Author",
     "authors.section.wiki.desc": "Identified in the author's publications. Click to search for other publications containing the keyword.",
     "authors.section.prizes": "Awards and Distinctions",
     "authors.section.activity": "Research Activity",
@@ -27,5 +28,9 @@
     "authors.section.recent-affiliations.between": "between {min} and {max}",
     "authors.section.recent-affiliations.title": "Recent Affiliations",
     "authors.section.recent-affiliations.description": "The recent affiliations presented here are based on publications listed in scanR. They are not exhaustive.",
-    "authors.section.more-like-this": "Similar Authors"
+    "authors.section.more-like-this": "Similar Authors",
+    "search.publications.openAccess": "Open access",
+    "search.publications.closedAccess": "Closed access",
+    "search.publications.other": "Other",
+    "search.section.author.badge": "Author"
 }

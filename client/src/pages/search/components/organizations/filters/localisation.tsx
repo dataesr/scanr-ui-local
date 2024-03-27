@@ -1,25 +1,36 @@
-import { Autocomplete, AutocompleteItem, DissmissibleTag, TagGroup, Text, useAutocompleteList } from "@dataesr/dsfr-plus";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  DissmissibleTag,
+  TagGroup,
+  Text,
+  useAutocompleteList,
+} from "@dataesr/dsfr-plus";
 import { FormattedMessage } from "react-intl";
 import useUrl from "../../../hooks/useUrl";
-import { LocalisationAutocomplete, autocompleteLocalisations } from "../../../../../api/localisations";
+import {
+  LocalisationAutocomplete,
+  autocompleteLocalisations,
+} from "../../../../../api/localisations";
 import OperatorButton from "../../../../../components/operator-button";
 
 export default function OrganizationLocalisationsFilter() {
-  const { currentFilters, handleFilterChange, setOperator } = useUrl()
+  const { currentFilters, handleFilterChange, setOperator } = useUrl();
 
-  const localisationAutocompletedList = useAutocompleteList<LocalisationAutocomplete>({
-    async load({ filterText }) {
-      if (!filterText) {
-        return { items: [] };
-      }
-      const res = await autocompleteLocalisations({ query: filterText })
+  const localisationAutocompletedList =
+    useAutocompleteList<LocalisationAutocomplete>({
+      async load({ filterText }) {
+        if (!filterText) {
+          return { items: [] };
+        }
+        const res = await autocompleteLocalisations({ query: filterText });
 
-      return { items: res.data?.map((org) => org._source) };
-    }
-  });
+        return { items: res.data?.map((org) => org._source) };
+      },
+    });
 
-  const filter = currentFilters?.['address.localisationSuggestions']
-  const operator = filter?.operator || 'or'
+  const filter = currentFilters?.["address.localisationSuggestions"];
+  const operator = filter?.operator || "or";
 
   return (
     <>
@@ -32,11 +43,21 @@ export default function OrganizationLocalisationsFilter() {
             <FormattedMessage id="search.filters.organizations.by-localisation-description" />
           </Text>
         </div>
-        <OperatorButton operator={operator} setOperator={(key) => setOperator('address.localisationSuggestions', (key === 'and') ? 'and' : 'or')} />
+        <OperatorButton
+          operator={operator}
+          setOperator={(key) =>
+            setOperator(
+              "address.localisationSuggestions",
+              key === "and" ? "and" : "or"
+            )
+          }
+        />
       </div>
-      {filter ? (<Text bold size="sm" className="fr-mb-1v">
-        Sélectionnées:
-      </Text>) : null}
+      {filter ? (
+        <Text bold size="sm" className="fr-mb-1v">
+          Sélectionnées:
+        </Text>
+      ) : null}
       <TagGroup>
         {filter?.values?.map(({ value, label }) => (
           <DissmissibleTag
@@ -45,7 +66,10 @@ export default function OrganizationLocalisationsFilter() {
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange({ field: 'address.localisationSuggestions', value })
+              handleFilterChange({
+                field: "address.localisationSuggestions",
+                value,
+              });
             }}
           >
             {label || value}
@@ -58,12 +82,15 @@ export default function OrganizationLocalisationsFilter() {
         inputValue={localisationAutocompletedList.filterText}
         onInputChange={localisationAutocompletedList.setFilterText}
         loadingState={localisationAutocompletedList.loadingState}
-        placeholder="Ex: Ile de france, Bas-Rhin, Lyon..."
+        placeholder="Ex: Ile de France, Bas-Rhin, Lyon..."
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
           if (!item) return;
-          handleFilterChange({ field: 'address.localisationSuggestions', value: item })
+          handleFilterChange({
+            field: "address.localisationSuggestions",
+            value: item,
+          });
         }}
       >
         {({ autocompleted }) => (
@@ -73,5 +100,5 @@ export default function OrganizationLocalisationsFilter() {
         )}
       </Autocomplete>
     </>
-  )
+  );
 }

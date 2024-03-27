@@ -48,6 +48,7 @@ export default function AuthorAwardsFilter() {
         />
       </div>
       <TextInput
+        disableAutoValidation
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         placeholder={intl.formatMessage({ id: "search.filters.search-tags" })}

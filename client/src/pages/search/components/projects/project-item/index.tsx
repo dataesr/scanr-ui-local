@@ -7,10 +7,23 @@ import {
   Badge,
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
-import { ItemProps } from "../../types";
-import { LightProject } from "../../../../types/project";
-import { getProjectById } from "../../../../api/projects/[id]";
-import getLangFieldValue from "../../../../utils/lang";
+import { ItemProps } from "../../../types";
+import { LightProject } from "../../../../../types/project";
+import { getProjectById } from "../../../../../api/projects/[id]";
+import getLangFieldValue from "../../../../../utils/lang";
+import { RawIntlProvider, createIntl } from "react-intl";
+
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] };
+  }
+  return acc;
+}, {});
 
 export default function ProjectItem({
   data: project,
@@ -18,6 +31,7 @@ export default function ProjectItem({
 }: ItemProps<LightProject>) {
   const queryClient = useQueryClient();
   const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
 
   function prefetchAuthor(id: string) {
     queryClient.prefetchQuery({
@@ -37,7 +51,7 @@ export default function ProjectItem({
     : project?.participants;
 
   return (
-    <Fragment key={project.id}>
+    <RawIntlProvider value={intl}>
       <div className="result-item" key={project.id}>
         <BadgeGroup className="fr-mt-1v">
           <Badge size="sm" color="green-emeraude">
@@ -52,8 +66,10 @@ export default function ProjectItem({
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {shouldFilterParticipants &&
-            `${project.participants?.length} participants dont ${frenchParticipants?.length} français`}
+          {shouldFilterParticipants && intl.formatMessage(
+            { id: "project.item.participants.filtered" },
+            { total: project.participants?.length, french: frenchParticipants?.length }
+          )}
           {shouldFilterParticipants && <br />}
           {participants?.map((p, k) => (
             <Fragment key={k}>
@@ -75,6 +91,6 @@ export default function ProjectItem({
           </Text>
         ))}
       </div>
-    </Fragment>
+    </RawIntlProvider>
   );
 }

@@ -1,0 +1,19 @@
+{
+  "layout.consent.title": "À propos des cookies sur scanr.enseignementsup-recherche.gouv.fr",
+  "layout.consent.content": "Bienvenue ! Nous utilisons des cookies pour améliorer votre expérience et les services disponibles sur ce site. Vous pouvez, à tout moment, avoir le contrôle sur les cookies que vous souhaitez activer.",
+  "layout.consent.accept-all": "Tout accepter",
+  "layout.consent.refuse-all": "Tout refuser",
+  "layout.consent.customize": "Personnaliser",
+  "layout.consent.confirm": "Confirmer mes choix",
+  "layout.consent.cookies.close": "Fermer",
+  "layout.consent.cookies": "Panneau de gestion des cookies",
+  "layout.consent.cookies.preferences": "Préférences pour tous les services.",
+  "layout.consent.cookies.all.desc": "Pour en savoir plus, visitez la page Données personnelles et cookies.",
+  "layout.consent.cookies.finality.stats": "Statistique",
+  "layout.consent.cookies.finality.stats.desc": "Les cookies statistiques aident, par la collecte d'informations anonymisées, à comprendre comment les visiteurs interagissent avec scanR.",
+  "layout.consent.cookies.finality.share": "Partage",
+  "layout.consent.cookies.finality.share.desc": "Afin de pouvoir partager les pages de scanR, il est nécessaire d'accepter les cookies de partage des réseaux sociaux.",
+  "layout.consent.cookies.accept": "Accepter",
+  "layout.consent.cookies.refuse": "Refuser",
+  "layout.consent.cookies.finality.toggle": "Voir plus de détails"
+}

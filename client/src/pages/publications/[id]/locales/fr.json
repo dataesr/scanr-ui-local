@@ -24,6 +24,9 @@
   "publications.section.jury.membrejury": "Membre du jury",
   "publications.header.thesis.by": "par ",
   "publications.header.thesis.and": " et ",
+  "search.publications.openAccess": "Accès ouvert",
+  "search.publications.closedAccess": "Accès fermé",
+  "search.publications.other": "Autre",
   "publications.header.thesis.directed": " sous la direction de ",
   "publications.header.thesis.date": "soutenue le {date}",
   "publications.header.thesis.year": "soutenue en {year}",
@@ -33,5 +36,7 @@
   "publications.header.oa.false": "Accès fermé",
   "publications.signals.author": "Identifier un auteur",
   "publications.signals.fundings": "Ajouter un financement",
-  "publications.signals.bug": "Signaler une erreur"
+  "publications.signals.bug": "Signaler une erreur",
+  "publications.section.softwares.title": "Mentions de logiciels",
+  "publications.section.softwares.legend": "Les mentions de logiciels retrouvées par scanR dans la publication."
 }

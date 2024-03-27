@@ -1,0 +1,10 @@
+{
+  "share.facebook": "Share on Facebook",
+  "share.twitter": "Share on Twitter",
+  "share.linkedin": "Share on LinkedIn",
+  "share.email": "Share via email",
+  "share.copy": "Copy to clipboard",
+  "share.inactive": "- inactive",
+  "share.cookies": "Customize cookies",
+  "share.cookies.personalize": "Please <authorize>authorize the use of cookies</authorize> to share on Facebook, Twitter, and LinkedIn."
+}

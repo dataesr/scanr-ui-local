@@ -1,3 +1,4 @@
+import { Attributes } from "graphology-types"
 import { NetworkConfig } from "../../../types/network"
 
 const CONFIG = {
@@ -41,7 +42,7 @@ const CONFIG = {
     },
   },
   domains: {
-    url: (_: string, attr: any) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
+    url: (_: string, attr: Attributes) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
     terminology: {
       item: "domain",
       items: "domains",
@@ -54,7 +55,7 @@ const CONFIG = {
     },
   },
   software: {
-    url: (_: string, attr: any) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
+    url: (_: string, attr: Attributes) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
     terminology: {
       item: "software",
       items: "software",
@@ -73,7 +74,7 @@ const configGetItemDescription = () =>
 const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
-export function configGetItemUrl(model: string, key: string, attr: any): string {
+export function configGetItemUrl(model: string, key: string, attr: Attributes): string {
   const targetUrl = CONFIG?.[model]?.url(key, attr) ?? ""
   const baseUrl = window?.location?.href?.split("/networks")[0] ?? ""
   return baseUrl + targetUrl

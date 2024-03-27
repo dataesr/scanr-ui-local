@@ -1,8 +1,9 @@
 import { useMemo } from "react"
-import { Container, Spinner } from "@dataesr/dsfr-plus"
+import { Container } from "@dataesr/dsfr-plus"
 import { NetworkData } from "../../../types/network"
 import useSearchData from "../hooks/useSearchData"
 import useUrl from "../../search/hooks/useUrl"
+import BaseSkeleton from "../../../components/skeleton/base-skeleton"
 
 export default function ClustersTable({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
   const { currentQuery, currentFilters } = useUrl()
@@ -16,7 +17,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
 
   if (!enabled) return null
 
-  if (search.isFetching) return <Spinner />
+  if (search.isFetching) return <BaseSkeleton width="100%" height="30rem" className="fr-my-1v" />
 
   return (
     <Container className="fr-mt-5w" key={key}>
@@ -38,7 +39,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
               <td>
                 {community?.domains
                   ? Object.entries(community.domains)
-                      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+                      .sort((a, b) => b[1] - a[1])
                       .slice(0, 5)
                       .map(([domain]) => `${domain}`)
                       .join(", ")

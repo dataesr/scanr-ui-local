@@ -1,0 +1,9 @@
+{
+  "layout.switch-theme.light": "Thème clair",
+  "layout.switch-theme.dark": "Thème sombre",
+  "layout.switch-theme.system": "Système",
+  "layout.switch-theme.system-hint": "Utilise les paramètres système",
+  "layout.switch-theme.title": "Paramètres d'affichage",
+  "layout.switch-theme.legend": "Choisissez un thème pour personnaliser l’apparence du site.",
+  "layout.switch-theme.close": "Fermer"
+}

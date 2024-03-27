@@ -12,8 +12,8 @@
 | /pages/bugs                        |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/home                        |   OK   | Mihoub | FR,EN,ES,DE |
 | /pages/organization                |   OK   | Mihoub | FR,EN,ES,DE |
-| /pages/projects                    |  TODO  | Mihoub | FR,EN,ES,DE |
-| /pages/publications                |  TODO  | Mihoub | FR,EN,ES,DE |
+| /pages/projects                    |   OK   |  FRED  | FR,EN,ES,DE |
+| /pages/publications                |   OK   |  FRED  | FR,EN,ES,DE |
 | /components/api-deprecation-banner |   OK   |  FRED  |       FR,EN |
 | /components/contact-form           |   OK   |  FRED  |       FR,EN |
 | /components/copy                   |   OK   |  FRED  |       FR,EN |
@@ -25,4 +25,6 @@
 | /components/truncate               |   OK   |  FRED  | FR,EN,ES,DE |
 | /components/websites               |   OK   |  FRED  |       FR,EN |
 | /components/wiki                   |   OK   |  FRED  |       FR,EN |
-| /components/share                  |  TODO  |  FRED  |       FR,EN |
+| /components/share                  |   OK   |  FRED  |       FR,EN |
+| /components/analytics-graph        |   OK   |  FRED  |       FR,EN |
+| /layout/*                          |   OK   |  FRED  |       FR,EN |

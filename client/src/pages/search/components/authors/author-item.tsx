@@ -6,48 +6,63 @@ import { LightAuthor } from "../../../../types/author";
 import { getAuthorById } from "../../../../api/authors/[id]";
 import { ItemProps } from "../../types";
 import CopyBadge from "../../../../components/copy/copy-badge";
+import { useIntl } from "react-intl";
 
+export default function AuthorItem({
+  data: author,
+  highlight,
+}: ItemProps<LightAuthor>) {
+  const intl = useIntl();
 
-export default function AuthorItem({ data: author, highlight }: ItemProps<LightAuthor>) {
   const queryClient = useQueryClient();
 
   function prefetchAuthor(id: string) {
     queryClient.prefetchQuery({
-      queryKey: ['author', id],
+      queryKey: ["author", id],
       queryFn: () => getAuthorById(id),
-    })
+    });
   }
 
   return (
     <Fragment key={author.id}>
       <div className="result-item" key={author.id}>
         <BadgeGroup className="structure-badge-list fr-mt-1v">
-          <Badge size="sm" color='orange-terre-battue'>Auteur</Badge>
+          <Badge size="sm" color="orange-terre-battue">
+            {intl.formatMessage({ id: "search.section.author.badge" })}
+          </Badge>
         </BadgeGroup>
-        <span onMouseEnter={() => prefetchAuthor(author.id)}><Link href={`/authors/${author.id}`} className="fr-link">
-          {author.fullName}
-        </Link>
+        <span onMouseEnter={() => prefetchAuthor(author.id)}>
+          <Link href={`/authors/${author.id}`} className="fr-link">
+            {author.fullName}
+          </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
           {author?.domains
-            ?.filter((domain) => (domain.type === "wikidata"))
+            ?.filter((domain) => domain.type === "wikidata")
             ?.slice(0, 8)
             .map((domain, k) => (
               <Fragment key={k}>
-                {(k > 0) ? ', ' : ''}
-                <Link href={`/search/authors?q="${encode(domain?.label.default)}"`}>#{domain?.label.default}</Link>
+                {k > 0 ? ", " : ""}
+                <Link
+                  href={`/search/authors?q="${encode(domain?.label.default)}"`}
+                >
+                  #{domain?.label.default}
+                </Link>
               </Fragment>
-            )
-            )}
+            ))}
         </Text>
         <div className="fr-mt-1w fr-badge-group">
           {[
             { id: author.id.replace("idref", ""), type: "idref" },
-            { id: author.orcid, type: 'orcid' },
-            { id: author.id_hal, type: 'idhal' }]
+            { id: author.orcid, type: "orcid" },
+            { id: author.id_hal, type: "idhal" },
+          ]
             .filter((identifier) => identifier.id)
-            .map(({ id, type }) => <CopyBadge key={id} size="sm" copyText={id}>{type} : {id}</CopyBadge>)
-          }
+            .map(({ id, type }) => (
+              <CopyBadge key={id} size="sm" copyText={id}>
+                {type} : {id}
+              </CopyBadge>
+            ))}
         </div>
         {Object.values(highlight || {}).map((value, i) => (
           <Text key={i} size="sm" className="fr-mb-0">
@@ -56,5 +71,5 @@ export default function AuthorItem({ data: author, highlight }: ItemProps<LightA
         ))}
       </div>
     </Fragment>
-  )
+  );
 }
