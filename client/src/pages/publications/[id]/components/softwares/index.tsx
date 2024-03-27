@@ -49,7 +49,7 @@ export default function Softwares({ softwares }: { softwares: SoftwareMention[] 
           <div key={software.id_name}>
             <Text size="lg" className="fr-mb-0" bold>
               {software.softwareName}
-              {software?.wiki?.code && <button className="fr-btn--tooltip fr-ml-1v" aria-describedby={`software-${software.wiki.code}`}>Wikipedia</button>}
+              {software?.wiki?.code && <span className="pointer fr-icon-information-line fr-text-default--info fr-icon--sm fr-ml-1v fr-text-mention--grey" aria-describedby={`software-${software.wiki.code}`} />}
             </Text>
             {software?.wiki?.code && (
               <Fragment key={software.wiki.code}>
