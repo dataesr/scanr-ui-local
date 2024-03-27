@@ -33,5 +33,7 @@
   "publications.header.oa.false": "Acceso Restringido",
   "publications.signals.author": "Identificar un autor",
   "publications.signals.fundings": "Agregar financiamiento",
-  "publications.signals.bug": "Reportar un error"
+  "publications.signals.bug": "Reportar un error",
+  "publications.section.softwares.title": "Menciones de Software",
+  "publications.section.softwares.legend": "Menciones de software encontradas por scanR en la publicación."
 }

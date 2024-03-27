@@ -7,7 +7,7 @@ export async function getPublicationById(id: string): Promise<Publication> {
     _source: [
       "title", "summary", "authors.fullName", "authors.person", "authors.role", "authors.affiliations",
       "domains", "affiliations", "source", "isOa", 'type', 'id', "year", "oaEvidence", "projects", "externalIds",
-      "pdfUrl", "landingPage"
+      "pdfUrl", "landingPage", "softwares",
     ],
     query: {
       bool: {

@@ -38,6 +38,13 @@ type BasePublication = {
   year: number;
 };
 
+export type SoftwareMention = {
+  softwareName: string;
+  contexts: string[];
+  id_name: string;
+  wikidata?: string;
+}
+
 export type LightPublication = BasePublication & {
   authors: {
     fullName: string;
@@ -50,6 +57,7 @@ export type Publication = BasePublication & {
   _id: string;
   summary: LangField;
   domains: DomainsData[];
+  softwares: SoftwareMention[];
   landingPage?: string;
   pdfUrl?: string;
   affiliations: {
