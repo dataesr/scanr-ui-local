@@ -95,6 +95,7 @@
   "search.organizations.analytics.by-fundings.title": "By Funding Type",
   "search.filters.add": "Add Filters",
   "search.filters.clear": "Reset Filters",
+  "search.filters.current.title": "Filters",
   "search.filters.current.no-filter": "No active filters",
   "search.filters.current.organizations.kind": "Sector",
   "search.filters.current.organizations.level": "Organization Type",

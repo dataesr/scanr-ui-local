@@ -66,8 +66,10 @@ export default function ProjectPresentation({ data }: { data: Project }) {
     })) || [];
 
   const state = (data.endDate)
-    ? (new Date(data.endDate) < new Date()) ? ' terminé' : ' en cours'
+    ? (new Date(data.endDate) < new Date()) ? 'completed' : 'progress'
     : null;
+
+  const stateDate = (state === 'completed') ? new Date(data.endDate).toLocaleDateString() : new Date(data.startDate).toLocaleDateString();
 
   const accomplishment = calculateAccomplishment(data.startDate, data.endDate);
   const fundingPercent = (data.budgetTotal && data.budgetFinanced)
@@ -113,7 +115,9 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                     )}
                   </Title>
                   {data?.year && (<Text className="fr-card__detail" size="sm">
-                    <i>Financement obtenu en {data.year}</i>
+                    <i>
+                      {intl.formatMessage({ id: "projects.section.header.year" }, { year: data.year })}
+                    </i>
                   </Text>)}
                 </div>
                 {logoUrl && (<div>
@@ -220,9 +224,13 @@ export default function ProjectPresentation({ data }: { data: Project }) {
           </Col>
           <Col xs="12" md="4" xl="3" offsetXl="1">
             <PageContent>
-              <PageSection show title="Etat du projet" description={state
-                ? `Ce projet est ${state} depuis le ${state === ' terminé' ? new Date(data.endDate).toLocaleDateString() : new Date(data.startDate).toLocaleDateString()}`
-                : 'Aucune information disponible'}>
+              <PageSection
+                show
+                title={intl.formatMessage({ id: "projects.section.state.title" })}
+                description={state
+                  ? intl.formatMessage({ id: `projects.section.state.${state}` }, { date: stateDate })
+                  : intl.formatMessage({ id: "projects.section.state.no-data" })}
+              >
                 {accomplishment && (<div style={{ padding: "1rem .5rem" }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

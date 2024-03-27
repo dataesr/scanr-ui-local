@@ -28,7 +28,7 @@ export default function CurrentFilters() {
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flexGrow: 1 }}>
             <Title as="h1" className="fr-text--lg fr-text--bold fr-m-0">
-              Filtres
+              {intl.formatMessage({ id: "search.filters.current.title" })}
             </Title>
           </div>
           {Object.keys(currentFilters)?.length ? (

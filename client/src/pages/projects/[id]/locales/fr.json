@@ -1,6 +1,11 @@
 {
   "projects.breadcrumb.home": "Accueil",
   "projects.breadcrumb.search": "Financements",
+  "projects.section.header.year": "Financement obtenu en {year}",
+  "projects.section.state.title": "État du projet",
+  "projects.section.state.progress": "Projet en cours depuis le {date}",
+  "projects.section.state.completed": "Projet terminé depuis le {date}",
+  "projects.section.state.no-data": "Aucune information disponible",
   "projects.section.identifiers.title": "Identifiants du projet",
   "projects.section.identifiers.desc": "Cliquez pour copier l'identifiant dans le presse-papier",
   "projects.section.share.title": "Partager la page",
