@@ -31,7 +31,6 @@ jobs:
         id: tag
         run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-
       - name: 🔑 Login Docker
         run: docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
@@ -87,11 +86,10 @@ jobs:
         id: kubectl-deploy
         uses: dataesr/kubectl-deploy@v1.1
         env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DOAD }}
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DOAD_PROD }}
         with:
           namespace: ${{ env.DEPLOYMENT_NAMESPACE }}
           restart: ${{ env.DEPLOYMENT }}
-    
 
   notify:
     name: 📢 Notify in mattermost channel
