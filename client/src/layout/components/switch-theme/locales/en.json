@@ -3,7 +3,7 @@
   "layout.switch-theme.dark": "Dark theme",
   "layout.switch-theme.system": "System",
   "layout.switch-theme.system-hint": "Use system settings",
-  "layout.switch-theme.title": "Display Settings",
+  "layout.switch-theme.title": "Display settings",
   "layout.switch-theme.legend": "Choose a theme to customize the appearance of the site.",
   "layout.switch-theme.close": "Close"
 }

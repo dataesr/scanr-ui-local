@@ -6,8 +6,8 @@
   "error404.continue": "In this case, to continue your visit, you can check our homepage or perform a search using our search engine at the top of the page.",
   "error404.contact": "Otherwise, please contact us so that we can redirect you to the correct information.",
   "error.home": "Home",
-  "error.contactUs": "Contact Us",
-  "error500.title": "Unexpected Error",
+  "error.contactUs": "Contact us",
+  "error500.title": "Unexpected error",
   "error500.code": "Error 500",
   "error500.message": "Sorry, the service is experiencing a problem. We are working to resolve it as quickly as possible.",
   "error500.tryAgain": "Please try refreshing the page or try again later."
