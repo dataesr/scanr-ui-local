@@ -17,7 +17,6 @@ import {
 import { RawIntlProvider, createIntl } from "react-intl";
 import SwitchTheme from "../switch-theme";
 import useConsent from "../../../hooks/useConsent";
-import { version } from "react";
 import styles from "./styles.module.scss";
 
 const modules = import.meta.glob("./locales/*.json", {
@@ -31,6 +30,8 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   }
   return acc;
 }, {});
+
+const version = import.meta.env.VITE_VERSION;
 
 export default function MainFooter() {
   const { locale } = useDSFRConfig();
