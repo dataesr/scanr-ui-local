@@ -8,6 +8,7 @@
     "patents.section.website.title": "Im Internet",
     "patents.section.website.description": "Erkunden Sie Patente der Familie auf Espacenet und/oder die Einreichung in Frankreich auf der INPI-Website",
     "patents.id.title": "Patentfamilienkennung",
+    "patents.section.share": "Seite teilen",
     "patents.detail.badge.count": "{count, plural, one {# Patentanmeldung} other {# Patentanmeldungen}}",
     "patents.copy": "Klicken Sie zum Kopieren in die Zwischenablage",
     "patents.section.badge": "Patentfamilie",
