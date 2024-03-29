@@ -23,6 +23,7 @@ import RecentAffiliations from "./recent-affiliations";
 import NetworksNotice from "../../../../components/networks-notice";
 import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
 import MoreLikeThis from "../../../../components/more-like-this";
+import Websites from "../../../../components/websites";
 
 function getOaInfo(publi) {
   const oaCount = publi?.filter((publi) => publi.isOa)?.length;
@@ -43,14 +44,14 @@ export default function AuthorPage({ data }: { data: Author }) {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role ===
-        "author"
+      "author"
     );
   });
   const thesisParticipations = publications?.filter((publi) => {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role !==
-        "author"
+      "author"
     );
   });
   const others = publications?.filter((publi) => publi.type !== "thesis");
@@ -193,6 +194,14 @@ export default function AuthorPage({ data }: { data: Author }) {
               })}
             >
               <Identifiers data={data.externalIds} />
+            </PageSection>
+            <PageSection
+              show={!!data.externalIds?.filter(identifier => identifier.url).length}
+              title={intl.formatMessage({
+                id: "authors.section.web.title",
+              })}
+            >
+              <Websites data={data.externalIds?.filter(identifier => identifier.url)} />
             </PageSection>
             <PageSection
               show={!!byYear?.length}

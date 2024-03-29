@@ -49,6 +49,7 @@ export type Author = {
   externalIds: {
     id: string;
     type: string;
+    url?: string;
   }[];
   awards: {
     label: string;

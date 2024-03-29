@@ -21,5 +21,8 @@
   "websites.types.Icalendar": "Icalendar",
   "websites.types.Présentation": "Présentation",
   "websites.types.espacenet": "Espacenet",
-  "websites.types.inpi": "INPI"
+  "websites.types.inpi": "INPI",
+  "websites.types.idref": "IdRef",
+  "websites.types.orcid": "Orcid",
+  "websites.types.id_hal": "idHAL"
 }
