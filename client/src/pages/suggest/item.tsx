@@ -6,16 +6,19 @@ import {
   Link,
   ButtonGroup,
   Button,
+  useDSFRConfig,
 } from "@dataesr/dsfr-plus";
 import { publicationTypeMapping, encode } from "../../utils/string";
 import { LightPublication } from "../../types/publication";
 import { useIntl } from "react-intl";
+import getLangFieldValue from "../../utils/lang";
 
 export type AddItemProps<T> = {
   data: T;
   highlight?: Record<string, string[]>;
   addItem?: (item: T) => void;
   disabled: boolean;
+  isIdentified: boolean;
 };
 export type RemoveItemProps<T> = {
   data: T;
@@ -27,14 +30,16 @@ export function SuggestionAddItem({
   highlight,
   addItem,
   disabled,
+  isIdentified,
 }: AddItemProps<LightPublication>) {
+  const { locale } = useDSFRConfig();
   const intl = useIntl();
   return (
-    <div className="result-item" key={publication.id}>
+    <div className="result-item" key={publication.id} style={{ opacity: (isIdentified ? "0.7" : "1") }}>
       <BadgeGroup className="fr-mt-1v">
         <Badge size="sm" color="purple-glycine" noIcon>
           {publicationTypeMapping[publication.type] ||
-            intl.formatMessage({ id: "search.publications.other" })}
+            intl.formatMessage({ id: "suggest.items.type.other" })}
         </Badge>
         <Badge
           size="sm"
@@ -42,14 +47,12 @@ export function SuggestionAddItem({
           icon={publication.isOa ? "lock-unlock-fill" : "lock-fill"}
         >
           {publication.isOa
-            ? intl.formatMessage({ id: "search.publications.openAccess" })
-            : intl.formatMessage({ id: "search.publications.closedAccess" })}
+            ? intl.formatMessage({ id: "suggest.items.is-oa.true" })
+            : intl.formatMessage({ id: "suggest.items.is-oa.false" })}
         </Badge>
       </BadgeGroup>
       <Text bold className="fr-mb-0">
-        {publication.title.default ||
-          publication.title?.fr ||
-          publication.title?.en}
+        {getLangFieldValue(locale)(publication.title)}
       </Text>
       <Text bold size="sm" className="fr-mb-0">
         {publication?.authors?.slice(0, 5).map((author, k) => (
@@ -75,34 +78,28 @@ export function SuggestionAddItem({
             `, ${publication?.source?.publisher}`}
         </i>
       </Text>
-      {highlight?.["domains.label.default"] && (
-        <Text size="sm" className="fr-mb-0">
-          Mots clés:{" "}
-          <span
-            dangerouslySetInnerHTML={{
-              __html: highlight?.["domains.label.default"],
-            }}
-          />
-        </Text>
+      {publication.landingPage && (
+        <Link target="_blank" className="fr-text--xs" href={publication.landingPage}>
+          {intl.formatMessage({ id: "suggest.items.landing-page" })}
+        </Link>
       )}
-      {highlight?.["summary.default"] && (
-        <Text size="sm" className="fr-mb-0">
-          ...
-          <span
-            dangerouslySetInnerHTML={{ __html: highlight?.["summary.default"] }}
-          />
-          ...
+      {Object.values(highlight || {}).map((value, i) => (
+        <Text key={i} size="sm" className="fr-mb-0">
+          <span dangerouslySetInnerHTML={{ __html: value }} />
         </Text>
-      )}
+      ))}
       <ButtonGroup size="sm" isInlineFrom="xs" align="right">
         <Button
           variant="text"
           onClick={() => addItem(publication)}
-          icon="add-line"
+          icon={!isIdentified && "add-line"}
           iconPosition="right"
-          disabled={disabled}
+          disabled={disabled || isIdentified}
         >
-          {intl.formatMessage({ id: "suggest.items.add" })}
+          {isIdentified
+            ? intl.formatMessage({ id: "suggest.items.identified" })
+            : intl.formatMessage({ id: "suggest.items.add" })
+          }
         </Button>
       </ButtonGroup>
     </div>
@@ -112,14 +109,22 @@ export function SuggestionRemoveItem({
   data: publication,
   removeItem,
 }: RemoveItemProps<LightPublication>) {
+  const { locale } = useDSFRConfig();
   const intl = useIntl();
   return (
     <div>
+      {
+        publication.externalIds?.find((i) => i.type === 'hal') && (
+          <Text size="xs" className="fr-mb-0">
+            <em>
+              {intl.formatMessage({ id: "suggest.items.in-hal" })}
+            </em>
+          </Text>
+        )
+      }
       <div className="result-item" key={publication.id}>
         <Text bold className="fr-mb-1w">
-          {publication.title.default ||
-            publication.title?.fr ||
-            publication.title?.en}
+          {getLangFieldValue(locale)(publication.title)}
         </Text>
         <Text bold size="sm" className="fr-mb-0">
           {publication?.authors?.slice(0, 5).map((author, k) => (

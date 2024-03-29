@@ -64,6 +64,11 @@ export default function AuthorPage({ data }: { data: Author }) {
   });
   const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`;
 
+  const alternativeNameForm = data?.firstName
+    && `"${data?.firstName?.split(" ")?.map((el) => el[0])?.join(" ")} ${data.lastName}"`
+  const nameForms = [`"${data?.fullName}"`, alternativeNameForm].filter(Boolean).join("|");
+  const suggestUrl = `/suggest/${data.id}?q=(${nameForms})`;
+
   const { oaPercent } = getOaInfo(publications);
 
   return (
@@ -280,7 +285,7 @@ export default function AuthorPage({ data }: { data: Author }) {
               <ButtonGroup>
                 <Button
                   as="a"
-                  href={`/suggest/${data.id}?q="${data?.fullName}"`}
+                  href={suggestUrl}
                   variant="tertiary"
                   icon="links-line"
                   iconPosition="left"

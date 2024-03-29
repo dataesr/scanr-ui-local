@@ -8,7 +8,7 @@ const PUBLICATION_LIGHT_SOURCE = [
 ]
 
 const AUTHOR_SOURCE = [
-  "_id", "id", "idref", "orcid", "fullName", 
+  "_id", "id", "idref", "orcid", "fullName", "firstName", "lastName",
   "externalIds", "awards", "recentAffiliations",
 ]
 

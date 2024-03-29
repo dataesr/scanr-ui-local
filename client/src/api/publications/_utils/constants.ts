@@ -24,4 +24,4 @@ export const FIELDS = [
   "projects.label.*",
   "projects.acronym.*"
 ]
-export const LIGHT_SOURCE = ["title.*", "authors.fullName", "authors.person", "authors.role", "source.*", "isOa", 'type', 'id', "year"]
+export const LIGHT_SOURCE = ["title.*", "authors.fullName", "authors.person", "authors.role", "source.*", "isOa", 'type', 'id', "year", "landingPage", "externalIds"]

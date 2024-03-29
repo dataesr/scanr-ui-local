@@ -89,17 +89,17 @@ export default function Suggest() {
       <Container className={"bg-publications"} fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
-            <Link href="/"><FormattedMessage id="search.top.breadcrumb.home" /></Link>
-            <Link current>{intl.formatMessage({ id: "search.top.breadcrumb.publications" })}</Link>
+            <Link href="/"><FormattedMessage id="suggest.breadcrumb.home" /></Link>
+            <Link current>{intl.formatMessage({ id: "suggest.breadcrumb.publications" })}</Link>
           </Breadcrumb>
           <Row gutters>
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
                 isLarge
-                buttonLabel={intl.formatMessage({ id: "search.top.main-search-bar" })}
+                buttonLabel={intl.formatMessage({ id: "suggest.main-search-bar" })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "search.top.main-search-bar" })}
+                placeholder={intl.formatMessage({ id: "suggest.main-search-bar" })}
                 onSearch={(value) => handleQueryChange(value)}
               />
             </Col>
@@ -107,12 +107,12 @@ export default function Suggest() {
           </Row>
           <Container fluid className="fr-py-3w">
             {(total && total === 10000) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
-              {intl.formatMessage({ id: "search.top.result-more-than" })}
+              {intl.formatMessage({ id: "suggest.result-more-than" })}
             </Text>) : null
             }
             {(total && total > 0) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
               {intl.formatMessage(
-                { id: "search.top.publications.result" },
+                { id: "suggest.publications.result" },
                 { count: total, query: currentQuery }
               )}
             </Text>) : isFetchingNextPage ? <BaseSkeleton height="1.5rem" width="40%" /> : null}
@@ -132,6 +132,7 @@ export default function Suggest() {
                       key={data.id}
                       addItem={addItem}
                       disabled={items.some((item) => item.id === data.id)}
+                      isIdentified={!!data?.authors.map((a) => a.person).includes(author.id)}
                     />))
                   : null
                 }
@@ -154,7 +155,7 @@ export default function Suggest() {
             {(hasNextPage && shouldClickToLoad) && (
               <Separator className="fr-my-2w">
                 <Button icon="arrow-down-s-line" variant="text" onClick={() => fetchNextPage()}>
-                  <FormattedMessage id="search.results.pagination.next" />
+                  <FormattedMessage id="suggest.results.pagination.next" />
                 </Button>
               </Separator>
             )}
@@ -164,7 +165,7 @@ export default function Suggest() {
                   <Separator />
                   <Text size="md" className="fr-my-4w">
                     {intl.formatMessage(
-                      { id: "search.results.pagination.end" },
+                      { id: "suggest.results.pagination.end" },
                       { query: currentQuery }
                     )}
                   </Text>
@@ -186,20 +187,34 @@ export default function Suggest() {
               ))}
             </div>
             <hr />
+            {!!items.filter(item => item.externalIds?.find((i) => i.type === 'hal'))?.length && (
+              <Notice closeMode="disallow" type="warning" className="fr-my-3w">
+                <Text as="span">
+                  {intl.formatMessage({ id: "suggest.notice.title" })}
+                </Text>
+                <br />
+                <Text as="span" size="xs">
+                  {intl.formatMessage({ id: "suggest.notice.text" })}
+                </Text>
+                <Button className="fr-mt-3w" size="sm" as="a" variant="secondary" href="http://doc.hal.science/identifiant-auteur-idhal-cv/" target="_blank">
+                  {intl.formatMessage({ id: "suggest.notice.link" })}
+                </Button>
+              </Notice>
+            )}
             <TextInput
-              label="Renseignez votre email"
+              label={intl.formatMessage({ id: "suggest.form.label" })}
               required
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              hint="Cet email sera utilisé que pour vous informer de la prise en compte de votre contribution."
+              hint={intl.formatMessage({ id: "suggest.form.hint" })}
             />
             <ButtonGroup>
               <Button
                 disabled={!items?.length || !email}
                 onClick={submitSuggestions}
               >
-                Soumettre la liste de publications
+                {intl.formatMessage({ id: "suggest.form.submit" })}
               </Button>
             </ButtonGroup>
           </Col>
