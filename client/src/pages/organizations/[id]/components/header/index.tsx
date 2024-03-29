@@ -1,3 +1,4 @@
+import cn from "classnames";
 import {
   BadgeGroup,
   Badge,
@@ -10,14 +11,16 @@ import getLangFieldValue from "../../../../../utils/lang";
 import { Organization } from "../../../../../types/organization";
 import { useIntl } from "react-intl";
 import Truncate from "../../../../../components/truncate";
+import styles from "./styles.module.scss";
 
 export default function OrganizationHeader({ data }: { data: Organization }) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
+  const shortLevel = data.level?.match(/\((.*?)\)/)?.[1] || data.level;
   return (
     <section>
-      <div style={{ display: "flex", flexWrap: "nowrap" }} className="fr-my-1v">
-        <div style={{ flexGrow: 1 }}>
+      <div className={cn(styles.header, "fr-my-1v")}>
+        <div className={styles.grow}>
           <BadgeGroup className="structure-badge-list fr-mt-1v">
             {data?.kind?.map((k) => (
               <Badge key={k} size="sm" color="yellow-tournesol" noIcon>
@@ -25,10 +28,9 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
               </Badge>
             ))}
             {data.level && (
-              <Badge size="sm" color="green-emeraude">
-                {data.level}
-              </Badge>
-            )}
+              <Badge size="sm" color='green-emeraude' title={shortLevel ? data.level : undefined}>
+                {shortLevel || data.level}
+              </Badge>)}
             {data.nature && data.nature !== data.level && (
               <Badge size="sm" color="green-emeraude">
                 {data.nature}
@@ -50,13 +52,12 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
         <div>
           <img
             id="structure-logo"
-            style={{ maxHeight: "100px", maxWidth: "100px" }}
+            className={styles.logo}
             width="auto"
             height="auto"
             src={`https://storage.sbg.cloud.ovh.net/v1/AUTH_32c5d10cb0fe4519b957064a111717e3/dataesr/${data.id}_128.png`}
             alt={`Logo ${data.label.default}`}
             aria-hidden
-            className="fr-mf-3w"
             onError={() => document?.getElementById("structure-logo")?.remove()}
           />
         </div>
