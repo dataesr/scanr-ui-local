@@ -14,5 +14,6 @@
   "layout.footer.personal-data": "Personal data",
   "layout.footer.cookies": "Cookies",
   "layout.footer.accessibility": "Accessibility",
+  "layout.footer.version": "App version v{version}",
   "layout.footer.switch-theme": "Theme"
 }

@@ -183,11 +183,10 @@ export default function MainFooter() {
                       <li>
                         <Link
                           className="fr-footer__top-link"
-                          href="https://github.com/dataesr/scanr-next-gen"
+                          href="https://github.com/dataesr"
                           target="_blank"
                         >
                           GitHub
-                          {version && ` – v${version}`}
                         </Link>
                       </li>
                       <li>
@@ -311,6 +310,9 @@ export default function MainFooter() {
               id: "layout.footer.switch-theme",
             })}
           </button>
+          <Link target="_blank" rel="noreferer noopenner" className="fr-footer__bottom-link" href={`https://github.com/dataesr/scanr-next-gen/releases/tag/v${version}`}>
+            {intl.formatMessage({ id: "layout.footer.version" }, { version })}
+          </Link>
         </FooterBottom>
         <SwitchTheme />
       </Footer>
