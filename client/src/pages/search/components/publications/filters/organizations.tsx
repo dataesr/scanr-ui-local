@@ -1,4 +1,12 @@
-import { Autocomplete, AutocompleteItem, DissmissibleTag, TagGroup, Text, useAutocompleteList, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  DismissibleTag,
+  TagGroup,
+  Text,
+  useAutocompleteList,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import { FormattedMessage } from "react-intl";
 import useUrl from "../../../hooks/useUrl";
 import { autocompleteOrganizations } from "../../../../../api/organizations/autocomplete";
@@ -8,20 +16,20 @@ import getLangFieldValue from "../../../../../utils/lang";
 
 export default function PublicationOrganizationsFilter() {
   const { locale } = useDSFRConfig();
-  const { currentFilters, handleFilterChange, setOperator } = useUrl()
+  const { currentFilters, handleFilterChange, setOperator } = useUrl();
 
   const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
     async load({ filterText }) {
       if (!filterText) {
         return { items: [] };
       }
-      const res = await autocompleteOrganizations({ query: filterText })
+      const res = await autocompleteOrganizations({ query: filterText });
       return { items: res.data?.map((org) => org._source) };
-    }
+    },
   });
 
-  const filter = currentFilters?.['affiliations.id']
-  const operator = filter?.operator || 'or'
+  const filter = currentFilters?.["affiliations.id"];
+  const operator = filter?.operator || "or";
 
   return (
     <>
@@ -34,24 +42,31 @@ export default function PublicationOrganizationsFilter() {
             <FormattedMessage id="search.filters.publications.by-organization-description" />
           </Text>
         </div>
-        <OperatorButton operator={operator} setOperator={(key) => setOperator('affiliations.id', (key === 'and') ? 'and' : 'or')} />
+        <OperatorButton
+          operator={operator}
+          setOperator={(key) =>
+            setOperator("affiliations.id", key === "and" ? "and" : "or")
+          }
+        />
       </div>
-      {filter ? (<Text bold size="sm" className="fr-mb-1v">
-        Sélectionnées:
-      </Text>) : null}
+      {filter ? (
+        <Text bold size="sm" className="fr-mb-1v">
+          Sélectionnées:
+        </Text>
+      ) : null}
       <TagGroup>
         {filter?.values?.map(({ value, label }) => (
-          <DissmissibleTag
+          <DismissibleTag
             key={value}
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange({ field: 'affiliations.id', value })
+              handleFilterChange({ field: "affiliations.id", value });
             }}
           >
             {label || value}
-          </DissmissibleTag>
+          </DismissibleTag>
         ))}
       </TagGroup>
       <Autocomplete
@@ -64,14 +79,20 @@ export default function PublicationOrganizationsFilter() {
         size="md"
         onSelectionChange={(item) => {
           if (!item) return;
-          const [value, label] = item.toString().split('###')
-          handleFilterChange({ field: 'affiliations.id', value, label })
+          const [value, label] = item.toString().split("###");
+          handleFilterChange({ field: "affiliations.id", value, label });
         }}
       >
         {(item) => (
           <AutocompleteItem
-            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
-            endContent={<span className="fr-text--xs fr-text-mention--grey">{item.publicationsCount} publications</span>}
+            startContent={
+              <span className="fr-mr-3v fr-icon--md fr-icon-user-line" />
+            }
+            endContent={
+              <span className="fr-text--xs fr-text-mention--grey">
+                {item.publicationsCount} publications
+              </span>
+            }
             description={item.address?.find((a) => a.main).city}
             key={`${item.id}###${getLangFieldValue(locale)(item.label)}`}
           >
@@ -80,5 +101,5 @@ export default function PublicationOrganizationsFilter() {
         )}
       </Autocomplete>
     </>
-  )
+  );
 }
