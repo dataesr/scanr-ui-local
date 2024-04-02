@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dataesr/dsfr-plus": "^0.0.20",
+    "@dataesr/dsfr-plus": "^0.3.0",
     "@gouvfr/dsfr": "^1.10.2",
     "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@mistralai/mistralai": "^0.1.3",
