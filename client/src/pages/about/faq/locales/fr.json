@@ -1,6 +1,7 @@
 {
   "app.faq.breadcrumb.current": "Foire aux questions",
   "app.faq.title": "Foire aux questions",
+  "app.faq.home": "Accueil",
   "app.faq.general.title": "Questions générales",
   "app.faq.search.title": "Moteur de recherche",
   "app.faq.entities.title": "Entités",
@@ -9,5 +10,6 @@
   "app.faq.persons.title": "Auteurs",
   "app.faq.publications.title": "Publications",
   "app.faq.productions.title": "Productions",
-  "app.faq.patents.title": "Brevets"
+  "app.faq.patents.title": "Brevets",
+  "app.faq.Networks.title": "Réseaux"
 }

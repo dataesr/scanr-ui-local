@@ -49,7 +49,10 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="/docs" element={<DocsLayout />}>
             <Route path="objects/projects" element={<ProjectsDocs />} />
-            <Route path="objects/publications" element={<ScanrPublicationsDocs />} />
+            <Route
+              path="objects/publications"
+              element={<ScanrPublicationsDocs />}
+            />
             <Route path="quick-start" element={<div>QuickStart</div>} />
             <Route path="overview" element={<div>Overview</div>} />
           </Route>

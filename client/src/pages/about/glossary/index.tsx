@@ -50,7 +50,9 @@ export default function Glossary() {
       <Container className="bg-grey" fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
-            <Link href="/">Accueil</Link>
+            <Link href="/">
+              {intl.formatMessage({ id: "app.glossary.home" })}
+            </Link>
             <Link>
               {intl.formatMessage({ id: "app.glossary.breadcrumb.current" })}
             </Link>

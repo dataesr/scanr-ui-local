@@ -33,7 +33,9 @@ export default function Resources() {
       <Container>
         <Container>
           <Breadcrumb>
-            <Link href="/">Accueil</Link>
+            <Link href="/">
+              {intl.formatMessage({ id: "app.resources.home" })}
+            </Link>
             <Link>
               {intl.formatMessage({ id: "app.resources.breadcrumb.current" })}
             </Link>

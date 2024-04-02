@@ -1,6 +1,7 @@
 {
     "app.resources.breadcrumb.current": "Resources",
     "app.resources.ref": "REFERENCES",
+    "app.resources.home": "Home",
     "app.resources.source": "SOURCES",
     "app.resources.source.title": "Data Sources",
     "app.resources.intervenants.contributors": "HAVE CONTRIBUTED TO THE IDENTIFICATION OF THEIR OWN PARTICIPANTS IN H2020 PROJECTS"
