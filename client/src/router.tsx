@@ -25,6 +25,7 @@ import PublicationIdParser from "./components/publication-id-parser";
 import ScanrPublicationsDocs from "./pages/docs/objects/publications";
 import { DocsLayout } from "./pages/docs/layout";
 import ProjectsDocs from "./pages/docs/objects/projects";
+import LegalNotices from "./pages/about/legal-notices";
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -52,6 +53,7 @@ export default function Router() {
             <Route path="quick-start" element={<div>QuickStart</div>} />
             <Route path="overview" element={<div>Overview</div>} />
           </Route>
+          <Route path="/about/legal-notices" element={<LegalNotices />} />
           <Route path="/about/faq" element={<FAQ />} />
           <Route path="/about/team" element={<Team />} />
           <Route path="/about/resources" element={<Resources />} />

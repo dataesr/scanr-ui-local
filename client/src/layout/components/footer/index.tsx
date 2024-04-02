@@ -292,6 +292,11 @@ export default function MainFooter() {
               id: "layout.footer.accessibility",
             })}
           </Link> */}
+          <Link className="fr-footer__bottom-link" href="/about/legal-notices">
+            {intl.formatMessage({
+              id: "layout.footer.legals",
+            })}
+          </Link>
           <button
             className="fr-footer__bottom-link"
             data-fr-opened="false"
