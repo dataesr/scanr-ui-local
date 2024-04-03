@@ -286,12 +286,12 @@ export default function MainFooter() {
             {intl.formatMessage({
               id: "layout.footer.personal-data",
             })}
-          </Link>
-          <Link className="fr-footer__bottom-link" href="#">
+          </Link> */}
+          <Link className="fr-footer__bottom-link" href="/about/accessibility">
             {intl.formatMessage({
               id: "layout.footer.accessibility",
             })}
-          </Link> */}
+          </Link>
           <Link className="fr-footer__bottom-link" href="/about/legal-notices">
             {intl.formatMessage({
               id: "layout.footer.legals",
@@ -315,7 +315,12 @@ export default function MainFooter() {
               id: "layout.footer.switch-theme",
             })}
           </button>
-          <Link target="_blank" rel="noreferer noopenner" className="fr-footer__bottom-link" href={`https://github.com/dataesr/scanr-next-gen/releases/tag/v${version}`}>
+          <Link
+            target="_blank"
+            rel="noreferer noopenner"
+            className="fr-footer__bottom-link"
+            href={`https://github.com/dataesr/scanr-next-gen/releases/tag/v${version}`}
+          >
             {intl.formatMessage({ id: "layout.footer.version" }, { version })}
           </Link>
         </FooterBottom>
