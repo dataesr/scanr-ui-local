@@ -87,19 +87,6 @@ export default function LegalNotice() {
             </section>
             <section className="fr-py-3w">
               <Title as="h2" look="h5">
-                {intl.formatMessage({ id: "app.legals.cookies" })}
-              </Title>
-              <div className="fr-mb-3w">
-                <P>
-                  {intl.formatMessage({ id: "app.legals.cookies.1" })}
-                </P>
-                <P>
-                  {intl.formatMessage({ id: "app.legals.cookies.2" })}
-                </P>
-              </div>
-            </section>
-            <section className="fr-py-3w">
-              <Title as="h2" look="h5">
                 {intl.formatMessage({ id: "app.legals.reuse" })}
               </Title>
               <div className="fr-mb-3w">

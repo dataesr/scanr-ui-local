@@ -119,7 +119,7 @@ export default function Consent() {
                         </div>
                       </fieldset>
                     </div>
-                    <div className="fr-consent-service">
+                    {/* <div className="fr-consent-service">
                       <fieldset aria-labelledby="finality-1-legend finality-1-desc" role="group" className="fr-fieldset fr-fieldset--inline">
                         <legend id="finality-1-legend" className="fr-consent-service__title">
                           {intl.formatMessage({ id: "layout.consent.cookies.finality.stats" })}
@@ -154,7 +154,7 @@ export default function Consent() {
                           {intl.formatMessage({ id: "layout.consent.cookies.finality.stats.desc" })}
                         </p>
                       </fieldset>
-                    </div>
+                    </div> */}
                     <div className="fr-consent-service">
                       <fieldset aria-labelledby="share-legend share-desc" role="group" className="fr-fieldset fr-fieldset--inline">
                         <legend id="share-legend" className="fr-consent-service__title">
