@@ -166,11 +166,12 @@ export default function Consent() {
                               type="radio"
                               id="consent-share-accept"
                               name="consent-share"
-                              checked={!!consent.facebook && !!consent.linkedin && !!consent.twitter}
+                              checked={!!consent.facebook && !!consent.linkedin && !!consent.twitter && !!consent.youtube}
                               onChange={() => {
                                 consent.facebook = 1;
                                 consent.linkedin = 1;
                                 consent.twitter = 1;
+                                consent.youtube = 1;
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-share-accept">
@@ -182,12 +183,12 @@ export default function Consent() {
                               type="radio"
                               id="consent-share-refuse"
                               name="consent-share"
-                              checked={!consent.facebook && !consent.linkedin && !consent.twitter}
+                              checked={!consent.facebook && !consent.linkedin && !consent.twitter && !consent.youtube}
                               onChange={() => {
                                 consent.facebook = 0;
                                 consent.linkedin = 0;
                                 consent.twitter = 0;
-
+                                consent.youtube = 0;
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-share-refuse">
