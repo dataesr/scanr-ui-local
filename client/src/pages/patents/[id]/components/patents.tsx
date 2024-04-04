@@ -14,7 +14,6 @@ import { useIntl } from "react-intl";
 import { Patent } from "../../../../types/patent";
 import useScreenSize from "../../../../hooks/useScreenSize";
 import { PageContent, PageSection } from "../../../../components/page-content";
-import PatentActors from "./actors";
 import Share from "../../../../components/share";
 import getLangFieldValue from "../../../../utils/lang";
 import PatentCPC from "./cpc";
@@ -23,6 +22,7 @@ import Truncate from "../../../../components/truncate";
 import PatentTimeline from "./timeline";
 import Websites from "../../../../components/websites";
 import MoreLikeThis from "../../../../components/more-like-this";
+import PatentActors from "./actors";
 
 export default function PatentPage({ data }: { data: Patent }) {
   const { locale } = useDSFRConfig();
@@ -100,8 +100,9 @@ export default function PatentPage({ data }: { data: Patent }) {
             <PageContent>
               <PageSection
                 show={
-                  !!data.authors.filter((author) =>
-                    author.rolePatent.some((role) => role.role === "dep")
+                  !!data.applicants.filter(
+                    (app) =>
+                      app.type === "organisation" || app.type === "person"
                   ).length
                 }
                 size="lead"
@@ -109,20 +110,19 @@ export default function PatentPage({ data }: { data: Patent }) {
                   id: "patents.section.dep",
                 })}
               >
-                <PatentActors data={data.authors} type="dep" />
+                <PatentActors actors={data.applicants} />
               </PageSection>
               <PageSection
                 show={
-                  !!data.authors.filter((author) =>
-                    author.rolePatent.some((role) => role.role === "inv")
-                  ).length
+                  !!data.inventors.filter((author) => author.type === "person")
+                    .length
                 }
                 size="lead"
                 title={intl.formatMessage({
                   id: "patents.section.inv",
                 })}
               >
-                <PatentActors data={data.authors} type="inv" />
+                <PatentActors actors={data.inventors} />
               </PageSection>
               <PageSection
                 show
@@ -161,7 +161,7 @@ export default function PatentPage({ data }: { data: Patent }) {
         <Col xs="12" md="4" xl="3" offsetXl="1">
           <PageContent>
             <PageSection
-              show={!!data.domains.length}
+              show
               title={intl.formatMessage({
                 id: "patents.section.cpc.title",
               })}
@@ -169,7 +169,7 @@ export default function PatentPage({ data }: { data: Patent }) {
                 id: "patents.section.cpc.description",
               })}
             >
-              <PatentCPC domains={data.domains} />
+              <PatentCPC cpc={data.cpc} />
             </PageSection>
             <PageSection
               show={!!data.patents.length}

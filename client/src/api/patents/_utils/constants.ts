@@ -10,8 +10,9 @@ export const FIELDS = [
 export const LIGHT_SOURCE = [
   "title",
   "id",
-  "submissionDate",
+  "applicationDate",
   "publicationDate",
-  "authors",
+  "inventors",
   "patents",
+  "applicants",
 ];

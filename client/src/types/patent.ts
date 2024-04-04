@@ -4,10 +4,11 @@ export type LightPatent = {
   id: string;
   title: LangField;
   fullName: string;
-  submissionDate: number;
+  applicationDate: number;
   publicationDate: number;
   grantedDate: number;
-  authors: PatentActorsData[];
+  inventors: InventorData[];
+  applicants: ApplicantData[];
   patents: PatentsData[];
 };
 
@@ -42,31 +43,38 @@ export type Patent = {
   title: LangField;
   summary: LangField;
   fullName: string;
-  submissionDate: number;
+  applicationDate: number;
   publicationDate: number;
   grantedDate: number;
-  authors: PatentActorsData[];
-
-  domains: {
-    level: string;
-    code: string;
-    type: string;
-    label: {
-      level: string;
-      default: string;
-    };
-  }[];
+  inventors: InventorData[];
+  applicants: ApplicantData[];
+  cpc: {
+    classe: { code: string; label: string }[];
+    groupe: { code: string; label: string }[];
+    section: { code: string; label: string }[];
+    ss_classe: { code: string; label: string }[];
+  };
   patents: PatentsData[];
 };
 
-export type PatentActorsData = {
-  affiliations: { siren: string; idref: string }[];
-  person: string;
-  typeParticipant: string;
-  rolePatent: RolePatent[];
-  fullName: string;
-  role?: string;
+export type InventorData = {
+  type: string;
+  name: string;
   country?: string;
+  ids: {
+    id: string;
+    type: "idref";
+  }[];
+};
+
+export type ApplicantData = {
+  type: string;
+  name: string;
+  country?: string;
+  ids: {
+    id: string;
+    type: "siren" | "idref" | "id";
+  }[];
 };
 
 export type RolePatent = {

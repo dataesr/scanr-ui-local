@@ -22,7 +22,6 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   }
   return acc;
 }, {});
-
 export default function PatentItem({
   data: patent,
   highlight,
@@ -38,13 +37,8 @@ export default function PatentItem({
     });
   }
 
-  const numberOfDep = patent.authors.filter((author) =>
-    author.rolePatent.some((role) => role.role === "dep")
-  ).length;
-
-  const numberOfInv = patent.authors.filter((author) =>
-    author.rolePatent.some((role) => role.role === "inv")
-  ).length;
+  const numberOfDep = patent?.applicants?.length || 0;
+  const numberOfInv = patent?.inventors?.length || 0;
 
   return (
     <RawIntlProvider value={intl}>
@@ -120,7 +114,7 @@ export default function PatentItem({
                 id: "patents.item.submission-date",
               },
               {
-                date: new Date(patent.submissionDate).toLocaleDateString(
+                date: new Date(patent.applicationDate).toLocaleDateString(
                   locale,
                   { year: "numeric", month: "long", day: "numeric" }
                 ),

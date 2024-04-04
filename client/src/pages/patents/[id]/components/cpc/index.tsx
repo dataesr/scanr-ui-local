@@ -1,18 +1,18 @@
 import { Patent } from "../../../../../types/patent";
 import { Badge } from "@dataesr/dsfr-plus";
 
-export default function PatentCPC({ domains }: { domains: Patent["domains"] }) {
-  if (!domains.length) return null;
+export default function PatentCPC({ cpc }: { cpc: Patent["cpc"] }) {
+  if (!cpc.ss_classe) return null;
 
-  const ssClasseItems = domains.filter((el) => el.level === "ss_classe");
+  const ssClasseItems = cpc.ss_classe;
 
   return (
     <ul className="fr-badges-group">
       {ssClasseItems.map((el, index) => (
-        <>
+        <li key={index}>
           <Badge
             color="purple-glycine"
-            aria-describedby={`tootip-${index}`}
+            aria-describedby={`tooltip-${index}`}
             as="a"
             href={`/search/patents?q=${el.code}`}
           >
@@ -20,15 +20,14 @@ export default function PatentCPC({ domains }: { domains: Patent["domains"] }) {
           </Badge>
           <span
             className="fr-tooltip fr-placement"
-            id={`tootip-${index}`}
+            id={`tooltip-${index}`}
             role="tooltip"
             aria-hidden="true"
           >
-            {el.label.default}
+            {el.label}
           </span>
-        </>
+        </li>
       ))}
     </ul>
-
   );
 }
