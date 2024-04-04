@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   useDSFRConfig,
   Breadcrumb,
@@ -10,6 +10,8 @@ import {
   SideMenuItem,
   Title,
 } from "@dataesr/dsfr-plus";
+import { useSearchParams } from "react-router-dom";
+
 import { RawIntlProvider, createIntl } from "react-intl";
 import { questions } from "./questions";
 
@@ -24,11 +26,14 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   }
   return acc;
 }, {});
+
 export default function FAQ() {
   const { locale } = useDSFRConfig();
-  console.log(locale);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const accordionRef = useRef(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const questionIdFromParams = searchParams.get("question");
+  console.log(questionIdFromParams);
+  const [selectedQuestion, setSelectedQuestion] =
+    useState(questionIdFromParams);
 
   const intl = createIntl({ locale, messages: messages[locale] });
   if (!messages) return null;
@@ -43,11 +48,8 @@ export default function FAQ() {
   }, {});
 
   const handleQuestionClick = (questionId) => {
-    console.log(questionId);
     setSelectedQuestion(questionId);
-    if (accordionRef.current) {
-      accordionRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setSearchParams({ question: questionId });
   };
 
   const formating = {
@@ -158,103 +160,152 @@ export default function FAQ() {
         {chunks}
       </a>
     ),
+    aQ7: (chunks) => (
+      <a href="FAQ?question=q7" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
+    aQ10: (chunks) => (
+      <a href="FAQ?question=q10" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
+    aQ11: (chunks) => (
+      <a href="FAQ?question=q11" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
+    aQ18: (chunks) => (
+      <a href="FAQ?question=q18" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
+    aQ27: (chunks) => (
+      <a href="FAQ?question=q27" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
+    aQ31: (chunks) => (
+      <a href="FAQ?question=q31" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
+    aQ45: (chunks) => (
+      <a href="FAQ?question=q45" rel="noopener noreferrer">
+        {chunks}
+      </a>
+    ),
   };
+  let isGroupExpanded = false;
 
   return (
     <RawIntlProvider value={intl}>
       <Container>
-        <Breadcrumb>
-          <Link href="/"> {intl.formatMessage({ id: "app.faq.home" })}</Link>
-          <Link>
-            {intl.formatMessage({ id: "app.faq.breadcrumb.current" })}
-          </Link>
-        </Breadcrumb>
         <Row>
-          <Title as="h1">{intl.formatMessage({ id: "app.faq.title" })}</Title>
-        </Row>
-        <Row>
-          <Col xs={selectedQuestion ? "4" : "8"}>
+          <Col xs="12" md="6" lg="5">
             <SideMenu title="">
               {Object.entries(groupedQuestions).map(
-                ([groupKey, groupQuestions]: [string, any[]]) => (
-                  <SideMenuItem
-                    key={groupKey}
-                    title={intl.formatMessage({
-                      id: `app.faq.${groupKey}.title`,
-                    })}
-                    defaultExpanded={false}
-                  >
-                    {groupQuestions.map((question: any) => (
-                      <Link
-                        key={question.key}
-                        href={`#${question.key}`}
-                        onClick={() => handleQuestionClick(question.key)}
-                      >
-                        {intl.formatMessage({
-                          id: (question.label as any)[locale],
-                        })}
-                        {selectedQuestion === question.key && (
-                          <span className="icon-container">
-                            <i className="fr-fi fr-icon-questionnaire-fill" />
-                          </span>
-                        )}
-                      </Link>
-                    ))}
-                  </SideMenuItem>
-                )
+                ([groupKey, groupQuestions]: [string, any[]]) => {
+                  isGroupExpanded = false;
+                  for (const question of groupQuestions) {
+                    if (question.key === selectedQuestion) {
+                      isGroupExpanded = true;
+                      break;
+                    }
+                  }
+                  return (
+                    <SideMenuItem
+                      key={groupKey}
+                      title={intl.formatMessage({
+                        id: `app.faq.${groupKey}.title`,
+                      })}
+                      defaultExpanded={isGroupExpanded}
+                    >
+                      {groupQuestions &&
+                        groupQuestions.map((question) => (
+                          <Link
+                            key={question.key}
+                            href={`?question=${question.key}`}
+                            className={
+                              question.key === selectedQuestion ? "current" : ""
+                            }
+                            onClick={() => handleQuestionClick(question.key)}
+                            current={question.key === selectedQuestion}
+                          >
+                            {intl.formatMessage({
+                              id: question.label[locale],
+                            })}
+                          </Link>
+                        ))}
+                    </SideMenuItem>
+                  );
+                }
               )}
             </SideMenu>
           </Col>
           <Col>
-            {!selectedQuestion && (
-              <div>
-                <svg
-                  className="fr-artwork"
-                  aria-hidden="true"
-                  viewBox="0 0 80 80"
-                  width="100%"
-                  height="100%"
-                >
-                  <use
-                    className="fr-artwork-decorative"
-                    href="/artwork/pictograms/system/information.svg#artwork-decorative"
-                  />
-                  <use
-                    className="fr-artwork-minor"
-                    href="/artwork/pictograms/system/information.svg#artwork-minor"
-                  />
-                  <use
-                    className="fr-artwork-major"
-                    href="/artwork/pictograms/system/information.svg#artwork-major"
-                  />
-                </svg>
-              </div>
-            )}
-            {selectedQuestion && (
-              <div className="fr-callout" ref={accordionRef}>
-                <Title as="h2" className="fr-callout__title">
-                  {intl.formatMessage({
-                    id: questions.find((q) => q.key === selectedQuestion)
-                      ?.label[locale],
-                  })}
-                </Title>
-                <p className="fr-callout__text">
-                  {intl.formatMessage(
-                    {
-                      id: selectedQuestion,
-                      defaultMessage: questions.find(
-                        (q) => q.key === selectedQuestion
-                      )?.definition[locale],
-                    },
-                    {
-                      ...formating,
-                      ...questions.find((q) => q.key === selectedQuestion)
-                        ?.formating,
-                    }
-                  )}
-                </p>
-              </div>
-            )}
+            <Row className="flex--space-between flex--wrap stick">
+              <Breadcrumb>
+                <Link href="/">
+                  {intl.formatMessage({ id: "app.faq.home" })}
+                </Link>
+                <Link>
+                  {intl.formatMessage({ id: "app.faq.breadcrumb.current" })}
+                </Link>
+              </Breadcrumb>
+              {!selectedQuestion && (
+                <div>
+                  <svg
+                    className="fr-artwork"
+                    aria-hidden="true"
+                    viewBox="0 0 80 80"
+                    width="300px"
+                    height="300px"
+                  >
+                    <use
+                      className="fr-artwork-decorative"
+                      href="/artwork/pictograms/system/information.svg#artwork-decorative"
+                    />
+                    <use
+                      className="fr-artwork-minor"
+                      href="/artwork/pictograms/system/information.svg#artwork-minor"
+                    />
+                    <use
+                      className="fr-artwork-major"
+                      href="/artwork/pictograms/system/information.svg#artwork-major"
+                    />
+                  </svg>
+                </div>
+              )}
+              {selectedQuestion && (
+                <div>
+                  <Title as="h1">
+                    {intl.formatMessage({ id: "app.faq.title" })}
+                  </Title>
+                  <Title as="h2" className="fr-callout__title">
+                    {intl.formatMessage({
+                      id: questions.find((q) => q.key === selectedQuestion)
+                        ?.label[locale],
+                    })}
+                  </Title>
+                  <p className="fr-callout__text">
+                    {intl.formatMessage(
+                      {
+                        id: selectedQuestion,
+                        defaultMessage: questions.find(
+                          (q) => q.key === selectedQuestion
+                        )?.definition[locale],
+                      },
+                      {
+                        ...formating,
+                        ...questions.find((q) => q.key === selectedQuestion)
+                          ?.formating,
+                      }
+                    )}
+                  </p>
+                </div>
+              )}
+            </Row>
           </Col>
         </Row>
       </Container>
