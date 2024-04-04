@@ -4,7 +4,7 @@
   "properties": {
     "id": {
       "type": "string",
-      "description": "Main PID of the organizations. For now can be either an RNSR, SIREN or GRID (should change to RoR)."
+      "description": "Main PID of the organizations. For now can be either an RNSR, SIREN, or GRID (should change to RoR)."
     },
     "startDate": {
       "type": "string",
@@ -27,9 +27,10 @@
       "description": "Crawl of the web pages"
     },
     "status": {
-      "type": "enum": [
+      "type": "string",
+      "enum": [
         "active",
-	"inactive"
+        "inactive"
       ],
       "description": "Status"
     },
@@ -40,6 +41,7 @@
         "type": "object",
         "properties": {
           "type": {
+            "type": "string",
             "enum": [
               "idref",
               "rnsr",
@@ -48,7 +50,6 @@
               "grid",
               "wikidata"
             ],
-            "type": "string",
             "description": "other known PID"
           },
           "id": {
@@ -127,54 +128,56 @@
             "description": "start date"
           },
           "label": {
-            "type": "string",
-            "description": "label of the institution"
+            "type": "object",
+            "description": "Label of the organization",
+            "properties": {
+              "fr": {
+                "type": "string",
+                "description": "Label in French"
+              },
+              "en": {
+                "type": "string",
+                "description": "Label in English"
+              },
+              "default": {
+                "type": "string",
+                "description": "Default Label"
+              }
+            }
+          },
+          "acronym": {
+            "type": "object",
+            "description": "Acronym of the organization",
+            "properties": {
+              "fr": {
+                "type": "string",
+                "description": "Acronym in French"
+              },
+              "en": {
+                "type": "string",
+                "description": "Acronym in English"
+              },
+              "default": {
+                "type": "string",
+                "description": "Default acronym"
+              }
+            }
           },
           "denormalized": {
             "type": "object",
             "description": "Denormalized object of the structure"
           },
-    "label": {
-      "type": "object",
-      "description": "Label of the organization",
-      "properties": {
-        "fr": {
-            "type": "string",
-            "description": "Label in French"
+          "autocompleted": {
+            "type": "array",
+            "description": "array of strings used for autocompletion",
+            "items": {
+              "type": "string"
+            }
+          }
         },
-        "en": {
-            "type": "string",
-            "description": "Label in English"
-        },
-        "default": {
-            "type": "string",
-            "description": "Default Label"
-        }
-      }
-    },
-    "acronym": {
-      "type": "object",
-      "description": "Acronym of the organization",
-      "properties": {
-        "fr": {
-            "type": "string",
-            "description": "Acronym in French"
-        },
-        "en": {
-            "type": "string",
-            "description": "Acronym in English"
-        },
-        "default": {
-            "type": "string",
-            "description": "Default acronym"
-        }
-      }
-    },
-    "autocompleted": {
-      "type": "array",
-      "description": "array of strings used for autocompletion",
-      "items": {
-        "type": "string"
+        "required": [
+          "structure"
+        ]
       }
     }
   },

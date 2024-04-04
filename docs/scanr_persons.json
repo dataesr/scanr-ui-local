@@ -65,7 +65,7 @@
         "properties": {
           "person": {
             "type": "string",
-            "description": "Main PID of the concontributor"
+            "description": "Main PID of the cocontributor"
           },
           "fullName": {
             "type": "string",
@@ -88,9 +88,15 @@
             "type": "string",
             "description": "Role of the person"
           },
-          "title.default": {
-            "type": "string",
-            "description": "Title of the publication"
+          "title": {
+            "type": "object",
+            "description": "Title of the publication",
+            "properties": {
+              "default": {
+                "type": "string",
+                "description": "Default title"
+              }
+            }
           },
           "year": {
             "type": "integer",
@@ -99,30 +105,29 @@
           "source": {
             "type": "object",
             "description": "Describes the source (generally journal) of the production",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "description": "Title of the source"
-                },
-                "publisher": {
-                  "type": "string",
-                  "description": "Normalized version of the publisher."
-                },  
-                "journalIssns": {
-                  "type": "array",
-                  "description": "Arrays of ISSNs (print, electronic ...)",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "isOa": {
-                  "type": "boolean",
-                  "description": "Is it an open access journal? (source Unpaywall)"
-                },
-                "isInDOAJ": {
-                  "type": "boolean",
-                  "description": "Is it indexed in DOAJ?"
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Title of the source"
+              },
+              "publisher": {
+                "type": "string",
+                "description": "Normalized version of the publisher."
+              },
+              "journalIssns": {
+                "type": "array",
+                "description": "Arrays of ISSNs (print, electronic ...)",
+                "items": {
+                  "type": "string"
                 }
+              },
+              "isOa": {
+                "type": "boolean",
+                "description": "Is it an open access journal? (source Unpaywall)"
+              },
+              "isInDOAJ": {
+                "type": "boolean",
+                "description": "Is it indexed in DOAJ?"
               }
             }
           }
@@ -135,7 +140,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "label.default": {
+          "label": {
             "type": "string",
             "description": "Label of the scientific domain"
           },
@@ -153,7 +158,7 @@
           }
         },
         "required": [
-          "label.default",
+          "label",
           "type"
         ]
       }
@@ -170,14 +175,14 @@
         "properties": {
           "structure": {
             "type": "string",
-            "description": "PID of an affiliation. Can be the only field of the object if this affiliation is not mapped in the organization index.Otherwise, if present, some fields are denormalized: `mainAddress`, `label`, `acronym`, `kind`, `level`, `status`, `isFrench`, `id_name`. See the documention of the organization index for more details on these fields."
+            "description": "PID of an affiliation. Can be the only field of the object if this affiliation is not mapped in the organization index.Otherwise, if present, some fields are denormalized: `mainAddress`, `label`, `acronym`, `kind`, `level`, `status`, `isFrench`, `id_name`. See the documentation of the organization index for more details on these fields."
           },
           "startDate": {
-            "type": "date",
+            "type": "string",
             "description": "First publication year found with this affiliation"
           },
           "endDate": {
-            "type": "date",
+            "type": "string",
             "description": "Last publication year found with this affiliation"
           },
           "sources": {
@@ -241,7 +246,7 @@
       "items": {
         "type": "string"
       }
-    },
+    }
   },
   "required": [
     "id",
