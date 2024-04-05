@@ -96,7 +96,7 @@ export default function Overview() {
               iconPosition="left"
               className="fr-mr-1w"
             >
-              {intl.formatMessage({ id: `app.docs.overwiew.${key}.index` })}
+              {intl.formatMessage({ id: `app.docs.overwiew.${key}.dump` })}
             </Button>
           </Col>
         ))}
