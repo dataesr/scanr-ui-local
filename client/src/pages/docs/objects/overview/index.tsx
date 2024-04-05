@@ -58,7 +58,10 @@ export default function Overview() {
         {intl.formatMessage({ id: "app.docs.overwiew.apimodel.doc" })}
       </Text>
       <Text>{intl.formatMessage({ id: "app.docs.overwiew.indexes" })}</Text>
-      <Row className="fr-mb-5v">
+      <Badge size="sm" variant="info">
+        {intl.formatMessage({ id: "app.docs.overwiew.badge.info" })}
+      </Badge>
+      <Row className="fr-mb-5v fr-mt-3v">
         {Object.entries(urls).map(([key, value]) => (
           <Col>
             <Button
@@ -75,9 +78,6 @@ export default function Overview() {
           </Col>
         ))}
       </Row>
-      <Text>
-        {intl.formatMessage({ id: "app.docs.overwiew.indexes.info" })}
-      </Text>
       <Text>
         {intl.formatMessage({ id: "app.docs.overwiew.indexes.download" })}
       </Text>

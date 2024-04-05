@@ -10,7 +10,7 @@
     "app.docs.overwiew.persons.index": "Index des personnes",
     "app.docs.overwiew.patents.index": "Index des brevets",
     "app.docs.overwiew.projects.index": "Index des projets",
-    "app.docs.overwiew.indexes.info": "Un login et mot de passe est nécessaire pour interroger ces indexes. Merci de nous contacter pour les obtenir.",
     "app.docs.overwiew.indexes.download": "Les données sont aussi disponibles directement en téléchargement",
-    "app.docs.overwiew.badge.warning": "Attention, les indexes peuvent être très volumineux et nécessiter un temps de traitement important."
+    "app.docs.overwiew.badge.warning": "Attention, les indexes peuvent être très volumineux et nécessiter un temps de traitement important.",
+    "app.docs.overwiew.badge.info": "Un login et mot de passe sont nécessaires pour interroger ces indexes. Merci de nous contacter pour les obtenir."
 }
