@@ -29,6 +29,7 @@ import LegalNotices from "./pages/about/legal-notices";
 import Accessibility from "./pages/about/accessibility";
 import OrganizationsDocs from "./pages/docs/objects/organizations";
 import PersonsDocs from "./pages/docs/objects/persons";
+import Overview from "./pages/docs/objects/overview";
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -62,7 +63,7 @@ export default function Router() {
             />
             <Route path="objects/persons" element={<PersonsDocs />} />
             <Route path="quick-start" element={<div>QuickStart</div>} />
-            <Route path="overview" element={<div>Overview</div>} />
+            <Route path="overview/" element={<Overview />} />
           </Route>
           <Route path="/about/legal-notices" element={<LegalNotices />} />
           <Route path="/about/accessibility" element={<Accessibility />} />

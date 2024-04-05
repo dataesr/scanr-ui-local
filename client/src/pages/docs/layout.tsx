@@ -5,11 +5,28 @@ import {
   Container,
   Row,
   Col,
+  useDSFRConfig,
 } from "@dataesr/dsfr-plus";
+import { createIntl } from "react-intl";
 import { Outlet, useLocation } from "react-router-dom";
+
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
+const messages = Object.keys(modules).reduce((acc, key) => {
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  if (locale) {
+    return { ...acc, [locale]: modules[key] };
+  }
+  return acc;
+}, {});
 
 export function DocsLayout() {
   const { pathname } = useLocation();
+  const { locale } = useDSFRConfig();
+  const intl = createIntl({ locale, messages: messages[locale] });
+
   if (!pathname) return null;
 
   const is = (str: string): boolean => pathname?.startsWith(`/docs/${str}`);
@@ -19,35 +36,50 @@ export function DocsLayout() {
         <Col xs={12} md={4}>
           <SideMenu title="" sticky fullHeight className="padded-sidemenu">
             <Link current={is("overview")} href="/docs/overview">
-              Overview
+              {intl.formatMessage({
+                id: "layout.docs.sidemenu.overview",
+              })}
             </Link>
             {/* <Link current={is("quick-start")} href="/docs/quick-start">
               Quick start
             </Link> */}
-            <SideMenuItem defaultExpanded={is("objects")} title="Api Models">
+            <SideMenuItem
+              defaultExpanded={is("objects")}
+              title={intl.formatMessage({
+                id: "layout.docs.sidemenu.apimodel",
+              })}
+            >
               <Link
                 current={is("objects/publications")}
                 href="/docs/objects/publications"
               >
-                Publications
+                {intl.formatMessage({
+                  id: "layout.docs.sidemenu.publications",
+                })}
               </Link>
               <Link
                 current={is("objects/projects")}
                 href="/docs/objects/projects"
               >
-                Projects
+                {intl.formatMessage({
+                  id: "layout.docs.sidemenu.projects",
+                })}
               </Link>
               <Link
                 current={is("objects/organizations")}
                 href="/docs/objects/organizations"
               >
-                Organizations
+                {intl.formatMessage({
+                  id: "layout.docs.sidemenu.organizations",
+                })}
               </Link>
               <Link
                 current={is("objects/persons")}
                 href="/docs/objects/persons"
               >
-                Persons
+                {intl.formatMessage({
+                  id: "layout.docs.sidemenu.persons",
+                })}
               </Link>
             </SideMenuItem>
           </SideMenu>

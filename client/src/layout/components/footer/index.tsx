@@ -83,7 +83,10 @@ export default function MainFooter() {
                         </Link>
                       </li>
                       <li>
-                        <Link className="fr-footer__top-link" href="/docs">
+                        <Link
+                          className="fr-footer__top-link"
+                          href="/docs/overview"
+                        >
                           {intl.formatMessage({
                             id: "layout.footer.top.about.docs",
                           })}
