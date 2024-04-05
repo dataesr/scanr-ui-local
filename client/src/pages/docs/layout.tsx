@@ -21,10 +21,10 @@ export function DocsLayout() {
             <Link current={is("overview")} href="/docs/overview">
               Overview
             </Link>
-            <Link current={is("quick-start")} href="/docs/quick-start">
+            {/* <Link current={is("quick-start")} href="/docs/quick-start">
               Quick start
-            </Link>
-            <SideMenuItem defaultExpanded={is("objects")} title="Models">
+            </Link> */}
+            <SideMenuItem defaultExpanded={is("objects")} title="Api Models">
               <Link
                 current={is("objects/publications")}
                 href="/docs/objects/publications"

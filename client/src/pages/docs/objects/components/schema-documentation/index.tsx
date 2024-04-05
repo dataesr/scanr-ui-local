@@ -134,7 +134,7 @@ const RenderProperty = ({
                   ([subfield, subdoc], i) => (
                     <RenderProperty
                       key={i}
-                      required={itemDefinitions?.required.includes(subfield)}
+                      required={itemDefinitions?.required?.includes(subfield)}
                       definitions={definitions}
                       propertyName={subfield}
                       propertySchema={subdoc}
