@@ -67,7 +67,7 @@ export default function Overview() {
             <Button
               key={key}
               as="a"
-              href={`https://cluster-production.elasticsearch.dataesr.ovh/${value}`}
+              href={`https://cluster-production.elasticsearch.dataesr.ovh/${value}/_search`}
               variant="tertiary"
               icon="links-line"
               iconPosition="left"
