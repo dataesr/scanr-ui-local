@@ -69,6 +69,7 @@ export type NetworkSearchArgs = {
   filters?: NetworkFilters
   options?: {
     computeClusters?: boolean
+    lang?: string
   }
 }
 export type NetworkSearchHitsArgs = {
