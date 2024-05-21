@@ -25,6 +25,11 @@ import PublicationIdParser from "./components/publication-id-parser";
 import ScanrPublicationsDocs from "./pages/docs/objects/publications";
 import { DocsLayout } from "./pages/docs/layout";
 import ProjectsDocs from "./pages/docs/objects/projects";
+import LegalNotices from "./pages/about/legal-notices";
+import Accessibility from "./pages/about/accessibility";
+import OrganizationsDocs from "./pages/docs/objects/organizations";
+import PersonsDocs from "./pages/docs/objects/persons";
+import Overview from "./pages/docs/objects/overview";
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -48,10 +53,20 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="/docs" element={<DocsLayout />}>
             <Route path="objects/projects" element={<ProjectsDocs />} />
-            <Route path="objects/publications" element={<ScanrPublicationsDocs />} />
+            <Route
+              path="objects/publications"
+              element={<ScanrPublicationsDocs />}
+            />
+            <Route
+              path="objects/organizations"
+              element={<OrganizationsDocs />}
+            />
+            <Route path="objects/persons" element={<PersonsDocs />} />
             <Route path="quick-start" element={<div>QuickStart</div>} />
-            <Route path="overview" element={<div>Overview</div>} />
+            <Route path="overview/" element={<Overview />} />
           </Route>
+          <Route path="/about/legal-notices" element={<LegalNotices />} />
+          <Route path="/about/accessibility" element={<Accessibility />} />
           <Route path="/about/faq" element={<FAQ />} />
           <Route path="/about/team" element={<Team />} />
           <Route path="/about/resources" element={<Resources />} />

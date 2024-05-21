@@ -17,7 +17,6 @@ import {
 import { RawIntlProvider, createIntl } from "react-intl";
 import SwitchTheme from "../switch-theme";
 import useConsent from "../../../hooks/useConsent";
-import { version } from "react";
 import styles from "./styles.module.scss";
 
 const modules = import.meta.glob("./locales/*.json", {
@@ -31,6 +30,8 @@ const messages = Object.keys(modules).reduce((acc, key) => {
   }
   return acc;
 }, {});
+
+const version = import.meta.env.VITE_VERSION;
 
 export default function MainFooter() {
   const { locale } = useDSFRConfig();
@@ -78,6 +79,16 @@ export default function MainFooter() {
                         >
                           {intl.formatMessage({
                             id: "layout.footer.top.about.resources",
+                          })}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="fr-footer__top-link"
+                          href="/docs/overview"
+                        >
+                          {intl.formatMessage({
+                            id: "layout.footer.top.about.docs",
                           })}
                         </Link>
                       </li>
@@ -182,11 +193,10 @@ export default function MainFooter() {
                       <li>
                         <Link
                           className="fr-footer__top-link"
-                          href="https://github.com/dataesr/scanr-next-gen"
+                          href="https://github.com/dataesr"
                           target="_blank"
                         >
                           GitHub
-                          {version && ` – v${version}`}
                         </Link>
                       </li>
                       <li>
@@ -286,12 +296,17 @@ export default function MainFooter() {
             {intl.formatMessage({
               id: "layout.footer.personal-data",
             })}
-          </Link>
-          <Link className="fr-footer__bottom-link" href="#">
+          </Link> */}
+          <Link className="fr-footer__bottom-link" href="/about/accessibility">
             {intl.formatMessage({
               id: "layout.footer.accessibility",
             })}
-          </Link> */}
+          </Link>
+          <Link className="fr-footer__bottom-link" href="/about/legal-notices">
+            {intl.formatMessage({
+              id: "layout.footer.legals",
+            })}
+          </Link>
           <button
             className="fr-footer__bottom-link"
             data-fr-opened="false"
@@ -310,6 +325,14 @@ export default function MainFooter() {
               id: "layout.footer.switch-theme",
             })}
           </button>
+          <Link
+            target="_blank"
+            rel="noreferer noopenner"
+            className="fr-footer__bottom-link"
+            href={`https://github.com/dataesr/scanr-next-gen/releases/tag/v${version}`}
+          >
+            {intl.formatMessage({ id: "layout.footer.version" }, { version })}
+          </Link>
         </FooterBottom>
         <SwitchTheme />
       </Footer>

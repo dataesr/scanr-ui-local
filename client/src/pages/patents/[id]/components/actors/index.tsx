@@ -1,93 +1,98 @@
-import { Row, Col, Text, Link } from "@dataesr/dsfr-plus";
-// import { useQueryClient } from "@tanstack/react-query";
-// import { getAuthorById } from "../../../../../api/authors/[id]";
-// import { getOrganizationById } from "../../../../../api/organizations/[id]";
+import { Row, Col, Link, Text } from "@dataesr/dsfr-plus";
 import LinkCard from "../../../../../components/link-card";
-import { PatentActorsData } from "../../../../../types/patent";
+import { InventorData, ApplicantData } from "../../../../../types/patent";
+import { useQueryClient } from "@tanstack/react-query";
+import { getOrganizationById } from "../../../../../api/organizations/[id]";
+import { getAuthorById } from "../../../../../api/authors/[id]";
 import { useIntl } from "react-intl";
 
-function ActorsCard({ actor }: { actor: PatentActorsData }) {
-  const intl = useIntl();
-  // const queryClient = useQueryClient();
-
-  // function prefetchAuthor(id: string) {
-  //   if (!id) return;
-  //   queryClient.prefetchQuery({
-  //     queryKey: ["author", id],
-  //     queryFn: () => getAuthorById(id),
-  //   });
-  // }
-
-  // function prefetchOrganization(id: string) {
-  //   if (!id) return;
-  //   queryClient.prefetchQuery({
-  //     queryKey: ["organization", id],
-  //     queryFn: () => getOrganizationById(id),
-  //   });
-  // }
-
-  const isPm = actor.typeParticipant === "pm";
-  // const id = isPm ? actor.affiliations?.[0]?.siren : `idref${actor.affiliations?.[0]?.idref}`;
-  // const prefetch = isPm ? prefetchOrganization : prefetchAuthor;
-
-  return (
-    <LinkCard
-      // prefetch={id ? () => prefetch(id) : undefined}
-      type={isPm ? "organization" : "author"}
-      icon={isPm ? "building-line" : "user-line"}
-    >
-      {actor.affiliations.length > 0 ? (
-        <Link
-          className="fr-text--bold"
-          href={`/${isPm ? 'organizations' : 'authors'}/${actor.affiliations[0]}`}
-        >
-          {actor.fullName}
-        </Link>
-      ) : (
-        <Text bold className="fr-m-0">
-          {actor.fullName}
-        </Text>
-      )}
-      {actor.country && <Text className="fr-card__detail" size="sm">
-        <i>
-          {intl.formatMessage({ id: `${actor.country}` })}
-        </i>
-      </Text>}
-    </LinkCard>
-  );
-}
-
-export default function PatentActors({
-  data: actors,
-  type,
+function PatentActors({
+  actors,
 }: {
-  data: PatentActorsData[];
-  type: "inv" | "dep";
+  actors: (ApplicantData | InventorData)[];
 }) {
-  const filteredActors = actors.filter((actor) =>
-    actor.rolePatent.some((role) => role.role === type)
-  ).map(({ typeParticipant, country, fullName, affiliations }) => {
-    return {
-      typeParticipant: typeParticipant,
-      country: country,
-      affiliations: affiliations,
-      fullName: fullName,
-    };
-  });
+  const queryClient = useQueryClient();
+  const intl = useIntl();
 
-  const uniqueActors = [...new Set(filteredActors.map(i => JSON.stringify(i)))].map(i => JSON.parse(i));
+  function prefetchOrganization(id: string) {
+    if (!id) return;
+    queryClient.prefetchQuery({
+      queryKey: ["organization", id],
+      queryFn: () => getOrganizationById(id),
+    });
+  }
 
-  if (!uniqueActors.length) return null;
+  function prefetchAuthor(id: string) {
+    if (!id) return;
+    queryClient.prefetchQuery({
+      queryKey: ["author", id],
+      queryFn: () => getAuthorById(id),
+    });
+  }
+
+  const groupedActors = actors.reduce((acc, actor) => {
+    acc[actor.name] = (acc[actor.name] || []).concat(actor);
+    return acc;
+  }, {});
 
   return (
-    <div>
-      <Row gutters>
-        {uniqueActors.map((actor, index) => (
+    <Row gutters>
+      {Object.values(groupedActors).map((group, index) => {
+        const actorToDisplay =
+          (group as (ApplicantData | InventorData)[]).find(
+            (actor) => actor.ids?.[0]?.type === "idref"
+          ) || group[0];
+
+        if (!actorToDisplay) return null;
+
+        const organizationId = actorToDisplay.ids?.[0]?.id;
+        const isOrganization = actorToDisplay.type === "organisation";
+        const isUndefinedId =
+          `/authors/${actorToDisplay?.ids?.[0]?.id}` === "/authors/undefined";
+
+        return (
           <Col xs="12" md="6" key={index}>
-            <ActorsCard actor={actor} />
+            <LinkCard
+              prefetch={
+                organizationId && !isUndefinedId
+                  ? () => {
+                      prefetchOrganization(organizationId);
+                      prefetchAuthor(organizationId);
+                    }
+                  : undefined
+              }
+              type={isOrganization ? "organization" : "author"}
+              icon={isOrganization ? "building-line" : "user-line"}
+            >
+              {isUndefinedId ? (
+                <Text className="fr-text--bold fr-m-0">
+                  {actorToDisplay.name}
+                </Text>
+              ) : (
+                <Link
+                  href={
+                    isOrganization
+                      ? `/organizations/${organizationId}`
+                      : `/authors/${actorToDisplay?.ids?.[0]?.id}`
+                  }
+                  className="fr-text--bold"
+                >
+                  {actorToDisplay.name}
+                </Link>
+              )}
+              {actorToDisplay.country && (
+                <Text className="fr-card__detail" size="sm">
+                  <i>
+                    {intl.formatMessage({ id: `${actorToDisplay.country}` })}
+                  </i>
+                </Text>
+              )}
+            </LinkCard>
           </Col>
-        ))}
-      </Row>
-    </div>
+        );
+      })}
+    </Row>
   );
 }
+
+export default PatentActors;

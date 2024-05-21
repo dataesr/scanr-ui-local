@@ -46,9 +46,12 @@ export type Author = {
   idref: string;
   orcid: string;
   fullName: string;
+  firstName?: string;
+  lastName?: string;
   externalIds: {
     id: string;
     type: string;
+    url?: string;
   }[];
   awards: {
     label: string;

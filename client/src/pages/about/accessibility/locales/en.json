@@ -1,0 +1,18 @@
+{
+    "app.accessibility.breadcrumb.home": "Home",
+    "app.accessibility.breadcrumb.current": "Accessibility",
+    "app.accessibility.title": "Accessibility",
+    "app.accessibility.declaration": "Accessibility Statement",
+    "app.accessibility.declaration.text": "The Ministry of Higher Education and Research is committed to making its 'scanR' website accessible in accordance with Article 47 of Law No. 2005-102 of February 11, 2005.",
+    "app.accessibility.compliance.title": "Compliance Status",
+    "app.accessibility.compliance.status": "Currently, scanR is being evaluated to ensure compliance with the General Accessibility Improvement Reference RGAA version 4.1. We acknowledge that there may be aspects where our site is not yet fully compliant. Details of non-compliance will be listed once the evaluation is complete.",
+    "app.accessibility.tech.title": "Technologies Used for Site Development",
+    "app.accessibility.tech": "<ul><li>The site is developed in Typescript, HTML5, CSS.</li><li>The site is compatible with the following browsers: Chrome, Firefox, Safari, Edge.</li><li>The site is responsive design.</li></ul>",
+    "app.accessibility.utils.title": "Tools for Evaluating Accessibility",
+    "app.accessibility.utils": "<ul><li>Colour Contrast Analyser</li><li>Extension 'Web Developer' </li> <li> Extension 'Assistant RGAA' </li> <li> Extension 'WCAG Contrast checker' </li> <li> Extension 'ARC Toolkit' </li> <li> Extension 'HeadingsMap' </li> <li>Developer tools built into the Firefox browser </li> <li>W3C HTML Validator. </li> </ul>",
+    "app.accessibility.contactUs": "Feedback and Contact",
+    "app.accessibility.contactUs.text": "If you are unable to access content or a service, you can contact the website manager to be directed to an accessible alternative or obtain the content in another form. <br></br> <aC>Contact us</aC> ",
+    "app.accessibility.recourse.title": "Recourse Options",
+    "app.accessibility.recourse.text": "If you notice an accessibility issue preventing you from accessing content or a site feature, report it to us and if you do not receive a prompt response from us, you have the right to send your complaints or a request for intervention to the Defender of Rights. Several means are available to you: <ul><li> <aC>a contact form</aC></li> <li><aDef>the list of delegates in your region with their direct contact information</aDef></li><li> a phone number: +33 (0) 9 69 39 00 00 from Monday to Friday from 8:30 a.m. to 7:30 p.m. (local call cost) </li><li>a postal address in <aSp>the administration directory</aSp> </li></ul>",
+    "app.accessibility.help": "We greatly appreciate your feedback, as it helps us continuously improve the accessibility of our site for all users."
+}

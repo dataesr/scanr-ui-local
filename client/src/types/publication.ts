@@ -36,6 +36,8 @@ type BasePublication = {
   isOa: boolean;
   type: string;
   year: number;
+  landingPage?: string;
+  externalIds: ExternalIdsData[];
 };
 
 export type SoftwareMention = {
@@ -58,7 +60,6 @@ export type Publication = BasePublication & {
   summary: LangField;
   domains: DomainsData[];
   softwares: SoftwareMention[];
-  landingPage?: string;
   pdfUrl?: string;
   affiliations: {
     name: string;
@@ -72,7 +73,6 @@ export type Publication = BasePublication & {
   }[];
   oaEvidence?: OaEvidenceData;
   projects: ProjectData[];
-  externalIds: ExternalIdsData[];
 };
 
 export type ExportPublication = {

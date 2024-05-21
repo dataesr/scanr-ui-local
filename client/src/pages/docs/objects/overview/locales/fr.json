@@ -1,0 +1,21 @@
+{
+    "app.docs.overwiew.title": "Vue d'ensemble",
+    "app.docs.overwiew.text": "Les données scanR sont composées de 5 types d'entrées : structures, publications, auteurs, financements et brevets. Les données sont disponibles via API ainsi qu'en téléchargement direct, sous licence Etalab 2.0.",
+    "app.docs.overwiew.indexes": "Les indexes sont disponibles pour les organisations, les publications, les auteurs, les financements et les brevets.",
+    "app.docs.overwiew.elastic": "L'API donne accès à 5 indexes ElasticSearch (un index par type d'entrée). La version d'Elastic utilisée est 8.11.1. ",
+    "app.docs.overwiew.elastic2": "Nous vous invitons à consulter la documentation Elastic pour interroger l'API",
+    "app.docs.overwiew.apimodel.doc": "Les modèles de données utilisés sont documentés dans la section API Models.",
+    "app.docs.overwiew.organizations.index": "Index des structures",
+    "app.docs.overwiew.publications.index": "Index des publications",
+    "app.docs.overwiew.persons.index": "Index des personnes",
+    "app.docs.overwiew.patents.index": "Index des brevets",
+    "app.docs.overwiew.projects.index": "Index des projets",
+    "app.docs.overwiew.organizations.dump": "Dump des structures",
+    "app.docs.overwiew.publications.dump": "Dump des publications",
+    "app.docs.overwiew.persons.dump": "Dump des personnes",
+    "app.docs.overwiew.patents.dump": "Dump des brevets",
+    "app.docs.overwiew.projects.dump": "Dump des projets",
+    "app.docs.overwiew.indexes.download": "Les données sont aussi disponibles directement en téléchargement",
+    "app.docs.overwiew.badge.warning": "Attention, les indexes peuvent être très volumineux et nécessiter un temps de traitement important.",
+    "app.docs.overwiew.badge.info": "Un login et mot de passe sont nécessaires pour interroger ces indexes. Merci de nous contacter pour les obtenir."
+}

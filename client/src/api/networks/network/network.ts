@@ -11,13 +11,21 @@ export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
+const nodeGetId = (id: string) => id.split("###")[0]
+const nodeGetLabel = (id: string, lang: string) => {
+  const prefix = lang.toUpperCase() + "_"
+  const labels = (id.split("###")[1] ?? id).split("|||")
+  const label = labels.find((label) => label.startsWith(prefix)) ?? labels[0]
+  return label.charAt(2) === "_" ? label.slice(3).trim() : label.trim()
+}
 
 export default async function networkCreate(
   query: string,
   model: string,
   filters: NetworkFilters,
   aggregation: ElasticBuckets,
-  computeClusters: boolean
+  computeClusters: boolean,
+  lang: string
 ): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
@@ -32,8 +40,8 @@ export default async function networkCreate(
 
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
-      graph.updateNode(id.split("###")[0], (attr) => ({
-        label: id.split("###")[1] ?? id,
+      graph.updateNode(nodeGetId(id), (attr) => ({
+        label: nodeGetLabel(id, lang),
         weight: (attr?.weight ?? 0) + count,
         links: attr?.links ? [...attr.links, key] : [key],
         ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),

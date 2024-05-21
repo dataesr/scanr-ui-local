@@ -32,7 +32,6 @@ export default function Patents() {
     throwOnError: true,
   });
   const title = getLangFieldValue(locale)(data?.title);
-
   return (
     <RawIntlProvider value={intl}>
       <Container>

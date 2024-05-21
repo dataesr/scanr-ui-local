@@ -6,6 +6,7 @@
   "layout.footer.top.about.also": "Voir aussi",
   "layout.footer.top.about.follow": "Nous suivre",
   "layout.footer.top.about.resources": "Sources de données",
+  "layout.footer.top.about.docs": "API et Open Data",
   "layout.footer.top.about.tutorial": "Tutoriel",
   "layout.footer.top.about.glossary": "Glossaire",
   "layout.footer.top.about.contact": "Contact",
@@ -13,6 +14,8 @@
   "layout.footer.legal-notice": "Mentions légales",
   "layout.footer.personal-data": "Données personnelles",
   "layout.footer.cookies": "Cookies",
-  "layout.footer.accessibility": "Accessibilité",
+  "layout.footer.accessibility": "Accessibilité : en cours d'optimisation",
+  "layout.footer.legals": "Mentions légales",
+  "layout.footer.version": "Version de l'application v{version}",
   "layout.footer.switch-theme": "Thème"
 }

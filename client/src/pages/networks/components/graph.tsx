@@ -9,9 +9,10 @@ export default function Graph({ currentTab, computeClusters }: { currentTab: str
   const { search: searchClusters } = useSearchData(currentTab, computeClusters)
   const keyClusters = searchClusters.isFetching ? false : computeClusters
   const vosviewer = keyClusters ? searchClusters?.data : search?.data
+  const lang = document.documentElement.getAttribute("lang")
   const key = useMemo(
-    () => JSON.stringify({ currentTab, currentQuery, filters, keyClusters }),
-    [currentTab, currentQuery, filters, keyClusters]
+    () => JSON.stringify({ currentTab, currentQuery, filters, keyClusters, lang }),
+    [currentTab, currentQuery, filters, keyClusters, lang]
   )
 
   if (!currentQuery) return null

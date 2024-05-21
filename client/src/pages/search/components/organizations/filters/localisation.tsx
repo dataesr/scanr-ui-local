@@ -1,7 +1,7 @@
 import {
   Autocomplete,
   AutocompleteItem,
-  DissmissibleTag,
+  DismissibleTag,
   TagGroup,
   Text,
   useAutocompleteList,
@@ -60,7 +60,7 @@ export default function OrganizationLocalisationsFilter() {
       ) : null}
       <TagGroup>
         {filter?.values?.map(({ value, label }) => (
-          <DissmissibleTag
+          <DismissibleTag
             key={value}
             className="fr-mr-1v"
             color="orange-terre-battue"
@@ -73,7 +73,7 @@ export default function OrganizationLocalisationsFilter() {
             }}
           >
             {label || value}
-          </DissmissibleTag>
+          </DismissibleTag>
         ))}
       </TagGroup>
       <Autocomplete

@@ -1,6 +1,7 @@
 {
   "app.glossary.breadcrumb.current": "Glossaire",
   "app.glossary.title": "Glossaire",
+  "app.glossary.home": "Accueil",
   "app.glossary.h2020.subtitle": "Coopérations internationales de la recherche française via H2020",
   "app.glossary.h2020.description": "scanR affiche ici les partenaires dans les projets collaboratifs de l'entité sélectionnée.<ul><li>Un partenaire peut être impliqué dans plusieurs projets</li><li>Un projet collaboratif compte plusieurs partenaires</li><li>Toutes les tutelles d'une unité de recherche impliquée dans un projet sont considérées comme partenaires du projet</li></ul> Sur le graphique : <ul><li>Plus l'angle est large plus la collaboration entre l'entité sélectionnée et son partenaire est importante</li><li>La hauteur correspond au nombre total de projets collaboratifs du partenaire</li></ul> Les projets individuels des programmes ERC et Marie Curie sont exclus de l'analyse.",
   "app.glossary.scanr.subtitle": "scanR",

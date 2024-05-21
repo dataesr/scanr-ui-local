@@ -1,4 +1,11 @@
-import { Autocomplete, AutocompleteItem, DissmissibleTag, TagGroup, Text, useAutocompleteList } from "@dataesr/dsfr-plus";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  DismissibleTag,
+  TagGroup,
+  Text,
+  useAutocompleteList,
+} from "@dataesr/dsfr-plus";
 import { FormattedMessage } from "react-intl";
 import useUrl from "../../../hooks/useUrl";
 import { Fragment } from "react";
@@ -7,19 +14,19 @@ import { LightAuthor } from "../../../../../types/author";
 import OperatorButton from "../../../../../components/operator-button";
 
 export default function PublicationAuthorFilter() {
-  const { currentFilters, handleFilterChange, setOperator } = useUrl()
+  const { currentFilters, handleFilterChange, setOperator } = useUrl();
 
   const authorsAutocompletedList = useAutocompleteList<LightAuthor>({
     async load({ filterText }) {
       if (!filterText) {
         return { items: [] };
       }
-      const res = await autocompleteAuthors({ query: filterText })
+      const res = await autocompleteAuthors({ query: filterText });
       return { items: res.data?.map((author) => author._source) };
-    }
+    },
   });
 
-  const operator = currentFilters?.['authors.person']?.operator || 'or'
+  const operator = currentFilters?.["authors.person"]?.operator || "or";
 
   return (
     <>
@@ -32,24 +39,31 @@ export default function PublicationAuthorFilter() {
             <FormattedMessage id="search.filters.publications.by-author-description" />
           </Text>
         </div>
-        <OperatorButton operator={operator} setOperator={(key) => setOperator('authors.person', (key === 'and') ? 'and' : 'or')} />
+        <OperatorButton
+          operator={operator}
+          setOperator={(key) =>
+            setOperator("authors.person", key === "and" ? "and" : "or")
+          }
+        />
       </div>
-      {currentFilters?.['authors.person'] ? (<Text bold size="sm" className="fr-mb-1v">
-        Sélectionnées:
-      </Text>) : null}
+      {currentFilters?.["authors.person"] ? (
+        <Text bold size="sm" className="fr-mb-1v">
+          Sélectionnées:
+        </Text>
+      ) : null}
       <TagGroup>
-        {currentFilters?.['authors.person']?.values?.map(({ value, label }) => (
-          <DissmissibleTag
+        {currentFilters?.["authors.person"]?.values?.map(({ value, label }) => (
+          <DismissibleTag
             key={value}
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
               e.preventDefault();
-              handleFilterChange({ field: 'authors.person', value })
+              handleFilterChange({ field: "authors.person", value });
             }}
           >
             {label || value}
-          </DissmissibleTag>
+          </DismissibleTag>
         ))}
       </TagGroup>
       <Autocomplete
@@ -62,23 +76,32 @@ export default function PublicationAuthorFilter() {
         size="md"
         onSelectionChange={(item) => {
           if (!item) return;
-          const [value, label] = item.toString().split('###')
-          handleFilterChange({ field: 'authors.person', value, label })
+          const [value, label] = item.toString().split("###");
+          handleFilterChange({ field: "authors.person", value, label });
         }}
       >
         {(item) => (
           <AutocompleteItem
-            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
-            description={item.topDomains?.filter((el) => el.type === "wikidata")?.slice(0, 3)?.map((el, i) => (<Fragment key={i}>
-              {(i > 0) ? ', ' : ''}
-              <Text as="span" bold>#{el?.label.default}</Text>
-            </Fragment>))}
-            key={`${item.id}###${(item.fullName)}`}
+            startContent={
+              <span className="fr-mr-3v fr-icon--md fr-icon-user-line" />
+            }
+            description={item.topDomains
+              ?.filter((el) => el.type === "wikidata")
+              ?.slice(0, 3)
+              ?.map((el, i) => (
+                <Fragment key={i}>
+                  {i > 0 ? ", " : ""}
+                  <Text as="span" bold>
+                    #{el?.label.default}
+                  </Text>
+                </Fragment>
+              ))}
+            key={`${item.id}###${item.fullName}`}
           >
             {item.fullName}
           </AutocompleteItem>
         )}
       </Autocomplete>
     </>
-  )
+  );
 }

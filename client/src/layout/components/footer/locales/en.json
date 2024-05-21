@@ -9,10 +9,13 @@
   "layout.footer.top.about.tutorial": "Tutorial",
   "layout.footer.top.about.glossary": "Glossary",
   "layout.footer.top.about.contact": "Contact",
+  "layout.footer.top.about.docs": "API and Open Data",
   "layout.footer.tagline": "Explore the world of French Research and Innovation with scanR",
   "layout.footer.legal-notice": "Legal notice",
   "layout.footer.personal-data": "Personal data",
   "layout.footer.cookies": "Cookies",
-  "layout.footer.accessibility": "Accessibility",
+  "layout.footer.accessibility": "Accessibility: currently being optimized",
+  "layout.footer.legals": "Legal notices",
+  "layout.footer.version": "App version v{version}",
   "layout.footer.switch-theme": "Theme"
 }

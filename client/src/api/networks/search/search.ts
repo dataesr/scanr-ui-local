@@ -54,7 +54,8 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   }
 
   const computeClusters = options?.computeClusters ?? false
-  const network = await networkCreate(query, model, filters, aggregation, computeClusters)
+  const lang = options?.lang ?? "fr"
+  const network = await networkCreate(query, model, filters, aggregation, computeClusters, lang)
   const config = configCreate(model)
   const info = infoCreate(query, model)
 

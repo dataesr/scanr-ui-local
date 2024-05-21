@@ -119,7 +119,7 @@ export default function Consent() {
                         </div>
                       </fieldset>
                     </div>
-                    <div className="fr-consent-service">
+                    {/* <div className="fr-consent-service">
                       <fieldset aria-labelledby="finality-1-legend finality-1-desc" role="group" className="fr-fieldset fr-fieldset--inline">
                         <legend id="finality-1-legend" className="fr-consent-service__title">
                           {intl.formatMessage({ id: "layout.consent.cookies.finality.stats" })}
@@ -154,7 +154,7 @@ export default function Consent() {
                           {intl.formatMessage({ id: "layout.consent.cookies.finality.stats.desc" })}
                         </p>
                       </fieldset>
-                    </div>
+                    </div> */}
                     <div className="fr-consent-service">
                       <fieldset aria-labelledby="share-legend share-desc" role="group" className="fr-fieldset fr-fieldset--inline">
                         <legend id="share-legend" className="fr-consent-service__title">
@@ -166,11 +166,12 @@ export default function Consent() {
                               type="radio"
                               id="consent-share-accept"
                               name="consent-share"
-                              checked={!!consent.facebook && !!consent.linkedin && !!consent.twitter}
+                              checked={!!consent.facebook && !!consent.linkedin && !!consent.twitter && !!consent.youtube}
                               onChange={() => {
                                 consent.facebook = 1;
                                 consent.linkedin = 1;
                                 consent.twitter = 1;
+                                consent.youtube = 1;
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-share-accept">
@@ -182,12 +183,12 @@ export default function Consent() {
                               type="radio"
                               id="consent-share-refuse"
                               name="consent-share"
-                              checked={!consent.facebook && !consent.linkedin && !consent.twitter}
+                              checked={!consent.facebook && !consent.linkedin && !consent.twitter && !consent.youtube}
                               onChange={() => {
                                 consent.facebook = 0;
                                 consent.linkedin = 0;
                                 consent.twitter = 0;
-
+                                consent.youtube = 0;
                               }}
                             />
                             <label className="fr-label" htmlFor="consent-share-refuse">

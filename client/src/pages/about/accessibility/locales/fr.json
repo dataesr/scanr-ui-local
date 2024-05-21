@@ -1,0 +1,18 @@
+{
+  "app.accessibility.breadcrumb.home": "Accueil",
+  "app.accessibility.breadcrumb.current": "Accessibilité",
+  "app.accessibility.title": "Accessibilité",
+  "app.accessibility.declaration": "Déclaration d'accessibilité",
+  "app.accessibility.declaration.text": "Le Ministère de l'Enseignement Supérieur et de la Recherche s’engage à rendre son site « scanR » accessible conformément à l’article 47 de la loi n° 2005-102 du 11 février 2005.",
+  "app.accessibility.compliance.title": "État de conformité",
+  "app.accessibility.compliance.status": "Actuellement, scanR est en cours d'évaluation pour assurer sa conformité avec le référentiel général d'amélioration de l'accessibilité RGAA version 4.1. Nous reconnaissons qu'il peut exister des aspects où notre site n'est pas encore pleinement conforme. Les détails de non-conformité seront répertoriés dès que l'évaluation sera complète.",
+  "app.accessibility.tech.title": "Technologies utilisées pour la réalisation du site",
+  "app.accessibility.tech": "<ul><li>Le site est développé en Typescript, HTML5, CSS.</li><li>Le site est compatible avec les navigateurs suivants : Chrome, Firefox, Safari, Edge.</li><li>Le site est responsive design.</li></ul>",
+  "app.accessibility.utils.title": "Outils pour évaluer l'accessibilité",
+  "app.accessibility.utils": "<ul><li>Colour Contrast Analyser </li><li>Extension « Web Developer » </li><li>Extension « Assistant RGAA » </li><li>Extension « WCAG Contrast checker » </li><li>Extension « ARC Toolkit » </li><li>Extension « HeadingsMap » </li><li>Outils pour développeurs intégrés au navigateur Firefox</li><li>Validateur HTML du W3C.</li></ul>",
+  "app.accessibility.contactUs": "Retour d'information et contact",
+  "app.accessibility.contactUs.text": "Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable du site internet pour être orienté vers une alternative accessible ou obtenir le contenu sous une autre forme. <br></br>  <aC> Contactez nous</aC> ",
+  "app.accessibility.recourse.title": "Voies de recours",
+  "app.accessibility.recourse.text": "Si vous constatez un défaut d’accessibilité vous empêchant d’accéder à un contenu ou une fonctionnalité du site, que vous nous le signalez et que vous ne parvenez pas à obtenir une réponse rapide de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine au Défenseur des droits. Plusieurs moyens sont à votre disposition : <ul><li> <aC>un formulaire de contact </aC></li> <li><aDef>la liste des délégués de votre région avec leurs informations de contact directs</aDef></li><li> un numéro de téléphone : +33 (0) 9 69 39 00 00  du lundi au vendredi de 8h30 à 19h30 (coût d’un appel local) </li><li>une adresse postale dans <aSp> l’annuaire de l’administration </aSp> </li></ul>",
+  "app.accessibility.help": "Nous apprécions grandement vos retours, car ils nous aident à améliorer continuellement l'accessibilité de notre site pour tous les utilisateurs."
+}

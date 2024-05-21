@@ -23,6 +23,7 @@ import RecentAffiliations from "./recent-affiliations";
 import NetworksNotice from "../../../../components/networks-notice";
 import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
 import MoreLikeThis from "../../../../components/more-like-this";
+import Websites from "../../../../components/websites";
 
 function getOaInfo(publi) {
   const oaCount = publi?.filter((publi) => publi.isOa)?.length;
@@ -43,14 +44,14 @@ export default function AuthorPage({ data }: { data: Author }) {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role ===
-        "author"
+      "author"
     );
   });
   const thesisParticipations = publications?.filter((publi) => {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role !==
-        "author"
+      "author"
     );
   });
   const others = publications?.filter((publi) => publi.type !== "thesis");
@@ -62,6 +63,11 @@ export default function AuthorPage({ data }: { data: Author }) {
     },
   });
   const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`;
+
+  const alternativeNameForm = data?.firstName
+    && `"${data?.firstName?.split(" ")?.map((el) => el[0])?.join(" ")} ${data.lastName}"`
+  const nameForms = [`"${data?.fullName}"`, alternativeNameForm].filter(Boolean).join("|");
+  const suggestUrl = `/suggest/${data.id}?q=(${nameForms})`;
 
   const { oaPercent } = getOaInfo(publications);
 
@@ -195,6 +201,14 @@ export default function AuthorPage({ data }: { data: Author }) {
               <Identifiers data={data.externalIds} />
             </PageSection>
             <PageSection
+              show={!!data.externalIds?.filter(identifier => identifier.url).length}
+              title={intl.formatMessage({
+                id: "authors.section.web.title",
+              })}
+            >
+              <Websites data={data.externalIds?.filter(identifier => identifier.url)} />
+            </PageSection>
+            <PageSection
               show={!!byYear?.length}
               title={intl.formatMessage({
                 id: "authors.section.by-year.title",
@@ -271,7 +285,7 @@ export default function AuthorPage({ data }: { data: Author }) {
               <ButtonGroup>
                 <Button
                   as="a"
-                  href={`/suggest/${data.id}?q="${data?.fullName}"`}
+                  href={suggestUrl}
                   variant="tertiary"
                   icon="links-line"
                   iconPosition="left"

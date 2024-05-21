@@ -26,7 +26,10 @@ export default function useData(id) {
     hasNextPage,
   } = useInfiniteQuery<InfiniteResponse, unknown, InfiniteResult>({
     queryKey: ["suggest", "publications", currentQuery, id],
-    queryFn: ({ pageParam }) => searchPublications({cursor: pageParam, query: currentQuery, filters: [{ bool: { must_not: [ { term: { "authors.person.keyword": id } } ] } }]}),
+    // To filter on author id to prevent showing publications already in the author profile
+    // add the following filter to the queryFn:
+    // filters: [{ bool: { must_not: [ { term: { "authors.person.keyword": id } } ] } }]
+    queryFn: ({ pageParam }) => searchPublications({cursor: pageParam, query: currentQuery}),
     getNextPageParam: (lastPage) => (lastPage?.data?.length === 10) ? lastPage.cursor : undefined,
     initialPageParam: undefined,
     select: (data) => ({

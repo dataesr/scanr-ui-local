@@ -38,13 +38,13 @@ jobs:
           cd client
           IMAGE_ID=ghcr.io/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          docker build -f Dockerfile -t $IMAGE_ID:${{ steps.tag.outputs.tag }} .
+          docker build -t $IMAGE_ID:${{ steps.tag.outputs.tag }} .
 
       - name: 📦 Push Docker image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          docker push --all-tags $IMAGE_ID
+          docker push -a $IMAGE_ID
 
   deploy:
     name: 💭 Update staging deployment

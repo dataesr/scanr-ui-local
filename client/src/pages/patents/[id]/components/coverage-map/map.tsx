@@ -74,11 +74,13 @@ export default function Map({
       );
       const stageText =
         stage === "application"
-          ? "Date de dépôt nationale "
+          ? intl.formatMessage({ id: "patents.section.map.national.deposit" })
           : stage === "publication"
-          ? "Date de publication nationale "
+          ? intl.formatMessage({
+              id: "patents.section.map.national.publication",
+            })
           : stage === "granted"
-          ? "Date de délivrance nationale "
+          ? intl.formatMessage({ id: "patents.section.map.national.grant" })
           : "";
       const stageDate = nationalPatent?.[date]
         ? ` ${stageText}: ${new Date(
@@ -96,15 +98,15 @@ export default function Map({
       const regionalDate =
         (regionPatent?.[date] &&
           {
-            application: `Date de dépôt régionale: ${new Date(
-              regionPatent[date]
-            ).toLocaleDateString()}`,
-            publication: `Date de publication régionale: ${new Date(
-              regionPatent[date]
-            ).toLocaleDateString()}`,
-            granted: `Date de délivrance régionale: ${new Date(
-              regionPatent[date]
-            ).toLocaleDateString()}`,
+            application: `${intl.formatMessage({
+              id: "patents.section.map.regional.deposit",
+            })} ${new Date(regionPatent[date]).toLocaleDateString()}`,
+            publication: `${intl.formatMessage({
+              id: "patents.section.map.regional.publication",
+            })} ${new Date(regionPatent[date]).toLocaleDateString()}`,
+            granted: `${intl.formatMessage({
+              id: "patents.section.map.regional.grant",
+            })} ${new Date(regionPatent[date]).toLocaleDateString()}`,
           }[stage]) ||
         "";
 

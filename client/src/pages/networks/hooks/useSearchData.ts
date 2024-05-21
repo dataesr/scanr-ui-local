@@ -7,10 +7,17 @@ import { networkSearch } from "../../../api/networks/search/search"
 export default function useSearchData(networkTab: string, computeClusters: boolean) {
   const { currentQuery, filters } = useUrl()
   const { currentTab } = useTab()
+  const lang = document.documentElement.getAttribute("lang")
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["network", networkTab, currentQuery, filters, computeClusters],
-    queryFn: () => networkSearch({ model: networkTab, query: currentQuery, options: { computeClusters: computeClusters }, filters }),
+    queryKey: ["network", networkTab, currentQuery, filters, computeClusters, lang],
+    queryFn: () =>
+      networkSearch({
+        model: networkTab,
+        query: currentQuery,
+        options: { computeClusters: computeClusters, lang: lang },
+        filters,
+      }),
     enabled: Boolean(currentQuery && networkTab === currentTab),
   })
 
