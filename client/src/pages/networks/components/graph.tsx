@@ -1,15 +1,16 @@
 import { useMemo } from "react"
 import { Container, Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
+import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import Error204 from "./error204"
 
 export default function Graph({ currentTab, computeClusters }: { currentTab: string; computeClusters: boolean }) {
   const { search, currentQuery, filters } = useSearchData(currentTab, false)
   const { search: searchClusters } = useSearchData(currentTab, computeClusters)
+  const { locale: lang } = useDSFRConfig()
   const keyClusters = searchClusters.isFetching ? false : computeClusters
   const vosviewer = keyClusters ? searchClusters?.data : search?.data
-  const lang = document.documentElement.getAttribute("lang")
   const key = useMemo(
     () => JSON.stringify({ currentTab, currentQuery, filters, keyClusters, lang }),
     [currentTab, currentQuery, filters, keyClusters, lang]

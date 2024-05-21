@@ -35,7 +35,6 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
-  console.log("networkSearch", body)
 
   const res = await fetch(`${publicationsIndex}/_search`, {
     method: "POST",
@@ -46,7 +45,6 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
     throw new Error(`Elasticsearch error: ${res.status}`)
   }
   const json = await res.json()
-  console.log("endOfSearch", json)
 
   const aggregation = json.aggregations?.[model].buckets
   if (!aggregation?.length) {
@@ -69,7 +67,6 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
     info: info,
   }
 
-  console.log("data", data)
   return data
 }
 

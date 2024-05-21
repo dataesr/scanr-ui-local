@@ -55,8 +55,6 @@ export default async function networkCreate(
     }))
   })
 
-  console.log(`Graph items=${graph.order}, links=${graph.size}, components=${connectedComponents(graph).length}`)
-
   // Keep only largests components
   const sortedComponents = connectedComponents(graph).sort((a, b) => b.length - a.length)
   let numberOfComponents = GRAPH_MAX_COMPONENTS
@@ -65,37 +63,14 @@ export default async function networkCreate(
     numberOfComponents -= 1
     graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
   }
-  console.log(`Components graph items=${graph.order}, links=${graph.size}, components=${connectedComponents(graph).length}`)
-
-  // Filter with minimal number of nodes
-  // let nodeWeightThresh = 1
-  // while (graph.order > GRAPH_MAX_ORDER) {
-  //   nodeWeightThresh += 1
-  //   graph = subgraph(graph, (_, attr) => attr?.weight >= nodeWeightThresh) // eslint-disable-line no-loop-func
-  // }
-
-  // console.log(`Filtered graph items=${graph.order}, links=${graph.size}, components=${connectedComponents(graph).length}`)
-
-  // Filter with minimal number of edges
-  // let edgeWeightThresh = 1
-  // while (graph.size / graph.order > GRAPH_MAX_RATIO) {
-  //   edgeWeightThresh += 1
-  //   graph.filterEdges((edge, attr) => attr?.weight < edgeWeightThresh).forEach((edge) => graph.dropEdge(edge)) // eslint-disable-line no-loop-func
-  //   graph = subgraph(graph, (node) => graph.degree(node) > 0) // eslint-disable-line no-loop-func
-  // }
-  // console.log("Edge weight threshold :", edgeWeightThresh)
 
   // Add forceAtlas layout
   random.assign(graph) // Needs a starting layout for forceAtlas to work
   const sensibleSettings = forceAtlas2.inferSettings(graph)
   forceAtlas2.assign(graph, { iterations: 100, settings: sensibleSettings })
-  console.log("Atlas2 settings", sensibleSettings)
 
   // Add communities
   const communities = await communitiesCreate(graph, computeClusters)
-
-  console.log("Communities", communities)
-  console.log("Graph nodes", Array.from(graph.nodeEntries()))
 
   // Create network
   const network: NetworkData = {
@@ -117,6 +92,5 @@ export default async function networkCreate(
     clusters: communities,
   }
 
-  console.log("network", network)
   return network
 }

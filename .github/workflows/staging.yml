@@ -6,7 +6,7 @@ on:
       - staging
 
 env:
-  DEPLOYMENT: scanr-next-gen
+  DEPLOYMENT: scanr-ui
   DEPLOYMENT_NAMESPACE: scanr
   DEPLOYMENT_URL: https://scanr.staging.dataesr.ovh
   MM_NOTIFICATION_CHANNEL: bots

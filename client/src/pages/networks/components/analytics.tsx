@@ -22,7 +22,6 @@ export default function ClustersAnalytics({ clustersTabs, show }: { clustersTabs
   const sizeChartOptions = getSizeChartOptions({ data: clusters.slice(0, 10) })
   const oaChartOptions = getOaChartOptions({ data: clusters.slice(0, 10) })
   const yearsChartOptions = getYearsChartOptions({ data: clusters.slice(0, 10) })
-  console.log(yearsChartOptions)
 
   return (
     <Row>

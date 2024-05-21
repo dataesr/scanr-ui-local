@@ -60,7 +60,6 @@ export default function useExportData() {
       setIsLoading(true)
       const network = exportNetwork(search?.data?.network)
       const blob = exporter(format)(network)
-      console.log("blob", blob)
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
