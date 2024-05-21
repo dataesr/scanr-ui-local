@@ -92,6 +92,5 @@ export default function configCreate(model: string): NetworkConfig {
     ...(terminology && { terminology: terminology }),
   }
 
-  console.log("config", config)
   return config
 }

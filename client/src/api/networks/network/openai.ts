@@ -31,7 +31,6 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
     randomSeed: 42,
   })
 
-  console.log("mistral_completion", completion)
   const answer: string = completion.choices[0].message.content
   return answer
 }
@@ -52,7 +51,6 @@ export async function openAiLabeledClusters(clusters: NetworkCommunities): Promi
     }
     return acc
   }, "") as string
-  console.log("domains", domains)
 
   if (!domains) return clusters
 
@@ -60,7 +58,6 @@ export async function openAiLabeledClusters(clusters: NetworkCommunities): Promi
     (response) => JSON.parse(response),
     (err) => console.log(err)
   )
-  console.log("mistral_labels", mistral_labels)
   if (!mistral_labels || mistral_labels.constructor != Object) {
     return clusters
   }
