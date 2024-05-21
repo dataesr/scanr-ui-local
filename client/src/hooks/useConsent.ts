@@ -21,11 +21,9 @@ const consentKey = "consent";
 export default function useConsent(defaultConsent: Consent = {}): UseConsent {
   const [set, setSet] = useState<boolean>(false);
   const readValue = (): Consent => {
-    const storedConsentString = localStorage.getItem(consentKey);
-    try {
-      JSON.parse(storedConsentString);
-    } catch (e) {
-      return {};
+    let storedConsentString = localStorage.getItem(consentKey);
+    if (!storedConsentString.includes("{", 0)) {
+      storedConsentString = "";
     }
     const storedConsent = storedConsentString
       ? JSON.parse(storedConsentString)
@@ -61,6 +59,7 @@ export default function useConsent(defaultConsent: Consent = {}): UseConsent {
       new StorageEvent("local-storage", { key: consentKey })
     );
   };
+
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === consentKey) {
