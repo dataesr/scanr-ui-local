@@ -329,7 +329,7 @@ export default function MainFooter() {
             target="_blank"
             rel="noreferer noopenner"
             className="fr-footer__bottom-link"
-            href={`https://github.com/dataesr/scanr-next-gen/releases/tag/v${version}`}
+            href={`https://github.com/dataesr/scanr-ui/releases/tag/v${version}`}
           >
             {intl.formatMessage({ id: "layout.footer.version" }, { version })}
           </Link>
