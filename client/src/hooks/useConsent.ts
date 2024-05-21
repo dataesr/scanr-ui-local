@@ -22,12 +22,12 @@ export default function useConsent(defaultConsent: Consent = {}): UseConsent {
   const [set, setSet] = useState<boolean>(false);
   const readValue = (): Consent => {
     let storedConsentString = localStorage.getItem(consentKey);
-    if (!storedConsentString.includes("{", 0)) {
+    let storedConsent = null;
+    try {
+      storedConsent = JSON.parse(storedConsentString);
+    } catch (e) {
       storedConsentString = "";
     }
-    const storedConsent = storedConsentString
-      ? JSON.parse(storedConsentString)
-      : null;
     setSet(!!storedConsent);
     return storedConsent || defaultConsent;
   };
