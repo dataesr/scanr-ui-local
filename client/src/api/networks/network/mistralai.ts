@@ -1,7 +1,7 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 import { NetworkCommunities } from "../../../types/network"
 
-const ENABLED = false
+const ENABLED = true
 
 async function mistralLabelsFromDomains(domains: string): Promise<string> {
   const { VITE_MISTRAL_API_KEY } = import.meta.env

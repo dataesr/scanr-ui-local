@@ -123,8 +123,8 @@ function NetworksPage() {
               <hr />
               <NetworkExports />
               <hr />
-              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={import.meta.env.DEV} />
-              <ClustersAnalytics clustersTabs={clustersTabs} show={import.meta.env.DEV} />
+              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={true} />
+              <ClustersAnalytics clustersTabs={clustersTabs} show={true} />
             </Container>
           </Col>
         </Row>
