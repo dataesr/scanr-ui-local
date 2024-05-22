@@ -44,14 +44,14 @@ export default function AuthorPage({ data }: { data: Author }) {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role ===
-      "author"
+        "author"
     );
   });
   const thesisParticipations = publications?.filter((publi) => {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role !==
-      "author"
+        "author"
     );
   });
   const others = publications?.filter((publi) => publi.type !== "thesis");
@@ -64,9 +64,15 @@ export default function AuthorPage({ data }: { data: Author }) {
   });
   const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`;
 
-  const alternativeNameForm = data?.firstName
-    && `"${data?.firstName?.split(" ")?.map((el) => el[0])?.join(" ")} ${data.lastName}"`
-  const nameForms = [`"${data?.fullName}"`, alternativeNameForm].filter(Boolean).join("|");
+  const alternativeNameForm =
+    data?.firstName &&
+    `"${data?.firstName
+      ?.split(" ")
+      ?.map((el) => el[0])
+      ?.join(" ")} ${data.lastName}"`;
+  const nameForms = [`"${data?.fullName}"`, alternativeNameForm]
+    .filter(Boolean)
+    .join("|");
   const suggestUrl = `/suggest/${data.id}?q=(${nameForms})`;
 
   const { oaPercent } = getOaInfo(publications);
@@ -170,7 +176,7 @@ export default function AuthorPage({ data }: { data: Author }) {
                 title={intl.formatMessage({
                   id: "authors.section.more-like-this",
                 })}
-                icon="shopping-cart-2-line"
+                icon="user-line"
                 show
               >
                 <MoreLikeThis id={data._id} api="authors" />
@@ -201,12 +207,17 @@ export default function AuthorPage({ data }: { data: Author }) {
               <Identifiers data={data.externalIds} />
             </PageSection>
             <PageSection
-              show={!!data.externalIds?.filter(identifier => identifier.url).length}
+              show={
+                !!data.externalIds?.filter((identifier) => identifier.url)
+                  .length
+              }
               title={intl.formatMessage({
                 id: "authors.section.web.title",
               })}
             >
-              <Websites data={data.externalIds?.filter(identifier => identifier.url)} />
+              <Websites
+                data={data.externalIds?.filter((identifier) => identifier.url)}
+              />
             </PageSection>
             <PageSection
               show={!!byYear?.length}
