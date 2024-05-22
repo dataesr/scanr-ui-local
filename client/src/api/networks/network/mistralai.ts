@@ -1,7 +1,7 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 import { NetworkCommunities } from "../../../types/network"
 
-const ENABLED = true
+const ENABLE_DEV = !import.meta.env.PROD
 
 async function mistralLabelsFromDomains(domains: string): Promise<string> {
   const mistral = new MistralClient("", "/mistral")
@@ -30,7 +30,7 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
 }
 
 export async function openAiLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
-  if (!ENABLED) return clusters
+  if (!ENABLE_DEV) return clusters
 
   const prefix = "list"
   const domains = clusters?.reduce((acc, cluster, index) => {
