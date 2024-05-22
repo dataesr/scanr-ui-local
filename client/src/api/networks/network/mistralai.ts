@@ -1,16 +1,10 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 import { NetworkCommunities } from "../../../types/network"
 
-const ENABLED = false
+const ENABLE_DEV = !import.meta.env.PROD
 
 async function mistralLabelsFromDomains(domains: string): Promise<string> {
-  const { VITE_MISTRAL_API_KEY } = import.meta.env
-
-  if (!VITE_MISTRAL_API_KEY) {
-    throw new Error("Mistral error: bad api key")
-  }
-
-  const mistral = new MistralClient(VITE_MISTRAL_API_KEY)
+  const mistral = new MistralClient("", "/mistral")
   const completion = await mistral.chat({
     messages: [
       {
@@ -36,7 +30,7 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
 }
 
 export async function openAiLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
-  if (!ENABLED) return clusters
+  if (!ENABLE_DEV) return clusters
 
   const prefix = "list"
   const domains = clusters?.reduce((acc, cluster, index) => {

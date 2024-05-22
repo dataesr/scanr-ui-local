@@ -12,7 +12,7 @@
     "networks.header.tab.structures": "Laboratoires",
     "networks.header.tab.domains": "Thématiques",
     "networks.header.tab.software": "Logiciels",
-    "networks.clusters.button.rm": "Cacher les informations des communautés",
+    "networks.clusters.button.rm": "Masquer les informations des communautés",
     "networks.clusters.button.add": "Ajouter les informations des communautés",
     "networks.search.error204.title": "Pas de résultat",
     "networks.search.error204.text": "Cette recherche ne retourne aucune donnée.",

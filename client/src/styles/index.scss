@@ -187,5 +187,13 @@
   overflow: hidden;
   border-style: inset;
   border-width: 1px;
-  padding: 0
+  padding: 0;
+}
+  
+.cluster-table th {
+  background-color: #e9edfe;
+}
+  
+.cluster-table tbody:nth-child(odd) {
+  background-color: #f2f2f2;
 }

@@ -21,7 +21,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
 
   return (
     <Container className="fr-mt-5w" key={key}>
-      <table style={{ fontSize: 12 }} width={"100%"}>
+      <table className="cluster-table" style={{ fontSize: 12 }}>
         <thead>
           <th>Name</th>
           <th>Size</th>
@@ -40,7 +40,7 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
                 {community?.domains
                   ? Object.entries(community.domains)
                       .sort((a, b) => b[1] - a[1])
-                      .slice(0, 5)
+                      .slice(0, 10)
                       .map(([domain]) => `${domain}`)
                       .join(", ")
                   : ""}
