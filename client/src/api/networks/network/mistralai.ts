@@ -1,7 +1,7 @@
 import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 import { NetworkCommunities } from "../../../types/network"
 
-const ENABLE_DEV = !import.meta.env.PROD
+const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
 
 async function mistralLabelsFromDomains(domains: string): Promise<string> {
   const mistral = new MistralClient("", "/mistral")

@@ -53,7 +53,7 @@ const NETWORK_TABS_MAPPING = {
   },
 }
 
-const ENABLE_DEV = !import.meta.env.PROD
+const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
 
 const networkQuery = (query) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
