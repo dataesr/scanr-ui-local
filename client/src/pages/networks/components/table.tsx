@@ -20,8 +20,18 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
   if (search.isFetching) return <BaseSkeleton width="100%" height="30rem" className="fr-my-1v" />
 
   return (
-    <Container className="fr-mt-5w" key={key}>
-      <table className="cluster-table" style={{ fontSize: 12 }}>
+    <Container fluid className="fr-table fr-mt-5w fr-table--layout-fixed fr-table--blue-ecume" key={key}>
+      <table style={{ width: "100%" }}>
+        <colgroup>
+          <col span={1} style={{ width: "20%" }} />
+          <col span={1} style={{ width: "5%" }} />
+          <col span={1} style={{ width: "35%" }} />
+          <col span={1} style={{ width: "12%" }} />
+          <col span={1} style={{ width: "5%" }} />
+          <col span={1} style={{ width: "12%" }} />
+          <col span={1} style={{ width: "10%" }} />
+        </colgroup>
+
         <thead>
           <th>Name</th>
           <th>Size</th>
@@ -34,21 +44,23 @@ export default function ClustersTable({ currentTab, enabled }: { currentTab: str
         {communities.map((community, index) => {
           return (
             <tbody key={index}>
-              <td>{community.label}</td>
-              <td>{community.size}</td>
-              <td>
-                {community?.domains
-                  ? Object.entries(community.domains)
-                      .sort((a, b) => b[1] - a[1])
-                      .slice(0, 10)
-                      .map(([domain]) => `${domain}`)
-                      .join(", ")
-                  : ""}
-              </td>
-              <td>{community.maxWeightNodes.join(", ")}</td>
-              <td>{community.hits}</td>
-              <td>{community?.oaPercent ? `${community.oaPercent.toFixed(1)} %` : ""}</td>
-              <td>{community.maxYear}</td>
+              <tr>
+                <td>{community.label}</td>
+                <td>{community.size}</td>
+                <td>
+                  {community?.domains
+                    ? Object.entries(community.domains)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 10)
+                        .map(([domain]) => `${domain}`)
+                        .join(", ")
+                    : ""}
+                </td>
+                <td>{community.maxWeightNodes.join(", ")}</td>
+                <td>{community.hits}</td>
+                <td>{community?.oaPercent ? `${community.oaPercent.toFixed(1)} %` : ""}</td>
+                <td>{community.maxYear}</td>
+              </tr>
             </tbody>
           )
         })}
