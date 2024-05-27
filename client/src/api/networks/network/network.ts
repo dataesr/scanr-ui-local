@@ -13,7 +13,7 @@ export const GRAPH_MAX_COMPONENTS = 5
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
 const nodeGetId = (id: string) => {
   const nodeId = id.split("###")[0]
-  return nodeId.startsWith(".") ? nodeId.slice(1) : nodeId
+  return isNaN(+nodeId) ? nodeId : String(+nodeId)
 }
 const nodeGetLabel = (id: string, lang: string) => {
   const prefix = lang.toUpperCase() + "_"
