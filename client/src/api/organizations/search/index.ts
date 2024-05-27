@@ -27,27 +27,49 @@ const HIGHLIGHT = {
 };
 
 const forbiddenQueries = [
-  "zrr",
-  "ZZR",
-  "Protection du potentiel scientifique et technique",
-  "PPST",
-  "ppst",
-  "zone à régime restrictif",
-  "zones à régime restrictif",
-  "opérateur d'importance vitale",
-  "opérateurs d'importance vitale",
-  "OIV",
-  "oiv",
+  ["zrr"],
+  ["Protection", "potentiel", "scientifique", "technique"],
+  ["ppst"],
+  ["zone", "régime", "restrictif"],
+  ["opérateur", "importance", "vitale"],
+  ["oiv"],
 ];
 
+function matchWords(query, words) {
+  const regexMetachars = /[(){[*+?.\\^$|]/g;
+  const normalizedQuery = query
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i]
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(regexMetachars, "\\$&");
+  }
+
+  const regex = new RegExp("\\b(?:" + words.join("|") + ")\\b", "gi");
+
+  return normalizedQuery.match(regex) || [];
+}
 export async function searchOrganizations({
   cursor,
   query,
   filters,
   size,
 }: SearchArgs): Promise<SearchResponse<LightOrganization>> {
-  if (forbiddenQueries.includes(query)) {
-    return Promise.resolve({ data: [], cursor: "", total: 0 });
+  for (let index = 0; index < forbiddenQueries.length; index++) {
+    const element = forbiddenQueries[index];
+    const matchedWords = matchWords(query, element);
+
+    if (
+      element.filter((el) => matchedWords.includes(el)).length ===
+      element.length
+    ) {
+      return { data: [], cursor: "", total: 0 };
+    }
   }
 
   const body: any = {
