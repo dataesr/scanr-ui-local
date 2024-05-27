@@ -208,21 +208,6 @@ export default function useUrl() {
 
   const handleQueryChange = useCallback(
     (query) => {
-      if (
-        query === "zrr" ||
-        query === "ZZR" ||
-        query === "Protection du potentiel scientifique et technique" ||
-        query === "PPST" ||
-        query === "ppst" ||
-        query === "zone à régime restrictif" ||
-        query === "zones à régime restrictif" ||
-        query === "opérateur d'importance vitale" ||
-        query === "opérateurs d'importance vitale" ||
-        query === "OIV" ||
-        query === "oiv"
-      ) {
-        query = "";
-      }
       searchParams.delete("filters");
       searchParams.set("q", query);
       setSearchParams(searchParams);
