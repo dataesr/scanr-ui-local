@@ -1,12 +1,26 @@
-export default function Gauge({ label = "", color = "#aaa", percent }) {
+export default function Gauge({ percent, label, color = "#aaa" }: { percent: number; label: string; color: string }) {
   return (
-    <>
-      <div style={{ display: "inline-block", width: "50%" }}>{label}</div>
+    <div
+      style={{
+        alignItems: "center",
+        border: "1px solid #333",
+        borderRadius: "5px",
+        display: "flex",
+        width: "100%",
+      }}
+    >
       <div
-        style={{ display: "inline-block", width: "50%", height: "13px", border: "1px solid #dddddd", borderRadius: "3px" }}
+        style={{
+          backgroundColor: color,
+          fontSize: "0.8rem",
+          overflow: "hidden",
+          paddingLeft: "1rem",
+          position: "relative",
+          width: `${percent}%`,
+        }}
       >
-        <div style={{ width: percent + "%", backgroundColor: color, height: "100%" }} />
+        {`${label.toUpperCase()} ${percent.toFixed(1)} %`}
       </div>
-    </>
+    </div>
   )
 }

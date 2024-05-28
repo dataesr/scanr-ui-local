@@ -6,12 +6,13 @@ import useTab from "./hooks/useTab"
 import useClusters from "./hooks/useClusters"
 import Graph from "./components/graph"
 import Home from "./components/home"
-import ClustersTable from "./components/clusters"
+import ClustersSection from "./components/clusters"
 import ClustersButton from "./components/button"
 import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
 import NetworkExports from "./components/exports"
 import ClustersAnalytics from "./components/analytics"
+import { useState } from "react"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -55,10 +56,10 @@ const NETWORK_TABS_MAPPING = {
 
 const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
 
-const networkQuery = (query) => query || "*"
+const networkQuery = (query: string) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
-const networkTabFindIndex = (label) => networkTabs.findIndex((tab) => tab.label === label)
-const networkTabFindLabel = (index) => networkTabs[index].label
+const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
+const networkTabFindLabel = (index: number) => networkTabs[index].label
 const networkTabsLabels = networkTabs.map(({ label }) => label)
 
 function NetworksPage() {
@@ -67,7 +68,8 @@ function NetworksPage() {
   const { currentQuery, handleQueryChange } = useUrl()
   const { currentTab, handleTabChange } = useTab()
   const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
-
+  const [focusItem, setFocusItem] = useState("")
+  const resetFocus = () => setFocusItem("")
   const isMobile = screen === "sm" || screen === "xs"
 
   return (
@@ -90,6 +92,7 @@ function NetworksPage() {
                 placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 onSearch={(value) => {
                   handleQueryChange(networkQuery(value))
+                  resetFocus()
                   resetClusters()
                 }}
               />
@@ -107,16 +110,19 @@ function NetworksPage() {
             <Container fluid as="section">
               <Tabs
                 defaultActiveIndex={networkTabFindIndex(currentTab)}
-                onTabChange={(index) => handleTabChange(networkTabFindLabel(index))}
+                onTabChange={(index) => {
+                  handleTabChange(networkTabFindLabel(index))
+                  resetFocus()
+                }}
               >
                 {networkTabs.map(({ label, icon }) => (
                   <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
                     <Home currentTab={label} />
-                    <Graph currentTab={label} computeClusters={clustersTabs[label]} />
+                    <Graph currentTab={label} computeClusters={clustersTabs[label]} focusItem={focusItem} />
                   </Tab>
                 ))}
               </Tabs>
-              <ClustersTable currentTab={currentTab} enabled={clustersTabs[currentTab]} />
+              <ClustersSection currentTab={currentTab} enabled={clustersTabs[currentTab]} setFocusItem={setFocusItem} />
             </Container>
           </Col>
           <Col xs="12" lg="4">
@@ -125,7 +131,14 @@ function NetworksPage() {
               <hr />
               <NetworkExports />
               <hr />
-              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={ENABLE_DEV} />
+              <ClustersButton
+                clustersTabs={clustersTabs}
+                handleChange={(label: string) => {
+                  handleClustersChange(label)
+                  resetFocus()
+                }}
+                show={ENABLE_DEV}
+              />
               <ClustersAnalytics clustersTabs={clustersTabs} show={ENABLE_DEV} />
             </Container>
           </Col>

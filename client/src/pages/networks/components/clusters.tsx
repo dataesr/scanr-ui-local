@@ -11,11 +11,19 @@ import { encode } from "../../../utils/string"
 
 const ndisplay = 5
 
-function ClusterItem({ currentTab, community }: { currentTab: string; community: NetworkCommunity }) {
+function ClusterItem({
+  currentTab,
+  community,
+  setFocusItem,
+}: {
+  currentTab: string
+  community: NetworkCommunity
+  setFocusItem: any
+}) {
   const intl = useIntl()
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
   return (
-    <Container fluid className="result-item">
+    <Container fluid className="cluster-item">
       <Row>
         <Col>
           <BadgeGroup>
@@ -33,11 +41,16 @@ function ClusterItem({ currentTab, community }: { currentTab: string; community:
             </Badge>
           </BadgeGroup>
         </Col>
-        {/* <Col className="fr-badge fr-badge--sm fr-badge--brown-opera">
+        {/* <Col>
           <Gauge label="open access: " percent={community.oaPercent} color="#34CB6A" />
         </Col> */}
       </Row>
-      <Link className="fr-link">{community.label}</Link>
+      <Row>
+        <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"|"} </div>
+        <Button variant="text" className="fr-link" onClick={() => setFocusItem(community.maxWeightNodes[0])}>
+          {community.label}
+        </Button>
+      </Row>
       <Text bold size="sm" className="fr-mb-0">
         {community?.domains
           ? Object.entries(community.domains)
@@ -55,7 +68,15 @@ function ClusterItem({ currentTab, community }: { currentTab: string; community:
   )
 }
 
-export default function ClustersSection({ currentTab, enabled }: { currentTab: string; enabled: boolean }) {
+export default function ClustersSection({
+  currentTab,
+  enabled,
+  setFocusItem,
+}: {
+  currentTab: string
+  enabled: boolean
+  setFocusItem: any
+}) {
   const intl = useIntl()
   const { search } = useSearchData(currentTab, enabled)
   const network = search?.data?.network as NetworkData
@@ -64,10 +85,15 @@ export default function ClustersSection({ currentTab, enabled }: { currentTab: s
 
   if (!enabled) return null
 
-  if (search.isFetching) return <BaseSkeleton width="100%" height="30rem" className="fr-my-1v" />
+  if (search.isFetching)
+    return (
+      <Container fluid className="fr-mt-5w">
+        <BaseSkeleton width="100%" height="30rem" className="fr-my-1v" />
+      </Container>
+    )
 
   return (
-    <Container className="fr-mt-5w">
+    <Container fluid className="fr-mt-5w">
       <PageSection
         size="lead"
         show={true}
@@ -75,9 +101,9 @@ export default function ClustersSection({ currentTab, enabled }: { currentTab: s
         icon="shapes-line"
       >
         <>
-          <div className="result-list">
-            {communities?.slice(0, ndisplay)?.map((community) => (
-              <ClusterItem currentTab={currentTab} community={community} />
+          <div className="cluster-list">
+            {communities?.slice(0, ndisplay)?.map((community, index) => (
+              <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
             ))}
           </div>
           {communities?.length > ndisplay ? (
@@ -99,9 +125,9 @@ export default function ClustersSection({ currentTab, enabled }: { currentTab: s
               size="lg"
               title={intl.formatMessage({ id: sectionTitle }, { count: communities.length })}
             >
-              <div className="result-list">
-                {communities?.map((community) => (
-                  <ClusterItem currentTab={currentTab} community={community} />
+              <div className="cluster-list">
+                {communities?.map((community, index) => (
+                  <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
                 ))}
               </div>
             </Modal>

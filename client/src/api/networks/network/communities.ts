@@ -79,7 +79,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
       const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
 
       const community = {
-        cluster: index,
+        cluster: index + 1,
         label: vosColors?.[index] ? GetColorName(vosColors[index]) : `Unnamed ${index + 1}`,
         color: vosColors?.[index] ?? "#e2e2e2",
         size: communityGetSize(graph, index),
