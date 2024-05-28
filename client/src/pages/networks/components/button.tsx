@@ -26,7 +26,6 @@ export default function ClustersButton({
           <Button
             iconPosition="right"
             icon={enableClusters ? "arrow-up-line" : "arrow-down-line"}
-            variant="secondary"
             onClick={() => handleChange(currentTab)}
             disabled={search.isFetching || Boolean(search.error) || !currentQuery}
           >

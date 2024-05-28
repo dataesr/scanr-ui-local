@@ -6,7 +6,7 @@ import useTab from "./hooks/useTab"
 import useClusters from "./hooks/useClusters"
 import Graph from "./components/graph"
 import Home from "./components/home"
-import ClustersTable from "./components/table"
+import ClustersTable from "./components/clusters"
 import ClustersButton from "./components/button"
 import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
@@ -113,10 +113,10 @@ function NetworksPage() {
                   <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
                     <Home currentTab={label} />
                     <Graph currentTab={label} computeClusters={clustersTabs[label]} />
-                    <ClustersTable currentTab={label} enabled={clustersTabs[label]} />
                   </Tab>
                 ))}
               </Tabs>
+              <ClustersTable currentTab={currentTab} enabled={clustersTabs[currentTab]} />
             </Container>
           </Col>
           <Col xs="12" lg="4">
