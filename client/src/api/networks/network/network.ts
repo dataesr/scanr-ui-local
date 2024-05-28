@@ -11,7 +11,10 @@ export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
-const nodeGetId = (id: string) => id.split("###")[0]
+const nodeGetId = (id: string) => {
+  const nodeId = id.split("###")[0]
+  return isNaN(+nodeId) ? nodeId : String(+nodeId)
+}
 const nodeGetLabel = (id: string, lang: string) => {
   const prefix = lang.toUpperCase() + "_"
   const labels = (id.split("###")[1] ?? id).split("|||")
@@ -49,7 +52,7 @@ export default async function networkCreate(
     )
 
     // Add edges and compute weight
-    graph.updateUndirectedEdgeWithKey(key, nodes[0].split("###")[0], nodes[1].split("###")[0], (attr) => ({
+    graph.updateUndirectedEdgeWithKey(key, nodeGetId(nodes[0]), nodeGetId(nodes[1]), (attr) => ({
       weight: (attr?.weight ?? 0) + count,
       label: `${attr?.weight || 1} links`,
     }))

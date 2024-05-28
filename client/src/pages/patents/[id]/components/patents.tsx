@@ -141,7 +141,7 @@ export default function PatentPage({ data }: { data: Patent }) {
                 title={intl.formatMessage({
                   id: "patents.section.more-like-this",
                 })}
-                icon="shopping-cart-2-line"
+                icon="article-line"
                 show
               >
                 <MoreLikeThis id={data._id} api="patents" />

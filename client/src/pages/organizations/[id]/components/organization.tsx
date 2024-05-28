@@ -250,7 +250,7 @@ export default function OrganizationPresentation({
                     titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
-                  {(publications.publicationsCount > 3) && (
+                  {publications.publicationsCount > 3 && (
                     <NetworksNotice url={networkUrl} />
                   )}
                 </PageSection>
@@ -289,7 +289,7 @@ export default function OrganizationPresentation({
                   title={intl.formatMessage({
                     id: "organizations.section.more-like-this",
                   })}
-                  icon="shopping-cart-2-line"
+                  icon="building-line"
                   show
                 >
                   <MoreLikeThis id={data._id} api="organizations" />

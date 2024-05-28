@@ -24,7 +24,6 @@ export function parseSearchFiltersFromURL(
 }
 
 export function stringifySearchFiltersForURL(filters: Filters): string {
-  
   if (!filters) return "";
   if (!Object.keys(filters).length) return "";
   return encodeURIComponent(JSON.stringify(filters));
@@ -86,7 +85,7 @@ const getAPI = (pathname: string) => {
     pathname.split("/")?.[1] === "trouver-des-partenaires-pour-horizon-europe"
   )
     return "he";
-  if (pathname === '/networks') return 'publications'
+  if (pathname === "/networks") return "publications";
   return api as ApiTypes;
 };
 
@@ -100,12 +99,12 @@ export default function useUrl() {
   const filters = filtersToElasticQuery(currentFilters);
 
   const clearFilters = useCallback(() => {
-    searchParams.delete("filters")
-    setSearchParams(searchParams)
-  }, [searchParams, setSearchParams])
-  
+    searchParams.delete("filters");
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams]);
+
   const handleDeleteFilter = useCallback(
-    ({ field }: { field: string}) => {
+    ({ field }: { field: string }) => {
       const { [field]: currentField, ...nextFilters } = currentFilters;
       if (!currentField) return;
       if (!Object.keys(nextFilters).length) return clearFilters();
@@ -116,7 +115,7 @@ export default function useUrl() {
   );
 
   const handleRangeFilterChange = useCallback(
-    ({ field, value }: { field: string, value?: [number, number] }) => {
+    ({ field, value }: { field: string; value?: [number, number] }) => {
       const prev = { ...currentFilters };
       if (!value) return handleDeleteFilter({ field });
       const nextFilters: Filters = {
@@ -133,8 +132,18 @@ export default function useUrl() {
   );
 
   const handleBoolFilterChange = useCallback(
-    ({ field, value, label, forceValue = false }: { field: string, value: boolean, label?: string, forceValue?: boolean }) => {
-      const prev = { ...currentFilters };      
+    ({
+      field,
+      value,
+      label,
+      forceValue = false,
+    }: {
+      field: string;
+      value: boolean;
+      label?: string;
+      forceValue?: boolean;
+    }) => {
+      const prev = { ...currentFilters };
       if (!value && !forceValue) return handleDeleteFilter({ field });
       const nextFilters = {
         ...prev,
@@ -145,7 +154,6 @@ export default function useUrl() {
       };
       searchParams.set("filters", stringifySearchFiltersForURL(nextFilters));
       return setSearchParams(searchParams);
-      
     },
     [currentFilters, handleDeleteFilter, searchParams, setSearchParams]
   );
@@ -187,7 +195,6 @@ export default function useUrl() {
     [currentFilters, handleDeleteFilter, searchParams, setSearchParams]
   );
 
-
   const setOperator = useCallback(
     (field, operator = "and") => {
       const prev = { ...currentFilters };
@@ -201,12 +208,12 @@ export default function useUrl() {
 
   const handleQueryChange = useCallback(
     (query) => {
-      searchParams.delete("filters")
-      searchParams.set("q", query)
-      setSearchParams(searchParams)
+      searchParams.delete("filters");
+      searchParams.set("q", query);
+      setSearchParams(searchParams);
     },
     [searchParams, setSearchParams]
-  )
+  );
 
   const values = useMemo(() => {
     return {

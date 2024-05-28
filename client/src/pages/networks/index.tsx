@@ -53,6 +53,8 @@ const NETWORK_TABS_MAPPING = {
   },
 }
 
+const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
+
 const networkQuery = (query) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 const networkTabFindIndex = (label) => networkTabs.findIndex((tab) => tab.label === label)
@@ -123,8 +125,8 @@ function NetworksPage() {
               <hr />
               <NetworkExports />
               <hr />
-              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={import.meta.env.DEV} />
-              <ClustersAnalytics clustersTabs={clustersTabs} show={import.meta.env.DEV} />
+              <ClustersButton clustersTabs={clustersTabs} handleChange={handleClustersChange} show={ENABLE_DEV} />
+              <ClustersAnalytics clustersTabs={clustersTabs} show={ENABLE_DEV} />
             </Container>
           </Col>
         </Row>

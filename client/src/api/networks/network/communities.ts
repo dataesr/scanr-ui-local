@@ -3,7 +3,7 @@ import louvain from "graphology-communities-louvain"
 import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits } from "../search/search"
 import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
-import { openAiLabeledClusters } from "./openai"
+import { openAiLabeledClusters } from "./mistralai"
 import { vosColors } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 

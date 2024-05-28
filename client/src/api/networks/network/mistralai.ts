@@ -1,17 +1,12 @@
-import MistralClient, { ResponseFormats } from "@mistralai/mistralai"
 import { NetworkCommunities } from "../../../types/network"
 
-const ENABLED = false
+const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
+const { VITE_MISTRAL_URL: MISTRAL_URL, VITE_MISTRAL_KEY: MISTRAL_KEY } = import.meta.env
+const headers = MISTRAL_KEY ? { Authorization: `Bearer ${MISTRAL_KEY}` } : {}
+const postHeaders = { ...headers, "Content-Type": "application/json" }
 
 async function mistralLabelsFromDomains(domains: string): Promise<string> {
-  const { VITE_MISTRAL_API_KEY } = import.meta.env
-
-  if (!VITE_MISTRAL_API_KEY) {
-    throw new Error("Mistral error: bad api key")
-  }
-
-  const mistral = new MistralClient(VITE_MISTRAL_API_KEY)
-  const completion = await mistral.chat({
+  const chatBody = {
     messages: [
       {
         role: "user",
@@ -25,18 +20,25 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
         ${domains}`,
       },
     ],
-    model: "open-mistral-7b",
+    model: "mistral-small-latest",
     temperature: 0.3,
-    responseFormat: { type: "json_object" as ResponseFormats },
-    randomSeed: 42,
-  })
+    response_format: { type: "json_object" },
+    random_seed: 42,
+  }
 
-  const answer: string = completion.choices[0].message.content
+  const response = await fetch(`${MISTRAL_URL}/chat/completions`, {
+    method: "POST",
+    headers: postHeaders,
+    body: JSON.stringify(chatBody),
+  })
+  const completion = await response.json()
+  const answer: string = completion && completion.choices ? completion.choices[0].message.content : null
+
   return answer
 }
 
 export async function openAiLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
-  if (!ENABLED) return clusters
+  if (!ENABLE_DEV) return clusters
 
   const prefix = "list"
   const domains = clusters?.reduce((acc, cluster, index) => {
