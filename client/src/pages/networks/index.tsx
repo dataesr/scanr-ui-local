@@ -70,6 +70,7 @@ function NetworksPage() {
   const { clusters: computeClusters, handleClustersChange, disableClusters } = useClusters()
   const [focusItem, setFocusItem] = useState("")
   const resetFocus = () => setFocusItem("")
+
   const isMobile = screen === "sm" || screen === "xs"
 
   if (!ENABLE_DEV) disableClusters()

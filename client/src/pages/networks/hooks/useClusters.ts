@@ -18,7 +18,10 @@ export default function useClusters() {
     [searchParams, setSearchParams]
   )
 
-  const disableClusters = useCallback(() => searchParams.delete("clusters"), [searchParams])
+  const disableClusters = useCallback(() => {
+    searchParams.delete("clusters")
+    setSearchParams(searchParams)
+  }, [searchParams, setSearchParams])
 
   const values = useMemo(() => {
     return { clusters, handleClustersChange, disableClusters }
