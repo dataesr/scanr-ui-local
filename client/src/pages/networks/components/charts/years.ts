@@ -1,4 +1,4 @@
-export default function getYearsChartOptions({ data, height = "250px", title = "", subtitle = "" }) {
+export default function getYearsChartOptions({ data, height = "300px", title = "", subtitle = "" }) {
   const _data = data.map((d) => ({ name: d.label, years: d.years, color: d.color }))
   const minYear = Math.min(..._data.flatMap((d) => Object.keys(d.years).map((k) => Number(k))))
   const maxYear = Math.max(..._data.flatMap((d) => Object.keys(d.years).map((k) => Number(k))))
@@ -13,6 +13,7 @@ export default function getYearsChartOptions({ data, height = "250px", title = "
     title: { text: title },
     subtitle: { text: subtitle },
     xAxis: {
+      min: Math.max(2000, range[0]),
       crosshair: true,
       accessibility: {
         description: "Years",
