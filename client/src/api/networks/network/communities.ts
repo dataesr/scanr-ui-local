@@ -4,7 +4,7 @@ import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits } from "../search/search"
 import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
 import { openAiLabeledClusters } from "./mistralai"
-import { vosColors } from "../_utils/constants"
+import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<string> | Array<number> =>
@@ -94,8 +94,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
 
       const community = {
         cluster: index + 1,
-        label: vosColors?.[index] ? GetColorName(vosColors[index]) : `Unnamed ${index + 1}`,
-        color: vosColors?.[index] ?? "#e2e2e2",
+        label: COLORS?.[index] ? GetColorName(COLORS[index]) : `Unnamed ${index + 1}`,
+        color: COLORS?.[index] ?? "#e2e2e2",
         size: communityGetSize(graph, index),
         ids: communityGetIds(graph, index),
         maxYear: communityGetMaxYear(graph, index),
