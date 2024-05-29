@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
-import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, useDSFRConfig } from "@dataesr/dsfr-plus"
+import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, Title, useDSFRConfig } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../hooks/useScreenSize"
 import useUrl from "../search/hooks/useUrl"
 import useTab from "./hooks/useTab"
@@ -106,6 +106,7 @@ function NetworksPage() {
         </Container>
       </Container>
       <Container className="fr-mt-4w">
+        <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
         <Row>
           <Col xs="12" lg="8">
             <Container fluid as="section">
