@@ -128,7 +128,7 @@ function NetworksPage() {
             </Container>
           </Col>
           <Col xs="12" lg="4">
-            <Container className="fr-ml-1w">
+            <Container className={isMobile ? "fr-ml-0" : "fr-ml-1w"}>
               {!isMobile && <NetworkFilters />}
               <hr />
               <NetworkExports />
