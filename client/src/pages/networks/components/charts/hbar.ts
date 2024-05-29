@@ -3,7 +3,7 @@ export default function getHorizontalBarChartOptions({
   x,
   y,
   unit = "",
-  height = "300px",
+  height = "",
   title = "",
   subtitle = "",
   name = "",
@@ -14,7 +14,7 @@ export default function getHorizontalBarChartOptions({
     chart: {
       type: "bar",
       marginLeft: 0,
-      height,
+      height: height ? height : data.length * 30,
     },
     title: { text: title },
     subtitle: { text: subtitle },
@@ -35,7 +35,7 @@ export default function getHorizontalBarChartOptions({
         formatter() {
           const points = this.chart.userOptions.series[0].data
           const y = points.filter((point) => point.name === this.value)[0]?.y
-          return `${this.value} (${isFloat(y) ? y.toFixed(1) : y}${unit})`
+          return `(${isFloat(y) ? y.toFixed(1) : y}${unit}) ${this.value}`
         },
       },
     },

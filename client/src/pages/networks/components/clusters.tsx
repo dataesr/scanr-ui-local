@@ -1,7 +1,7 @@
-import { Fragment } from "react"
+import React, { Fragment } from "react"
 import { useIntl } from "react-intl"
 import { Container, Row, Button, Badge, BadgeGroup, Link, Text, Col } from "@dataesr/dsfr-plus"
-import Modal from "../../../components/modal"
+import SectionModal from "../../../components/modal"
 // import Gauge from "../../../components/gauge"
 import { PageSection } from "../../../components/page-content"
 import { NetworkCommunity, NetworkData } from "../../../types/network"
@@ -11,15 +11,18 @@ import { encode } from "../../../utils/string"
 
 const ndisplay = 5
 
-function ClusterItem({
-  currentTab,
-  community,
-  setFocusItem,
-}: {
+type ClusterItemArgs = {
   currentTab: string
   community: NetworkCommunity
-  setFocusItem: any
-}) {
+  setFocusItem: React.Dispatch<React.SetStateAction<string>>
+}
+type ClustersSectionArgs = {
+  currentTab: string
+  enabled: boolean
+  setFocusItem: React.Dispatch<React.SetStateAction<string>>
+}
+
+function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
   const intl = useIntl()
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
   return (
@@ -41,16 +44,17 @@ function ClusterItem({
             </Badge>
           </BadgeGroup>
         </Col>
-        {/* <Col>
-          <Gauge label="open access: " percent={community.oaPercent} color="#34CB6A" />
-        </Col> */}
       </Row>
       <Row>
-        <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"|"} </div>
+        <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"█"} </div>
         <Button variant="text" className="fr-link" onClick={() => setFocusItem(community.maxWeightNodes[0])}>
           {community.label}
         </Button>
       </Row>
+      <Text size="sm" className="fr-mb-0">
+        <i>{community.topWeightNodes?.join(", ")}</i>
+        <i>{community.size > community.topWeightNodes.length ? ", ..." : "."}</i>
+      </Text>
       <Text bold size="sm" className="fr-mb-0">
         {community?.domains
           ? Object.entries(community.domains)
@@ -68,15 +72,7 @@ function ClusterItem({
   )
 }
 
-export default function ClustersSection({
-  currentTab,
-  enabled,
-  setFocusItem,
-}: {
-  currentTab: string
-  enabled: boolean
-  setFocusItem: any
-}) {
+export default function ClustersSection({ currentTab, enabled, setFocusItem }: ClustersSectionArgs) {
   const intl = useIntl()
   const { search } = useSearchData(currentTab, enabled)
   const network = search?.data?.network as NetworkData
@@ -120,7 +116,7 @@ export default function ClustersSection({
             </Row>
           ) : null}
           {communities?.length > 3 ? (
-            <Modal
+            <SectionModal
               id={sectionTitle}
               size="lg"
               title={intl.formatMessage({ id: sectionTitle }, { count: communities.length })}
@@ -130,7 +126,7 @@ export default function ClustersSection({
                   <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
                 ))}
               </div>
-            </Modal>
+            </SectionModal>
           ) : null}
         </>
       </PageSection>

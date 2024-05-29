@@ -208,9 +208,10 @@ export default function useUrl() {
 
   const handleQueryChange = useCallback(
     (query) => {
-      searchParams.delete("filters");
-      searchParams.set("q", query);
-      setSearchParams(searchParams);
+      searchParams.delete("filters")
+      searchParams.delete("clusters")
+      searchParams.set("q", query)
+      setSearchParams(searchParams)
     },
     [searchParams, setSearchParams]
   );

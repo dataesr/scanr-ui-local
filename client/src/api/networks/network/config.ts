@@ -1,5 +1,6 @@
 import { Attributes } from "graphology-types"
 import { NetworkConfig } from "../../../types/network"
+import { COLORS } from "../_utils/constants"
 
 const CONFIG = {
   authors: {
@@ -87,8 +88,11 @@ export default function configCreate(model: string): NetworkConfig {
   }
   const terminology = CONFIG?.[model]?.terminology
 
+  const cluster_colors = COLORS.map((color, index) => ({ cluster: index + 1, color: color }))
+
   const config = {
     templates: templates,
+    color_schemes: { cluster_colors: cluster_colors },
     ...(terminology && { terminology: terminology }),
   }
 

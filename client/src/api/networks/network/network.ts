@@ -1,7 +1,7 @@
 import UndirectedGraph from "graphology"
 import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
-import random from "graphology-layout/random"
+import circular from "graphology-layout/circular"
 import forceAtlas2 from "graphology-layout-forceatlas2"
 import { ElasticBuckets, NetworkFilters, NetworkData } from "../../../types/network"
 import communitiesCreate from "./communities"
@@ -68,7 +68,7 @@ export default async function networkCreate(
   }
 
   // Add forceAtlas layout
-  random.assign(graph) // Needs a starting layout for forceAtlas to work
+  circular.assign(graph) // Needs a starting layout for forceAtlas to work
   const sensibleSettings = forceAtlas2.inferSettings(graph)
   forceAtlas2.assign(graph, { iterations: 100, settings: sensibleSettings })
 
