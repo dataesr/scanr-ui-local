@@ -116,7 +116,6 @@ export default function Search() {
   if (error) {
     return <Error500 error={error} />;
   }
-
   return (
     <RawIntlProvider value={intl}>
       <Container className={`bg-${api}`} fluid>
@@ -139,7 +138,7 @@ export default function Search() {
                 })}
                 defaultValue={currentQuery || ""}
                 placeholder={intl.formatMessage({
-                  id: "search.top.main-search-bar",
+                  id: `search.top.main-search-bar-${api}`,
                 })}
                 onSearch={(value) => handleQueryChange(value)}
               />
