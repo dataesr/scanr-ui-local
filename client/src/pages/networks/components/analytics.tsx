@@ -6,17 +6,18 @@ import AnalyticsGraph from "../../../components/analytics-graph"
 import useSearchData from "../hooks/useSearchData"
 import getHorizontalBarChartOptions from "./charts/hbar"
 import getYearsChartOptions from "./charts/years"
+import useClusters from "../hooks/useClusters"
 
-export default function ClustersAnalytics({ clustersTabs, show }: { clustersTabs: any; show: boolean }) {
+export default function ClustersAnalytics() {
   const intl = useIntl()
   const { currentTab } = useTab()
-  const enableClusters = show ? clustersTabs[currentTab] : false
-  const { search, currentQuery } = useSearchData(currentTab, enableClusters)
+  const { clusters: computeClusters } = useClusters()
+  const { search, currentQuery } = useSearchData(currentTab, computeClusters)
   const clusters = search.data?.network?.clusters
 
-  if (!show || Boolean(search.error) || !currentQuery || !enableClusters) return null
+  if (Boolean(search.error) || !currentQuery || !computeClusters) return null
 
-  if (enableClusters && search.isFetching)
+  if (computeClusters && search.isFetching)
     return (
       <Container className="fr-mt-2w">
         <AnalyticsSkeleton />

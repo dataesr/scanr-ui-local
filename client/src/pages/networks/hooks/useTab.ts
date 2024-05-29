@@ -7,8 +7,9 @@ export default function useTab() {
   const currentTab = searchParams.get("tab") || "authors"
 
   const handleTabChange = useCallback(
-    (tab) => {
+    (tab: string) => {
       searchParams.set("tab", tab)
+      if (searchParams.get("clusters")) searchParams.set("clusters", "false")
       setSearchParams(searchParams)
     },
     [searchParams, setSearchParams]

@@ -60,17 +60,19 @@ const networkQuery = (query: string) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
 const networkTabFindLabel = (index: number) => networkTabs[index].label
-const networkTabsLabels = networkTabs.map(({ label }) => label)
+// const networkTabsLabels = networkTabs.map(({ label }) => label)
 
 function NetworksPage() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { currentQuery, handleQueryChange } = useUrl()
   const { currentTab, handleTabChange } = useTab()
-  const { clustersTabs, handleClustersChange, resetClusters } = useClusters(networkTabsLabels)
+  const { clusters: computeClusters, handleClustersChange, disableClusters } = useClusters()
   const [focusItem, setFocusItem] = useState("")
   const resetFocus = () => setFocusItem("")
   const isMobile = screen === "sm" || screen === "xs"
+
+  if (!ENABLE_DEV) disableClusters()
 
   return (
     <>
@@ -93,7 +95,6 @@ function NetworksPage() {
                 onSearch={(value) => {
                   handleQueryChange(networkQuery(value))
                   resetFocus()
-                  resetClusters()
                 }}
               />
             </Col>
@@ -118,11 +119,11 @@ function NetworksPage() {
                 {networkTabs.map(({ label, icon }) => (
                   <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
                     <Home currentTab={label} />
-                    <Graph currentTab={label} computeClusters={clustersTabs[label]} focusItem={focusItem} />
+                    <Graph currentTab={label} computeClusters={computeClusters} focusItem={focusItem} />
                   </Tab>
                 ))}
               </Tabs>
-              <ClustersSection currentTab={currentTab} enabled={clustersTabs[currentTab]} setFocusItem={setFocusItem} />
+              <ClustersSection currentTab={currentTab} enabled={computeClusters} setFocusItem={setFocusItem} />
             </Container>
           </Col>
           <Col xs="12" lg="4">
@@ -132,14 +133,13 @@ function NetworksPage() {
               <NetworkExports />
               <hr />
               <ClustersButton
-                clustersTabs={clustersTabs}
-                handleChange={(label: string) => {
-                  handleClustersChange(label)
+                handleChange={(value: boolean) => {
+                  handleClustersChange(value)
                   resetFocus()
                 }}
                 show={ENABLE_DEV}
               />
-              <ClustersAnalytics clustersTabs={clustersTabs} show={ENABLE_DEV} />
+              <ClustersAnalytics />
             </Container>
           </Col>
         </Row>

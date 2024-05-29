@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import React, { Fragment } from "react"
 import { useIntl } from "react-intl"
 import { Container, Row, Button, Badge, BadgeGroup, Link, Text, Col } from "@dataesr/dsfr-plus"
 import Modal from "../../../components/modal"
@@ -11,15 +11,18 @@ import { encode } from "../../../utils/string"
 
 const ndisplay = 5
 
-function ClusterItem({
-  currentTab,
-  community,
-  setFocusItem,
-}: {
+type ClusterItemArgs = {
   currentTab: string
   community: NetworkCommunity
-  setFocusItem: any
-}) {
+  setFocusItem: React.Dispatch<React.SetStateAction<string>>
+}
+type ClustersSectionArgs = {
+  currentTab: string
+  enabled: boolean
+  setFocusItem: React.Dispatch<React.SetStateAction<string>>
+}
+
+function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
   const intl = useIntl()
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
   return (
@@ -68,15 +71,7 @@ function ClusterItem({
   )
 }
 
-export default function ClustersSection({
-  currentTab,
-  enabled,
-  setFocusItem,
-}: {
-  currentTab: string
-  enabled: boolean
-  setFocusItem: any
-}) {
+export default function ClustersSection({ currentTab, enabled, setFocusItem }: ClustersSectionArgs) {
   const intl = useIntl()
   const { search } = useSearchData(currentTab, enabled)
   const network = search?.data?.network as NetworkData

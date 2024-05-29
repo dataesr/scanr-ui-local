@@ -2,20 +2,18 @@ import { useIntl } from "react-intl"
 import { Row, Col, Button, ButtonGroup } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import useTab from "../hooks/useTab"
+import useClusters from "../hooks/useClusters"
 
-export default function ClustersButton({
-  clustersTabs,
-  handleChange,
-  show,
-}: {
-  clustersTabs: any
-  handleChange: any
+type ClustersButtonArgs = {
+  handleChange: (value: boolean) => void
   show: boolean
-}) {
+}
+
+export default function ClustersButton({ handleChange, show }: ClustersButtonArgs) {
   const intl = useIntl()
   const { currentTab } = useTab()
-  const enableClusters = show ? clustersTabs[currentTab] : false
-  const { search, currentQuery } = useSearchData(currentTab, enableClusters)
+  const { clusters: computeClusters } = useClusters()
+  const { search, currentQuery } = useSearchData(currentTab, computeClusters)
 
   if (!show) return null
 
@@ -25,12 +23,12 @@ export default function ClustersButton({
         <ButtonGroup size="md">
           <Button
             iconPosition="right"
-            icon={enableClusters ? "arrow-up-line" : "arrow-down-line"}
-            onClick={() => handleChange(currentTab)}
+            icon={computeClusters ? "arrow-up-line" : "arrow-down-line"}
+            onClick={() => handleChange(!computeClusters)}
             disabled={search.isFetching || Boolean(search.error) || !currentQuery}
           >
             {intl.formatMessage({
-              id: enableClusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
+              id: computeClusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
             })}
           </Button>
         </ButtonGroup>

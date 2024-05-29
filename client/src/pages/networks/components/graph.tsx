@@ -5,15 +5,13 @@ import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import useSearchData from "../hooks/useSearchData"
 import Error204 from "./error204"
 
-export default function Graph({
-  currentTab,
-  computeClusters,
-  focusItem,
-}: {
+type GraphArgs = {
   currentTab: string
   computeClusters: boolean
   focusItem: string
-}) {
+}
+
+export default function Graph({ currentTab, computeClusters, focusItem }: GraphArgs) {
   const { search, currentQuery, filters } = useSearchData(currentTab, false)
   const { search: searchClusters } = useSearchData(currentTab, computeClusters)
   const { locale: lang } = useDSFRConfig()
