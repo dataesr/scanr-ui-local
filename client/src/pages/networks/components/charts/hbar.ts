@@ -35,7 +35,7 @@ export default function getHorizontalBarChartOptions({
         formatter() {
           const points = this.chart.userOptions.series[0].data
           const y = points.filter((point) => point.name === this.value)[0]?.y
-          return `${this.value} (${isFloat(y) ? y.toFixed(1) : y}${unit})`
+          return `(${isFloat(y) ? y.toFixed(1) : y}${unit}) ${this.value}`
         },
       },
     },

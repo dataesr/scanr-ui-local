@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import { useIntl } from "react-intl"
 import { Container, Row, Button, Badge, BadgeGroup, Link, Text, Col } from "@dataesr/dsfr-plus"
-import Modal from "../../../components/modal"
+import SectionModal from "../../../components/modal"
 // import Gauge from "../../../components/gauge"
 import { PageSection } from "../../../components/page-content"
 import { NetworkCommunity, NetworkData } from "../../../types/network"
@@ -44,9 +44,6 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
             </Badge>
           </BadgeGroup>
         </Col>
-        {/* <Col>
-          <Gauge label="open access: " percent={community.oaPercent} color="#34CB6A" />
-        </Col> */}
       </Row>
       <Row>
         <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"█"} </div>
@@ -54,6 +51,10 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
           {community.label}
         </Button>
       </Row>
+      <Text size="sm" className="fr-mb-0">
+        <i>{community.topWeightNodes?.join(", ")}</i>
+        <i>{community.size > community.topWeightNodes.length ? ", ..." : "."}</i>
+      </Text>
       <Text bold size="sm" className="fr-mb-0">
         {community?.domains
           ? Object.entries(community.domains)
@@ -115,7 +116,7 @@ export default function ClustersSection({ currentTab, enabled, setFocusItem }: C
             </Row>
           ) : null}
           {communities?.length > 3 ? (
-            <Modal
+            <SectionModal
               id={sectionTitle}
               size="lg"
               title={intl.formatMessage({ id: sectionTitle }, { count: communities.length })}
@@ -125,7 +126,7 @@ export default function ClustersSection({ currentTab, enabled, setFocusItem }: C
                   <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
                 ))}
               </div>
-            </Modal>
+            </SectionModal>
           ) : null}
         </>
       </PageSection>

@@ -35,6 +35,20 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
   return labels
 }
 
+const communityGetTopWeightNodes = (graph: Graph, community: number, top = 10): Array<string> => {
+  const ids = communityGetIds(graph, community)
+  const weights = ids.map((id) => ({
+    id: id,
+    weight: graph.getNodeAttribute(id, "weight"),
+    label: graph.getNodeAttribute(id, "label"),
+  }))
+  const topWeights = weights
+    .sort((a, b) => b.weight - a.weight)
+    .map((item) => item.label)
+    .slice(0, top)
+  return topWeights
+}
+
 const communityGetYears = (hits: ElasticHits): Record<string, number> =>
   hits.reduce((acc, hit) => {
     const year = hit.year
@@ -86,6 +100,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         ids: communityGetIds(graph, index),
         maxYear: communityGetMaxYear(graph, index),
         maxWeightNodes: communityGetMaxWeightNodes(graph, index),
+        topWeightNodes: communityGetTopWeightNodes(graph, index),
         ...(hits && {
           hits: hits.length,
           years: communityGetYears(hits),

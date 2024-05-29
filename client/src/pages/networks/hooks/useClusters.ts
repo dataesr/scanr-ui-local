@@ -13,7 +13,6 @@ export default function useClusters() {
   const handleClustersChange = useCallback(
     (clusters: boolean) => {
       searchParams.set("clusters", stringClusters(clusters))
-      console.log(clusters, searchParams.get("clusters"), searchParams.get("tab"))
       setSearchParams(searchParams)
     },
     [searchParams, setSearchParams]
