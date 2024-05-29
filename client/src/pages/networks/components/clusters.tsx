@@ -46,7 +46,7 @@ function ClusterItem({
         </Col> */}
       </Row>
       <Row>
-        <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"|"} </div>
+        <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"█"} </div>
         <Button variant="text" className="fr-link" onClick={() => setFocusItem(community.maxWeightNodes[0])}>
           {community.label}
         </Button>
