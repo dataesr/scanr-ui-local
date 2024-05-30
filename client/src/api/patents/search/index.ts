@@ -10,7 +10,7 @@ import { FIELDS, LIGHT_SOURCE } from "../_utils/constants";
 const SORTER = [
   // requires a second field to sort on for elastic to return a cursor
   { _score: { order: "desc" } },
-  { id: { order: "desc" } },
+  { "id.keyword": { order: "desc" } },
 ];
 const HIGHLIGHT = {
   number_of_fragments: 3,
