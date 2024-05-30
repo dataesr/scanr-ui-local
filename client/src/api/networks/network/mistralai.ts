@@ -20,7 +20,7 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
         ${domains}`,
       },
     ],
-    model: "mistral-small-latest",
+    model: "open-mistral-7b",
     temperature: 0.3,
     response_format: { type: "json_object" },
     random_seed: 42,
