@@ -1,7 +1,6 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import { useIntl } from "react-intl"
 import { Container, Row, Button, Badge, BadgeGroup, Link, Text, Col } from "@dataesr/dsfr-plus"
-import SectionModal from "../../../components/modal"
 // import Gauge from "../../../components/gauge"
 import { PageSection } from "../../../components/page-content"
 import { NetworkCommunity, NetworkData } from "../../../types/network"
@@ -9,7 +8,7 @@ import useSearchData from "../hooks/useSearchData"
 import BaseSkeleton from "../../../components/skeleton/base-skeleton"
 import { encode } from "../../../utils/string"
 
-const ndisplay = 5
+const SEE_MORE_AFTER = 5
 
 type ClusterItemArgs = {
   currentTab: string
@@ -31,10 +30,10 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
         <Col>
           <BadgeGroup>
             <Badge size="sm" color="purple-glycine">
-              {`${community.size} ${currentTab}`}
+              {`${community.size} ${intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}`}
             </Badge>
             <Badge size="sm" color="pink-macaron">
-              {`${community.hits} publications`}
+              {`${community.hits} ${intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}`}
             </Badge>
             <Badge noIcon size="sm" color={oaColor(community.oaPercent)}>
               {`${intl.formatMessage({ id: "networks.section.clusters.open-access" })}: ${community.oaPercent.toFixed(1)}%`}
@@ -75,6 +74,7 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
 export default function ClustersSection({ currentTab, enabled, setFocusItem }: ClustersSectionArgs) {
   const intl = useIntl()
   const { search } = useSearchData(currentTab, enabled)
+  const [seeMore, setSeeMore] = useState(false)
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const sectionTitle = `networks.section.clusters.${currentTab}`
@@ -98,35 +98,21 @@ export default function ClustersSection({ currentTab, enabled, setFocusItem }: C
       >
         <>
           <div className="cluster-list">
-            {communities?.slice(0, ndisplay)?.map((community, index) => (
+            {communities?.slice(0, seeMore ? communities?.length + 1 : SEE_MORE_AFTER)?.map((community, index) => (
               <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
             ))}
           </div>
-          {communities?.length > ndisplay ? (
+          {communities?.length > SEE_MORE_AFTER ? (
             <Row horizontalAlign="right">
-              <Button
-                variant="secondary"
-                icon="arrow-right-s-line"
-                iconPosition="right"
-                aria-controls={sectionTitle}
-                data-fr-opened="false"
-              >
-                {intl.formatMessage({ id: "networks.section.clusters.open-modal-button" })}
+              <Button variant="secondary" size="sm" onClick={() => setSeeMore((prev: boolean) => !prev)}>
+                {seeMore
+                  ? intl.formatMessage({ id: "networks.section.clusters.see-less" })
+                  : intl.formatMessage(
+                      { id: "networks.section.clusters.see-more" },
+                      { count: communities?.length - SEE_MORE_AFTER }
+                    )}
               </Button>
             </Row>
-          ) : null}
-          {communities?.length > 3 ? (
-            <SectionModal
-              id={sectionTitle}
-              size="lg"
-              title={intl.formatMessage({ id: sectionTitle }, { count: communities.length })}
-            >
-              <div className="cluster-list">
-                {communities?.map((community, index) => (
-                  <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
-                ))}
-              </div>
-            </SectionModal>
           ) : null}
         </>
       </PageSection>

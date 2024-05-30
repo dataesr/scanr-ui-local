@@ -61,7 +61,11 @@
     "networks.analytics.clusters.size.title.structures": "Number of structures",
     "networks.analytics.clusters.size.title.domains": "Number of themes",
     "networks.analytics.clusters.size.title.software": "Number of software",
-    "networks.analytics.clusters.size.description": "Number of elements per community",
+    "networks.analytics.clusters.size.description.authors": "Number of authors per community",
+    "networks.analytics.clusters.size.description.institutions": "Number of institutions per community",
+    "networks.analytics.clusters.size.description.structures": "Number of structures per community",
+    "networks.analytics.clusters.size.description.domains": "Number of themes per community",
+    "networks.analytics.clusters.size.description.software": "Number of software per community",
     "networks.analytics.clusters.publications.title": "Number of publications",
     "networks.analytics.clusters.publications.description": "Number of publications per community",
     "networks.analytics.clusters.oa.title": "Open access rate",
@@ -75,5 +79,8 @@
     "networks.section.clusters.software": "{count, plural, one {# Software community*} other {Software communities* (#)}}",
     "networks.section.clusters.open-modal-button": "See full list",
     "networks.section.clusters.last-activity": "Last publication",
-    "networks.section.clusters.open-access": "Open access"
+    "networks.section.clusters.open-access": "Open access",
+    "networks.section.clusters.badge-publications": "Publications",
+    "networks.section.clusters.see-more": "See more({count})",
+    "networks.section.clusters.see-less": "Show less"
 }

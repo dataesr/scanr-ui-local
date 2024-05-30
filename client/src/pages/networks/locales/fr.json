@@ -40,7 +40,7 @@
     "networks.filters.active-filter-empty": "Aucun filtre actif",
     "search.top.filters.publications.title": "Filtrer les publications",
     "search.filters.publications.by-year": "Filtrer par année",
-    "search.filters.publications.by-year-description": "Période sélecionnée {min} - {max}",
+    "search.filters.publications.by-year-description": "Période sélectionnée {min} - {max}",
     "search.filters.publications.by-year-tooltip": "Publications en {year}",
     "search.filters.publications.by-project": "Filtrer par type de financements",
     "search.filters.publications.by-project-description": "Sélectionnez un ou plusieurs types de financements",
@@ -61,7 +61,11 @@
     "networks.analytics.clusters.size.title.structures": "Nombre de laboratoires",
     "networks.analytics.clusters.size.title.domains": "Nombre de thématiques",
     "networks.analytics.clusters.size.title.software": "Nombre de logiciels",
-    "networks.analytics.clusters.size.description": "Nombre d'élements par communauté",
+    "networks.analytics.clusters.size.description.authors": "Nombre d'auteurs par communauté",
+    "networks.analytics.clusters.size.description.institutions": "Nombre d'établissements par communauté",
+    "networks.analytics.clusters.size.description.structures": "Nombre de laboratoires par communauté",
+    "networks.analytics.clusters.size.description.domains": "Nombre de thématiques par communauté",
+    "networks.analytics.clusters.size.description.software": "Nombre de logiciels par communauté",
     "networks.analytics.clusters.publications.title": "Nombre de publications",
     "networks.analytics.clusters.publications.description": "Nombre de publications par communauté",
     "networks.analytics.clusters.oa.title": "Pourcentage d'accès ouvert",
@@ -75,5 +79,8 @@
     "networks.section.clusters.software": "{count, plural, one {# Communauté* de logiciels} other {Communautés* de logiciels (#)}}",
     "networks.section.clusters.open-modal-button": "Voir la liste complète",
     "networks.section.clusters.last-activity": "Dernière publication",
-    "networks.section.clusters.open-access": "Accès ouvert"
+    "networks.section.clusters.open-access": "Accès ouvert",
+    "networks.section.clusters.badge-publications": "Publications",
+    "networks.section.clusters.see-more": "En voir plus ({count})",
+    "networks.section.clusters.see-less": "Réduire"
 }

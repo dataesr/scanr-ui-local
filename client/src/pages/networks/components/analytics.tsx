@@ -46,7 +46,7 @@ export default function ClustersAnalytics() {
       <Col xs="12">
         <AnalyticsGraph
           title={intl.formatMessage({ id: `networks.analytics.clusters.size.title.${currentTab}` })}
-          description={intl.formatMessage({ id: "networks.analytics.clusters.size.description" })}
+          description={intl.formatMessage({ id: `networks.analytics.clusters.size.description.${currentTab}` })}
           options={sizeChartOptions}
         />
       </Col>
