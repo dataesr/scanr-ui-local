@@ -108,6 +108,7 @@ function NetworksPage() {
       </Container>
       <Container className="fr-mt-4w">
         <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
+        <Title as="h6">{intl.formatMessage({ id: "networks.header.subtitle" })}</Title>
         <Row>
           <Col xs="12" lg="8">
             <Container fluid as="section">
@@ -141,6 +142,7 @@ function NetworksPage() {
                 }}
                 show={ENABLE_DEV}
               />
+              <p  className="fr-text--xs fr-text-mention--grey">{intl.formatMessage({ id: 'networks.clusters.button.description' })}</p>
               <ClustersAnalytics />
             </Container>
           </Col>
