@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
-import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, Title, useDSFRConfig } from "@dataesr/dsfr-plus"
+import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../hooks/useScreenSize"
 import useUrl from "../search/hooks/useUrl"
 import useTab from "./hooks/useTab"
@@ -60,7 +60,6 @@ const networkQuery = (query: string) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
 const networkTabFindLabel = (index: number) => networkTabs[index].label
-// const networkTabsLabels = networkTabs.map(({ label }) => label)
 
 function NetworksPage() {
   const intl = useIntl()
@@ -108,7 +107,7 @@ function NetworksPage() {
       </Container>
       <Container className="fr-mt-4w">
         <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
-        <Title as="h6">{intl.formatMessage({ id: "networks.header.subtitle" })}</Title>
+        <Text size="lg">{intl.formatMessage({ id: "networks.header.subtitle" })}</Text>
         <Row>
           <Col xs="12" lg="8">
             <Container fluid as="section">
@@ -142,7 +141,9 @@ function NetworksPage() {
                 }}
                 show={ENABLE_DEV}
               />
-              <p  className="fr-text--xs fr-text-mention--grey">{intl.formatMessage({ id: 'networks.clusters.button.description' })}</p>
+              <p className="fr-text--xs fr-text-mention--grey">
+                {intl.formatMessage({ id: "networks.clusters.button.description" })}
+              </p>
               <ClustersAnalytics />
             </Container>
           </Col>
