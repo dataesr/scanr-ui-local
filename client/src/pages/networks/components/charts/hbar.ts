@@ -14,7 +14,7 @@ export default function getHorizontalBarChartOptions({
     chart: {
       type: "bar",
       marginLeft: 0,
-      height: height ? height : data.length * 30,
+      height: height ? height : Math.min(Math.max(80, data.length * 30), 300),
     },
     title: { text: title },
     subtitle: { text: subtitle },
