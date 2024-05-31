@@ -54,8 +54,6 @@ const NETWORK_TABS_MAPPING = {
   },
 }
 
-const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
-
 const networkQuery = (query: string) => query || "*"
 const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
@@ -66,13 +64,11 @@ function NetworksPage() {
   const { screen } = useScreenSize()
   const { currentQuery, handleQueryChange } = useUrl()
   const { currentTab, handleTabChange } = useTab()
-  const { clusters: computeClusters, handleClustersChange, disableClusters } = useClusters()
+  const { clusters: computeClusters, handleClustersChange } = useClusters()
   const [focusItem, setFocusItem] = useState("")
   const resetFocus = () => setFocusItem("")
 
   const isMobile = screen === "sm" || screen === "xs"
-
-  if (!ENABLE_DEV) disableClusters()
 
   return (
     <>
@@ -139,7 +135,7 @@ function NetworksPage() {
                   handleClustersChange(value)
                   resetFocus()
                 }}
-                show={ENABLE_DEV}
+                show={true}
               />
               <p className="fr-text--xs fr-text-mention--grey">
                 {intl.formatMessage({ id: "networks.clusters.button.description" })}
