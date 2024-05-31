@@ -54,6 +54,15 @@
   padding-top: 1rem !important;
 }
 
+.cluster-item {
+  padding-bottom: 1rem !important;
+}
+
+.cluster-list>.cluster-item:not(:first-child) {
+  border-top: 1px solid var(--border-default-grey);
+  padding-top: 2rem !important;
+}
+
 .filter-count-badge {
   position: absolute;
   top: -.5rem;
@@ -133,7 +142,7 @@ $icons: (
   ) ("check-double", "/icons/check-double.svg"
   ) ("hal", "/icons/hal.svg"
   ) ('wikipedia', '/icons/wikipedia.svg'
-);
+) ('shapes-line', '/icons/shapes-line.svg');
 
 @each $name, $mask in $icons {
 

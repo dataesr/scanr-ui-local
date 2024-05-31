@@ -4,7 +4,7 @@ import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits } from "../search/search"
 import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
 import { openAiLabeledClusters } from "./mistralai"
-import { vosColors } from "../_utils/constants"
+import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<string> | Array<number> =>
@@ -33,6 +33,20 @@ const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<stri
     []
   )
   return labels
+}
+
+const communityGetTopWeightNodes = (graph: Graph, community: number, top = 10): Array<string> => {
+  const ids = communityGetIds(graph, community)
+  const weights = ids.map((id) => ({
+    id: id,
+    weight: graph.getNodeAttribute(id, "weight"),
+    label: graph.getNodeAttribute(id, "label"),
+  }))
+  const topWeights = weights
+    .sort((a, b) => b.weight - a.weight)
+    .map((item) => item.label)
+    .slice(0, top)
+  return topWeights
 }
 
 const communityGetYears = (hits: ElasticHits): Record<string, number> =>
@@ -79,13 +93,14 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
       const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
 
       const community = {
-        cluster: index,
-        label: vosColors?.[index] ? GetColorName(vosColors[index]) : `Unnamed ${index + 1}`,
-        color: vosColors?.[index] ?? "#e2e2e2",
+        cluster: index + 1,
+        label: COLORS?.[index] ? GetColorName(COLORS[index]) : `Unnamed ${index + 1}`,
+        color: COLORS?.[index] ?? "#e2e2e2",
         size: communityGetSize(graph, index),
         ids: communityGetIds(graph, index),
         maxYear: communityGetMaxYear(graph, index),
         maxWeightNodes: communityGetMaxWeightNodes(graph, index),
+        topWeightNodes: communityGetTopWeightNodes(graph, index),
         ...(hits && {
           hits: hits.length,
           years: communityGetYears(hits),

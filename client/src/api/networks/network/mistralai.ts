@@ -1,6 +1,5 @@
 import { NetworkCommunities } from "../../../types/network"
 
-const ENABLE_DEV = import.meta.env.DEV || import.meta.env.MODE === "staging"
 const { VITE_MISTRAL_URL: MISTRAL_URL, VITE_MISTRAL_KEY: MISTRAL_KEY } = import.meta.env
 const headers = MISTRAL_KEY ? { Authorization: `Bearer ${MISTRAL_KEY}` } : {}
 const postHeaders = { ...headers, "Content-Type": "application/json" }
@@ -20,7 +19,7 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
         ${domains}`,
       },
     ],
-    model: "mistral-small-latest",
+    model: "open-mistral-7b",
     temperature: 0.3,
     response_format: { type: "json_object" },
     random_seed: 42,
@@ -38,8 +37,6 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
 }
 
 export async function openAiLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
-  if (!ENABLE_DEV) return clusters
-
   const prefix = "list"
   const domains = clusters?.reduce((acc, cluster, index) => {
     if (cluster?.domains) {

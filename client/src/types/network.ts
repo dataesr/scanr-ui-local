@@ -36,6 +36,7 @@ export type NetworkCommunity = {
   ids?: Array<string>
   maxYear?: number
   maxWeightNodes?: Array<string>
+  topWeightNodes?: Array<string>
   hits?: number
   years?: Record<string, number>
   domains?: Record<string, number>

@@ -2,7 +2,9 @@ import { useIntl } from "react-intl"
 import { Container, Row, Col, Title } from "@dataesr/dsfr-plus"
 import useUrl from "../../search/hooks/useUrl"
 
-export default function Home({ currentTab }: { currentTab: string }) {
+type HomeArgs = { currentTab: string }
+
+export default function Home({ currentTab }: HomeArgs) {
   const intl = useIntl()
   const { currentQuery } = useUrl()
 
