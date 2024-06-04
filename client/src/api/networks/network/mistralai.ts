@@ -11,7 +11,7 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
         role: "user",
         content: `
         You have been tasked with naming distinct fields of study for several communities of research publications.
-        Below are lists of topics representing each community.
+        Below are lists of topics and their weights representing each community.
         Your goal is to provide a unique and descriptive name for each field of study that best encapsulates the essence of the topics within that community.
         Each name should be unique and as short as possible.
         Output as JSON object with the list number and the single generated name.
@@ -43,7 +43,7 @@ export async function openAiLabeledClusters(clusters: NetworkCommunities): Promi
       const topDomains = Object.entries(cluster.domains)
         .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
         .slice(0, 10)
-        .map(([domain]) => `${domain}`)
+        .map(([domain, count]) => `${domain} (${count})`)
         .join(", ")
 
       acc = acc + `${prefix}${index + 1} = [${topDomains}], `
