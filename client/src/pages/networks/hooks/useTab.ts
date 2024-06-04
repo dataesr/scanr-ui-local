@@ -4,7 +4,7 @@ import { useMemo } from "react"
 
 export default function useTab() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const currentTab = searchParams.get("tab") || "authors"
+  const currentTab = searchParams.get("tab") || "domains"
 
   const handleTabChange = useCallback(
     (tab: string) => {

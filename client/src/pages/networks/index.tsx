@@ -27,25 +27,25 @@ const messages = Object.keys(modules).reduce((acc, key) => {
 }, {})
 
 const NETWORK_TABS_MAPPING = {
-  authors: {
+  domains: {
     index: 0,
+    label: "domains",
+    icon: "book-2-line",
+  },
+  authors: {
+    index: 1,
     label: "authors",
     icon: "user-line",
   },
   institutions: {
-    index: 1,
+    index: 2,
     label: "institutions",
     icon: "building-line",
   },
   structures: {
-    index: 2,
+    index: 3,
     label: "structures",
     icon: "microscope-line",
-  },
-  domains: {
-    index: 3,
-    label: "domains",
-    icon: "book-2-line",
   },
   software: {
     index: 4,
