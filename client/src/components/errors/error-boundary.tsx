@@ -18,7 +18,7 @@ class ErrorBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(error: Error): State {
-    console.log('ERROR_BOUNDARY', error);
+    console.error('ERROR_BOUNDARY', error);
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error: error.message };
   }

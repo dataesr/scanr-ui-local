@@ -55,7 +55,7 @@ export async function openAiLabeledClusters(clusters: NetworkCommunities): Promi
 
   const mistral_labels = await mistralLabelsFromDomains(domains).then(
     (response) => JSON.parse(response),
-    (err) => console.log(err)
+    (err) => console.error(err)
   )
   if (!mistral_labels || mistral_labels.constructor != Object) {
     return clusters

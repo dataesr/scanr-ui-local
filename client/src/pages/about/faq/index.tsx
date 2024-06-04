@@ -31,7 +31,6 @@ export default function FAQ() {
   const { locale } = useDSFRConfig();
   const [searchParams, setSearchParams] = useSearchParams();
   const questionIdFromParams = searchParams.get("question");
-  console.log(questionIdFromParams);
   const [selectedQuestion, setSelectedQuestion] =
     useState(questionIdFromParams);
 
