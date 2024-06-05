@@ -87,7 +87,7 @@ function NetworksPage() {
                 isLarge
                 buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
+                placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
                 onSearch={(value) => {
                   handleQueryChange(networkQuery(value))
                   resetFocus()
