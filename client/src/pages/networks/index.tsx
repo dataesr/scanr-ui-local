@@ -12,6 +12,7 @@ import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
 import NetworkExports from "./components/exports"
 import ClustersAnalytics from "./components/analytics"
+import Info from "./components/info"
 import { useState } from "react"
 
 const modules = import.meta.glob("./locales/*.json", {
@@ -103,7 +104,9 @@ function NetworksPage() {
       </Container>
       <Container className="fr-mt-4w">
         <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
-        <Text size="lg">{intl.formatMessage({ id: "networks.header.subtitle" })}</Text>
+        <Text as="p" size="lg">
+          {intl.formatMessage({ id: "networks.header.subtitle" })} <Info href="/about/FAQ?question=q58" />
+        </Text>
         <Row>
           <Col xs="12" lg="8">
             <Container fluid as="section">
