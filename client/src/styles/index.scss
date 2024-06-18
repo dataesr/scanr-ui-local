@@ -167,6 +167,14 @@
   }
 }
 
+.icon-link {
+  background-image: none !important;
+
+  &:after {
+    display: none !important;
+  }
+}
+
 .fr-follow .fr-btn--hal::before {
   -webkit-mask-image: url("/icons/logo/hal.svg");
   mask-image: url("/icons/logo/hal.svg");
