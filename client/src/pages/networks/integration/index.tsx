@@ -123,7 +123,7 @@ function NetworksIntegrationPage() {
                     <hr />
                   </>
                 )}
-                {integrationOptions?.displayClustersButton && (
+                {integrationOptions?.enableClustersButton && (
                   <>
                     <ClustersButton
                       handleChange={(value: boolean) => {
