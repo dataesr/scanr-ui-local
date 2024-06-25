@@ -1,5 +1,6 @@
+import { useState } from "react"
 import { useIntl, createIntl, RawIntlProvider } from "react-intl"
-import { Container, Row, Col, SearchBar, Tabs, Tab, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus"
+import { Container, Row, Col, SearchBar, Tabs, Tab, Title, Text } from "@dataesr/dsfr-plus"
 import { networkTabs, networkTabFindLabel, networkTabFindIndex } from "../config/tabs"
 import { networkQuery } from "../config/query"
 import { messages } from "../config/messages"
@@ -17,7 +18,7 @@ import PublicationFilters from "../../search/components/publications/filters"
 import NetworkExports from "../components/exports"
 import ClustersAnalytics from "../components/analytics"
 import Info from "../components/info"
-import { useState } from "react"
+import locals from "./config/locals.json"
 
 function NetworksPage() {
   const intl = useIntl()
@@ -31,18 +32,36 @@ function NetworksPage() {
 
   const isLarge = screen === "lg" || screen === "xl"
 
-  if (!integrationId) return null
+  if (!integrationId) return "BSO local not defined."
+
+  const integrationComments: string =
+    (intl.locale === "en" ? locals?.[integrationId]?.commentsNameEN : locals?.[integrationId]?.commentsName) || ""
 
   return (
     <>
       <Container className="fr-mt-4w">
         {integrationOptions?.displayTitle && (
           <>
-            <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
+            <Title as="h3">
+              {intl.formatMessage({ id: "networks.header.title" }).concat(" ", integrationComments).trim()}
+            </Title>
             <Text as="p" size="lg">
               {intl.formatMessage({ id: "networks.header.subtitle" })} <Info href="/about/FAQ?question=q58" />
             </Text>
           </>
+        )}
+        {!isLarge && integrationOptions?.enableSearch && (
+          <SearchBar
+            className="fr-mb-2w"
+            key={currentQuery}
+            buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
+            defaultValue={currentQuery || ""}
+            placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
+            onSearch={(value) => {
+              handleQueryChange(networkQuery(value))
+              resetFocus()
+            }}
+          />
         )}
         {integrationOptions?.enableFilters && (
           <Col xs="12" sm="4" lg="2">
@@ -76,7 +95,7 @@ function NetworksPage() {
           </Col>
           <Col xs="12" lg="4">
             <Container fluid={!isLarge}>
-              {integrationOptions?.enableSearch && (
+              {isLarge && integrationOptions?.enableSearch && (
                 <SearchBar
                   className="fr-mb-2w"
                   key={currentQuery}
@@ -125,7 +144,7 @@ function NetworksPage() {
 }
 
 export default function Networks() {
-  const { locale } = useDSFRConfig()
+  const { integrationLang: locale } = useIntegration()
   const intl = createIntl({
     locale,
     messages: messages[locale],

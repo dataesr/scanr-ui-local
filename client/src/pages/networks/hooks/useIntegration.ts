@@ -7,6 +7,8 @@ export default function useIntegration() {
   const [searchParams] = useSearchParams()
   const integrationId = window.location.href.includes("integration") ? searchParams.get("local") : undefined
 
+  const integrationLang = searchParams.get("lang") || "fr"
+
   const integrationOptions = integrationId
     ? {
         displayTitle: getBooleanParam(searchParams.get("displayTitle")),
@@ -20,7 +22,7 @@ export default function useIntegration() {
     : undefined
 
   const values = useMemo(() => {
-    return { integrationId, integrationOptions }
-  }, [integrationId, integrationOptions])
+    return { integrationId, integrationLang, integrationOptions }
+  }, [integrationId, integrationLang, integrationOptions])
   return values
 }
