@@ -26,15 +26,16 @@ function NetworksIntegrationPage() {
   const { currentQuery, handleQueryChange } = useUrl()
   const { currentTab, handleTabChange } = useTab()
   const { clusters: computeClusters, handleClustersChange } = useClusters()
-  const { integrationId, integrationOptions } = useIntegration()
+  const { integrationId, integrationOptions, displaySidePanel } = useIntegration()
   const [focusItem, setFocusItem] = useState("")
   const resetFocus = () => setFocusItem("")
 
   const isLarge = screen === "lg" || screen === "xl"
+  console.log("displayPanel", displaySidePanel)
 
   if (!integrationId) return "BSO local not defined."
 
-  const locals = getBsoLocals()
+  const locals = integrationOptions?.displayTitle ? getBsoLocals() : {}
   const integrationComments: string =
     (intl.locale === "en" ? locals?.[integrationId]?.commentsNameEN : locals?.[integrationId]?.commentsName) || ""
 
@@ -51,7 +52,7 @@ function NetworksIntegrationPage() {
             </Text>
           </>
         )}
-        {!isLarge && integrationOptions?.enableSearch && (
+        {(!isLarge || !displaySidePanel) && integrationOptions?.enableSearch && (
           <SearchBar
             className="fr-mb-2w"
             key={currentQuery}
@@ -72,7 +73,7 @@ function NetworksIntegrationPage() {
       </Container>
       <Container className="fr-mt-4w">
         <Row>
-          <Col xs="12" lg="8">
+          <Col xs="12" lg={displaySidePanel ? "8" : "12"}>
             <Container fluid>
               <Tabs
                 className="fr-mb-4w"
@@ -94,49 +95,51 @@ function NetworksIntegrationPage() {
               {isLarge && <ClustersSection currentTab={currentTab} enabled={computeClusters} setFocusItem={setFocusItem} />}
             </Container>
           </Col>
-          <Col xs="12" lg="4">
-            <Container fluid={!isLarge}>
-              {isLarge && integrationOptions?.enableSearch && (
-                <SearchBar
-                  className="fr-mb-2w"
-                  key={currentQuery}
-                  buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
-                  defaultValue={currentQuery || ""}
-                  placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
-                  onSearch={(value) => {
-                    handleQueryChange(networkQuery(value))
-                    resetFocus()
-                  }}
-                />
-              )}
-              {integrationOptions?.enableFilters && (
-                <>
-                  <NetworkFilters />
-                  <hr />
-                </>
-              )}
-              {integrationOptions?.enableExports && (
-                <>
-                  <NetworkExports />
-                  <hr />
-                </>
-              )}
-              {integrationOptions?.displayClustersButton && (
-                <>
-                  <ClustersButton
-                    handleChange={(value: boolean) => {
-                      handleClustersChange(value)
+          {displaySidePanel && (
+            <Col xs="12" lg="4">
+              <Container fluid={!isLarge}>
+                {isLarge && integrationOptions?.enableSearch && (
+                  <SearchBar
+                    className="fr-mb-2w"
+                    key={currentQuery}
+                    buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
+                    defaultValue={currentQuery || ""}
+                    placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
+                    onSearch={(value) => {
+                      handleQueryChange(networkQuery(value))
                       resetFocus()
                     }}
                   />
-                  <p className="fr-text--xs fr-text-mention--grey">
-                    {intl.formatMessage({ id: "networks.clusters.button.description" })}
-                  </p>
-                </>
-              )}
-              {integrationOptions?.displayClustersAnalytics && <ClustersAnalytics />}
-            </Container>
-          </Col>
+                )}
+                {integrationOptions?.enableFilters && (
+                  <>
+                    <NetworkFilters />
+                    <hr />
+                  </>
+                )}
+                {integrationOptions?.enableExports && (
+                  <>
+                    <NetworkExports />
+                    <hr />
+                  </>
+                )}
+                {integrationOptions?.displayClustersButton && (
+                  <>
+                    <ClustersButton
+                      handleChange={(value: boolean) => {
+                        handleClustersChange(value)
+                        resetFocus()
+                      }}
+                    />
+                    <p className="fr-text--xs fr-text-mention--grey">
+                      {intl.formatMessage({ id: "networks.clusters.button.description" })}
+                    </p>
+                  </>
+                )}
+                {integrationOptions?.displayClustersAnalytics && <ClustersAnalytics />}
+              </Container>
+            </Col>
+          )}
         </Row>
         {!isLarge && <ClustersSection currentTab={currentTab} enabled={computeClusters} setFocusItem={setFocusItem} />}
       </Container>

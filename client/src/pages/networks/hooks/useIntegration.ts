@@ -1,9 +1,11 @@
 import { useSearchParams } from "react-router-dom"
 import { useMemo } from "react"
+import useClusters from "./useClusters"
 
 const getBooleanParam = (param: string) => (param ? (param.toLowerCase() === "true" ? true : false) : true)
 
 export default function useIntegration() {
+  const { clusters: displayClusters } = useClusters()
   const [searchParams] = useSearchParams()
   const integrationId = window.location.href.includes("integration") ? searchParams.get("local") : undefined
 
@@ -21,8 +23,14 @@ export default function useIntegration() {
       }
     : undefined
 
+  const displaySidePanel =
+    integrationOptions?.enableFilters ||
+    integrationOptions?.enableExports ||
+    integrationOptions?.displayClustersButton ||
+    (displayClusters && integrationOptions?.displayClustersAnalytics)
+
   const values = useMemo(() => {
-    return { integrationId, integrationLang, integrationOptions }
-  }, [integrationId, integrationLang, integrationOptions])
+    return { integrationId, integrationLang, integrationOptions, displaySidePanel }
+  }, [integrationId, integrationLang, integrationOptions, displaySidePanel])
   return values
 }
