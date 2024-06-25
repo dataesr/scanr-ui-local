@@ -66,7 +66,7 @@ function NetworksPage() {
                 }}
               >
                 {networkTabs
-                  .filter(({ label }) => (integrationOptions?.singleTab ? label === currentTab : true))
+                  .filter(({ label }) => (!integrationOptions?.enableTabs ? label === currentTab : true))
                   .map(({ label, icon }) => (
                     <Tab index={label} label={intl.formatMessage({ id: `networks.header.tab.${label}` })} icon={icon}>
                       <Home currentTab={label} />
