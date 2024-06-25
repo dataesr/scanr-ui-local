@@ -7,15 +7,15 @@ export default function useIntegration() {
 
   const integrationOptions = integrationId
     ? {
-        displayTitle: searchParams.get("displayTitle") ?? true,
-        displayClustersAnalytics: searchParams.get("clustersAnalytics") ?? true,
-        displayClustersButton: searchParams.get("clustersButton") ?? true,
-        enableSearch: searchParams.get("enableSearch") ?? true,
-        enableFilters: searchParams.get("enableFilters") ?? true,
-        enableExports: searchParams.get("enableExports") ?? true,
-        singleTab: searchParams.get("singleTab") ?? false,
+        displayTitle: !searchParams.has("hideTitle"),
+        displayClustersAnalytics: !searchParams.has("hideAnalytics"),
+        displayClustersButton: !searchParams.has("hideButton"),
+        enableSearch: !searchParams.has("disableSearch"),
+        enableFilters: !searchParams.has("disableFilters"),
+        enableExports: !searchParams.has("disableExports"),
+        singleTab: searchParams.get("singleTab") || false,
       }
-    : {}
+    : undefined
 
   const values = useMemo(() => {
     return { integrationId, integrationOptions }
