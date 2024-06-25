@@ -30,6 +30,7 @@ import Accessibility from "./pages/about/accessibility";
 import OrganizationsDocs from "./pages/docs/objects/organizations";
 import PersonsDocs from "./pages/docs/objects/persons";
 import Overview from "./pages/docs/objects/overview";
+import NetworksIntegration from "./pages/networks/integration"
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -53,14 +54,8 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="/docs" element={<DocsLayout />}>
             <Route path="objects/projects" element={<ProjectsDocs />} />
-            <Route
-              path="objects/publications"
-              element={<ScanrPublicationsDocs />}
-            />
-            <Route
-              path="objects/organizations"
-              element={<OrganizationsDocs />}
-            />
+            <Route path="objects/publications" element={<ScanrPublicationsDocs />} />
+            <Route path="objects/organizations" element={<OrganizationsDocs />} />
             <Route path="objects/persons" element={<PersonsDocs />} />
             <Route path="quick-start" element={<div>QuickStart</div>} />
             <Route path="overview/" element={<Overview />} />
@@ -72,10 +67,7 @@ export default function Router() {
           <Route path="/about/resources" element={<Resources />} />
           <Route path="/about/contact" element={<ContactPage />} />
           <Route path="/about/tutorials" element={<Tutorial />} />
-          <Route
-            path="/about/resources/:id"
-            element={<ResourcesInformations />}
-          />
+          <Route path="/about/resources/:id" element={<ResourcesInformations />} />
           {/* <Route path="/about/tutorial" element={<Tutorial />} /> */}
           {/* <Route path="/about/glossary" element={<Glossary />} /> */}
           <Route path="/bugs/:api/:id" element={<BugsReport />} />
@@ -98,13 +90,11 @@ export default function Router() {
             <Route path="patents" element={<Search />} />
           </Route>
           <Route path="/networks" element={<Networks />} />
-          <Route
-            path="/trouver-des-partenaires-pour-horizon-europe/:id"
-            element={<HEPartners />}
-          />
+          <Route path="/trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
           <Route path="*" element={<Error404 error={null} />} />
         </Route>
+        <Route path="/networks/integration" element={<NetworksIntegration />} />
       </Routes>
     </>
-  );
+  )
 }

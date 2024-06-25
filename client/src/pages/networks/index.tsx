@@ -1,5 +1,8 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus"
+import { networkTabs, networkTabFindLabel, networkTabFindIndex } from "./config/tabs"
+import { networkQuery } from "./config/query"
+import { messages } from "./config/messages"
 import useScreenSize from "../../hooks/useScreenSize"
 import useUrl from "../search/hooks/useUrl"
 import useTab from "./hooks/useTab"
@@ -15,51 +18,6 @@ import ClustersAnalytics from "./components/analytics"
 import Info from "./components/info"
 import { useState } from "react"
 
-const modules = import.meta.glob("./locales/*.json", {
-  eager: true,
-  import: "default",
-})
-const messages = Object.keys(modules).reduce((acc, key) => {
-  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1]
-  if (locale) {
-    return { ...acc, [locale]: modules[key] }
-  }
-  return acc
-}, {})
-
-const NETWORK_TABS_MAPPING = {
-  domains: {
-    index: 0,
-    label: "domains",
-    icon: "book-2-line",
-  },
-  authors: {
-    index: 1,
-    label: "authors",
-    icon: "user-line",
-  },
-  institutions: {
-    index: 2,
-    label: "institutions",
-    icon: "building-line",
-  },
-  structures: {
-    index: 3,
-    label: "structures",
-    icon: "microscope-line",
-  },
-  software: {
-    index: 4,
-    label: "software",
-    icon: "terminal-box-line",
-  },
-}
-
-const networkQuery = (query: string) => query || "*"
-const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
-const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
-const networkTabFindLabel = (index: number) => networkTabs[index].label
-
 function NetworksPage() {
   const intl = useIntl()
   const { screen } = useScreenSize()
@@ -73,7 +31,7 @@ function NetworksPage() {
 
   return (
     <>
-      <Container className={"bg-network"} fluid>
+      <Container className="bg-network" fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
             <Link href="/">
@@ -138,7 +96,6 @@ function NetworksPage() {
                   handleClustersChange(value)
                   resetFocus()
                 }}
-                show={true}
               />
               <p className="fr-text--xs fr-text-mention--grey">
                 {intl.formatMessage({ id: "networks.clusters.button.description" })}
