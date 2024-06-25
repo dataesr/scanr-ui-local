@@ -30,7 +30,7 @@ import Accessibility from "./pages/about/accessibility";
 import OrganizationsDocs from "./pages/docs/objects/organizations";
 import PersonsDocs from "./pages/docs/objects/persons";
 import Overview from "./pages/docs/objects/overview";
-import Integration from "./pages/networks/integration"
+import NetworksIntegration from "./pages/networks/integration"
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -93,7 +93,7 @@ export default function Router() {
           <Route path="/trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
           <Route path="*" element={<Error404 error={null} />} />
         </Route>
-        <Route path="/integration" element={<Integration />} />
+        <Route path="/networks/integration" element={<NetworksIntegration />} />
       </Routes>
     </>
   )

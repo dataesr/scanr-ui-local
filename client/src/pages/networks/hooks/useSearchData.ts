@@ -12,7 +12,6 @@ export default function useSearchData(networkTab: string, computeClusters: boole
   const { currentTab } = useTab()
   const { locale } = useDSFRConfig()
 
-  if (integrationId) filters.push({ term: { bso_local_affiliations: integrationId } })
   const lang = integrationId ? integrationLang : locale
 
   const { data, error, isFetching } = useQuery({
