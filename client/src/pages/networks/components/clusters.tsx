@@ -73,13 +73,13 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
 
 export default function ClustersSection({ currentTab, enabled, setFocusItem }: ClustersSectionArgs) {
   const intl = useIntl()
-  const { search } = useSearchData(currentTab, enabled)
+  const { search, currentQuery } = useSearchData(currentTab, enabled)
   const [seeMore, setSeeMore] = useState(false)
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const sectionTitle = `networks.section.clusters.${currentTab}`
 
-  if (!enabled) return null
+  if (!currentQuery || !enabled) return null
 
   if (search.isFetching)
     return (
