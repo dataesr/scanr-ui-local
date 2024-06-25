@@ -18,7 +18,7 @@ import PublicationFilters from "../../search/components/publications/filters"
 import NetworkExports from "../components/exports"
 import ClustersAnalytics from "../components/analytics"
 import Info from "../components/info"
-import locals from "./config/locals.json"
+import getBsoLocals from "./config"
 
 function NetworksPage() {
   const intl = useIntl()
@@ -34,6 +34,7 @@ function NetworksPage() {
 
   if (!integrationId) return "BSO local not defined."
 
+  const locals = getBsoLocals()
   const integrationComments: string =
     (intl.locale === "en" ? locals?.[integrationId]?.commentsNameEN : locals?.[integrationId]?.commentsName) || ""
 
@@ -143,7 +144,7 @@ function NetworksPage() {
   )
 }
 
-export default function Networks() {
+export default function NetworksIntegration() {
   const { integrationLang: locale } = useIntegration()
   const intl = createIntl({
     locale,

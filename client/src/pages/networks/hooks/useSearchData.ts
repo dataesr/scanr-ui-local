@@ -8,11 +8,12 @@ import useIntegration from "./useIntegration"
 
 export default function useSearchData(networkTab: string, computeClusters: boolean) {
   const { currentQuery, filters } = useUrl()
-  const { integrationId } = useIntegration()
+  const { integrationId, integrationLang } = useIntegration()
   const { currentTab } = useTab()
-  const { locale: lang } = useDSFRConfig()
+  const { locale } = useDSFRConfig()
 
   if (integrationId) filters.push({ term: { bso_local_affiliations: integrationId } })
+  const lang = integrationId ? integrationLang : locale
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["network", networkTab, currentQuery, filters, computeClusters, lang],
