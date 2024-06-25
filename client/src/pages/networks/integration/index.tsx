@@ -31,7 +31,6 @@ function NetworksIntegrationPage() {
   const resetFocus = () => setFocusItem("")
 
   const isLarge = screen === "lg" || screen === "xl"
-  console.log("displayPanel", displaySidePanel)
 
   if (!integrationId) return "BSO local not defined."
 
@@ -57,7 +56,7 @@ function NetworksIntegrationPage() {
             className="fr-mb-2w"
             key={currentQuery}
             buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
-            defaultValue={currentQuery || ""}
+            defaultValue={!currentQuery || currentQuery === "*" ? "" : currentQuery}
             placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
             onSearch={(value) => {
               handleQueryChange(networkQuery(value))
@@ -103,7 +102,7 @@ function NetworksIntegrationPage() {
                     className="fr-mb-2w"
                     key={currentQuery}
                     buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
-                    defaultValue={currentQuery || ""}
+                    defaultValue={!currentQuery || currentQuery === "*" ? "" : currentQuery}
                     placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
                     onSearch={(value) => {
                       handleQueryChange(networkQuery(value))
