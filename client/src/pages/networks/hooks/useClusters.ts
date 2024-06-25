@@ -5,14 +5,11 @@ import { useMemo } from "react"
 export default function useClusters() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const stringClusters = (clusters: boolean) => (clusters ? "true" : "false")
-  const booleanClusters = (clusters: string) => (clusters === "true" ? true : false)
-
-  const clusters = booleanClusters(searchParams.get("clusters") || "false")
+  const clusters = searchParams.get("clusters") === "true" ? true : false
 
   const handleClustersChange = useCallback(
     (clusters: boolean) => {
-      searchParams.set("clusters", stringClusters(clusters))
+      searchParams.set("clusters", clusters === true ? "true" : "false")
       setSearchParams(searchParams)
     },
     [searchParams, setSearchParams]
