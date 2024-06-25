@@ -30,6 +30,8 @@ function NetworksPage() {
   const resetFocus = () => setFocusItem("")
   const isMobile = screen === "sm" || screen === "xs"
 
+  console.log("options", integrationOptions)
+
   return (
     <>
       <Container className="bg-network" fluid>
@@ -117,7 +119,7 @@ function NetworksPage() {
                   </p>
                 </>
               )}
-              {integrationOptions?.displayClusters && integrationOptions?.displayClustersAnalytics && <ClustersAnalytics />}
+              {integrationOptions?.displayClustersAnalytics && <ClustersAnalytics />}
             </Container>
           </Col>
         </Row>

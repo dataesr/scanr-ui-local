@@ -8,9 +8,8 @@ export default function useIntegration() {
   const integrationOptions = integrationId
     ? {
         displayTitle: searchParams.get("displayTitle") ?? true,
-        displayClusters: searchParams.get("displayClusters") ?? true,
-        displayClustersAnalytics: searchParams.get("displayClustersAnalytics") ?? true,
-        displayClustersButton: searchParams.get("displayClustersButton") ?? true,
+        displayClustersAnalytics: searchParams.get("clustersAnalytics") ?? true,
+        displayClustersButton: searchParams.get("clustersButton") ?? true,
         enableSearch: searchParams.get("enableSearch") ?? true,
         enableFilters: searchParams.get("enableFilters") ?? true,
         enableExports: searchParams.get("enableExports") ?? true,
