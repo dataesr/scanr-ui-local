@@ -28,33 +28,16 @@ function NetworksPage() {
   const { integrationOptions } = useIntegration()
   const [focusItem, setFocusItem] = useState("")
   const resetFocus = () => setFocusItem("")
+
   const isMobile = screen === "sm" || screen === "xs"
+  const isLarge = screen === "lg"
+
+  console.log("screen", screen, "isMobile", isMobile)
 
   console.log("options", integrationOptions)
 
   return (
     <>
-      <Container>
-        {integrationOptions?.enableFilters && (
-          <Col xs="12" sm="4" lg="2">
-            <PublicationFilters />
-          </Col>
-        )}
-        {isMobile && integrationOptions?.enableSearch && (
-          <SearchBar
-            className="fr-mb-2w"
-            key={currentQuery}
-            buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
-            defaultValue={currentQuery || ""}
-            placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
-            onSearch={(value) => {
-              handleQueryChange(networkQuery(value))
-              resetFocus()
-            }}
-          />
-        )}
-        {isMobile && integrationOptions?.enableFilters && <NetworkFilters />}
-      </Container>
       <Container className="fr-mt-4w">
         {integrationOptions?.displayTitle && (
           <>
@@ -64,10 +47,18 @@ function NetworksPage() {
             </Text>
           </>
         )}
+        {integrationOptions?.enableFilters && (
+          <Col xs="12" sm="4" lg="2">
+            <PublicationFilters />
+          </Col>
+        )}
+      </Container>
+      <Container className="fr-mt-4w">
         <Row>
           <Col xs="12" lg="8">
-            <Container fluid as="section">
+            <Container fluid>
               <Tabs
+                className="fr-mb-4w"
                 defaultActiveIndex={networkTabFindIndex(currentTab)}
                 onTabChange={(index) => {
                   handleTabChange(networkTabFindLabel(index))
@@ -83,12 +74,12 @@ function NetworksPage() {
                     </Tab>
                   ))}
               </Tabs>
-              <ClustersSection currentTab={currentTab} enabled={computeClusters} setFocusItem={setFocusItem} />
+              {isLarge && <ClustersSection currentTab={currentTab} enabled={computeClusters} setFocusItem={setFocusItem} />}
             </Container>
           </Col>
           <Col xs="12" lg="4">
-            <Container className={isMobile ? "fr-ml-0" : "fr-ml-1w"}>
-              {!isMobile && integrationOptions?.enableSearch && (
+            <Container fluid={!isLarge}>
+              {integrationOptions?.enableSearch && (
                 <SearchBar
                   className="fr-mb-2w"
                   key={currentQuery}
@@ -101,7 +92,7 @@ function NetworksPage() {
                   }}
                 />
               )}
-              {!isMobile && integrationOptions?.enableFilters && (
+              {integrationOptions?.enableFilters && (
                 <>
                   <NetworkFilters />
                   <hr />
@@ -130,6 +121,7 @@ function NetworksPage() {
             </Container>
           </Col>
         </Row>
+        {!isLarge && <ClustersSection currentTab={currentTab} enabled={computeClusters} setFocusItem={setFocusItem} />}
       </Container>
     </>
   )
