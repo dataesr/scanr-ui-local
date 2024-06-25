@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Row, Col, SearchBar, Tabs, Tab, Title, Text } from "@dataesr/dsfr-plus"
 import { networkTabs, networkTabFindLabel, networkTabFindIndex } from "../config/tabs"
@@ -20,7 +20,7 @@ import ClustersAnalytics from "../components/analytics"
 import Info from "../components/info"
 import getBsoLocals from "./config"
 
-function NetworksPage() {
+function NetworksIntegrationPage() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { currentQuery, handleQueryChange } = useUrl()
@@ -152,7 +152,9 @@ export default function NetworksIntegration() {
   })
   return (
     <RawIntlProvider value={intl}>
-      <NetworksPage />
+      <Suspense>
+        <NetworksIntegrationPage />
+      </Suspense>
     </RawIntlProvider>
   )
 }
