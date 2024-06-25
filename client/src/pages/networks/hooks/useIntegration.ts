@@ -15,7 +15,7 @@ export default function useIntegration() {
     ? {
         displayTitle: getBooleanParam(searchParams.get("displayTitle")),
         displayClustersAnalytics: getBooleanParam(searchParams.get("displayAnalytics")),
-        displayClustersButton: getBooleanParam(searchParams.get("displayButton")),
+        enableClustersButton: getBooleanParam(searchParams.get("enableButton")),
         enableSearch: getBooleanParam(searchParams.get("enableSearch")),
         enableFilters: getBooleanParam(searchParams.get("enableFilters")),
         enableExports: getBooleanParam(searchParams.get("enableExports")),
@@ -26,7 +26,7 @@ export default function useIntegration() {
   const displaySidePanel =
     integrationOptions?.enableFilters ||
     integrationOptions?.enableExports ||
-    integrationOptions?.displayClustersButton ||
+    integrationOptions?.enableClustersButton ||
     (displayClusters && integrationOptions?.displayClustersAnalytics)
 
   const values = useMemo(() => {
