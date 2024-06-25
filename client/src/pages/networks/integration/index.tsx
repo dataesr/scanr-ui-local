@@ -25,16 +25,13 @@ function NetworksPage() {
   const { currentQuery, handleQueryChange } = useUrl()
   const { currentTab, handleTabChange } = useTab()
   const { clusters: computeClusters, handleClustersChange } = useClusters()
-  const { integrationOptions } = useIntegration()
+  const { integrationId, integrationOptions } = useIntegration()
   const [focusItem, setFocusItem] = useState("")
   const resetFocus = () => setFocusItem("")
 
-  const isMobile = screen === "sm" || screen === "xs"
-  const isLarge = screen === "lg"
+  const isLarge = screen === "lg" || screen === "xl"
 
-  console.log("screen", screen, "isMobile", isMobile)
-
-  console.log("options", integrationOptions)
+  if (!integrationId) return null
 
   return (
     <>
