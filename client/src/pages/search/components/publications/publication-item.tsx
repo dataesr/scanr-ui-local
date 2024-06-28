@@ -21,6 +21,9 @@ export default function PublicationItem({
       queryFn: () => getPublicationById(id),
     });
   }
+  const directors =
+    publication.authors?.filter((author) => author.role === "directeurthese") ||
+    [];
 
   return (
     <Fragment key={publication.id}>
@@ -59,23 +62,46 @@ export default function PublicationItem({
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {publication?.authors?.slice(0, 5).map((author, index) => (
-            <Fragment key={index}>
-              {index > 0 && ", "}
-              {author.person ? (
-                <Link href={`/authors/${encode(author.person)}`}>
-                  {author.fullName}
-                </Link>
-              ) : (
-                author.fullName
-              )}
-            </Fragment>
-          ))}
+          {publication?.authors
+            ?.filter(
+              (author) =>
+                !directors.some((director) => director.person === author.person)
+            )
+            .slice(0, 5)
+            .map((author, index) => (
+              <Fragment key={index}>
+                {index > 0 && ", "}
+                {author.person ? (
+                  <Link href={`/authors/${encode(author.person)}`}>
+                    {author.fullName}
+                  </Link>
+                ) : (
+                  author.fullName
+                )}
+              </Fragment>
+            ))}
           {publication?.authors?.length > 5 && (
             <Text bold as="span">
               <i> et al.</i>
             </Text>
           )}
+          {!!directors.length &&
+            intl.formatMessage({ id: "search.publication.thesis.directed" })}
+          {directors.map((director, index) => (
+            <Fragment key={index}>
+              <Link href={`/authors/${encode(director.person)}`}>
+                {director.fullName}
+              </Link>
+              {(directors.length === 2 && index === 0) ||
+              index === directors.length - 2
+                ? intl.formatMessage({
+                    id: "search.publications.thesis.and",
+                  })
+                : index < directors.length - 1
+                ? ", "
+                : ""}
+            </Fragment>
+          ))}
         </Text>
         <Text size="sm" className="fr-card__detail fr-mb-0">
           <i>

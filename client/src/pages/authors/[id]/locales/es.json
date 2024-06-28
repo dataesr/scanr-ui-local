@@ -33,5 +33,7 @@
     "search.publications.openAccess": "Acceso abierto",
     "search.publications.closedAccess": "Acceso cerrado",
     "search.publications.other": "Otro",
-    "search.section.author.badge": "Autor"
+    "search.section.author.badge": "Autor",
+    "search.publication.thesis.directed": " bajo la supervisión de ",
+    "search.publications.thesis.and": " y "
 }

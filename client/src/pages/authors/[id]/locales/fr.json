@@ -33,5 +33,7 @@
   "authors.section.more-like-this": "Auteurs similaires",
   "search.publications.openAccess": "Accès ouvert",
   "search.publications.closedAccess": "Accès fermé",
-  "search.publications.other": "Autre"
+  "search.publications.other": "Autre",
+  "search.publication.thesis.directed": " sous la direction de ",
+  "search.publications.thesis.and": " et "
 }
