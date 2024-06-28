@@ -35,5 +35,6 @@
   "search.publications.closedAccess": "Accès fermé",
   "search.publications.other": "Autre",
   "search.publication.thesis.directed": " sous la direction de ",
-  "search.publications.thesis.and": " et "
+  "search.publications.thesis.and": " et ",
+  "search.publications.thesis.by": " par "
 }

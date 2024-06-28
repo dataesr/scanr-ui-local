@@ -47,6 +47,7 @@
     "search.publications.openAccess": "Offener Zugang",
     "search.publications.closedAccess": "Geschlossener Zugang",
     "search.publications.other": "Andere",
+    "search.publications.thesis.by": " von ",
     "search.publication.thesis.directed": " unter der Betreuung von ",
     "search.publications.thesis.and": " und ",
     "search.filters.publications.by-author-description": "Einen oder mehrere Autoren auswählen",

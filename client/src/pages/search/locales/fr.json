@@ -48,6 +48,7 @@
   "search.publications.openAccess": "Accès ouvert",
   "search.publications.closedAccess": "Accès fermé",
   "search.publications.other": "Autre",
+  "search.publications.thesis.by": " par ",
   "search.publication.thesis.directed": " sous la direction de ",
   "search.publications.thesis.and": " et ",
   "search.filters.publications.by-author-description": "Sélectionnez un ou plusieurs auteurs",

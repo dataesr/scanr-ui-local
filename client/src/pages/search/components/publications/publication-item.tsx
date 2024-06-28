@@ -21,6 +21,9 @@ export default function PublicationItem({
       queryFn: () => getPublicationById(id),
     });
   }
+
+  const authors =
+    publication.authors?.filter((author) => author.role === "author") || [];
   const directors =
     publication.authors?.filter((author) => author.role === "directeurthese") ||
     [];
@@ -62,25 +65,25 @@ export default function PublicationItem({
           </Link>
         </span>
         <Text bold size="sm" className="fr-mb-0">
-          {publication?.authors
-            ?.filter(
-              (author) =>
-                !directors.some((director) => director.person === author.person)
-            )
-            .slice(0, 5)
-            .map((author, index) => (
-              <Fragment key={index}>
-                {index > 0 && ", "}
-                {author.person ? (
-                  <Link href={`/authors/${encode(author.person)}`}>
-                    {author.fullName}
-                  </Link>
-                ) : (
-                  author.fullName
-                )}
-              </Fragment>
-            ))}
-          {publication?.authors?.length > 5 && (
+          {authors.map((author, index) => (
+            <Fragment key={index}>
+              <span>
+                {" "}
+                {intl.formatMessage({
+                  id: "search.publications.thesis.by",
+                })}
+              </span>
+              {index > 0 && ", "}
+              {author.person ? (
+                <Link href={`/authors/${encode(author.person)}`}>
+                  {author.fullName}
+                </Link>
+              ) : (
+                author.fullName
+              )}
+            </Fragment>
+          ))}
+          {authors.length > 5 && (
             <Text bold as="span">
               <i> et al.</i>
             </Text>
