@@ -12,7 +12,6 @@ export default function OrganizationLocalizations({ data: localizations }: { dat
       .filter((element) => element)
       .join(', '),
   })).filter((marker) => marker.latLng[0] && marker.latLng[1]);
-  console.log(localizations, markers, mainAddress);
 
   return (
     <div className="fr-card fr-card--no-border fr-card--sm fr-mt-1w fix-height">

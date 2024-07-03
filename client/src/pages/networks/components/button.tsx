@@ -6,16 +6,13 @@ import useClusters from "../hooks/useClusters"
 
 type ClustersButtonArgs = {
   handleChange: (value: boolean) => void
-  show: boolean
 }
 
-export default function ClustersButton({ handleChange, show }: ClustersButtonArgs) {
+export default function ClustersButton({ handleChange }: ClustersButtonArgs) {
   const intl = useIntl()
   const { currentTab } = useTab()
   const { clusters: computeClusters } = useClusters()
   const { search, currentQuery } = useSearchData(currentTab, computeClusters)
-
-  if (!show) return null
 
   return (
     <Row gutters>

@@ -4,11 +4,15 @@ import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import useUrl from "../../search/hooks/useUrl"
 import useTab from "./useTab"
 import { networkSearch } from "../../../api/networks/search/search"
+import useIntegration from "./useIntegration"
 
 export default function useSearchData(networkTab: string, computeClusters: boolean) {
   const { currentQuery, filters } = useUrl()
+  const { integrationId, integrationLang } = useIntegration()
   const { currentTab } = useTab()
-  const { locale: lang } = useDSFRConfig()
+  const { locale } = useDSFRConfig()
+
+  const lang = integrationId ? integrationLang : locale
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["network", networkTab, currentQuery, filters, computeClusters, lang],

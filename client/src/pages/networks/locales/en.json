@@ -2,6 +2,7 @@
     "networks.top.breadcrumb.home": "Home",
     "networks.top.breadcrumb.explore": "Explore Networks",
     "networks.top.main-search-bar": "Search",
+    "networks.top.main-search-bar-placeholder": "\"one health\" OR \"santé mondiale\"",
     "networks.home.title.authors": "Explore author networks in research and innovation through scientific publications",
     "networks.home.title.institutions": "Explore institution networks in research and innovation through scientific publications",
     "networks.home.title.structures": "Explore laboratory networks in research and innovation through scientific publications",

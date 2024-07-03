@@ -1,5 +1,8 @@
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus"
+import { networkTabs, networkTabFindLabel, networkTabFindIndex } from "./config/tabs"
+import { networkQuery } from "./config/query"
+import { messages } from "./config/messages"
 import useScreenSize from "../../hooks/useScreenSize"
 import useUrl from "../search/hooks/useUrl"
 import useTab from "./hooks/useTab"
@@ -12,52 +15,8 @@ import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
 import NetworkExports from "./components/exports"
 import ClustersAnalytics from "./components/analytics"
+import Info from "./components/info"
 import { useState } from "react"
-
-const modules = import.meta.glob("./locales/*.json", {
-  eager: true,
-  import: "default",
-})
-const messages = Object.keys(modules).reduce((acc, key) => {
-  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1]
-  if (locale) {
-    return { ...acc, [locale]: modules[key] }
-  }
-  return acc
-}, {})
-
-const NETWORK_TABS_MAPPING = {
-  authors: {
-    index: 0,
-    label: "authors",
-    icon: "user-line",
-  },
-  institutions: {
-    index: 1,
-    label: "institutions",
-    icon: "building-line",
-  },
-  structures: {
-    index: 2,
-    label: "structures",
-    icon: "microscope-line",
-  },
-  domains: {
-    index: 3,
-    label: "domains",
-    icon: "book-2-line",
-  },
-  software: {
-    index: 4,
-    label: "software",
-    icon: "terminal-box-line",
-  },
-}
-
-const networkQuery = (query: string) => query || "*"
-const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
-const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
-const networkTabFindLabel = (index: number) => networkTabs[index].label
 
 function NetworksPage() {
   const intl = useIntl()
@@ -72,7 +31,7 @@ function NetworksPage() {
 
   return (
     <>
-      <Container className={"bg-network"} fluid>
+      <Container className="bg-network" fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
             <Link href="/">
@@ -87,7 +46,7 @@ function NetworksPage() {
                 isLarge
                 buttonLabel={intl.formatMessage({ id: "networks.top.main-search-bar" })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "networks.top.main-search-bar" })}
+                placeholder={intl.formatMessage({ id: "networks.top.main-search-bar-placeholder" })}
                 onSearch={(value) => {
                   handleQueryChange(networkQuery(value))
                   resetFocus()
@@ -103,7 +62,9 @@ function NetworksPage() {
       </Container>
       <Container className="fr-mt-4w">
         <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
-        <Text size="lg">{intl.formatMessage({ id: "networks.header.subtitle" })}</Text>
+        <Text as="p" size="lg">
+          {intl.formatMessage({ id: "networks.header.subtitle" })} <Info href="/about/FAQ?question=q58" />
+        </Text>
         <Row>
           <Col xs="12" lg="8">
             <Container fluid as="section">
@@ -135,7 +96,6 @@ function NetworksPage() {
                   handleClustersChange(value)
                   resetFocus()
                 }}
-                show={true}
               />
               <p className="fr-text--xs fr-text-mention--grey">
                 {intl.formatMessage({ id: "networks.clusters.button.description" })}

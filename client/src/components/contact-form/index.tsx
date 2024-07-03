@@ -65,7 +65,7 @@ export default function ContactForm({ id, type }: Props) {
       setThanks(true);
     },
     onError: (e) => {
-      console.log("error", e)
+      console.error("error", e)
     },
   });
 

@@ -1,5 +1,6 @@
 import Graph from "graphology-types"
 import louvain from "graphology-communities-louvain"
+import seedrandom from "seedrandom"
 import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits } from "../search/search"
 import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
@@ -78,7 +79,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   const filters: NetworkFilters = graph.getAttribute("filters")
 
   // Assign communities
-  louvain.assign(graph)
+  const randomSeed = query + model + JSON.stringify(filters)
+  louvain.assign(graph, { rng: seedrandom(randomSeed) })
 
   if (!computeClusters) return []
 

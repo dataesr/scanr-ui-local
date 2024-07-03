@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { ApiTypes } from "../../../types/commons";
+import useIntegration from "../../networks/hooks/useIntegration";
 
 type FilterValues = {
   label?: string;
@@ -85,18 +86,20 @@ const getAPI = (pathname: string) => {
     pathname.split("/")?.[1] === "trouver-des-partenaires-pour-horizon-europe"
   )
     return "he";
-  if (pathname === "/networks") return "publications";
+  if (pathname.split("/")?.[1] === "networks") return "publications";
   return api as ApiTypes;
 };
 
 export default function useUrl() {
   const { pathname } = useLocation();
+  const { integrationId } = useIntegration();
   const api = getAPI(pathname);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));
   const filters = filtersToElasticQuery(currentFilters);
+  if (integrationId) filters.push({ term: { bso_local_affiliations: integrationId } });
 
   const clearFilters = useCallback(() => {
     searchParams.delete("filters");

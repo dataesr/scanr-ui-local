@@ -161,5 +161,8 @@
   "search.analytics.publications.by-authors.title": "Top 10 authors",
   "search.analytics.publications.by-authors.description": "Calculated from search results",
   "search.analytics.publications.by-reviews.title": "Top 10 journals",
-  "search.analytics.publications.by-reviews.description": "Calculated from search results"
+  "search.analytics.publications.by-reviews.description": "Calculated from search results",
+  "search.publication.thesis.directed": " under the supervision of ",
+  "search.publications.thesis.and": " and ",
+  "search.publications.thesis.by": " by "
 }

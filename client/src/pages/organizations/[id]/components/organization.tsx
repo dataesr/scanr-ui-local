@@ -58,11 +58,8 @@ export default function OrganizationPresentation({
       values: [{ value: data?.id, label: data?.label?.default }],
     },
   });
-  const networkTab =
-    data?.externalIds?.find((id) => id?.type === "rnsr")?.id === data?.id
-      ? "structures"
-      : "institutions";
-  const networkUrl = `/networks?q=*&tab=${networkTab}&filters=${networkFilter}`;
+
+  const networkUrl = `/networks?q=*&tab=domains&filters=${networkFilter}`
 
   return (
     <>
