@@ -1,6 +1,6 @@
 Server folder is just for testing purpose for now.
 
-To start developping, 
+To start developping,
 
 ```bash
 cd ../client && npm i
@@ -19,6 +19,7 @@ cd client
 npm version [patch|minor|major]
 cd ..
 git add .
+git tag -l (to get the tag list)
 git commit -m '<new tag>'
 git tag <new tag>
 git push origin main --tags

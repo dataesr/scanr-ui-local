@@ -305,7 +305,7 @@ export default function Resources() {
                 href="/artwork/pictograms/digital/search.svg#artwork-major"
               />
             </svg>
-            <Title as="h2" className="fr-mb-1w">
+            <Title as="h2" look="h5" className="fr-mb-1w">
               {intl.formatMessage({
                 id: "app.resources.intervenants.contributors",
               })}
