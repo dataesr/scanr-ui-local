@@ -62,10 +62,10 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <Text className="fr-m-0" size="sm">
             {getLangFieldValue(locale)(data?.description)}
           </Text>
-          {!data?.description && data?.ia_description && (
+          {!data?.description && data?.ai_description && (
             <>
               <Text className="fr-m-0" size="sm">
-                {getLangFieldValue(locale)(data?.ia_description)}
+                {getLangFieldValue(locale)(data?.ai_description?.description)}
               </Text>
               <Text className="fr-mt-1w" size="sm" style={{ textAlign: "right" }}>
                 <i>{intl.formatMessage({ id: "organizations.header.description.ia-generated-label" })}</i>{" "}
