@@ -99,7 +99,7 @@ export default function useUrl() {
   const currentQuery = searchParams.get("q") || "";
   const currentFilters = parseSearchFiltersFromURL(searchParams.get("filters"));
   const filters = filtersToElasticQuery(currentFilters);
-  if (integrationId) filters.push({ term: { "bso_local_affiliations.keyword": integrationId } })
+  if (integrationId) filters.push({ term: { "bso_local_affiliations.keyword": integrationId.toLowerCase() } })
 
   const clearFilters = useCallback(() => {
     searchParams.delete("filters");
