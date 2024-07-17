@@ -48,7 +48,12 @@ function NetworksIntegrationPage() {
             </Title>
             <Text as="p" size="lg">
               {intl.formatMessage({ id: "networks.header.subtitle" })}{" "}
-              <IconLink href="/about/FAQ?question=q58" icon="question-line" />
+              <IconLink
+                href="/about/FAQ?question=q58"
+                icon="question-line"
+                title={intl.formatMessage({ id: "networks.header.subtitle-hover" })}
+                target="_blank"
+              />
             </Text>
           </>
         )}
