@@ -27,7 +27,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
               </Badge>
             ))}
             {data.level && (
-              <Badge size="sm" color='green-emeraude' title={shortLevel ? data.level : undefined}>
+              <Badge size="sm" color="green-emeraude" title={shortLevel ? data.level : undefined}>
                 {shortLevel || data.level}
               </Badge>
             )}
@@ -77,6 +77,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
                   title={intl.formatMessage({ id: "organizations.header.description.ia-generated-hover" })}
                   href="/about/FAQ"
                   icon="question-line"
+                  target="_blank"
                 />{" "}
                 <Link
                   title={intl.formatMessage({ id: "organizations.header.description.ia-edit-hover" })}
@@ -95,5 +96,5 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
         </Truncate>
       </Row>
     </section>
-  );
+  )
 }
