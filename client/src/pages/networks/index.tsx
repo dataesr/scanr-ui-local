@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { FormattedMessage, useIntl, createIntl, RawIntlProvider } from "react-intl"
 import { Container, Breadcrumb, Link, Row, Col, SearchBar, Tabs, Tab, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus"
 import { networkTabs, networkTabFindLabel, networkTabFindIndex } from "./config/tabs"
@@ -15,8 +16,7 @@ import NetworkFilters from "./components/filters"
 import PublicationFilters from "../search/components/publications/filters"
 import NetworkExports from "./components/exports"
 import ClustersAnalytics from "./components/analytics"
-import Info from "./components/info"
-import { useState } from "react"
+import IconLink from "../../components/icon-link"
 
 function NetworksPage() {
   const intl = useIntl()
@@ -63,7 +63,8 @@ function NetworksPage() {
       <Container className="fr-mt-4w">
         <Title as="h3">{intl.formatMessage({ id: "networks.header.title" })}</Title>
         <Text as="p" size="lg">
-          {intl.formatMessage({ id: "networks.header.subtitle" })} <Info href="/about/FAQ?question=q58" />
+          {intl.formatMessage({ id: "networks.header.subtitle" })}{" "}
+          <IconLink href="/about/FAQ?question=q58" icon="question-line" />
         </Text>
         <Row>
           <Col xs="12" lg="8">

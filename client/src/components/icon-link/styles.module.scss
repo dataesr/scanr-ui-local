@@ -1,0 +1,12 @@
+.icon-link {
+  background-image: none !important;
+
+  &:before {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  &:after {
+    display: none !important;
+  }
+}

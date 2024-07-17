@@ -17,7 +17,7 @@ import NetworkFilters from "../components/filters"
 import PublicationFilters from "../../search/components/publications/filters"
 import NetworkExports from "../components/exports"
 import ClustersAnalytics from "../components/analytics"
-import Info from "../components/info"
+import IconLink from "../../../components/icon-link"
 import getBsoLocals from "./config"
 
 function NetworksIntegrationPage() {
@@ -47,7 +47,8 @@ function NetworksIntegrationPage() {
               {intl.formatMessage({ id: "networks.header.title" }).concat(" ", integrationComments).trim()}
             </Title>
             <Text as="p" size="lg">
-              {intl.formatMessage({ id: "networks.header.subtitle" })} <Info href="/about/FAQ?question=q58" />
+              {intl.formatMessage({ id: "networks.header.subtitle" })}{" "}
+              <IconLink href="/about/FAQ?question=q58" icon="question-line" />
             </Text>
           </>
         )}
