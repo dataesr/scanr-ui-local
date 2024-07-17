@@ -12,10 +12,6 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
   const intl = useIntl();
   const shortLevel = data.level?.match(/\((.*?)\)/)?.[1] || data.level;
 
-  const description_mistral =
-    "HOP! est une filiale d'Air France qui propose des vols court-courriers vers la France et l'Europe. Vous pouvez acheter vos billets en ligne sur le site officiel d'Air France et enregistrer vos réservations. Vous pouvez également contacter le service client d'Air France pour toute demande de remboursement, réclamation ou facture. Les vols en France et entre les régions françaises et l'Europe sont proposés sous la marque Air France ou sa filiale HOP!."
-  console.log("description", data?.description)
-
   return (
     <section>
       <div className={cn(styles.header, "fr-my-1v")}>
@@ -66,10 +62,10 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <Text className="fr-m-0" size="sm">
             {getLangFieldValue(locale)(data?.description)}
           </Text>
-          {!data?.description && description_mistral && (
+          {!data?.description && data?.ia_description && (
             <>
               <Text className="fr-m-0" size="sm">
-                {description_mistral}
+                {getLangFieldValue(locale)(data?.ia_description)}
               </Text>
               <Text className="fr-mt-1w" size="sm" style={{ textAlign: "right" }}>
                 <i>{intl.formatMessage({ id: "organizations.header.description.ia-generated-label" })}</i>{" "}

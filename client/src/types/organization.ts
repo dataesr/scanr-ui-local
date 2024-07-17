@@ -81,6 +81,7 @@ export type Organization = {
   creationYear?: number;
   acronym: LangField;
   description: LangField;
+  ia_description?: LangField;
   externalIds: ExternalIdsData[];
   kind: string[];
   nature?: string;
