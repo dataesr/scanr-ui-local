@@ -71,7 +71,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
                 <i>{intl.formatMessage({ id: "organizations.header.description.ia-generated-label" })}</i>{" "}
                 <IconLink
                   title={intl.formatMessage({ id: "organizations.header.description.ia-generated-hover" })}
-                  href="/about/FAQ"
+                  href="/about/FAQ?question=q62"
                   icon="question-line"
                   target="_blank"
                 />{" "}
