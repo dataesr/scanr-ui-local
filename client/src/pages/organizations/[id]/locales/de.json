@@ -32,6 +32,8 @@
     "organizations.copy": "Klicken Sie, um in die Zwischenablage zu kopieren",
     "organizations.section.share.title": "Seite teilen",
     "organizations.header.since": "Aktiv seit",
+    "organizations.header.description.ia-generated-label": "KI-generierte Beschreibung",
+    "organizations.header.description.ia-edit-label": "Bearbeiten",
     "organizations.patents.count": "Patente aufgeführt von scanR",
     "organizations.patents.search": "Liste der Patente anzeigen",
     "organizations.patents.nav.year": "Verteilung nach Jahr",

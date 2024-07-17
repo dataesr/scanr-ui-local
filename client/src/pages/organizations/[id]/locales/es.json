@@ -32,6 +32,8 @@
     "organizations.copy": "Haga clic para copiar al portapapeles",
     "organizations.section.share.title": "Compartir la página",
     "organizations.header.since": "Activo Desde",
+    "organizations.header.description.ia-generated-label": "Descripción generada por IA",
+    "organizations.header.description.ia-edit-label": "Editar",
     "organizations.patents.count": "patentes listados por scanR",
     "organizations.patents.search": "Ver la lista de patentes",
     "organizations.patents.nav.year": "Distribución por Año",
