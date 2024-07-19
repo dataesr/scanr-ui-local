@@ -72,6 +72,11 @@ export type OrganizationAgreementsData = {
   years: number[],
   label: string,
 }
+export type OrganizationIaDescription = {
+  creation_date: string,
+  model: string,
+  description: LangField
+}
 
 export type Organization = {
   _id: string;
@@ -81,6 +86,7 @@ export type Organization = {
   creationYear?: number;
   acronym: LangField;
   description: LangField;
+  ai_description?: OrganizationIaDescription;
   externalIds: ExternalIdsData[];
   kind: string[];
   nature?: string;

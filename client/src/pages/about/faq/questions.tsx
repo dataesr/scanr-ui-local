@@ -717,7 +717,7 @@ export const questions = [
   },
   {
     key: "q57",
-    groupkey: "Networks",
+    groupkey: "networks",
     icon: "fas fa-question-circle",
     label: {
       fr: "Qu'est-ce qu'un réseau ?",
@@ -730,7 +730,7 @@ export const questions = [
   },
   {
     key: "q58",
-    groupkey: "Networks",
+    groupkey: "networks",
     icon: "fas fa-question-circle",
     label: {
       fr: "Comment sont construits les réseaux scanR ?",
@@ -743,7 +743,7 @@ export const questions = [
   },
   {
     key: "q59",
-    groupkey: "Networks",
+    groupkey: "networks",
     icon: "fas fa-question-circle",
     label: {
       fr: "Que représentent les communautés ?",
@@ -756,7 +756,7 @@ export const questions = [
   },
   {
     key: "q60",
-    groupkey: "Networks",
+    groupkey: "networks",
     icon: "fas fa-question-circle",
     label: {
       fr: "Comment sont nommées les communautés ?",
@@ -769,7 +769,7 @@ export const questions = [
   },
   {
     key: "q61",
-    groupkey: "Networks",
+    groupkey: "networks",
     icon: "fas fa-question-circle",
     label: {
       fr: "Qu'est-ce que VOSviewer ?",
@@ -778,6 +778,19 @@ export const questions = [
     definition: {
       fr: "<aVos>VosViewer</aVos> est un logiciel développé par <aCWTS>CWTS</aCWTS> (<aLeiden>Université de Leiden</aLeiden>), spécialisé dans la visualisation et l'analyse de réseaux, particulièrement utilisé dans le domaine de la recherche scientifique.<br></br> Nous utilisons cet outil pour visualiser les réseaux de manière interactive, offrant ainsi une compréhension approfondie des structures et des tendances au sein de vastes ensembles de données bibliographiques.",
       en: "<aVos>VOSviewer</aVos> is a software developed by <aCWTS>CWTS<aCWTS> (<aLeiden>Leiden University</aLeiden>), specialising in the visualisation and analysis of networks, particularly used in the field of scientific research. We use this tool to visualise networks interactively, providing a thorough understanding of structures and trends within large bibliographic datasets.",
+    },
+  },
+  {
+    key: "q62",
+    groupkey: "organizations",
+    icon: "fas fa-question-circle",
+    label: {
+      fr: "Comment est générée la description par IA ?",
+      en: "How is the IA description generated ?",
+    },
+    definition: {
+      fr: "Pour les entreprises privées qui ne disposent pas de description nous utilisons l'IA générative de <aMistral>Mistral AI</aMistral>. <br></br> À partir du contenu du site web de l'entreprise, nous demandons à Mistral de nous faire un résumé de ses principales activitées.",
+      en: "For private companies that do not have a description, we use generative AI from <aMistral>Mistral AI</aMistral>. <br></br> Based on the content from the company's website, we ask Mistral to provide us with a summary of its main activities.",
     },
   },
 ]

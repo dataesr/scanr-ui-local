@@ -11,5 +11,6 @@
     "app.faq.publications.title": "Publications",
     "app.faq.productions.title": "Productions",
     "app.faq.patents.title": "Patents",
-    "app.faq.Networks.title": "Networks"
+    "app.faq.networks.title": "Networks",
+    "app.faq.organizations.title": "Organizations"
 }

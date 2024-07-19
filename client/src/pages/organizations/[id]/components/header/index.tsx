@@ -1,22 +1,17 @@
 import cn from "classnames";
-import {
-  BadgeGroup,
-  Badge,
-  Title,
-  Text,
-  Row,
-  useDSFRConfig,
-} from "@dataesr/dsfr-plus";
+import { BadgeGroup, Badge, Title, Text, Row, Link, useDSFRConfig } from "@dataesr/dsfr-plus"
 import getLangFieldValue from "../../../../../utils/lang";
 import { Organization } from "../../../../../types/organization";
 import { useIntl } from "react-intl";
 import Truncate from "../../../../../components/truncate";
+import IconLink from "../../../../../components/icon-link";
 import styles from "./styles.module.scss";
 
 export default function OrganizationHeader({ data }: { data: Organization }) {
   const { locale } = useDSFRConfig();
   const intl = useIntl();
   const shortLevel = data.level?.match(/\((.*?)\)/)?.[1] || data.level;
+
   return (
     <section>
       <div className={cn(styles.header, "fr-my-1v")}>
@@ -28,9 +23,10 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
               </Badge>
             ))}
             {data.level && (
-              <Badge size="sm" color='green-emeraude' title={shortLevel ? data.level : undefined}>
+              <Badge size="sm" color="green-emeraude" title={shortLevel ? data.level : undefined}>
                 {shortLevel || data.level}
-              </Badge>)}
+              </Badge>
+            )}
             {data.nature && data.nature !== data.level && (
               <Badge size="sm" color="green-emeraude">
                 {data.nature}
@@ -43,8 +39,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           {data?.creationYear && (
             <Text className="fr-card__detail" size="sm">
               <i>
-                {intl.formatMessage({ id: "organizations.header.since" })}{" "}
-                {data.creationYear}
+                {intl.formatMessage({ id: "organizations.header.since" })} {data.creationYear}
               </i>
             </Text>
           )}
@@ -67,8 +62,35 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <Text className="fr-m-0" size="sm">
             {getLangFieldValue(locale)(data?.description)}
           </Text>
+          {!data?.description && data?.ai_description && (
+            <>
+              <Text className="fr-m-0" size="sm">
+                {getLangFieldValue(locale)(data?.ai_description?.description)}
+              </Text>
+              <Text className="fr-mt-1w" size="sm" style={{ textAlign: "right" }}>
+                <i>{intl.formatMessage({ id: "organizations.header.description.ia-generated-label" })}</i>{" "}
+                <IconLink
+                  title={intl.formatMessage({ id: "organizations.header.description.ia-generated-hover" })}
+                  href="/about/FAQ?question=q62"
+                  icon="question-line"
+                  target="_blank"
+                />{" "}
+                <Link
+                  title={intl.formatMessage({ id: "organizations.header.description.ia-edit-hover" })}
+                  className="fr-ml-1w"
+                  style={{ backgroundImage: "none" }}
+                  href={`/bugs/organizations/${data.id}`}
+                  target="_self"
+                  icon="edit-line"
+                  iconPosition="right"
+                >
+                  <i>{intl.formatMessage({ id: "organizations.header.description.ia-edit-label" })}</i>
+                </Link>
+              </Text>
+            </>
+          )}
         </Truncate>
       </Row>
     </section>
-  );
+  )
 }

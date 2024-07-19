@@ -10,6 +10,7 @@
     "networks.home.title.software": "Explore software networks in research and innovation through scientific publications",
     "networks.header.title": "Visualization of networks through a publications analysis",
     "networks.header.subtitle": "Estimated on the basis of co-signatures / co-appearances in the corpus of publications corresponding to the research carried out",
+    "networks.header.subtitle-hover": "Learn more",
     "networks.header.tab.authors": "Authors",
     "networks.header.tab.institutions": "Institutions",
     "networks.header.tab.structures": "Laboratories",
