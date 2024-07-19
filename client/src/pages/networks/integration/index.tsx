@@ -36,7 +36,8 @@ function NetworksIntegrationPage() {
 
   const locals = integrationOptions?.displayTitle ? getBsoLocals() : {}
   const integrationComments: string =
-    (intl.locale === "en" ? locals?.[integrationId]?.commentsNameEN : locals?.[integrationId]?.commentsName) || ""
+    (intl.locale === "en" ? locals?.[integrationId]?.commentsNameEN : locals?.[integrationId]?.commentsName) ||
+    `${intl.formatMessage({ id: "networks.header.title.perimeter" })} ${integrationId}`
 
   return (
     <>
