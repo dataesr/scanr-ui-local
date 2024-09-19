@@ -34,7 +34,7 @@ function getOaInfo(publi) {
 export default function AuthorPage({ data }: { data: Author }) {
   const intl = useIntl();
   const { publications: publicationsObject, awards } = data;
-  const { wikis, coAuthors, reviews, byYear, publications } =
+  const { coAuthors, reviews, byYear, publications } =
     publicationsObject;
 
   const maxCommonPublications =
@@ -44,14 +44,14 @@ export default function AuthorPage({ data }: { data: Author }) {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role ===
-        "author"
+      "author"
     );
   });
   const thesisParticipations = publications?.filter((publi) => {
     return (
       publi.type === "thesis" &&
       publi.authors.find((author) => author.person === data.id)?.role !==
-        "author"
+      "author"
     );
   });
   const others = publications?.filter((publi) => publi.type !== "thesis");
@@ -96,13 +96,13 @@ export default function AuthorPage({ data }: { data: Author }) {
               <PageSection
                 icon="lightbulb-line"
                 size="lead"
-                show={!!wikis?.length}
+                show={!!data?.wikis?.length}
                 title={intl.formatMessage({ id: "authors.section.wiki.title" })}
                 description={intl.formatMessage({
                   id: "authors.section.wiki.desc",
                 })}
               >
-                <TagCloud data={wikis} order="random" />
+                <TagCloud data={data?.wikis} order="random" />
               </PageSection>
               <PageSection
                 size="lead"

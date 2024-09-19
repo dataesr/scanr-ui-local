@@ -48,6 +48,7 @@ export type Author = {
   fullName: string;
   firstName?: string;
   lastName?: string;
+  wikis: Aggregation[];
   externalIds: {
     id: string;
     type: string;
@@ -57,21 +58,13 @@ export type Author = {
     label: string;
   }[];
   recentAffiliations: RecentAffiliation[];
-  publications: {
-    publicationsCount: number;
-    publications: LightPublication[];
-    coAuthors: Aggregation[];
-    wikis: Aggregation[];
-    reviews: Aggregation[];
-    byYear: Aggregation[];
-  }
+  publications: AuthorsPublications
 }
 
 export type AuthorsPublications = {
   publicationsCount: number;
   publications: LightPublication[];
   coAuthors: Aggregation[];
-  wikis: Aggregation[];
   reviews: Aggregation[];
   byYear: Aggregation[];
 }
