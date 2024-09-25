@@ -211,6 +211,15 @@ export default function MainFooter() {
                       <li>
                         <Link
                           className="fr-footer__top-link"
+                          href="https://works-magnet.dataesr.ovh/"
+                          target="_blank"
+                        >
+                          Works Magnet
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="fr-footer__top-link"
                           href="https://barometredelascienceouverte.esr.gouv.fr/"
                           target="_blank"
                         >
