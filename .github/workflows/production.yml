@@ -69,12 +69,12 @@ jobs:
           config_file: .github/config/changelog.cjs
 
       - name: 📦 Create release
-        uses: actions/create-release@latest
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ steps.tag.outputs.tag }}
+          name: ${{ steps.tag.outputs.tag }}
           body: ${{ steps.changelog.outputs.changes }}
 
   deploy:
