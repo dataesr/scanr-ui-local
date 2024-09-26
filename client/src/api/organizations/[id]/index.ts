@@ -1,4 +1,4 @@
-import { organizationsIndex, postHeaders, publicationsIndex, projectsIndex, patentsIndex } from "../../../config/api"
+import { organizationsIndex, patentsIndex, postHeaders, projectsIndex, publicationsIndex } from "../../../config/api"
 import { Organization } from "../../../types/organization"
 import { publicationTypeMapping } from "../../../utils/string"
 import { fillWithMissingYears } from "../../utils/years"
@@ -13,18 +13,18 @@ export async function getOrganizationById(id: string): Promise<Organization> {
         filter: [{term: { "id.keyword": id }}]
       }
     },
-  }  
+  }
   const structureQuery = fetch(`${organizationsIndex}/_search`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
     .then(r => r.json())
   const publicationsQuery = getStructurePublicationsById(id)
   const projectsQuery = getStructureProjectsById(id)
   const patentsQuery = getStructurePatentsById(id)
   const [structure, publications, projects, patents] = await Promise.all([structureQuery, publicationsQuery, projectsQuery, patentsQuery])
-  
+
   const structureData = structure?.hits?.hits?.[0]?._source
   if (!structureData) throw new Error('404')
   const { _id } = structure?.hits?.hits?.[0] || {}
-  
+
   return { ...structureData, _id, publications, projects, patents }
 }
 
@@ -72,7 +72,7 @@ async function getStructurePublicationsById(id: string): Promise<any> {
   }
   const res = await fetch(`${publicationsIndex}/_search`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const data = await res.json()
-  
+
   const aggregations = data?.aggregations || {}
   const publicationsCount = data?.hits?.total?.value || 0
   const byWiki = aggregations?.byWiki?.wiki?.buckets?.map((element) => {
@@ -118,7 +118,7 @@ async function getStructurePublicationsById(id: string): Promise<any> {
       normalizedCount: element.doc_count * 100 / _100Authors,
     }
   }).filter(el => el) || [];
-  
+
   return { publicationsCount, byYear, byType, bySource, byAuthors, byWiki } || {}
 }
 
@@ -157,7 +157,7 @@ async function getStructureProjectsById(id: string): Promise<any> {
     `${projectsIndex}/_search`,
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const result = await res.json()
-  
+
   const { aggregations: data} = result;
   const projectsCount = result?.hits?.total?.value || 0
   const _100Year = data?.byYear?.buckets && Math.max(...data.byYear.buckets.map((el) => el.doc_count));
@@ -193,7 +193,7 @@ async function getStructureProjectsById(id: string): Promise<any> {
 async function getStructurePatentsById(id: string): Promise<any> {
   const body: any = {
     size: 0,
-    query: { bool: { filter: [{ term: { "affiliations.id.keyword": id } }] } },
+    query: { bool: { filter: [{ term: { "applicants.ids.id.keyword": id } }] } },
     aggs: {
       byYear: {
         terms: {
@@ -208,7 +208,7 @@ async function getStructurePatentsById(id: string): Promise<any> {
     `${patentsIndex}/_search`,
     { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const result = await res.json()
-  
+
   const { aggregations: data} = result;
   const patentsCount = result?.hits?.total?.value || 0
   const _100Year = data?.byYear?.buckets && Math.max(...data.byYear.buckets.map((el) => el.doc_count));

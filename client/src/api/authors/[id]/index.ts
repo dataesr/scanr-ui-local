@@ -9,7 +9,7 @@ const PUBLICATION_LIGHT_SOURCE = [
 
 const AUTHOR_SOURCE = [
   "_id", "id", "idref", "orcid", "fullName", "firstName", "lastName",
-  "externalIds", "awards", "recentAffiliations",
+  "externalIds", "awards", "recentAffiliations", "domains"
 ]
 
 async function getAuthorsPublicationsById(id: string): Promise<AuthorsPublications> {
@@ -18,17 +18,6 @@ async function getAuthorsPublicationsById(id: string): Promise<AuthorsPublicatio
     query: { bool: { filter: [{ term: { "authors.person.keyword": id } }] } },
     sort: [{ year: { order: "desc" } }],
     aggs: {
-      wikis: {
-        filter: { term: { "domains.type.keyword": "wikidata" } },
-        aggs: {
-          wiki: {
-            terms: {
-              size: 30,
-              field: "domains.label.default.keyword",
-            }
-          }
-        }
-      },
       byYear: {
         terms: {
           field: "year",
@@ -86,30 +75,32 @@ async function getAuthorsPublicationsById(id: string): Promise<AuthorsPublicatio
       normalizedCount: element.doc_count * 100 / _100Year,
     }
   }).sort((a, b) => a.label - b.label).reduce(fillWithMissingYears, []) || [];
-  const wikis = aggregations?.wikis?.wiki?.buckets?.map((element) => {
-    return {
-      value: element.key,
-      count: element.doc_count,
-      label: element.key,
-    }
-  }) || [];
 
-  return { publications, publicationsCount, coAuthors, wikis, reviews, byYear }
+  return { publications, publicationsCount, coAuthors, reviews, byYear }
 }
 
 export async function getAuthorById(id: string): Promise<Author> {
   const body: any = {
     _source: AUTHOR_SOURCE,
-    query: { bool: { filter: [{term: { "id.keyword": id }}] } },
+    query: { bool: { filter: [{ term: { "id.keyword": id } }] } },
   }
   const authorQuery = fetch(
     `${authorsIndex}/_search`,
-    {method: 'POST', body: JSON.stringify(body), headers: postHeaders}
+    { method: 'POST', body: JSON.stringify(body), headers: postHeaders }
   ).then(r => r.json())
   const publicationsQuery = getAuthorsPublicationsById(id)
   const [author, publications] = await Promise.all([authorQuery, publicationsQuery])
   const authorData = author?.hits?.hits?.[0]?._source || {}
   const _id = author?.hits?.hits?.[0]?._id
   if (!Object.keys(authorData).length) throw new Error('404');
-  return { ...authorData, _id, publications }
+  const wikis = authorData?.domains
+    ?.filter((el) => el.type === 'wikidata')
+    ?.sort((a, b) => b.count - a.count)
+    ?.slice(0, 30)
+    ?.map((el) => ({
+      label: el.label?.default,
+      value: el.code,
+      count: el.count,
+    })) || []
+  return { ...authorData, wikis, _id, publications }
 }

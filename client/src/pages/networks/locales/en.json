@@ -9,6 +9,7 @@
     "networks.home.title.domains": "Explore thematic networks in research and innovation through scientific publications",
     "networks.home.title.software": "Explore software networks in research and innovation through scientific publications",
     "networks.header.title": "Visualization of networks through a publications analysis",
+    "networks.header.title.perimeter": "of the perimeter",
     "networks.header.subtitle": "Estimated on the basis of co-signatures / co-appearances in the corpus of publications corresponding to the research carried out",
     "networks.header.subtitle-hover": "Learn more",
     "networks.header.tab.authors": "Authors",

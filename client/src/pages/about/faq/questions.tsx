@@ -789,7 +789,7 @@ export const questions = [
       en: "How is the IA description generated ?",
     },
     definition: {
-      fr: "Pour les entreprises privées qui ne disposent pas de description nous utilisons l'IA générative de <aMistral>Mistral AI</aMistral>. <br></br> À partir du contenu du site web de l'entreprise, nous demandons à Mistral de nous faire un résumé de ses principales activitées.",
+      fr: "Pour les entreprises privées qui ne disposent pas de description nous utilisons l'IA générative de <aMistral>Mistral AI</aMistral>. <br></br> À partir du contenu du site web de l'entreprise, nous demandons à Mistral de nous faire un résumé de ses principales activités.",
       en: "For private companies that do not have a description, we use generative AI from <aMistral>Mistral AI</aMistral>. <br></br> Based on the content from the company's website, we ask Mistral to provide us with a summary of its main activities.",
     },
   },

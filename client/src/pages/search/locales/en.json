@@ -129,7 +129,7 @@
   "search.filters.current.patents.isInternational": "Selected region",
   "search.filters.current.patents.isOeb": "Selected region",
   "search.filters.current.patents.isGranted": "Granted patents",
-  "search.filters.current.patents.affiliations.id": "Filter by depositor",
+  "search.filters.current.patents.applicants.ids.id": "Filter by depositor",
   "search.top.patent.family.grandtedBadge": "Granted patents",
   "search.filters.see-more": "See more ({count})",
   "search.filters.see-less": "Show less",

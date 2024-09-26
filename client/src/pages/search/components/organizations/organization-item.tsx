@@ -7,35 +7,57 @@ import { getOrganizationById } from "../../../../api/organizations/[id]";
 import { LightOrganization } from "../../../../types/organization";
 // import CopyBadge from "../../../../components/copy/copy-badge";
 
-
-export default function OrganizationItem({ data: organization, highlight }: ItemProps<LightOrganization>) {
+export default function OrganizationItem({
+  data: organization,
+  highlight,
+}: ItemProps<LightOrganization>) {
   const queryClient = useQueryClient();
 
   function prefetch(id: string) {
     queryClient.prefetchQuery({
-      queryKey: ['organization', id],
+      queryKey: ["organization", id],
       queryFn: () => getOrganizationById(encode(id)),
-    })
+    });
   }
 
   return (
     <Fragment key={organization.id}>
       <div className="result-item" key={organization.id}>
         <BadgeGroup className="fr-badge-group structure-badge-list fr-mt-1v">
-          {organization?.kind?.length ? <Badge size="sm" color="yellow-tournesol" noIcon>{organization.kind?.join(' / ')}</Badge> : null}
-          {organization.level && <Badge size="sm" color='yellow-tournesol'>{organization.level?.match(/\((.*?)\)/)?.[1] || organization.level}</Badge>}
+          {organization?.kind?.length ? (
+            <Badge size="sm" color="yellow-tournesol" noIcon>
+              {organization.kind?.join(" / ")}
+            </Badge>
+          ) : null}
+          {organization.level && (
+            <Badge size="sm" color="yellow-tournesol">
+              {organization.level?.match(/\((.*?)\)/)?.[1] ||
+                organization.level}
+            </Badge>
+          )}
         </BadgeGroup>
-        <span onMouseEnter={() => prefetch(organization.id)}><Link href={`/organizations/${encode(organization.id)}`} className="fr-link">
-          {highlight?.["label.default"]
-            ? (<span dangerouslySetInnerHTML={{ __html: highlight?.["label.default"] }} />)
-            : organization.label.default || organization.label?.fr || organization.label?.en}
-        </Link>
+        <span onMouseEnter={() => prefetch(organization.id)}>
+          <Link
+            href={`/organizations/${encode(organization.id)}`}
+            className="fr-link"
+          >
+            {highlight?.["label.default"] ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: highlight?.["label.default"],
+                }}
+              />
+            ) : (
+              organization.label.default ||
+              organization.label?.fr ||
+              organization.label?.en
+            )}
+          </Link>
         </span>
         <Text size="sm" className="fr-card__detail fr-mb-0">
-          <i>
-            {organization.address?.find((a) => a.main).city}
-          </i>
+          <i>{organization?.address?.find((a) => a.main)?.city}</i>
         </Text>
+
         {/* <div className="fr-mt-1w fr-badge-group">
           <CopyBadge key={organization.id} size="sm" copyText={organization.id}>{organization.id}</CopyBadge>
         </div> */}
@@ -46,5 +68,5 @@ export default function OrganizationItem({ data: organization, highlight }: Item
         ))}
       </div>
     </Fragment>
-  )
+  );
 }

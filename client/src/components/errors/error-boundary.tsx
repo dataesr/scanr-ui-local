@@ -1,4 +1,5 @@
 import { Component, ReactNode } from "react";
+
 import Error404 from "./error-404";
 import Error500 from "./error-500";
 
@@ -7,14 +8,14 @@ interface Props {
 }
 
 interface State {
-  hasError: boolean;
   error: string;
+  hasError: boolean;
 }
 
 class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false,
     error: '',
+    hasError: false,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -29,11 +30,9 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.error === '404') {
       return <Error404 error={this.state.error} />;
     }
-    if (this.state.error !== '404') {
+    if (this.state.error !== '500') {
       return <Error500 error={this.state.error} />;
     }
-
-
   }
 }
 

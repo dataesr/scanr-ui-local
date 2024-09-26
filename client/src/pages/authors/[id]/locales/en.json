@@ -35,5 +35,6 @@
     "search.publications.other": "Other",
     "search.section.author.badge": "Author",
     "search.publication.thesis.directed": " under the supervision of ",
-    "search.publications.thesis.and": " and "
+    "search.publications.thesis.and": " and ",
+    "search.publications.thesis.by": " by "
 }
