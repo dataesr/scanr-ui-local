@@ -132,7 +132,7 @@
     "search.filters.current.patents.isInternational": "Ausgewählte Region",
     "search.filters.current.patents.isOeb": "Ausgewählte Region",
     "search.filters.current.patents.isGranted": "Ausgestellte Patente",
-    "search.filters.current.patents.affiliations.id": "Nach Antragsteller filtern",
+    "search.filters.current.patents.applicants.ids.id": "Nach Antragsteller filtern",
     "search.top.patent.family.grandtedBadge": "Erteilte Patente",
     "search.filters.see-more": "Mehr anzeigen ({count})",
     "search.filters.see-less": "Weniger anzeigen",

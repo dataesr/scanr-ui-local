@@ -132,7 +132,7 @@
     "search.filters.current.patents.isInternational": "Región Seleccionada",
     "search.filters.current.patents.isOeb": "Región Seleccionada",
     "search.filters.current.patents.isGranted": "Patentes Concedidas",
-    "search.filters.current.patents.affiliations.id": "Filtrar por Depositante",
+    "search.filters.current.patents.applicants.ids.id": "Filtrar por Depositante",
     "search.top.patent.family.grandtedBadge": "Patentes Concedidas",
     "search.filters.see-more": "Ver Más ({count})",
     "search.filters.see-less": "Ver Menos",
