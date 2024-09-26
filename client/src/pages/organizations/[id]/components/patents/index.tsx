@@ -13,7 +13,7 @@ type OrganizationPatentsProps = {
 export default function OrganizationPatents({ data: patents, value, label }: OrganizationPatentsProps) {
   const { screen } = useScreenSize();
   const intl = useIntl();
-  const searchFilters = { 'affiliations.id': { values: [{ value: value, label }], type: 'terms' } };
+  const searchFilters = { 'applicants.ids.id': { values: [{ value: value, label }], type: 'terms' } };
   const patentsFilterUrl = `/search/patents?filters=${encodeURIComponent(JSON.stringify(searchFilters))}`;
 
   if (!patents.patentsCount || patents.patentsCount === 0) {
