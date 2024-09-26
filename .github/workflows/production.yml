@@ -69,7 +69,7 @@ jobs:
           config_file: .github/config/changelog.cjs
 
       - name: 📦 Create release
-        uses: softprops/action-gh-release@v2
+        uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
