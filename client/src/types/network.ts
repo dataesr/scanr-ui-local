@@ -41,6 +41,7 @@ export type NetworkCommunity = {
   years?: Record<string, number>
   domains?: Record<string, number>
   oaPercent?: number
+  publications?: Array<Record<string, string>>
 }
 export type NetworkConfig = {
   terminology?: Record<string, unknown>

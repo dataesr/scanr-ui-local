@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react"
 import useTab from "./useTab"
 import useSearchData from "./useSearchData"
 import { NetworkData } from "../../../types/network"
+import useClusters from "./useClusters"
 
 const isString = (x: any) => Object.prototype.toString.call(x) === "[object String]"
 
@@ -48,11 +49,16 @@ const exportNetwork = (network: NetworkData) => ({
     cluster: item.cluster,
   })),
   links: network.links,
+  clusters: network.clusters.map((cluster) => ({
+    cluster: cluster.cluster,
+    publications: cluster.publications,
+  })),
 })
 
 export default function useExportData() {
   const { currentTab } = useTab()
-  const { search } = useSearchData(currentTab, false)
+  const { clusters: computeClusters } = useClusters()
+  const { search } = useSearchData(currentTab, computeClusters)
   const [isLoading, setIsLoading] = useState(false)
 
   const exportFile = useCallback(

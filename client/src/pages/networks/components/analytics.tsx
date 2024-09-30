@@ -24,6 +24,8 @@ export default function ClustersAnalytics() {
       </Container>
     )
 
+  console.log("clusters", clusters)
+
   const chartData = clusters.slice(0, 10)
   const sizeChartOptions = getHorizontalBarChartOptions({ data: chartData, x: "label", y: "size" })
   const publicationsChartOptions = getHorizontalBarChartOptions({

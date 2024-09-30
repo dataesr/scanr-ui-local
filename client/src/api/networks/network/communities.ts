@@ -57,7 +57,11 @@ const communityGetYears = (hits: ElasticHits): Record<string, number> =>
     return acc
   }, {})
 
-// const communityGetPublications = (hits: ElasticHits): Array<string> => hits.map((hit) => hit.title.default)
+const communityGetPublications = (hits: ElasticHits): Array<Record<string, string>> =>
+  hits.map((hit) => ({
+    id: hit.id,
+    title: hit.title.default,
+  }))
 
 const communityGetDomains = (hits: ElasticHits): Record<string, number> =>
   hits.reduce((acc, hit) => {
@@ -105,6 +109,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         topWeightNodes: communityGetTopWeightNodes(graph, index),
         ...(hits && {
           hits: hits.length,
+          publications: communityGetPublications(hits),
           years: communityGetYears(hits),
           domains: communityGetDomains(hits),
           oaPercent: communityGetOaPercent(hits),
