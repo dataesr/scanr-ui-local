@@ -51,6 +51,7 @@ const exportNetwork = (network: NetworkData) => ({
   links: network.links,
   clusters: network.clusters.map((cluster) => ({
     cluster: cluster.cluster,
+    label: cluster.label,
     publications: cluster.publications,
   })),
 })
