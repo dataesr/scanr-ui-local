@@ -1,5 +1,5 @@
-export default function getYearsChartOptions({ data, height = "300px", title = "", subtitle = "" }) {
-  const _data = data.map((d) => ({ name: d.label, years: d.years, color: d.color }))
+export default function getYearsChartOptions({ data, years = "years", height = "300px", title = "", subtitle = "" }) {
+  const _data = data.map((d) => ({ name: d.label, years: d[years], color: d.color }))
   const minYear = Math.min(..._data.flatMap((d) => Object.keys(d.years).map((k) => Number(k))))
   const maxYear = Math.max(..._data.flatMap((d) => Object.keys(d.years).map((k) => Number(k))))
   const maxValue = Math.max(..._data.flatMap((d) => Object.values(d.years)))

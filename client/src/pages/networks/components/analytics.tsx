@@ -24,14 +24,12 @@ export default function ClustersAnalytics() {
       </Container>
     )
 
-  console.log("clusters", clusters)
-
   const chartData = clusters.slice(0, 10)
   const sizeChartOptions = getHorizontalBarChartOptions({ data: chartData, x: "label", y: "size" })
   const publicationsChartOptions = getHorizontalBarChartOptions({
     data: chartData,
     x: "label",
-    y: "hits",
+    y: "publicationsCount",
     name: "Publications",
   })
   // const oaChartOptions = getHorizontalBarChartOptions({
@@ -41,7 +39,15 @@ export default function ClustersAnalytics() {
   //   name: "Open Acces",
   //   unit: "%",
   // })
-  const yearsChartOptions = getYearsChartOptions({ data: clusters.slice(0, 10) })
+  const yearsChartOptions = getYearsChartOptions({
+    data: chartData,
+    years: "publicationsByYear",
+  })
+
+  const citationsChartOptions = getYearsChartOptions({
+    data: chartData,
+    years: "citationsByYear",
+  })
 
   return (
     <Row className="fr-mt-2w">
@@ -71,6 +77,13 @@ export default function ClustersAnalytics() {
           title={intl.formatMessage({ id: "networks.analytics.clusters.years.title" })}
           description={intl.formatMessage({ id: "networks.analytics.clusters.years.description" })}
           options={yearsChartOptions}
+        />
+      </Col>
+      <Col xs="12">
+        <AnalyticsGraph
+          title={intl.formatMessage({ id: "networks.analytics.clusters.citations.title" })}
+          description={intl.formatMessage({ id: "networks.analytics.clusters.citations.description" })}
+          options={citationsChartOptions}
         />
       </Col>
     </Row>

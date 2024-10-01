@@ -37,8 +37,9 @@ export type NetworkCommunity = {
   maxYear?: number
   maxWeightNodes?: Array<string>
   topWeightNodes?: Array<string>
-  hits?: number
-  years?: Record<string, number>
+  publicationsCount?: number
+  publicationsByYear: Record<string, number>
+  citationsByYear: Record<string, number>
   domains?: Record<string, number>
   oaPercent?: number
   publications?: Array<Record<string, string>>
@@ -98,23 +99,19 @@ export type ElasticBuckets = Array<ElasticBucket>
 export type ElasticBucket = {
   key: string
   doc_count: number
+  key_as_string?: string
   max_year?: {
     value: number
   }
 }
-
-export type ElasticDomains = Array<ElasticDomain>
-export type ElasticDomain = {
-  label: LangField
-  count: number
-}
-
 export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
   title?: LangField
-  productionType?: string
-  isOa?: boolean
-  domains?: ElasticDomains
-  year?: number
 }
+export type ElasticAggregation = {
+  buckets?: ElasticBuckets
+  sum_other_doc_count?: number
+  value?: number
+}
+export type ElasticAggregations = Record<string, ElasticAggregation>

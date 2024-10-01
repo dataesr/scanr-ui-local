@@ -2,8 +2,8 @@ import Graph from "graphology-types"
 import louvain from "graphology-communities-louvain"
 import seedrandom from "seedrandom"
 import { arrayPush, labelClean } from "../_utils/functions"
-import { networkSearchHits } from "../search/search"
-import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
+import { networkSearchHits, networkSearchAggs } from "../search/search"
+import { ElasticAggregations, ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
 import { openAiLabeledClusters } from "./mistralai"
 import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
@@ -50,32 +50,32 @@ const communityGetTopWeightNodes = (graph: Graph, community: number, top = 10): 
   return topWeights
 }
 
-const communityGetYears = (hits: ElasticHits): Record<string, number> =>
-  hits.reduce((acc, hit) => {
-    const year = hit.year
-    acc[year] = acc[year] ? acc[year] + 1 : 1
-    return acc
-  }, {})
+const communityGetPublicationsCount = (aggs: ElasticAggregations): number =>
+  aggs?.publicationsByYear?.buckets.reduce((acc, bucket) => acc + bucket.doc_count, 0) +
+  aggs?.publicationsByYear?.sum_other_doc_count
 
-const communityGetPublications = (hits: ElasticHits): Array<Record<string, string>> =>
-  hits.map((hit) => ({
-    id: hit.id,
-    title: hit.title.default,
-  }))
+const communityGetPublicationsByYear = (aggs: ElasticAggregations): Record<string, number> =>
+  aggs?.publicationsByYear?.buckets.reduce((acc, bucket) => ({ ...acc, [bucket.key]: bucket.doc_count }), {})
 
-const communityGetDomains = (hits: ElasticHits): Record<string, number> =>
-  hits.reduce((acc, hit) => {
-    if (hit?.domains) {
-      hit.domains.forEach(({ label, count }) => {
-        const clean = labelClean(label.default)
-        acc[clean] = acc[clean] ? acc[clean] + count : count
-      })
-    }
-    return acc
-  }, {})
+const communityGetCitationsByYear = (aggs: ElasticAggregations): Record<string, number> =>
+  Object.entries(aggs)
+    .filter(([key]) => key.startsWith("citationsIn"))
+    .reduce((acc, [key, value]) => ({ ...acc, [key.slice(-4)]: value?.value }), {})
 
-const communityGetOaPercent = (hits: ElasticHits): number =>
-  (hits.map((hit) => hit.isOa).filter(Boolean).length / hits.length) * 100
+const communityGetDomains = (aggs: ElasticAggregations): Record<string, number> =>
+  aggs?.domains?.buckets.reduce((acc, bucket) => ({ ...acc, [labelClean(bucket.key)]: bucket.doc_count }), {})
+
+const communityGetOaPercent = (aggs: ElasticAggregations): number => {
+  const isOa = aggs?.isOa?.buckets.find((bucket) => bucket.key_as_string === "true")?.doc_count || 0
+  const isNotOa = aggs?.isOa?.buckets.find((bucket) => bucket.key_as_string === "false")?.doc_count || 0
+  return (isOa / (isOa + isNotOa || 1)) * 100
+}
+
+// const communityGetPublications = (hits: ElasticHits): Array<Record<string, string>> =>
+//   hits.map((hit) => ({
+//     id: hit.id,
+//     title: hit.title.default,
+//   }))
 
 export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
   const query: string = graph.getAttribute("query")
@@ -96,7 +96,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
       // Get elastic publications
-      const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
+      // const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
+      const aggs = await networkSearchAggs({ model, query, filters, links: communityGetLinks(graph, index) })
 
       const community = {
         cluster: index + 1,
@@ -107,13 +108,16 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         maxYear: communityGetMaxYear(graph, index),
         maxWeightNodes: communityGetMaxWeightNodes(graph, index),
         topWeightNodes: communityGetTopWeightNodes(graph, index),
-        ...(hits && {
-          hits: hits.length,
-          publications: communityGetPublications(hits),
-          years: communityGetYears(hits),
-          domains: communityGetDomains(hits),
-          oaPercent: communityGetOaPercent(hits),
+        ...(aggs && {
+          publicationsCount: communityGetPublicationsCount(aggs),
+          publicationsByYear: communityGetPublicationsByYear(aggs),
+          citationsByYear: communityGetCitationsByYear(aggs),
+          domains: communityGetDomains(aggs),
+          oaPercent: communityGetOaPercent(aggs),
         }),
+        // ...(hits && {
+        //   publications: communityGetPublications(hits),
+        // })
       }
       return community
     })

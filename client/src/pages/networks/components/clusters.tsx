@@ -23,6 +23,7 @@ type ClustersSectionArgs = {
 
 function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
   const intl = useIntl()
+  const currentYear = new Date().getFullYear()
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
   return (
     <Container fluid className="cluster-item">
@@ -33,7 +34,9 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
               {`${community.size} ${intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}`}
             </Badge>
             <Badge size="sm" color="pink-macaron">
-              {`${community.hits} ${intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}`}
+              {`${community.publicationsCount} ${intl.formatMessage({
+                id: "networks.section.clusters.badge-publications",
+              })}`}
             </Badge>
             <Badge noIcon size="sm" color={oaColor(community.oaPercent)}>
               {`${intl.formatMessage({ id: "networks.section.clusters.open-access" })}: ${community.oaPercent.toFixed(1)}%`}
@@ -41,6 +44,10 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
             <Badge size="sm" color="yellow-tournesol">
               {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community.maxYear}`}
             </Badge>
+            <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
+              { id: "networks.section.clusters.citations" },
+              { count: community.citationsByYear?.[currentYear] }
+            )} (${currentYear})`}</Badge>
           </BadgeGroup>
         </Col>
       </Row>
