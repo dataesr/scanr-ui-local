@@ -36,7 +36,7 @@
   "organizations.header.description.ia-generated-hover": "En savoir plus",
   "organizations.header.description.ia-edit-label": "Éditer",
   "organizations.header.description.ia-edit-hover": "Proposer une description manuelle",
-  "organizations.patents.count": "brevets répertoriés par scanR",
+  "organizations.patents.count": "familles brevets répertoriés par scanR",
   "organizations.patents.search": "Voir la liste des brevets",
   "organizations.patents.nav.year": "Répartition par année",
   "organizations.patents.year-bars.name": "Brevets",
