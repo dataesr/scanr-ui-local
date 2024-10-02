@@ -1,4 +1,3 @@
-import { Attributes } from "graphology-types"
 import { NetworkConfig } from "../../../types/network"
 import { COLORS } from "../_utils/constants"
 
@@ -43,7 +42,7 @@ const CONFIG = {
     },
   },
   domains: {
-    url: (_: string, attr: Attributes) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
+    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "domain",
       items: "domains",
@@ -56,7 +55,7 @@ const CONFIG = {
     },
   },
   software: {
-    url: (_: string, attr: Attributes) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
+    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "software",
       items: "software",
@@ -75,8 +74,8 @@ const configGetItemDescription = () =>
 const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
-export function configGetItemUrl(model: string, key: string, attr: Attributes): string {
-  const targetUrl = CONFIG?.[model]?.url(key, attr) ?? ""
+export function configGetItemUrl(model: string, key: string, label: string): string {
+  const targetUrl = CONFIG?.[model]?.url(key, label) ?? ""
   const baseUrl = window?.location?.href?.split("/networks")[0] ?? ""
   return baseUrl + targetUrl
 }

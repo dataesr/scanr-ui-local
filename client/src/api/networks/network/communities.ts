@@ -7,6 +7,7 @@ import { ElasticAggregations, ElasticHits, NetworkCommunities, NetworkFilters } 
 import { openAiLabeledClusters } from "./mistralai"
 import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
+import { configGetItemUrl } from "./config"
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<string> | Array<number> =>
   graph.reduceNodes(
@@ -27,27 +28,15 @@ const communityGetSize = (graph: Graph, community: number): number =>
 const communityGetMaxYear = (graph: Graph, community: number): number =>
   Math.max(...communityGetAttribute(graph, community, "maxYear").map(Number))
 
-const communityGetMaxWeightNodes = (graph: Graph, community: number): Array<string> => {
-  const maxWeight = Math.max(...communityGetAttribute(graph, community, "weight").map(Number))
-  const labels = graph.reduceNodes(
-    (acc, _, attr) => (acc = attr?.community === community && attr?.weight === maxWeight ? [...acc, attr.label] : acc),
-    []
-  )
-  return labels
-}
-
-const communityGetTopWeightNodes = (graph: Graph, community: number, top = 10): Array<string> => {
+const communityGetNodes = (graph: Graph, community: number): Array<{ id: string; weight: number; label: string }> => {
   const ids = communityGetIds(graph, community)
-  const weights = ids.map((id) => ({
+  const nodes = ids.map((id) => ({
     id: id,
     weight: graph.getNodeAttribute(id, "weight"),
     label: graph.getNodeAttribute(id, "label"),
+    url: configGetItemUrl(graph.getAttribute("model"), id, graph.getNodeAttribute(id, "label")),
   }))
-  const topWeights = weights
-    .sort((a, b) => b.weight - a.weight)
-    .map((item) => item.label)
-    .slice(0, top)
-  return topWeights
+  return nodes.sort((a, b) => b.weight - a.weight)
 }
 
 const communityGetPublicationsCount = (aggs: ElasticAggregations): number =>
@@ -71,11 +60,11 @@ const communityGetOaPercent = (aggs: ElasticAggregations): number => {
   return (isOa / (isOa + isNotOa || 1)) * 100
 }
 
-// const communityGetPublications = (hits: ElasticHits): Array<Record<string, string>> =>
-//   hits.map((hit) => ({
-//     id: hit.id,
-//     title: hit.title.default,
-//   }))
+const communityGetPublications = (hits: ElasticHits): Array<Record<string, string>> =>
+  hits.map((hit) => ({
+    id: hit.id,
+    title: hit.title.default,
+  }))
 
 export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
   const query: string = graph.getAttribute("query")
@@ -95,8 +84,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   // Create communities array
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
-      // Get elastic publications
-      // const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
+      // Get elastic data
+      const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
       const aggs = await networkSearchAggs({ model, query, filters, links: communityGetLinks(graph, index) })
 
       const community = {
@@ -104,10 +93,8 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         label: COLORS?.[index] ? GetColorName(COLORS[index]) : `Unnamed ${index + 1}`,
         color: COLORS?.[index] ?? "#e2e2e2",
         size: communityGetSize(graph, index),
-        ids: communityGetIds(graph, index),
+        nodes: communityGetNodes(graph, index),
         maxYear: communityGetMaxYear(graph, index),
-        maxWeightNodes: communityGetMaxWeightNodes(graph, index),
-        topWeightNodes: communityGetTopWeightNodes(graph, index),
         ...(aggs && {
           publicationsCount: communityGetPublicationsCount(aggs),
           publicationsByYear: communityGetPublicationsByYear(aggs),
@@ -115,9 +102,9 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
           domains: communityGetDomains(aggs),
           oaPercent: communityGetOaPercent(aggs),
         }),
-        // ...(hits && {
-        //   publications: communityGetPublications(hits),
-        // })
+        ...(hits && {
+          publications: communityGetPublications(hits),
+        }),
       }
       return community
     })

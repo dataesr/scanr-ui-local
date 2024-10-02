@@ -33,16 +33,19 @@ export type NetworkCommunity = {
   label: string
   size: number
   color: string
-  ids?: Array<string>
+  nodes: Array<{
+    id: string
+    label: string
+    weight?: number
+    url?: string
+  }>
   maxYear?: number
-  maxWeightNodes?: Array<string>
-  topWeightNodes?: Array<string>
   publicationsCount?: number
-  publicationsByYear: Record<string, number>
-  citationsByYear: Record<string, number>
+  publications?: Array<Record<string, string>>
+  publicationsByYear?: Record<string, number>
+  citationsByYear?: Record<string, number>
   domains?: Record<string, number>
   oaPercent?: number
-  publications?: Array<Record<string, string>>
 }
 export type NetworkConfig = {
   terminology?: Record<string, unknown>

@@ -85,7 +85,7 @@ export default async function networkCreate(
       cluster: attr.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key) },
       scores: { "Last activity": attr?.maxYear },
-      page: configGetItemUrl(model, key, attr),
+      page: configGetItemUrl(model, key, attr.label),
     })),
     links: graph.mapEdges((_, attr, source, target) => ({
       source_id: source,
