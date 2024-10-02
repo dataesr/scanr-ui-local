@@ -11,7 +11,7 @@ export default function NetworkExports() {
   const { isExporting, exportFile } = useExportData()
 
   const handleExport = async (key: string) => {
-    const format = key.split(">")[1] as "json" | "csv"
+    const format = key.split(">")[1] as "json" | "xlsx"
     await exportFile(format)
   }
 
@@ -50,12 +50,12 @@ export default function NetworkExports() {
               <span className="fr-text--sm">{intl.formatMessage({ id: "networks.exports.json.title" })}</span>
             </MenuItem>
             <MenuItem
-              key="export>csv"
+              key="export>xlsx"
               className="fr-p-1w"
-              description={intl.formatMessage({ id: "networks.exports.csv.description" })}
+              description={intl.formatMessage({ id: "networks.exports.xlsx.description" })}
               endContent={<span className="fr-icon-download-line fr-icon--sm fr-ml-3w" />}
             >
-              <span className="fr-text--sm">{intl.formatMessage({ id: "networks.exports.csv.title" })}</span>
+              <span className="fr-text--sm">{intl.formatMessage({ id: "networks.exports.xlsx.title" })}</span>
             </MenuItem>
           </MenuButton>
         </div>
