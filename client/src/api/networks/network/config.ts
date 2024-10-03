@@ -82,6 +82,22 @@ export const CONFIG = {
       total_link_strength: "co-publications links",
     },
   },
+  projects: {
+    field: "projects.id_name",
+    aggregation: "projects.id_name.keyword",
+    co_aggregation: "co_projects.keyword",
+    url: (key: string) => `/projects/${key}`,
+    terminology: {
+      item: "project",
+      items: "project",
+      link: "co-projects link",
+      links: "co-projects links",
+      cluster: "community",
+      clusters: "communities",
+      link_strength: "co-publications",
+      total_link_strength: "co-publications links",
+    },
+  },
 }
 
 const configGetItemDescription = () =>
