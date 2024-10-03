@@ -21,7 +21,7 @@ const XSLXFormatter = (network: any) => {
 
   const publicationsList = network.clusters?.reduce((acc, cluster) => {
     cluster?.publications.forEach((publication) => {
-      acc = [...acc, { id: publication.id, title: publication.title, cluster: cluster.cluster }]
+      acc = [...acc, { id: publication.id, title: publication.title, cluster: cluster.cluster, clusterLabel: cluster.label }]
     })
     return acc
   }, [])
@@ -43,15 +43,25 @@ const exportNetwork = (network: NetworkData) => ({
     id: item.id,
     label: item.label || "",
     cluster: item.cluster,
-    degree: item?.weights?.Degree || null,
-    weight: item?.weights?.Weight || null,
+    ...(network.clusters.length && {
+      clusterLabel: network.clusters.find((cluster) => cluster.cluster === item.cluster).label,
+    }),
+    publicationsCount: item?.publicationsCount,
+    citationsCount: item?.citationsCount,
+    citationsRecent: item?.citationsRecent,
+    citationsScore: item?.citationsScore,
+    degree: item?.weights?.Degree,
+    weight: item?.weights?.Weight,
   })),
   links: network.links,
   clusters: network.clusters.map((cluster) => ({
+    id: cluster.cluster,
     label: cluster.label,
-    cluster: cluster.cluster,
     nodesCount: cluster.nodes.length,
     publicationsCount: cluster?.publicationsCount,
+    citationsCount: cluster?.citationsCount,
+    citationsRecent: cluster?.citationsRecent,
+    citationsScore: cluster?.citationsScore,
     publications: cluster?.publications,
   })),
 })

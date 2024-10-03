@@ -20,6 +20,10 @@ export type NetworkItem = {
   weights: Record<string, number>
   scores: Record<string, number>
   page?: string
+  publicationsCount?: number
+  citationsCount?: number
+  citationsRecent?: number
+  citationsScore?: number
 }
 export type NetworkLinks = Array<NetworkLink>
 export type NetworkLink = {
@@ -40,10 +44,13 @@ export type NetworkCommunity = {
     url?: string
   }>
   maxYear?: number
+  publicationsByYear?: Record<string, number>
   publicationsCount?: number
   publications?: Array<Record<string, string>>
-  publicationsByYear?: Record<string, number>
   citationsByYear?: Record<string, number>
+  citationsCount?: number
+  citationsRecent?: number
+  citationsScore?: number
   domains?: Record<string, number>
   oaPercent?: number
 }

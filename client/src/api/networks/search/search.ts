@@ -7,6 +7,7 @@ import {
   NetworkSearchHitsArgs,
   ElasticAggregations,
 } from "../../../types/network"
+import { CONFIG } from "../network/config"
 import networkCreate from "../network/network"
 import configCreate from "../network/config"
 import infoCreate from "../network/info"
@@ -34,7 +35,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
   aggs: {
     [model]: {
-      terms: { field: `co_${model}.keyword`, size: DEFAULT_SIZE },
+      terms: { field: CONFIG[model].co_aggregation, size: DEFAULT_SIZE },
       aggs: { max_year: { max: { field: "year" } } },
     },
   },
@@ -84,7 +85,7 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
   const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
   const body = {
     size: DEFAULT_SIZE,
-    _source: HIT_FIELDS,
+    _source: [...HIT_FIELDS, CONFIG[model].field],
     query: {
       bool: {
         must: [

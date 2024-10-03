@@ -1,8 +1,11 @@
 import { NetworkConfig } from "../../../types/network"
 import { COLORS } from "../_utils/constants"
 
-const CONFIG = {
+export const CONFIG = {
   authors: {
+    field: "authors.id_name",
+    aggregation: "authors.id_name.keyword",
+    co_aggregation: "co_authors.keyword",
     url: (key: string) => `/authors/${key}`,
     terminology: {
       item: "author",
@@ -16,6 +19,9 @@ const CONFIG = {
     },
   },
   institutions: {
+    field: "affiliations.id_name",
+    aggregation: "affiliations.id_name.keyword",
+    co_aggregation: "co_institutions.keyword",
     url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "institution",
@@ -29,6 +35,9 @@ const CONFIG = {
     },
   },
   structures: {
+    field: "affiliations.id_name",
+    aggregation: "affiliations.id_name.keyword",
+    co_aggregation: "co_structures.keyword",
     url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "structure",
@@ -42,6 +51,9 @@ const CONFIG = {
     },
   },
   domains: {
+    field: "domains.id_name",
+    aggregation: "domains.id_name.keyword",
+    co_aggregation: "co_domains.keyword",
     url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "domain",
@@ -55,6 +67,9 @@ const CONFIG = {
     },
   },
   software: {
+    field: "software.id_name",
+    aggregation: "software.id_name.keyword",
+    co_aggregation: "co_software.keyword",
     url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "software",

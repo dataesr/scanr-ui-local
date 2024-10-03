@@ -35,12 +35,9 @@ type ClustersSectionArgs = {
 
 function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
   const intl = useIntl()
+  const currentYear = new Date().getFullYear()
   const [showNodesModal, setShowNodesModal] = useState(false)
   const [showPublicationsModal, setShowPublicationsModal] = useState(false)
-  const currentYear = new Date().getFullYear()
-  const citationScore = (community: NetworkCommunity) =>
-    (community?.citationsByYear?.[currentYear] + community?.citationsByYear?.[currentYear - 1]) /
-    (community?.publicationsCount || 1)
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
 
   return (
@@ -78,9 +75,9 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
             </Badge>
             <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
               { id: "networks.section.clusters.citations" },
-              { count: community.citationsByYear?.[currentYear] + community.citationsByYear?.[currentYear - 1] }
+              { count: community.citationsRecent }
             )} (${currentYear - 1}-${currentYear})`}</Badge>
-            <Badge size="sm" color="blue-ecume">{`Citation score: ${citationScore(community).toFixed(1)}`}</Badge>
+            <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
           </BadgeGroup>
         </Col>
       </Row>

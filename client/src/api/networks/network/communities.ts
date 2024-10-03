@@ -8,6 +8,11 @@ import { openAiLabeledClusters } from "./mistralai"
 import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 import { configGetItemUrl } from "./config"
+import { CONFIG } from "./config"
+import { nodeGetId } from "./network"
+
+const CURRENT_YEAR = new Date().getFullYear()
+const RECENT_YEARS = [CURRENT_YEAR - 1, CURRENT_YEAR]
 
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<string> | Array<number> =>
   graph.reduceNodes(
@@ -51,6 +56,18 @@ const communityGetCitationsByYear = (aggs: ElasticAggregations): Record<string, 
     .filter(([key]) => key.startsWith("citationsIn"))
     .reduce((acc, [key, value]) => ({ ...acc, [key.slice(-4)]: value?.value }), {})
 
+const communityGetCitationsCount = (aggs: ElasticAggregations): number =>
+  Object.values(communityGetCitationsByYear(aggs)).reduce((acc, value) => acc + value, 0)
+
+const communityGetCitationsRecent = (aggs: ElasticAggregations): number =>
+  Object.entries(communityGetCitationsByYear(aggs)).reduce(
+    (acc, [key, value]) => (RECENT_YEARS.includes(Number(key)) ? acc + value : acc),
+    0
+  )
+
+const communityGetCitationsScore = (aggs: ElasticAggregations): number =>
+  communityGetCitationsRecent(aggs) / communityGetPublicationsCount(aggs)
+
 const communityGetDomains = (aggs: ElasticAggregations): Record<string, number> =>
   aggs?.domains?.buckets.reduce((acc, bucket) => ({ ...acc, [labelClean(bucket.key)]: bucket.doc_count }), {})
 
@@ -65,6 +82,27 @@ const communityGetPublications = (hits: ElasticHits): Array<Record<string, strin
     id: hit.id,
     title: hit.title.default,
   }))
+
+const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
+  hits.reduce((acc, hit) => {
+    const field = CONFIG[model].field.split(".")[0]
+    const citationsByYear = hit?.["counts_by_year"]?.reduce(
+      (acc, citations) => ({
+        ...acc,
+        [citations.year]: citations.cited_by_count,
+      }),
+      {}
+    )
+    hit?.[field].forEach((node) => {
+      const id = nodeGetId(node[CONFIG[model].field.split(".")[1]])
+      acc[id] = {
+        ...acc?.[id],
+        publicationsCount: acc?.[id]?.publicationsCount ? acc[id].publicationsCount + 1 : 1,
+        citationsByYear: citationsByYear,
+      }
+    })
+    return acc
+  }, {})
 
 export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
   const query: string = graph.getAttribute("query")
@@ -88,6 +126,26 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
       const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
       const aggs = await networkSearchAggs({ model, query, filters, links: communityGetLinks(graph, index) })
 
+      if (hits) {
+        const nodesInfos = communityGetNodesInfos(hits, model)
+        graph.forEachNode((key) => {
+          if (!Object.keys(nodesInfos).includes(key)) return
+          const nodeInfos = nodesInfos[key]
+          const publicationsCount = nodeInfos.publicationsCount
+          const citationsCount = nodeInfos?.citationsByYear
+            ? Object.values(nodeInfos?.citationsByYear).reduce((acc: number, value: number) => acc + value, 0)
+            : 0
+          const citationsRecent = nodeInfos?.citationsByYear
+            ? (nodeInfos.citationsByYear?.[CURRENT_YEAR - 1] || 0) + (nodeInfos.citationsByYear?.[CURRENT_YEAR] || 0)
+            : 0
+          const citationsScore = citationsRecent / (publicationsCount || 1)
+          graph.setNodeAttribute(key, "publicationsCount", publicationsCount)
+          graph.setNodeAttribute(key, "citationsCount", citationsCount)
+          graph.setNodeAttribute(key, "citationsRecent", citationsRecent)
+          graph.setNodeAttribute(key, "citationsScore", citationsScore)
+        })
+      }
+
       const community = {
         cluster: index + 1,
         label: COLORS?.[index] ? GetColorName(COLORS[index]) : `Unnamed ${index + 1}`,
@@ -96,9 +154,12 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         nodes: communityGetNodes(graph, index),
         maxYear: communityGetMaxYear(graph, index),
         ...(aggs && {
-          publicationsCount: communityGetPublicationsCount(aggs),
           publicationsByYear: communityGetPublicationsByYear(aggs),
+          publicationsCount: communityGetPublicationsCount(aggs),
           citationsByYear: communityGetCitationsByYear(aggs),
+          citationsCount: communityGetCitationsCount(aggs),
+          citationsRecent: communityGetCitationsRecent(aggs),
+          citationsScore: communityGetCitationsScore(aggs),
           domains: communityGetDomains(aggs),
           oaPercent: communityGetOaPercent(aggs),
         }),
