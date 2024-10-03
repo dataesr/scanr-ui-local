@@ -24,9 +24,6 @@ const CpcWordCloud: React.FC<CpcWordChartProps> = ({ data }) => {
     chart: {
       type: "wordcloud",
     },
-    title: {
-      text: "Nuage de mots des CPC par code",
-    },
     series: [
       {
         type: "wordcloud",

@@ -30,9 +30,6 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
       height: "100%",
       backgroundColor: "#f4f4f4",
     },
-    title: {
-      text: "Répartition des CPC par code",
-    },
     tooltip: {
       pointFormat: "<b>{point.name}</b> (Code: {point.code}): {point.value}",
       formatter: function () {

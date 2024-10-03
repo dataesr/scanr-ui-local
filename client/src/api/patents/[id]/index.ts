@@ -83,7 +83,5 @@ export async function getCpcAggregation(value: string): Promise<Patent> {
     label: labelsByCode[bucket.key] || "Label non trouvé",
   }));
 
-  if (!patent.length) throw new Error("404");
-
   return patent;
 }

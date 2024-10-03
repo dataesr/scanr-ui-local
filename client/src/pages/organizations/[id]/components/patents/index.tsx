@@ -175,13 +175,9 @@ export default function OrganizationPatents({
               years={patents.byYear.map((year) => year.label)}
             />
           )}
-        </Col>
-        <Col xs="12" className="fr-pb-6w">
           {projectGraph === "cpc" && patentsData && (
             <PatentChart data={graphData} />
           )}
-        </Col>
-        <Col xs="12" className="fr-pb-6w">
           {projectGraph === "cpc2" && patentsData && (
             <CpcWordCloud data={graphData} />
           )}
