@@ -17,16 +17,7 @@ const XSLXFormatter = (network: any) => {
 
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(network.items), "Items")
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(network.links), "Links")
-  XLSX.utils.book_append_sheet(
-    workbook,
-    XLSX.utils.json_to_sheet(
-      network.clusters.map((cluster) => {
-        const { publications, ...data } = cluster
-        return data
-      })
-    ),
-    "Clusters"
-  )
+  XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(network.clusters), "Clusters")
 
   const publicationsList = network.clusters?.reduce((acc, cluster) => {
     cluster?.publications.forEach((publication) => {
@@ -34,7 +25,6 @@ const XSLXFormatter = (network: any) => {
     })
     return acc
   }, [])
-
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(publicationsList), "Publications")
 
   const workbookOutput = XLSX.write(workbook, { type: "binary", bookType: "xlsx" })
