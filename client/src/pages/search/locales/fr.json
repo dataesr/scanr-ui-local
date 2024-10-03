@@ -30,7 +30,7 @@
   "search.top.authors.result": "{count, plural, =0 {# auteur} one {# auteur} other {# auteurs}}",
   "search.top.organizations.result": "{count, plural, =0 {# structure} one {# structure} other {# structures}}",
   "search.top.projects.result": "{count, plural, =0 {# financements} one {# financement} other {# financements}}",
-  "search.top.patents.result": "{count, plural, =0 {# brevets} one {# brevet} other {# brevets}}",
+  "search.top.patents.result": "{count, plural, =0 {# familles de brevets} one {# famille de brevet} other {#  familles de brevets}}",
   "search.top.publications.filters.result-count": "{count, plural, =0 {# publication} one {# publication} other {# publications}}",
   "search.top.organizations.filters.result-count": "{count, plural, =0 {# structures} one {# structure} other {# structures}}",
   "search.top.projects.filters.result-count": "{count, plural, =0 {# financements} one {# financements} other {# financements}}",
