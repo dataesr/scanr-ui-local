@@ -34,7 +34,7 @@ export async function getPatentById(id: string): Promise<Patent> {
 }
 export async function getCpcAggregation(value: string): Promise<Patent> {
   const body: any = {
-    size: 0,
+    size: 10000,
     query: {
       bool: {
         must: [
