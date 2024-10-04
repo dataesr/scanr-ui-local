@@ -29,6 +29,11 @@ const NETWORK_TABS_MAPPING = {
     label: "projects",
     icon: "briefcase-line",
   },
+  countries: {
+    index: 6,
+    label: "countries",
+    icon: "earth-line",
+  },
 }
 
 export const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)

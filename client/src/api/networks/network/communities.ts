@@ -94,7 +94,9 @@ const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
       {}
     )
     hit?.[field].forEach((node) => {
-      const id = nodeGetId(node[CONFIG[model].field.split(".")[1]])
+      const key = node[CONFIG[model].field.split(".")[1]]
+      if (!key) return
+      const id = nodeGetId(key)
       acc[id] = {
         ...acc?.[id],
         publicationsCount: acc?.[id]?.publicationsCount ? acc[id].publicationsCount + 1 : 1,
