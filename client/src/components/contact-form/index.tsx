@@ -1,15 +1,26 @@
-import { Button, ButtonGroup, Notice, TextArea, TextInput, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Button,
+  ButtonGroup,
+  Notice,
+  TextArea,
+  TextInput,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { createIntl, RawIntlProvider } from "react-intl";
+import { postHeadersTicketOffice } from "../../config/api";
 
-const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
 const messages = Object.keys(modules).reduce((acc, key) => {
   const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
   if (locale) {
-    return { ...acc, [locale]: modules[key] }
+    return { ...acc, [locale]: modules[key] };
   }
   return acc;
 }, {});
@@ -22,6 +33,9 @@ type FormState = {
   message?: string;
   id?: string;
   type?: string;
+  fromApplication?: string;
+  objectId?: string;
+  objectType?: string;
 };
 
 const validate = (form: FormState) => {
@@ -36,40 +50,56 @@ const validate = (form: FormState) => {
     errors.message = "Ce champ est obligatoire";
   }
   return errors;
-}
+};
 
 type Props = {
-  id?: string;
-  type?: string;
-}
+  objectId?: string;
+  objectType?: string;
+};
 
-
-
-export default function ContactForm({ id, type }: Props) {
+export default function ContactForm({ objectId, objectType }: Props) {
   const { locale } = useDSFRConfig();
   const intl = createIntl({ locale, messages: messages[locale] });
   const navigate = useNavigate();
-  const api = (id && type) ? "contribute" : "contact"
+  const api = objectId && objectType ? "contribute" : "contacts";
   const [thanks, setThanks] = useState(false);
   const { isPending, isError, mutate } = useMutation({
     mutationFn: async (data: FormState) => {
-      const resp = await fetch(`https://scanr-api.dataesr.ovh/${api}`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (resp.status !== 201) throw new Error("error");
+      let payload = { ...data };
+
+      if (api === "contacts") {
+        payload = { ...payload, fromApplication: "scanr" };
+      }
+      if (api === "contribute") {
+        payload = { ...payload, objectId, objectType };
+      }
+      const resp = await fetch(
+        `https://ticket-office.staging.dataesr.ovh/api/${api}`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+            ...postHeadersTicketOffice,
+          },
+        }
+      );
+
+      if (resp.status !== 200) throw new Error("error");
       return resp.json();
     },
+
     onSuccess: () => {
       setThanks(true);
     },
     onError: (e) => {
-      console.error("error", e)
+      console.error("error", e);
     },
   });
-
-  const { form, updateForm, errors, } = useForm<FormState, FormState>({ id, type }, validate);
+  const { form, updateForm, errors } = useForm<FormState, FormState>(
+    {},
+    validate
+  );
 
   if (thanks) {
     return (
@@ -77,51 +107,42 @@ export default function ContactForm({ id, type }: Props) {
         <Notice className="fr-mb-2w" type="success" closeMode="disallow">
           <span>{intl.formatMessage({ id: "contact.thanks.message" })}</span>
           <ButtonGroup className="fr-mt-5w" isInlineFrom="xs">
-            <Button
-              variant="secondary"
-              onClick={() => navigate(-1)}
-            >
+            <Button variant="secondary" onClick={() => navigate(-1)}>
               {intl.formatMessage({ id: "contact.thanks.return" })}
             </Button>
           </ButtonGroup>
         </Notice>
-      </RawIntlProvider >
+      </RawIntlProvider>
     );
   }
   if (isError) {
     return (
       <RawIntlProvider value={intl}>
         <Notice className="fr-mb-2w" type="error" closeMode="disallow">
-          <span>
-            {intl.formatMessage({ id: "contact.error.message" })}
-          </span>
+          <span>{intl.formatMessage({ id: "contact.error.message" })}</span>
           <ButtonGroup className="fr-mt-5w" isInlineFrom="xs">
             <Button
               onClick={() => {
-                setThanks(false)
+                setThanks(false);
               }}
             >
               {intl.formatMessage({ id: "contact.error.retry" })}
             </Button>
-            <Button
-              variant="secondary"
-              onClick={() => navigate(-1)}
-            >
+            <Button variant="secondary" onClick={() => navigate(-1)}>
               {intl.formatMessage({ id: "contact.error.return" })}
             </Button>
           </ButtonGroup>
         </Notice>
-      </RawIntlProvider >
+      </RawIntlProvider>
     );
   }
 
   return (
     <RawIntlProvider value={intl}>
-
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          mutate(form)
+          mutate(form);
         }}
       >
         <TextInput
@@ -133,7 +154,6 @@ export default function ContactForm({ id, type }: Props) {
           message={errors?.name}
           messageType={errors?.name ? "error" : undefined}
           disableAutoValidation
-
         />
         <TextInput
           value={form.email}
@@ -170,9 +190,10 @@ export default function ContactForm({ id, type }: Props) {
           messageType={errors?.message ? "error" : undefined}
           disableAutoValidation
         />
-        <Button disabled={isPending} type="submit">Envoyer le message</Button>
+        <Button disabled={isPending} type="submit">
+          Envoyer le message
+        </Button>
       </form>
-    </RawIntlProvider >
-
+    </RawIntlProvider>
   );
 }

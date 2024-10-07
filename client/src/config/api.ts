@@ -2,11 +2,19 @@ const {
   VITE_API_URL: API_URL,
   VITE_API_KEY: API_KEY,
   VITE_TOPICS_URL: TOPICS_URL,
+  VITE_TICKET_OFFICE_API_KEY: TICKET_OFFICE_API_KEY,
 } = import.meta.env;
 
 // Headers
 export const headers = API_KEY ? { Authorization: `Basic ${API_KEY}` } : {};
 export const postHeaders = { ...headers, "Content-Type": "application/json" };
+export const ticketOfficeHeaders = TICKET_OFFICE_API_KEY
+  ? { Authorization: `Basic ${TICKET_OFFICE_API_KEY}` }
+  : {};
+export const postHeadersTicketOffice = {
+  ...ticketOfficeHeaders,
+  "Content-Type": "application/json",
+};
 
 // Indices
 export const publicationsIndex = `${API_URL}/scanr-publications`;

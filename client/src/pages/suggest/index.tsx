@@ -1,6 +1,19 @@
 import SearchResultListSkeleton from "../../components/skeleton/search-result-list-skeleton";
 import useData from "./useData";
-import { Breadcrumb, Button, ButtonGroup, Col, Container, Link, Notice, Row, SearchBar, Text, TextInput, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Breadcrumb,
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Link,
+  Notice,
+  Row,
+  SearchBar,
+  Text,
+  TextInput,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
 import { useEffect, useState } from "react";
@@ -14,23 +27,34 @@ import useSuggestionList from "./useList";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAuthorById } from "../../api/authors/[id]";
+import { postHeadersTicketOffice } from "../../config/api";
 
-const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const modules = import.meta.glob("./locales/*.json", {
+  eager: true,
+  import: "default",
+});
 const messages = Object.keys(modules).reduce((acc, key) => {
   const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
   if (locale) {
-    return { ...acc, [locale]: modules[key] }
+    return { ...acc, [locale]: modules[key] };
   }
   return acc;
 }, {});
 
 export default function Suggest() {
   const { locale } = useDSFRConfig();
-  const intl = createIntl({ locale, messages: messages[locale] })
+  const intl = createIntl({ locale, messages: messages[locale] });
   const { id } = useParams();
   const [ref, inView] = useInView();
   const { search, currentQuery, total, handleQueryChange } = useData(id);
-  const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search;
+  const {
+    data,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = search;
   const { items, removeItem, addItem, deleteAllItems } = useSuggestionList(id);
   const [successfullSubmission, setSuccessfullSubmission] = useState(false);
   const [errorSubmission, setErrorSubmission] = useState(false);
@@ -39,30 +63,36 @@ export default function Suggest() {
   const { data: author } = useQuery({
     queryKey: ["author", id],
     queryFn: () => getAuthorById(id),
-  })
+  });
 
   const submitSuggestions = async () => {
     const body = {
       email,
-      id: author.id,
       name: author?.fullName,
-      productions: items.map((item) => ({ id: item.id }))
-    }
-    const resp = await fetch("https://scanr-api.dataesr.ovh/contribute_productions", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    })
+      extra: {
+        id: author.id,
+      },
+      productions: items.map((item) => ({ id: item.id })),
+    };
+    const resp = await fetch(
+      "https://ticket-office.staging.dataesr.ovh/api/production",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          ...postHeadersTicketOffice,
+        },
+      }
+    );
     const json = await resp.json();
-
     if (json?.status === "ERR") {
-      setErrorSubmission(true)
+      setErrorSubmission(true);
     } else {
       setSuccessfullSubmission(true);
       deleteAllItems();
     }
-  }
-
+  };
 
   const shouldClickToLoad = data?.length
     ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK
@@ -70,52 +100,69 @@ export default function Suggest() {
 
   useEffect(() => {
     if (inView) {
-      fetchNextPage()
+      fetchNextPage();
     }
-  }, [inView, fetchNextPage])
+  }, [inView, fetchNextPage]);
 
   if (error) {
-    return <Error500 error={error} />
+    return <Error500 error={error} />;
   }
 
   return (
     <RawIntlProvider value={intl}>
-      {successfullSubmission && <Notice closeMode="disallow" type="success" className="fr-py-3w">
-        {intl.formatMessage({ id: "suggest.list.success" })}
-      </Notice>}
-      {errorSubmission && <Notice closeMode="disallow" type="error" className="fr-py-3w">
-        {intl.formatMessage({ id: "suggest.list.error" })}
-      </Notice>}
+      {successfullSubmission && (
+        <Notice closeMode="disallow" type="success" className="fr-py-3w">
+          {intl.formatMessage({ id: "suggest.list.success" })}
+        </Notice>
+      )}
+      {errorSubmission && (
+        <Notice closeMode="disallow" type="error" className="fr-py-3w">
+          {intl.formatMessage({ id: "suggest.list.error" })}
+        </Notice>
+      )}
       <Container className={"bg-publications"} fluid>
         <Container>
           <Breadcrumb className="fr-pt-4w fr-mt-0 fr-mb-2w">
-            <Link href="/"><FormattedMessage id="suggest.breadcrumb.home" /></Link>
-            <Link current>{intl.formatMessage({ id: "suggest.breadcrumb.publications" })}</Link>
+            <Link href="/">
+              <FormattedMessage id="suggest.breadcrumb.home" />
+            </Link>
+            <Link current>
+              {intl.formatMessage({ id: "suggest.breadcrumb.publications" })}
+            </Link>
           </Breadcrumb>
           <Row gutters>
             <Col xs="12" sm="8" lg="8">
               <SearchBar
                 key={currentQuery}
                 isLarge
-                buttonLabel={intl.formatMessage({ id: "suggest.main-search-bar" })}
+                buttonLabel={intl.formatMessage({
+                  id: "suggest.main-search-bar",
+                })}
                 defaultValue={currentQuery || ""}
-                placeholder={intl.formatMessage({ id: "suggest.main-search-bar" })}
+                placeholder={intl.formatMessage({
+                  id: "suggest.main-search-bar",
+                })}
                 onSearch={(value) => handleQueryChange(value)}
               />
             </Col>
             <Col xs="12" sm="4" lg="2" />
           </Row>
           <Container fluid className="fr-py-3w">
-            {(total && total === 10000) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
-              {intl.formatMessage({ id: "suggest.result-more-than" })}
-            </Text>) : null
-            }
-            {(total && total > 0) ? (<Text as="span" size="lg" bold className="fr-mb-1w">
-              {intl.formatMessage(
-                { id: "suggest.publications.result" },
-                { count: total, query: currentQuery }
-              )}
-            </Text>) : isFetchingNextPage ? <BaseSkeleton height="1.5rem" width="40%" /> : null}
+            {total && total === 10000 ? (
+              <Text as="span" size="lg" bold className="fr-mb-1w">
+                {intl.formatMessage({ id: "suggest.result-more-than" })}
+              </Text>
+            ) : null}
+            {total && total > 0 ? (
+              <Text as="span" size="lg" bold className="fr-mb-1w">
+                {intl.formatMessage(
+                  { id: "suggest.publications.result" },
+                  { count: total, query: currentQuery }
+                )}
+              </Text>
+            ) : isFetchingNextPage ? (
+              <BaseSkeleton height="1.5rem" width="40%" />
+            ) : null}
           </Container>
         </Container>
       </Container>
@@ -126,16 +173,20 @@ export default function Suggest() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                    <SuggestionAddItem
-                      data={data}
-                      highlight={highlight}
-                      key={data.id}
-                      addItem={addItem}
-                      disabled={items.some((item) => item.id === data.id)}
-                      isIdentified={!!data?.authors.map((a) => a.person).includes(author.id)}
-                    />))
-                  : null
-                }
+                      <SuggestionAddItem
+                        data={data}
+                        highlight={highlight}
+                        key={data.id}
+                        addItem={addItem}
+                        disabled={items.some((item) => item.id === data.id)}
+                        isIdentified={
+                          !!data?.authors
+                            .map((a) => a.person)
+                            .includes(author.id)
+                        }
+                      />
+                    ))
+                  : null}
               </div>
             </Container>
             {(isFetching || isFetchingNextPage) && (
@@ -146,32 +197,34 @@ export default function Suggest() {
                 </div>
               </>
             )}
-            {(hasNextPage && !shouldClickToLoad) && (
+            {hasNextPage && !shouldClickToLoad && (
               <>
                 <div ref={ref} />
                 <hr />
               </>
             )}
-            {(hasNextPage && shouldClickToLoad) && (
+            {hasNextPage && shouldClickToLoad && (
               <Separator className="fr-my-2w">
-                <Button icon="arrow-down-s-line" variant="text" onClick={() => fetchNextPage()}>
+                <Button
+                  icon="arrow-down-s-line"
+                  variant="text"
+                  onClick={() => fetchNextPage()}
+                >
                   <FormattedMessage id="suggest.results.pagination.next" />
                 </Button>
               </Separator>
             )}
-            {
-              (!isFetchingNextPage && !hasNextPage)
-                ? (<>
-                  <Separator />
-                  <Text size="md" className="fr-my-4w">
-                    {intl.formatMessage(
-                      { id: "suggest.results.pagination.end" },
-                      { query: currentQuery }
-                    )}
-                  </Text>
-                </>)
-                : null
-            }
+            {!isFetchingNextPage && !hasNextPage ? (
+              <>
+                <Separator />
+                <Text size="md" className="fr-my-4w">
+                  {intl.formatMessage(
+                    { id: "suggest.results.pagination.end" },
+                    { query: currentQuery }
+                  )}
+                </Text>
+              </>
+            ) : null}
           </Col>
           <Col xs="12" lg="4" offsetLg="1">
             <Text bold size="lead" className="fr-mb-2w">
@@ -181,13 +234,21 @@ export default function Suggest() {
             </Text>
             <div>
               {items.map((item) => (
-                <div key={item.id} style={{ padding: "1rem 0.5rem", borderBottom: "1px solid grey" }}>
+                <div
+                  key={item.id}
+                  style={{
+                    padding: "1rem 0.5rem",
+                    borderBottom: "1px solid grey",
+                  }}
+                >
                   <SuggestionRemoveItem data={item} removeItem={removeItem} />
                 </div>
               ))}
             </div>
             <hr />
-            {!!items.filter(item => item.externalIds?.find((i) => i.type === 'hal'))?.length && (
+            {!!items.filter((item) =>
+              item.externalIds?.find((i) => i.type === "hal")
+            )?.length && (
               <Notice closeMode="disallow" type="warning" className="fr-my-3w">
                 <Text as="span">
                   {intl.formatMessage({ id: "suggest.notice.title" })}
@@ -196,7 +257,14 @@ export default function Suggest() {
                 <Text as="span" size="xs">
                   {intl.formatMessage({ id: "suggest.notice.text" })}
                 </Text>
-                <Button className="fr-mt-3w" size="sm" as="a" variant="secondary" href="http://doc.hal.science/identifiant-auteur-idhal-cv/" target="_blank">
+                <Button
+                  className="fr-mt-3w"
+                  size="sm"
+                  as="a"
+                  variant="secondary"
+                  href="http://doc.hal.science/identifiant-auteur-idhal-cv/"
+                  target="_blank"
+                >
                   {intl.formatMessage({ id: "suggest.notice.link" })}
                 </Button>
               </Notice>
@@ -221,6 +289,5 @@ export default function Suggest() {
         </Row>
       </Container>
     </RawIntlProvider>
-  )
+  );
 }
-
