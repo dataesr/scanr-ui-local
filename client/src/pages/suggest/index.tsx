@@ -74,17 +74,14 @@ export default function Suggest() {
       },
       productions: items.map((item) => ({ id: item.id })),
     };
-    const resp = await fetch(
-      "https://ticket-office.staging.dataesr.ovh/api/production",
-      {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-          ...postHeadersTicketOffice,
-        },
-      }
-    );
+    const resp = await fetch("/ticket/api/production", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+        ...postHeadersTicketOffice,
+      },
+    });
     const json = await resp.json();
     if (json?.status === "ERR") {
       setErrorSubmission(true);
