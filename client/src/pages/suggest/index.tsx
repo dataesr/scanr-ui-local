@@ -67,6 +67,7 @@ export default function Suggest() {
 
   const submitSuggestions = async () => {
     const body = {
+      objectId: id,
       email,
       name: author?.fullName,
       extra: {
