@@ -20,6 +20,10 @@ export type NetworkItem = {
   weights: Record<string, number>
   scores: Record<string, number>
   page?: string
+  publicationsCount?: number
+  citationsCount?: number
+  citationsRecent?: number
+  citationsScore?: number
 }
 export type NetworkLinks = Array<NetworkLink>
 export type NetworkLink = {
@@ -33,12 +37,20 @@ export type NetworkCommunity = {
   label: string
   size: number
   color: string
-  ids?: Array<string>
+  nodes: Array<{
+    id: string
+    label: string
+    weight?: number
+    url?: string
+  }>
   maxYear?: number
-  maxWeightNodes?: Array<string>
-  topWeightNodes?: Array<string>
-  hits?: number
-  years?: Record<string, number>
+  publicationsByYear?: Record<string, number>
+  publicationsCount?: number
+  publications?: Array<Record<string, string>>
+  citationsByYear?: Record<string, number>
+  citationsCount?: number
+  citationsRecent?: number
+  citationsScore?: number
   domains?: Record<string, number>
   oaPercent?: number
 }
@@ -97,23 +109,19 @@ export type ElasticBuckets = Array<ElasticBucket>
 export type ElasticBucket = {
   key: string
   doc_count: number
+  key_as_string?: string
   max_year?: {
     value: number
   }
 }
-
-export type ElasticDomains = Array<ElasticDomain>
-export type ElasticDomain = {
-  label: LangField
-  count: number
-}
-
 export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
   title?: LangField
-  productionType?: string
-  isOa?: boolean
-  domains?: ElasticDomains
-  year?: number
 }
+export type ElasticAggregation = {
+  buckets?: ElasticBuckets
+  sum_other_doc_count?: number
+  value?: number
+}
+export type ElasticAggregations = Record<string, ElasticAggregation>

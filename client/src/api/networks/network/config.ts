@@ -1,9 +1,11 @@
-import { Attributes } from "graphology-types"
 import { NetworkConfig } from "../../../types/network"
 import { COLORS } from "../_utils/constants"
 
-const CONFIG = {
+export const CONFIG = {
   authors: {
+    field: "authors.id_name",
+    aggregation: "authors.id_name.keyword",
+    co_aggregation: "co_authors.keyword",
     url: (key: string) => `/authors/${key}`,
     terminology: {
       item: "author",
@@ -17,6 +19,9 @@ const CONFIG = {
     },
   },
   institutions: {
+    field: "affiliations.id_name",
+    aggregation: "affiliations.id_name.keyword",
+    co_aggregation: "co_institutions.keyword",
     url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "institution",
@@ -30,6 +35,9 @@ const CONFIG = {
     },
   },
   structures: {
+    field: "affiliations.id_name",
+    aggregation: "affiliations.id_name.keyword",
+    co_aggregation: "co_structures.keyword",
     url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "structure",
@@ -43,7 +51,10 @@ const CONFIG = {
     },
   },
   domains: {
-    url: (_: string, attr: Attributes) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
+    field: "domains.id_name",
+    aggregation: "domains.id_name.keyword",
+    co_aggregation: "co_domains.keyword",
+    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "domain",
       items: "domains",
@@ -56,12 +67,47 @@ const CONFIG = {
     },
   },
   software: {
-    url: (_: string, attr: Attributes) => `/search/publications?q="${attr.label.replace(/ /g, "+")}"`,
+    field: "software.id_name",
+    aggregation: "software.id_name.keyword",
+    co_aggregation: "co_software.keyword",
+    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "software",
       items: "software",
       link: "co-software link",
       links: "co-software links",
+      cluster: "community",
+      clusters: "communities",
+      link_strength: "co-publications",
+      total_link_strength: "co-publications links",
+    },
+  },
+  projects: {
+    field: "projects.id_name",
+    aggregation: "projects.id_name.keyword",
+    co_aggregation: "co_projects.keyword",
+    url: (key: string) => `/projects/${key}`,
+    terminology: {
+      item: "project",
+      items: "projects",
+      link: "co-projects link",
+      links: "co-projects links",
+      cluster: "community",
+      clusters: "communities",
+      link_strength: "co-publications",
+      total_link_strength: "co-publications links",
+    },
+  },
+  countries: {
+    field: "affiliations.country",
+    aggregation: "affiliations.country.keyword",
+    co_aggregation: "co_countries.keyword",
+    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    terminology: {
+      item: "country",
+      items: "countries",
+      link: "co-countries link",
+      links: "co-countries links",
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
@@ -75,8 +121,8 @@ const configGetItemDescription = () =>
 const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
-export function configGetItemUrl(model: string, key: string, attr: Attributes): string {
-  const targetUrl = CONFIG?.[model]?.url(key, attr) ?? ""
+export function configGetItemUrl(model: string, key: string, label: string): string {
+  const targetUrl = CONFIG?.[model]?.url(key, label) ?? ""
   const baseUrl = window?.location?.href?.split("/networks")[0] ?? ""
   return baseUrl + targetUrl
 }

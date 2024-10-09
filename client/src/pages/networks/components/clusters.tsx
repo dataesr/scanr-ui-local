@@ -1,6 +1,18 @@
 import React, { Fragment, useState } from "react"
 import { useIntl } from "react-intl"
-import { Container, Row, Button, Badge, BadgeGroup, Link, Text, Col } from "@dataesr/dsfr-plus"
+import {
+  Container,
+  Row,
+  Button,
+  Badge,
+  BadgeGroup,
+  Link,
+  Text,
+  Col,
+  Modal,
+  ModalContent,
+  ModalTitle,
+} from "@dataesr/dsfr-plus"
 // import Gauge from "../../../components/gauge"
 import { PageSection } from "../../../components/page-content"
 import { NetworkCommunity, NetworkData } from "../../../types/network"
@@ -23,17 +35,37 @@ type ClustersSectionArgs = {
 
 function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
   const intl = useIntl()
+  const currentYear = new Date().getFullYear()
+  const [showNodesModal, setShowNodesModal] = useState(false)
+  const [showPublicationsModal, setShowPublicationsModal] = useState(false)
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
+
   return (
     <Container fluid className="cluster-item">
       <Row>
         <Col>
           <BadgeGroup>
-            <Badge size="sm" color="purple-glycine">
+            <Badge
+              onClick={() => {
+                setShowNodesModal(true)
+              }}
+              style={{ cursor: "pointer" }}
+              size="sm"
+              color="purple-glycine"
+            >
               {`${community.size} ${intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}`}
             </Badge>
-            <Badge size="sm" color="pink-macaron">
-              {`${community.hits} ${intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}`}
+            <Badge
+              onClick={() => {
+                setShowPublicationsModal(true)
+              }}
+              style={{ cursor: "pointer" }}
+              size="sm"
+              color="pink-macaron"
+            >
+              {`${community.publicationsCount} ${intl.formatMessage({
+                id: "networks.section.clusters.badge-publications",
+              })}`}
             </Badge>
             <Badge noIcon size="sm" color={oaColor(community.oaPercent)}>
               {`${intl.formatMessage({ id: "networks.section.clusters.open-access" })}: ${community.oaPercent.toFixed(1)}%`}
@@ -41,18 +73,28 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
             <Badge size="sm" color="yellow-tournesol">
               {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community.maxYear}`}
             </Badge>
+            <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
+              { id: "networks.section.clusters.citations" },
+              { count: community.citationsRecent }
+            )} (${currentYear - 1}-${currentYear})`}</Badge>
+            <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
           </BadgeGroup>
         </Col>
       </Row>
       <Row>
         <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"█"} </div>
-        <Button variant="text" className="fr-link" onClick={() => setFocusItem(community.maxWeightNodes[0])}>
+        <Button variant="text" className="fr-link" onClick={() => setFocusItem(community.nodes[0].label)}>
           {community.label}
         </Button>
       </Row>
       <Text size="sm" className="fr-mb-0">
-        <i>{community.topWeightNodes?.join(", ")}</i>
-        <i>{community.size > community.topWeightNodes.length ? ", ..." : "."}</i>
+        <i>
+          {community.nodes
+            .slice(0, 10)
+            .map((n) => n.label)
+            ?.join(", ")}
+        </i>
+        <i>{community.size > 10 ? ", ..." : "."}</i>
       </Text>
       <Text bold size="sm" className="fr-mb-0">
         {community?.domains
@@ -67,6 +109,28 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
               ))
           : null}
       </Text>
+      <Modal isOpen={showNodesModal} hide={() => setShowNodesModal(false)}>
+        <ModalTitle>{intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}</ModalTitle>
+        <ModalContent>
+          {community?.nodes?.map((node) => (
+            <li>
+              <Link href={node.url}>{node.label}</Link>
+            </li>
+          ))}
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={showPublicationsModal} hide={() => setShowPublicationsModal(false)}>
+        <ModalTitle>{intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}</ModalTitle>
+        <ModalContent>
+          {community?.publications?.map((publication) => (
+            <li className="fr-mt-1w">
+              <Link href={window?.location?.href?.split("/networks")[0] + "/publications/" + encode(publication.id)}>
+                {publication.title}
+              </Link>
+            </li>
+          ))}
+        </ModalContent>
+      </Modal>
     </Container>
   )
 }

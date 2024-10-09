@@ -1,4 +1,13 @@
-import { Breadcrumb, Col, Container, Link, Row, Title, Text, useDSFRConfig } from "@dataesr/dsfr-plus";
+import {
+  Breadcrumb,
+  Col,
+  Container,
+  Link,
+  Row,
+  Title,
+  Text,
+  useDSFRConfig,
+} from "@dataesr/dsfr-plus";
 import ContactForm from "../../../../components/contact-form";
 import { RawIntlProvider, createIntl } from "react-intl";
 import { useParams } from "react-router-dom";
@@ -28,7 +37,7 @@ const API_MAPPING = {
   publications: "publications",
   authors: "persons",
   patents: "productions",
-}
+};
 
 const API_LABEL_KEY = {
   organizations: ["label", true],
@@ -36,8 +45,7 @@ const API_LABEL_KEY = {
   publications: ["title", true],
   authors: ["fullName", false],
   patents: ["title", true],
-}
-
+};
 
 const API_GETTERS = {
   organizations: getOrganizationById,
@@ -45,7 +53,7 @@ const API_GETTERS = {
   publications: getPublicationById,
   authors: getAuthorById,
   patents: getPatentById,
-}
+};
 
 export default function BugsReport() {
   const { locale } = useDSFRConfig();
@@ -60,12 +68,13 @@ export default function BugsReport() {
   const [displayNameKey, isLangField] = API_LABEL_KEY[api];
   if (!messages) return null;
 
-
   return (
     <RawIntlProvider value={intl}>
       <Container>
         <Breadcrumb>
-          <Link href="/">{intl.formatMessage({ id: "contribute.breadcrumb.home" })}</Link>
+          <Link href="/">
+            {intl.formatMessage({ id: "contribute.breadcrumb.home" })}
+          </Link>
           <Link>
             {intl.formatMessage({ id: "contribute.breadcrumb.page" })}
           </Link>
@@ -74,22 +83,24 @@ export default function BugsReport() {
           {intl.formatMessage({ id: "contribute.title" })}
         </Title>
         <Text>
-          <span className="fr-text--sm">{intl.formatMessage({ id: "contribute.description" })}</span>
+          <span className="fr-text--sm">
+            {intl.formatMessage({ id: "contribute.description" })}
+          </span>
           <br />
           <em className="fr-text--bold">
-            {isLangField ? getLangFieldValue(locale)(data?.[displayNameKey]) : data?.[displayNameKey]}
+            {isLangField
+              ? getLangFieldValue(locale)(data?.[displayNameKey])
+              : data?.[displayNameKey]}
           </em>
           <br />
-          <em className="fr-text-mention--grey">
-            {data?.id}
-          </em>
+          <em className="fr-text-mention--grey">{data?.id}</em>
         </Text>
         <Row>
           <Col xs={12} lg={7}>
-            <ContactForm id={id} type={API_MAPPING?.[api]} />
+            <ContactForm objectId={id} objectType={API_MAPPING?.[api]} />
           </Col>
         </Row>
       </Container>
-    </RawIntlProvider >
+    </RawIntlProvider>
   );
 }

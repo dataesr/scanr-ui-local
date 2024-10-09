@@ -1,12 +1,23 @@
 import { publicationsIndex, postHeaders } from "../../../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits, NetworkSearchHitsArgs } from "../../../types/network"
+import {
+  Network,
+  NetworkSearchBody,
+  NetworkSearchArgs,
+  ElasticHits,
+  NetworkSearchHitsArgs,
+  ElasticAggregations,
+} from "../../../types/network"
+import { CONFIG } from "../network/config"
 import networkCreate from "../network/network"
 import configCreate from "../network/config"
 import infoCreate from "../network/info"
 
+const CURRENT_YEAR = new Date().getFullYear()
+const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_, i) => CURRENT_YEAR + i * -1)
+
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
-const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "domains"]
+const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "domains", "counts_by_year"]
 
 const networkSearchBody = (model: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,
@@ -24,7 +35,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
   aggs: {
     [model]: {
-      terms: { field: `co_${model}.keyword`, size: DEFAULT_SIZE },
+      terms: { field: CONFIG[model].co_aggregation, size: DEFAULT_SIZE },
       aggs: { max_year: { max: { field: "year" } } },
     },
   },
@@ -74,7 +85,7 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
   const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
   const body = {
     size: DEFAULT_SIZE,
-    _source: HIT_FIELDS,
+    _source: [...HIT_FIELDS, CONFIG[model].field],
     query: {
       bool: {
         must: [
@@ -97,4 +108,52 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
   }).then((response) => response.json())
 
   return res?.hits?.hits?.map((hit) => hit._source)
+}
+
+export async function networkSearchAggs({
+  model,
+  query,
+  filters,
+  links,
+}: NetworkSearchHitsArgs): Promise<ElasticAggregations> {
+  const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
+  const body = {
+    size: 0,
+    query: {
+      bool: {
+        must: [
+          {
+            query_string: {
+              query: query || "*",
+              fields: SEARCH_FIELDS,
+            },
+          },
+        ],
+        filter: filters.concat(linksFilter),
+      },
+    },
+    aggs: {
+      publicationsByYear: {
+        terms: { field: "year", include: DEFAULT_YEARS, size: DEFAULT_YEARS.length },
+      },
+      ...DEFAULT_YEARS.reduce(
+        (acc, year) => (acc = { ...acc, [`citationsIn${year}`]: { sum: { field: `cited_by_counts_by_year.${year}` } } }),
+        {}
+      ),
+      domains: {
+        terms: { field: "domains.label.default.keyword" },
+      },
+      isOa: {
+        terms: { field: "isOa" },
+      },
+    },
+  }
+
+  const res = await fetch(`${publicationsIndex}/_search`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: postHeaders,
+  }).then((response) => response.json())
+
+  return res?.aggregations
 }

@@ -29,7 +29,7 @@
   "search.top.authors.result": "{count, plural, =0 {# author} one {# author} other {# authors}}",
   "search.top.organizations.result": "{count, plural, =0 {# organization} one {# organization} other {# organizations}}",
   "search.top.projects.result": "{count, plural, =0 {# funding} one {# funding} other {# fundings}}",
-  "search.top.patents.result": "{count, plural, =0 {# patent} one {# patent} other {# patents}}",
+  "search.top.patents.result": "{count, plural, =0 {# patent family} one {# patent family} other {# patents families}}",
   "search.top.publications.filters.result-count": "{count, plural, =0 {# publication} one {# publication} other {# publications}}",
   "search.top.organizations.filters.result-count": "{count, plural, =0 {# organizations} one {# organization} other {# organizations}}",
   "search.top.projects.filters.result-count": "{count, plural, =0 {# fundings} one {# funding} other {# fundings}}",

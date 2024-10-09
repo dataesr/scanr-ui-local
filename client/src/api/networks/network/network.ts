@@ -11,7 +11,7 @@ export const GRAPH_MAX_ORDER = 300
 export const GRAPH_MAX_COMPONENTS = 5
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
-const nodeGetId = (id: string) => {
+export const nodeGetId = (id: string) => {
   const nodeId = id.split("###")[0]
   return isNaN(+nodeId) ? nodeId : String(+nodeId)
 }
@@ -82,10 +82,14 @@ export default async function networkCreate(
       x: attr.x,
       y: attr.y,
       label: attr.label,
-      cluster: attr.community + 1,
+      cluster: attr?.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key) },
       scores: { "Last activity": attr?.maxYear },
-      page: configGetItemUrl(model, key, attr),
+      page: configGetItemUrl(model, key, attr.label),
+      ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
+      ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
+      ...(attr?.citationsRecent !== undefined && { citationsRecent: attr?.citationsRecent }),
+      ...(attr?.citationsScore !== undefined && { citationsScore: attr?.citationsScore }),
     })),
     links: graph.mapEdges((_, attr, source, target) => ({
       source_id: source,
