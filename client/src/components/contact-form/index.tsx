@@ -75,6 +75,9 @@ export default function ContactForm({ objectId, objectType }: Props) {
           ...(data.organization && { organisation: data.organization }),
           ...(data.fonction && { fonction: data.fonction }),
         };
+
+        delete payload.organization;
+        delete payload.fonction;
       }
 
       if (api === "contacts") {
