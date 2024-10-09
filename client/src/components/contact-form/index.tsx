@@ -68,14 +68,23 @@ export default function ContactForm({ objectId, objectType }: Props) {
   const [api, setApi] = useState("contacts");
   const { isPending, isError, mutate } = useMutation({
     mutationFn: async (data: FormState) => {
-      let payload = { ...data };
+      let payload: any = { ...data };
+
+      if (data.organization || data.fonction) {
+        payload.extra = {
+          ...(data.organization && { organisation: data.organization }),
+          ...(data.fonction && { fonction: data.fonction }),
+        };
+      }
 
       if (api === "contacts") {
         payload = { ...payload, fromApplication: "scanr" };
       }
+
       if (api === "contribute") {
         payload = { ...payload, objectId, objectType };
       }
+
       const resp = await fetch(`/ticket/api/${api}`, {
         method: "POST",
         body: JSON.stringify(payload),
@@ -96,6 +105,7 @@ export default function ContactForm({ objectId, objectType }: Props) {
       console.error("error", e);
     },
   });
+
   const { form, updateForm, errors } = useForm<FormState, FormState>(
     {},
     validate
