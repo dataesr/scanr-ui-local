@@ -4,12 +4,14 @@ import {
   Notice,
   TextArea,
   TextInput,
+  Select,
+  SelectOption,
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useForm from "../../hooks/useForm";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { createIntl, RawIntlProvider } from "react-intl";
 import { postHeadersTicketOffice } from "../../config/api";
 
@@ -61,8 +63,9 @@ export default function ContactForm({ objectId, objectType }: Props) {
   const { locale } = useDSFRConfig();
   const intl = createIntl({ locale, messages: messages[locale] });
   const navigate = useNavigate();
-  const api = objectId && objectType ? "contribute" : "contacts";
+  const location = useLocation();
   const [thanks, setThanks] = useState(false);
+  const [api, setApi] = useState("contacts");
   const { isPending, isError, mutate } = useMutation({
     mutationFn: async (data: FormState) => {
       let payload = { ...data };
@@ -97,6 +100,18 @@ export default function ContactForm({ objectId, objectType }: Props) {
     {},
     validate
   );
+
+  const handleApiChange = (key: any) => {
+    if (key === "contact") setApi("contacts");
+    else if (key === "remove") setApi("remove-user");
+    else if (key === "nameChange") setApi("update-user-data");
+  };
+
+  useEffect(() => {
+    if (location.pathname.includes("bugs")) {
+      setApi("contribute");
+    }
+  }, [location]);
 
   if (thanks) {
     return (
@@ -142,6 +157,33 @@ export default function ContactForm({ objectId, objectType }: Props) {
           mutate(form);
         }}
       >
+        {!location.pathname.includes("bugs") && (
+          <Select
+            isRequired
+            onSelectionChange={(key) => handleApiChange(key)}
+            label="Sélectionner le type de requête"
+          >
+            <SelectOption
+              key="contact"
+              description="Envoyer un message via le formulaire de contact"
+            >
+              Formulaire de contact
+            </SelectOption>
+            <SelectOption
+              key="remove"
+              description="Supprimer un profil utilisateur"
+            >
+              Suppression de profil
+            </SelectOption>
+            <SelectOption
+              key="nameChange"
+              description="Demander un changement de nom"
+            >
+              Changement de nom
+            </SelectOption>
+          </Select>
+        )}
+
         <TextInput
           value={form.name}
           onChange={(e) => updateForm({ name: e.target.value })}
