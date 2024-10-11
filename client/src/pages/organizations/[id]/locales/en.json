@@ -1,7 +1,7 @@
 {
     "organizations.notice.not-french": "Attention, this entity being a foreign entity, only its connections with French organizations, funding, and productions will be displayed.",
     "organizations.breadcrumb.home": "Home",
-    "organizations.breadcrumb.search": "Structures",
+    "organizations.breadcrumb.search": "Organizations",
     "organizations.section.leaders.title": "Leadership team",
     "organizations.section.networks.title": "Membership and networks",
     "organizations.section.networks.supervisors.title": "Supervising institution ({count})",
@@ -31,7 +31,8 @@
     "organizations.section.identifiers.title": "Structure identifiers",
     "organizations.copy": "Click to copy to clipboard",
     "organizations.section.share.title": "Share the page",
-    "organizations.header.since": "Active since",
+    "organizations.header.since": "Organization active since",
+    "organizations.header.until": "Organization closed since",
     "organizations.header.description.ia-generated-label": "IA generated description",
     "organizations.header.description.ia-generated-hover": "Learn more",
     "organizations.header.description.ia-edit-label": "Edit",

@@ -32,6 +32,7 @@
   "organizations.copy": "Cliquez pour copier dans le presse-papier",
   "organizations.section.share.title": "Partager la page",
   "organizations.header.since": "Structure active depuis",
+  "organizations.header.until": "Structure fermée depuis",
   "organizations.header.description.ia-generated-label": "Description générée par IA",
   "organizations.header.description.ia-generated-hover": "En savoir plus",
   "organizations.header.description.ia-edit-label": "Éditer",

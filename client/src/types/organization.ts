@@ -80,33 +80,34 @@ export type OrganizationIaDescription = {
 
 export type Organization = {
   _id: string;
-  id: string;
-  isFrench: boolean;
-  label: LangField;
-  creationYear?: number;
   acronym: LangField;
-  description: LangField;
-  ai_description?: OrganizationIaDescription;
-  externalIds: ExternalIdsData[];
-  kind: string[];
-  nature?: string;
-  level?: string;
   address?: Address[];
-  badges?: OrganizationBadgesData[];
-  leaders?: OrganizationLeaderData[];
-  institutions?: RelatedOrganizationData[];
-  institutionOf?: RelatedOrganizationData[];
-  parents?: RelatedOrganizationData[];
-  parentOf?: RelatedOrganizationData[];
-  relations?: RelatedOrganizationData[];
-  relationOf?: RelatedOrganizationData[];
-  socialMedias: OrganizationSocialMediasData;
-  links: OrganizationLinksData;
-  publications: OrganizationPublicationsData;
-  projects: OrganizationProjectsData;
-  patents: OrganizationPatentsData;
-  awards: OrganizationAwardsData[];
   agreements: OrganizationAgreementsData[];
+  ai_description?: OrganizationIaDescription;
+  awards: OrganizationAwardsData[];
+  badges?: OrganizationBadgesData[];
+  creationYear?: number;
+  description: LangField;
+  endDate: string;
+  externalIds: ExternalIdsData[];
+  id: string;
+  institutionOf?: RelatedOrganizationData[];
+  institutions?: RelatedOrganizationData[];
+  isFrench: boolean;
+  kind: string[];
+  label: LangField;
+  leaders?: OrganizationLeaderData[];
+  level?: string;
+  links: OrganizationLinksData;
+  nature?: string;
+  parentOf?: RelatedOrganizationData[];
+  parents?: RelatedOrganizationData[];
+  patents: OrganizationPatentsData;
+  projects: OrganizationProjectsData;
+  publications: OrganizationPublicationsData;
+  relationOf?: RelatedOrganizationData[];
+  relations?: RelatedOrganizationData[];
+  socialMedias: OrganizationSocialMediasData;
 };
 
 export type OrganizationAggregations = {
