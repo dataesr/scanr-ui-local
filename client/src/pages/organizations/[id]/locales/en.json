@@ -1,5 +1,6 @@
 {
-    "organizations.notice.not-french": "Attention, this entity being a foreign entity, only its connections with French organizations, funding, and productions will be displayed.",
+    "organizations.notice.not-french": "Please note that this entity being a foreign entity, only its connections with French organizations, funding, and productions will be displayed.",
+    "organizations.notice.closed": "Please note that this entity has been closed since",
     "organizations.breadcrumb.home": "Home",
     "organizations.breadcrumb.search": "Organizations",
     "organizations.section.leaders.title": "Leadership team",

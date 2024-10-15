@@ -1,5 +1,6 @@
 {
   "organizations.notice.not-french": "Attention, cette entité étant une entité étrangère, seuls ses liens avec des organisations, financements et productions françaises seront affichées.",
+  "organizations.notice.closed": "Attention, cette entité est fermée depuis",
   "organizations.breadcrumb.home": "Accueil",
   "organizations.breadcrumb.search": "Structures",
   "organizations.section.leaders.title": "Équipe de direction",

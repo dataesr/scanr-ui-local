@@ -1,5 +1,6 @@
 {
     "organizations.notice.not-french": "Achtung, da es sich um eine ausländische Entität handelt, werden nur ihre Verbindungen zu französischen Organisationen, Finanzierungen und Produktionen angezeigt.",
+    "organizations.notice.closed": "Achtung, diese Entität ist geschlossen seit",
     "organizations.breadcrumb.home": "Startseite",
     "organizations.breadcrumb.search": "Strukturen",
     "organizations.section.leaders.title": "Führungsteam",
