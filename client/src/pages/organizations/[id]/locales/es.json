@@ -1,5 +1,6 @@
 {
-    "organizations.notice.not-french": "Atención, al tratarse de una entidad extranjera, solo se mostrarán sus conexiones con organizaciones, financiamientos y producciones francesas.",
+    "organizations.notice.not-french": "Tenga al tratarse de una entidad extranjera, solo se mostrarán sus conexiones con organizaciones, financiamientos y producciones francesas.",
+    "organizations.notice.closed": "Tenga en cuenta que esta entidad lleva cerrada desde",
     "organizations.breadcrumb.home": "Inicio",
     "organizations.breadcrumb.search": "Estructuras",
     "organizations.section.leaders.title": "Equipo Directivo",
@@ -31,7 +32,8 @@
     "organizations.section.identifiers.title": "Identificadores de la Estructura",
     "organizations.copy": "Haga clic para copiar al portapapeles",
     "organizations.section.share.title": "Compartir la página",
-    "organizations.header.since": "Activo Desde",
+    "organizations.header.since": "Estructura activa desde",
+    "organizations.header.until": "Estructura cerrada desde",
     "organizations.header.description.ia-generated-label": "Descripción generada por IA",
     "organizations.header.description.ia-generated-hover": "Más información",
     "organizations.header.description.ia-edit-label": "Editar",

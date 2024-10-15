@@ -1,5 +1,6 @@
 {
   "organizations.notice.not-french": "Attention, cette entité étant une entité étrangère, seuls ses liens avec des organisations, financements et productions françaises seront affichées.",
+  "organizations.notice.closed": "Attention, cette entité est fermée depuis",
   "organizations.breadcrumb.home": "Accueil",
   "organizations.breadcrumb.search": "Structures",
   "organizations.section.leaders.title": "Équipe de direction",
@@ -32,6 +33,7 @@
   "organizations.copy": "Cliquez pour copier dans le presse-papier",
   "organizations.section.share.title": "Partager la page",
   "organizations.header.since": "Structure active depuis",
+  "organizations.header.until": "Structure fermée depuis",
   "organizations.header.description.ia-generated-label": "Description générée par IA",
   "organizations.header.description.ia-generated-hover": "En savoir plus",
   "organizations.header.description.ia-edit-label": "Éditer",

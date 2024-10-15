@@ -36,7 +36,14 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
           <Title className="fr-mb-0" as="h1" look="h5">
             {getLangFieldValue(locale)(data.label)}
           </Title>
-          {data?.creationYear && (
+          {data?.endDate && (
+            <Text className="fr-card__detail" size="sm">
+              <i>
+                {intl.formatMessage({ id: "organizations.header.until" })} {data.endDate.slice(0, 4)}
+              </i>
+            </Text>
+          )}
+          {!data?.endDate && data?.creationYear && (
             <Text className="fr-card__detail" size="sm">
               <i>
                 {intl.formatMessage({ id: "organizations.header.since" })} {data.creationYear}

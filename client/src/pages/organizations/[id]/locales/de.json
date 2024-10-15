@@ -1,5 +1,6 @@
 {
     "organizations.notice.not-french": "Achtung, da es sich um eine ausländische Entität handelt, werden nur ihre Verbindungen zu französischen Organisationen, Finanzierungen und Produktionen angezeigt.",
+    "organizations.notice.closed": "Achtung, diese Entität ist geschlossen seit",
     "organizations.breadcrumb.home": "Startseite",
     "organizations.breadcrumb.search": "Strukturen",
     "organizations.section.leaders.title": "Führungsteam",
@@ -31,7 +32,8 @@
     "organizations.section.identifiers.title": "Struktur-Identifikatoren",
     "organizations.copy": "Klicken Sie, um in die Zwischenablage zu kopieren",
     "organizations.section.share.title": "Seite teilen",
-    "organizations.header.since": "Aktiv seit",
+    "organizations.header.since": "Struktur aktiv seit",
+    "organizations.header.until": "Struktur geschlossen seit",
     "organizations.header.description.ia-generated-label": "KI-generierte Beschreibung",
     "organizations.header.description.ia-generated-hover": "Lern mehr",
     "organizations.header.description.ia-edit-label": "Bearbeiten",
