@@ -87,7 +87,7 @@ const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
   hits.reduce((acc, hit) => {
     const field = CONFIG[model].field.split(".")[0]
     const citationsByYear = hit?.["cited_by_counts_by_year"]
-    hit?.[field].forEach((node) => {
+    hit?.[field]?.forEach((node) => {
       const key = node[CONFIG[model].field.split(".")[1]]
       if (!key) return
       const id = nodeGetId(key)
