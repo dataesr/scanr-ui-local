@@ -133,6 +133,9 @@ export async function networkSearchAggs({
       },
     },
     aggs: {
+      publicationsCount: {
+        value_count: { field: "id.keyword" },
+      },
       publicationsByYear: {
         terms: { field: "year", include: DEFAULT_YEARS, size: DEFAULT_YEARS.length },
       },

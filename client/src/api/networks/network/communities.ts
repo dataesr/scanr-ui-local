@@ -44,9 +44,7 @@ const communityGetNodes = (graph: Graph, community: number): Array<{ id: string;
   return nodes.sort((a, b) => b.weight - a.weight)
 }
 
-const communityGetPublicationsCount = (aggs: ElasticAggregations): number =>
-  aggs?.publicationsByYear?.buckets.reduce((acc, bucket) => acc + bucket.doc_count, 0) +
-  aggs?.publicationsByYear?.sum_other_doc_count
+const communityGetPublicationsCount = (aggs: ElasticAggregations): number => aggs?.publicationsCount?.value || 0
 
 const communityGetPublicationsByYear = (aggs: ElasticAggregations): Record<string, number> =>
   aggs?.publicationsByYear?.buckets.reduce((acc, bucket) => ({ ...acc, [bucket.key]: bucket.doc_count }), {})
@@ -138,7 +136,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
           const nodePublicationsCount = nodeInfos.publicationsCount
           const nodeCitationsCount = nodeGetCitationsCount(nodeCitationsByYear)
           const nodeCitationsRecent = nodeGetCitationsRecent(nodeCitationsByYear)
-          const nodeCitationsScore = nodeCitationsRecent / (nodePublicationsCount || 1)
+          const nodeCitationsScore = nodeCitationsRecent / (nodePublicationsCount || 1) || 0
           graph.setNodeAttribute(key, "publicationsCount", nodePublicationsCount)
           graph.setNodeAttribute(key, "citationsCount", nodeCitationsCount)
           graph.setNodeAttribute(key, "citationsRecent", nodeCitationsRecent)
@@ -166,6 +164,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
         }),
         ...(hits && {
           publications: communityGetPublications(hits),
+          publicationsCount: hits.length,
         }),
       }
       return community
