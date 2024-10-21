@@ -99,5 +99,6 @@ export default async function networkCreate(
     clusters: communities,
   }
 
+  console.log("network", network)
   return network
 }

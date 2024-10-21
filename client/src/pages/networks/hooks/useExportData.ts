@@ -21,24 +21,34 @@ const XSLXFormatter = (network: any) => {
     workbook,
     XLSX.utils.json_to_sheet(
       network.clusters.map((cluster) => {
-        const { publications, ...data } = cluster
-        return data
+        const _cluster = { ...cluster }
+        delete _cluster.publications
+        return _cluster
       })
     ),
     "Clusters"
   )
 
   const publicationsList = network.clusters?.reduce((acc, cluster) => {
+    console.log("cluster", cluster)
     cluster?.publications.forEach((publication) => {
-      acc = [...acc, { id: publication.id, title: publication.title, cluster: cluster.cluster, clusterLabel: cluster.label }]
+      acc = [
+        ...acc,
+        {
+          id: publication.id,
+          title: publication.title,
+          citationsCount: publication?.citationsCount,
+          citationsRecent: publication?.citationsRecent,
+          cluster: cluster.id,
+          clusterLabel: cluster.label,
+        },
+      ]
     })
     return acc
   }, [])
-
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(publicationsList), "Publications")
 
   const workbookOutput = XLSX.write(workbook, { type: "binary", bookType: "xlsx" })
-
   return new Blob([stringToArrayBuffer(workbookOutput)], { type: "application/octet-stream" })
 }
 

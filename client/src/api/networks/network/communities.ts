@@ -14,6 +14,12 @@ import { nodeGetId } from "./network"
 const CURRENT_YEAR = new Date().getFullYear()
 const RECENT_YEARS = [CURRENT_YEAR - 1, CURRENT_YEAR]
 
+const nodeGetCitationsCount = (citationsByYear: Record<string, number>): number =>
+  citationsByYear ? Object.values(citationsByYear).reduce((acc: number, value: number) => acc + value, 0) : 0
+
+const nodeGetCitationsRecent = (citationsByYear: Record<string, number>): number =>
+  citationsByYear ? (citationsByYear?.[CURRENT_YEAR - 1] || 0) + (citationsByYear?.[CURRENT_YEAR] || 0) : 0
+
 const communityGetAttribute = (graph: Graph, community: number, name: string): Array<string> | Array<number> =>
   graph.reduceNodes(
     (acc, _, attr) => (attr.community === community && attr?.[name] ? (acc = arrayPush(acc, attr[name])) : acc),
@@ -75,16 +81,18 @@ const communityGetOaPercent = (aggs: ElasticAggregations): number => {
   return (isOa / (isOa + isNotOa || 1)) * 100
 }
 
-const communityGetPublications = (hits: ElasticHits): Array<Record<string, string>> =>
+const communityGetPublications = (hits: ElasticHits): Array<Record<string, string | number>> =>
   hits.map((hit) => ({
     id: hit.id,
     title: hit.title.default,
+    citationsCount: nodeGetCitationsCount(hit?.cited_by_counts_by_year),
+    citationsRecent: nodeGetCitationsRecent(hit?.cited_by_counts_by_year),
   }))
 
 const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
   hits.reduce((acc, hit) => {
     const field = CONFIG[model].field.split(".")[0]
-    const citationsByYear = hit?.["cited_by_counts_by_year"]
+    const citationsByYear = hit?.cited_by_counts_by_year
     hit?.[field]?.forEach((node) => {
       const key = node[CONFIG[model].field.split(".")[1]]
       if (!key) return
@@ -92,17 +100,18 @@ const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
       acc[id] = {
         ...acc?.[id],
         publicationsCount: acc?.[id]?.publicationsCount ? acc[id].publicationsCount + 1 : 1,
-        citationsByYear: citationsByYear,
+        citationsByYear: {
+          ...citationsByYear,
+          ...(acc?.[id]?.citationsByYear &&
+            Object.entries(acc[id].citationsByYear).reduce(
+              (obj, [key, value]: [string, number]) => ({ ...obj, [key]: value + (citationsByYear?.[key] || 0) }),
+              {}
+            )),
+        },
       }
     })
     return acc
   }, {})
-
-const nodeGetCitationsCount = (citationsByYear: Record<string, number>): number =>
-  citationsByYear ? Object.values(citationsByYear).reduce((acc: number, value: number) => acc + value, 0) : 0
-
-const nodeGetCitationsRecent = (citationsByYear: Record<string, number>): number =>
-  citationsByYear ? (citationsByYear?.[CURRENT_YEAR - 1] || 0) + (citationsByYear?.[CURRENT_YEAR] || 0) : 0
 
 export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
   const query: string = graph.getAttribute("query")
@@ -129,7 +138,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
       // Add info to nodes
       if (hits) {
         const nodesInfos = communityGetNodesInfos(hits, model)
-        graph.forEachNode((key) => {
+        communityGetIds(graph, index).forEach((key) => {
           if (!Object.keys(nodesInfos).includes(key)) return
           const nodeInfos = nodesInfos[key]
           const nodeCitationsByYear = nodeInfos?.citationsByYear
