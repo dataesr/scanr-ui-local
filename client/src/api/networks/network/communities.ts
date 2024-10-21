@@ -86,13 +86,7 @@ const communityGetPublications = (hits: ElasticHits): Array<Record<string, strin
 const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
   hits.reduce((acc, hit) => {
     const field = CONFIG[model].field.split(".")[0]
-    const citationsByYear = hit?.["counts_by_year"]?.reduce(
-      (acc, citations) => ({
-        ...acc,
-        [citations.year]: citations.cited_by_count,
-      }),
-      {}
-    )
+    const citationsByYear = hit?.["cited_by_counts_by_year"]
     hit?.[field].forEach((node) => {
       const key = node[CONFIG[model].field.split(".")[1]]
       if (!key) return
@@ -105,6 +99,12 @@ const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
     })
     return acc
   }, {})
+
+const nodeGetCitationsCount = (citationsByYear: Record<string, number>): number =>
+  citationsByYear ? Object.values(citationsByYear).reduce((acc: number, value: number) => acc + value, 0) : 0
+
+const nodeGetCitationsRecent = (citationsByYear: Record<string, number>): number =>
+  citationsByYear ? (citationsByYear?.[CURRENT_YEAR - 1] || 0) + (citationsByYear?.[CURRENT_YEAR] || 0) : 0
 
 export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
   const query: string = graph.getAttribute("query")
@@ -128,26 +128,25 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
       const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
       const aggs = await networkSearchAggs({ model, query, filters, links: communityGetLinks(graph, index) })
 
+      // Add info to nodes
       if (hits) {
         const nodesInfos = communityGetNodesInfos(hits, model)
         graph.forEachNode((key) => {
           if (!Object.keys(nodesInfos).includes(key)) return
           const nodeInfos = nodesInfos[key]
-          const publicationsCount = nodeInfos.publicationsCount
-          const citationsCount = nodeInfos?.citationsByYear
-            ? Object.values(nodeInfos?.citationsByYear).reduce((acc: number, value: number) => acc + value, 0)
-            : 0
-          const citationsRecent = nodeInfos?.citationsByYear
-            ? (nodeInfos.citationsByYear?.[CURRENT_YEAR - 1] || 0) + (nodeInfos.citationsByYear?.[CURRENT_YEAR] || 0)
-            : 0
-          const citationsScore = citationsRecent / (publicationsCount || 1)
-          graph.setNodeAttribute(key, "publicationsCount", publicationsCount)
-          graph.setNodeAttribute(key, "citationsCount", citationsCount)
-          graph.setNodeAttribute(key, "citationsRecent", citationsRecent)
-          graph.setNodeAttribute(key, "citationsScore", citationsScore)
+          const nodeCitationsByYear = nodeInfos?.citationsByYear
+          const nodePublicationsCount = nodeInfos.publicationsCount
+          const nodeCitationsCount = nodeGetCitationsCount(nodeCitationsByYear)
+          const nodeCitationsRecent = nodeGetCitationsRecent(nodeCitationsByYear)
+          const nodeCitationsScore = nodeCitationsRecent / (nodePublicationsCount || 1)
+          graph.setNodeAttribute(key, "publicationsCount", nodePublicationsCount)
+          graph.setNodeAttribute(key, "citationsCount", nodeCitationsCount)
+          graph.setNodeAttribute(key, "citationsRecent", nodeCitationsRecent)
+          graph.setNodeAttribute(key, "citationsScore", nodeCitationsScore)
         })
       }
 
+      // Add info to communities
       const community = {
         cluster: index + 1,
         label: COLORS?.[index] ? GetColorName(COLORS[index]) : `Unnamed ${index + 1}`,

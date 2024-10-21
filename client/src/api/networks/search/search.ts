@@ -17,7 +17,7 @@ const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_,
 
 const DEFAULT_SIZE = 2000
 const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
-const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "domains", "counts_by_year"]
+const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "domains", "cited_by_counts_by_year"]
 
 const networkSearchBody = (model: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,

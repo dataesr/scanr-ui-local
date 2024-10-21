@@ -84,7 +84,7 @@ export default async function networkCreate(
       label: attr.label,
       cluster: attr?.community + 1,
       weights: { Weight: attr.weight, Degree: graph.degree(key) },
-      scores: { "Last activity": attr?.maxYear },
+      scores: { "Last publication": attr?.maxYear },
       page: configGetItemUrl(model, key, attr.label),
       ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
