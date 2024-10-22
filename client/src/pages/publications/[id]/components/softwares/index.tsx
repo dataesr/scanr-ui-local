@@ -22,9 +22,14 @@ export default function Softwares({ softwares }: { softwares: SoftwareMention[] 
   const getSoftwareContexts = (softwareName: string, contexts?: string[]) => {
     if (!contexts.length) return null;
     const newContexts = contexts.map((context) => {
-      const regexp = new RegExp(softwareName, "ig")
-      const newContext = context.replace(regexp, `<strong>${softwareName}</strong>`);
-      return newContext;
+      const name = softwareName.replace(/[-[\]{}()*+?.,\\^$|#]/g, '\\$&')
+      try {
+        const regexp = new RegExp(name, "ig")
+        const newContext = context.replace(regexp, `<strong>${softwareName}</strong>`);
+        return newContext;
+      } catch (e) {
+        return context;
+      }
     });
     const stringContexts = newContexts.reduce((acc, cur) => {
       if (acc.length === 0) return cur;
