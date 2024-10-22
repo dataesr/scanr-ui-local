@@ -4,6 +4,28 @@ const { VITE_MISTRAL_URL: MISTRAL_URL, VITE_MISTRAL_KEY: MISTRAL_KEY } = import.
 const headers = MISTRAL_KEY ? { Authorization: `Bearer ${MISTRAL_KEY}` } : {}
 const postHeaders = { ...headers, "Content-Type": "application/json" }
 
+function cleanMistralLabels(mistralLabels: any): Array<string> {
+  if (!mistralLabels) return mistralLabels
+
+  const cleanLabel = (label: any): string => (Array.isArray(label) ? label[0] : label)
+  const cleanLabels = Object.values(mistralLabels).map((label) => cleanLabel(label))
+
+  let counts = {}
+  const deduplicateLabels = cleanLabels.reduce((acc, label: string) => {
+    if (!counts[label]) {
+      counts[label] = 1
+      acc.push(label)
+    } else {
+      counts[label]++
+      acc.push(label + " (" + counts[label] + ")")
+    }
+
+    return acc
+  }, [])
+
+  return deduplicateLabels
+}
+
 async function mistralLabelsFromDomains(domains: string): Promise<string> {
   const chatBody = {
     messages: [
@@ -54,17 +76,18 @@ export async function openAiLabeledClusters(clusters: NetworkCommunities): Promi
 
   if (!domains) return clusters
 
-  const mistral_labels = await mistralLabelsFromDomains(domains).then(
+  const mistralLabels = await mistralLabelsFromDomains(domains).then(
     (response) => JSON.parse(response),
     (err) => console.error(err)
   )
-  if (!mistral_labels || mistral_labels.constructor != Object) {
+  if (!mistralLabels || mistralLabels.constructor != Object) {
     return clusters
   }
 
-  Object.entries(mistral_labels).forEach((entries, index) => {
-    const value = entries[1]
-    clusters[index].label = Array.isArray(value) ? value[0] : value ? value : clusters[index].label
+  const cleanLabels = cleanMistralLabels(mistralLabels)
+
+  cleanLabels.forEach((label, index) => {
+    clusters[index].label = label ? label : clusters[index].label + " (Unlabelled)"
   })
 
   return clusters
