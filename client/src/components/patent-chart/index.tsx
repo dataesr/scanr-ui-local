@@ -39,7 +39,6 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
     "#E6BE92",
     "#AEA397",
   ];
-
   const groupedData = data.reduce((acc, item) => {
     const firstLetter = item.code.charAt(0).toUpperCase();
     if (!acc[firstLetter]) acc[firstLetter] = [];
@@ -52,17 +51,21 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
   }, {} as Record<string, { name: string; value: number; label: string }[]>);
 
   const seriesData = Object.entries(groupedData).map(
-    ([letter, items], index) => ({
-      name:
-        intl.formatMessage({ id: sectionLabels[letter] }) ||
-        `Section ${letter}`,
-      color: colorPalette[index % colorPalette.length],
-      data: items.map((item) => ({
-        name: item.name,
-        value: item.value,
-        label: item.label,
-      })),
-    })
+    ([letter, items], index) => {
+      const totalCount = items.reduce((sum, item) => sum + item.value, 0);
+      return {
+        name:
+          intl.formatMessage({ id: sectionLabels[letter] }) ||
+          `Section ${letter}`,
+        color: colorPalette[index % colorPalette.length],
+        data: items.map((item) => ({
+          name: item.name,
+          value: item.value,
+          label: item.label,
+        })),
+        totalCount,
+      };
+    }
   );
 
   const values = seriesData.flatMap((series) =>
@@ -82,6 +85,14 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
     },
     tooltip: {
       formatter: function () {
+        const pointName =
+          this.point.name && this.point.name !== "undefined"
+            ? `<b>${this.point.name}</b>`
+            : "";
+        const pointLabel =
+          this.point.label && this.point.label !== "undefined"
+            ? `<b>${this.point.label}</b>`
+            : "";
         const familiesText = intl.formatMessage(
           {
             id: "organizations.patents.chart.families",
@@ -92,7 +103,30 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
             plural: this.point.value > 1 ? "s" : "",
           }
         );
-        return `<b>${this.point.name}</b> - <b>${this.point.label}</b>: ${familiesText}`;
+
+        const sectionName = this.series.name;
+        const totalCount = this.series.data.reduce(
+          (sum, item) => sum + item.value,
+          0
+        );
+        const totalFamiliesText = intl.formatMessage(
+          {
+            id: "organizations.patents.chart.families",
+            defaultMessage: "{count} famille{plural}",
+          },
+          {
+            count: totalCount,
+            plural: totalCount > 1 ? "s" : "",
+          }
+        );
+
+        if (!pointName && !pointLabel) {
+          return `<b>${sectionName}</b>: ${totalFamiliesText}`;
+        }
+
+        return `${pointName} ${
+          pointLabel ? `- ${pointLabel}` : ""
+        }: ${familiesText}`;
       },
     },
 
@@ -110,7 +144,9 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
         },
         dataLabels: {
           enabled: true,
-          format: "{point.name}",
+          formatter: function () {
+            return this.point.name !== "undefined" ? this.point.name : "";
+          },
           style: {
             color: "black",
             textOutline: "none",
