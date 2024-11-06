@@ -9,7 +9,7 @@
   "suggest.list.title": "Liste de publications suggérées",
   "suggest.list.success": "La liste a été envoyée avec succès",
   "suggest.list.error": "Une erreur est survenue lors de l'envoi de la liste",
-  "suggest.notice.title": "Plusieurs plublications suggérées apparaissent dans HAL.",
+  "suggest.notice.title": "Plusieurs publications suggérées apparaissent dans HAL.",
   "suggest.notice.text": "Si vous êtes l'auteur de ces publications, créer un profil sur HAL vous permettra de maintenir une liste de vos publications à jour, et scanR pourra utiliser cette source pour mettre à jour vos publications.",
   "suggest.notice.link": "Créer un profil sur hal.science",
   "suggest.form.label": "Email",
