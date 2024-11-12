@@ -5,7 +5,99 @@ import { publicationTypeMapping, encode } from "../../../../utils/string";
 import { getPublicationById } from "../../../../api/publications/[id]";
 import { LightPublication } from "../../../../types/publication";
 import { ItemProps } from "../../types";
-import { useIntl } from "react-intl";
+import { IntlShape, useIntl } from "react-intl";
+
+const AUTHOR_DISPLAY_LIMIT = 3;
+
+const isThesis = (publication: LightPublication) => publication.type === "thesis";
+
+type TAuthors = LightPublication["authors"]
+
+const AuthorDisplay = ({ author }: { author: TAuthors[0] }) => {
+  if (!author?.person) return author.fullName;
+  return (
+    <Link href={`/authors/${encode(author.person)}`}>
+      {author.fullName}
+    </Link>
+  );
+}
+type AuthorListDisplayProps = {
+  authors: TAuthors;
+  intl: IntlShape;
+  limit?: number;
+}
+
+const AuthorListDisplay = (
+  { authors, intl, limit = AUTHOR_DISPLAY_LIMIT }: AuthorListDisplayProps
+) => {
+  if (authors.length === 0) return null;
+  if (authors.length === 1) return <AuthorDisplay author={authors[0]} />;
+
+  const shouldShowAllAuthors = !limit || authors.length <= limit;
+  const displayedAuthors = authors.slice(0, shouldShowAllAuthors ? authors.length : 1);
+
+  return (
+    <>
+      {displayedAuthors.map((author, index) => (
+        <Fragment key={index}>
+          {index > 0 && index === displayedAuthors.length - 1 && authors.length <= limit
+            ? ` ${intl.formatMessage({ id: "search.publications.thesis.and" })} `
+            : index > 0
+              ? ', '
+              : ''}
+          <AuthorDisplay author={author} />
+        </Fragment>
+      ))}
+      {(!shouldShowAllAuthors && authors.length > limit) && (
+        <Text bold as="span"><i>{' '}et al.</i></Text>
+      )}
+    </>
+  );
+};
+
+const ThesisAuthors = (
+  { intl, authors }: { authors: LightPublication["authors"], intl: IntlShape }
+) => {
+  const _authors = authors?.filter((author) => author.role === "author") || [];
+  const _directors = authors?.filter((author) => author.role === "directeurthese") || [];
+
+  return (
+    <>
+      <Text bold size="sm" className="fr-mb-0">
+        {_authors.length > 0 && (
+          <>
+            {intl.formatMessage({ id: "search.publications.thesis.by" })}
+            <AuthorListDisplay authors={_authors} intl={intl} limit={0} />
+          </>
+        )}
+        {_directors.length > 0 && (
+          <>
+            {intl.formatMessage({ id: "search.publication.thesis.directed" })}
+            <AuthorListDisplay authors={_directors} intl={intl} limit={0} />
+          </>
+        )}
+      </Text>
+    </>
+  );
+}
+
+const ArticleAuthors = (
+  { intl, authors }: { authors: LightPublication["authors"], intl: IntlShape }
+) => {
+  return (
+    <Text bold size="sm" className="fr-mb-0">
+      <AuthorListDisplay authors={authors} intl={intl} />
+    </Text>
+  )
+}
+
+const Authors = (
+  { intl, authors, isThesis }: { authors: LightPublication["authors"], intl: IntlShape, isThesis: boolean }
+) => {
+  return isThesis
+    ? <ThesisAuthors intl={intl} authors={authors} />
+    : <ArticleAuthors intl={intl} authors={authors} />
+}
 
 export default function PublicationItem({
   data: publication,
@@ -21,12 +113,6 @@ export default function PublicationItem({
       queryFn: () => getPublicationById(id),
     });
   }
-
-  const authors =
-    publication.authors?.filter((author) => author.role === "author") || [];
-  const directors =
-    publication.authors?.filter((author) => author.role === "directeurthese") ||
-    [];
 
   return (
     <Fragment key={publication.id}>
@@ -64,57 +150,16 @@ export default function PublicationItem({
             )}
           </Link>
         </span>
-        <Text bold size="sm" className="fr-mb-0">
-          {authors.map((author, index) => (
-            <Fragment key={index}>
-              <span>
-                {" "}
-                {intl.formatMessage({
-                  id: "search.publications.thesis.by",
-                })}
-              </span>
-              {index > 0 && ", "}
-              {author.person ? (
-                <Link href={`/authors/${encode(author.person)}`}>
-                  {author.fullName}
-                </Link>
-              ) : (
-                author.fullName
-              )}
-            </Fragment>
-          ))}
-          {authors.length > 5 && (
-            <Text bold as="span">
-              <i> et al.</i>
-            </Text>
-          )}
-          {!!directors.length &&
-            intl.formatMessage({ id: "search.publication.thesis.directed" })}
-          {directors.map((director, index) => (
-            <Fragment key={index}>
-              <Link href={`/authors/${encode(director.person)}`}>
-                {director.fullName}
-              </Link>
-              {(directors.length === 2 && index === 0) ||
-              index === directors.length - 2
-                ? intl.formatMessage({
-                    id: "search.publications.thesis.and",
-                  })
-                : index < directors.length - 1
-                ? ", "
-                : ""}
-            </Fragment>
-          ))}
-        </Text>
+        <Authors intl={intl} authors={publication.authors} isThesis={isThesis(publication)} />
         <Text size="sm" className="fr-card__detail fr-mb-0">
           <i>
-            {publication.source?.title && `${publication.source?.title}`}
-            {publication.source?.volume && `, ${publication.source?.volume}`}
-            {publication.source?.issue && ` (${publication.source?.issue})`}
-            {publication.year && publication.source?.title && ", "}
-            {publication.year && `${publication.year}`}
-            {publication.source?.publisher &&
-              `, ${publication.source?.publisher}`}
+            {[
+              publication.source?.title,
+              publication.source?.volume && `${publication.source?.volume}`,
+              publication.source?.issue && `(${publication.source?.issue})`,
+              publication.year,
+              publication.source?.publisher
+            ].filter(Boolean).join(', ')}
           </i>
         </Text>
         {Object.values(highlight || {}).map((value, i) => (
