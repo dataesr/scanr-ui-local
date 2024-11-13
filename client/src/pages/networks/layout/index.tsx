@@ -9,10 +9,16 @@ import ClustersButton from "../components/clusters/button"
 import NetworkClusters from "../components/clusters"
 import NetworkAnalytics from "../components/clusters/analytics"
 import NetworkExports from "../components/exports"
+import useIntegration from "../hooks/useIntegration"
 
 export default function NetworksLayout() {
   const { screen } = useScreenSize()
+  const { integrationOptions } = useIntegration()
   const isScreenSmall = ["xs", "sm", "mg"].includes(screen)
+
+  const { useFilters, useExports, useGraphOnly } = integrationOptions
+
+  if (useGraphOnly === true) return <NetworkCard />
 
   return (
     <Container fluid>
@@ -27,9 +33,9 @@ export default function NetworksLayout() {
           {!isScreenSmall && (
             <Col lg="4">
               <NetworkFilters />
-              <hr />
+              {useFilters && <hr />}
               <NetworkExports />
-              <hr />
+              {useExports && <hr />}
               <ClustersButton />
             </Col>
           )}

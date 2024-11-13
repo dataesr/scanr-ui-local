@@ -11,18 +11,20 @@ export default function useIntegration() {
 
   const integrationOptions = integrationId
     ? {
+        useGraphOnly: getBooleanParam(searchParams.get("useGraphOnly")),
         useTitle: getBooleanParam(searchParams.get("useTitle")),
         useSubtitle: getBooleanParam(searchParams.get("useSubtitle")),
-        useClustersAnalytics: getBooleanParam(searchParams.get("useAnalytics")),
-        useClusterButton: getBooleanParam(searchParams.get("useButton")),
+        useClustersAnalytics: getBooleanParam(searchParams.get("useClustersAnalytics")),
+        useClustersButton: getBooleanParam(searchParams.get("useClustersButton")),
         useSearchBar: getBooleanParam(searchParams.get("useSearch")),
         useFilters: getBooleanParam(searchParams.get("useFilters")),
         useExports: getBooleanParam(searchParams.get("useExports")),
-        useBreadcrumb: getBooleanParam(searchParams.get("useBreadcrumb")),
+        useBreadcrumb: false,
         useSelect: getBooleanParam(searchParams.get("useSelect")),
         useHeader: getBooleanParam(searchParams.get("useHeader")),
       }
     : {
+        useGraphOnly: false,
         useTitle: true,
         useSubtitle: true,
         useClustersAnalytics: true,

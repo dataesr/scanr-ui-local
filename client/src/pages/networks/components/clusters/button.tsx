@@ -3,12 +3,16 @@ import { Row, Col, Button, ButtonGroup } from "@dataesr/dsfr-plus"
 import useSearchData from "../../hooks/useSearchData"
 import useTab from "../../hooks/useTab"
 import useClusters from "../../hooks/useClusters"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function ClustersButton() {
   const intl = useIntl()
   const { currentTab } = useTab()
+  const { integrationOptions } = useIntegration()
   const { clusters: computeClusters, handleClustersChange } = useClusters()
   const { search, currentQuery } = useSearchData(currentTab, computeClusters)
+
+  if (integrationOptions.useClustersButton === false) return null
 
   return (
     <Row gutters>

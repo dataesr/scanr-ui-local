@@ -3,12 +3,16 @@ import { useIntl } from "react-intl"
 import useTab from "../../hooks/useTab"
 import useSearchData from "../../hooks/useSearchData"
 import useExportData from "../../hooks/useExportData"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkExports() {
   const intl = useIntl()
   const { currentTab } = useTab()
+  const { integrationOptions } = useIntegration()
   const { search, currentQuery } = useSearchData(currentTab, false)
   const { isExporting, exportFile } = useExportData()
+
+  if (integrationOptions?.useExports === false) return null
 
   const handleExport = async (key: string) => {
     const format = key.split(">")[1] as "json" | "xlsx"
