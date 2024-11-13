@@ -52,7 +52,7 @@
     "organizations.sectionLabels.physics": "Physics",
     "organizations.sectionLabels.electricity": "Electricity",
     "organizations.sectionLabels.other": "Emerging Cross-Sectional Technologies",
-    "organizations.patents.chart.families": "{value} patent family{plural}",
+    "organizations.patents.chart.families": "{value} {value, plural, one {patent family} other {patent families}}",
     "organizations.patents.chart.title": "Technological fields identified in the organization's patent families (by section and class)",
     "organizations.projects.count": "funding listed by scanR",
     "organizations.projects.search": "See the list of fundings",

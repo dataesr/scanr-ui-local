@@ -94,14 +94,8 @@ const CpcChart: React.FC<CpcChartProps> = ({ data }) => {
             ? `<b>${this.point.label}</b>`
             : "";
         const familiesText = intl.formatMessage(
-          {
-            id: "organizations.patents.chart.families",
-            defaultMessage: "{value} famille{plural}",
-          },
-          {
-            value: this.point.value,
-            plural: this.point.value > 1 ? "s" : "",
-          }
+          { id: "organizations.patents.chart.families" },
+          { value: this.point.value }
         );
 
         const sectionName = this.series.name;

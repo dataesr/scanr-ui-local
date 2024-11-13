@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getCpcAggregation } from "../../../../../api/patents/[id]";
 import { OrganizationPatentsData } from "../../../../../types/organization";
 import CpcWordCloud from "../../../../../components/patent-chart";
-import { isInProduction } from "../../../../../utils/helpers";
 
 type OrganizationPatentsProps = {
   data: OrganizationPatentsData;
@@ -134,21 +133,19 @@ export default function OrganizationPatents({
                   {intl.formatMessage({ id: "organizations.patents.nav.year" })}
                 </label>
               </div>
-              {!isInProduction() && (
-                <div className="fr-segmented__element">
-                  <input
-                    checked={projectGraph === "cpc"}
-                    type="radio"
-                    id="segmented-patents-3"
-                    onChange={() => setProjectGraph("cpc")}
-                  />
-                  <label className="fr-label" htmlFor="segmented-patents-3">
-                    {intl.formatMessage({
-                      id: "organizations.patents.nav.cpc",
-                    })}
-                  </label>
-                </div>
-              )}
+              <div className="fr-segmented__element">
+                <input
+                  checked={projectGraph === "cpc"}
+                  type="radio"
+                  id="segmented-patents-3"
+                  onChange={() => setProjectGraph("cpc")}
+                />
+                <label className="fr-label" htmlFor="segmented-patents-3">
+                  {intl.formatMessage({
+                    id: "organizations.patents.nav.cpc",
+                  })}
+                </label>
+              </div>
             </div>
           </fieldset>
         </Col>
@@ -163,13 +160,11 @@ export default function OrganizationPatents({
               years={patents.byYear.map((year) => year.label)}
             />
           )}
-          {!isInProduction() && (
-            <>
-              {projectGraph === "cpc" && patentsData && (
-                <CpcWordCloud data={graphData} />
-              )}
-            </>
-          )}
+          <>
+            {projectGraph === "cpc" && patentsData && (
+              <CpcWordCloud data={graphData} />
+            )}
+          </>
         </Col>
       </Row>
       <hr />
