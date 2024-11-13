@@ -48,16 +48,13 @@ export default function ProjectLocalisationsFilter() {
         <OperatorButton
           operator={operator}
           setOperator={(key) =>
-            setOperator(
-              "participants.structure.mainAddress.localisationSuggestions",
-              key === "and" ? "and" : "or"
-            )
+            setOperator("participants.structure.mainAddress.localisationSuggestions", key === "and" ? "and" : "or")
           }
         />
       </div>
       {filter ? (
         <Text bold size="sm" className="fr-mb-1v">
-          Sélectionnées:
+          <FormattedMessage id="search.filters.selected" /> {":"}
         </Text>
       ) : null}
       <TagGroup>
@@ -67,12 +64,11 @@ export default function ProjectLocalisationsFilter() {
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
-              e.preventDefault();
+              e.preventDefault()
               handleFilterChange({
-                field:
-                  "participants.structure.mainAddress.localisationSuggestions",
+                field: "participants.structure.mainAddress.localisationSuggestions",
                 value,
-              });
+              })
             }}
           >
             {label || value}
@@ -88,19 +84,15 @@ export default function ProjectLocalisationsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          if (!item) return;
+          if (!item) return
           handleFilterChange({
             field: "participants.structure.mainAddress.localisationSuggestions",
             value: item,
-          });
+          })
         }}
       >
-        {({ autocompleted }) => (
-          <AutocompleteItem key={autocompleted?.[0]}>
-            {autocompleted?.[0]}
-          </AutocompleteItem>
-        )}
+        {({ autocompleted }) => <AutocompleteItem key={autocompleted?.[0]}>{autocompleted?.[0]}</AutocompleteItem>}
       </Autocomplete>
     </>
-  );
+  )
 }

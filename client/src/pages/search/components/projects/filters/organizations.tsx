@@ -45,17 +45,12 @@ export default function ProjectOrganizationsFilter() {
         </div>
         <OperatorButton
           operator={operator}
-          setOperator={(key) =>
-            setOperator(
-              "participants.structure.id",
-              key === "and" ? "and" : "or"
-            )
-          }
+          setOperator={(key) => setOperator("participants.structure.id", key === "and" ? "and" : "or")}
         />
       </div>
       {filter ? (
         <Text bold size="sm" className="fr-mb-1v">
-          Sélectionnées:
+          <FormattedMessage id="search.filters.selected" /> {":"}
         </Text>
       ) : null}
       <TagGroup>
@@ -65,8 +60,8 @@ export default function ProjectOrganizationsFilter() {
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
-              e.preventDefault();
-              handleFilterChange({ field: "participants.structure.id", value });
+              e.preventDefault()
+              handleFilterChange({ field: "participants.structure.id", value })
             }}
           >
             {label || value}
@@ -82,25 +77,19 @@ export default function ProjectOrganizationsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          if (!item) return;
-          const [value, label] = item.toString().split("###");
+          if (!item) return
+          const [value, label] = item.toString().split("###")
           handleFilterChange({
             field: "participants.structure.id",
             value,
             label,
-          });
+          })
         }}
       >
         {(item) => (
           <AutocompleteItem
-            startContent={
-              <span className="fr-mr-3v fr-icon--md fr-icon-user-line" />
-            }
-            endContent={
-              <span className="fr-text--xs fr-text-mention--grey">
-                {item.projectsCount} financements
-              </span>
-            }
+            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
+            endContent={<span className="fr-text--xs fr-text-mention--grey">{item.projectsCount} financements</span>}
             description={item.address?.find((a) => a.main).city}
             key={`${item.id}###${getLangFieldValue(locale)(item.label)}`}
           >
@@ -109,5 +98,5 @@ export default function ProjectOrganizationsFilter() {
         )}
       </Autocomplete>
     </>
-  );
+  )
 }

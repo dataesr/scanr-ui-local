@@ -38,7 +38,7 @@ export default function PublicationCountriesFilter() {
       </div>
       {filter ? (
         <Text bold size="sm" className="fr-mb-1v">
-          Sélectionnées:
+          <FormattedMessage id="search.filters.selected" /> {":"}
         </Text>
       ) : null}
       <TagGroup>

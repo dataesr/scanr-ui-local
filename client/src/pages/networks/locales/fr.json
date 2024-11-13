@@ -47,6 +47,7 @@
     "networks.filters.active-filter-title": "Filtres actifs",
     "networks.filters.active-filter-empty": "Aucun filtre actif",
     "search.top.filters.publications.title": "Filtrer les publications",
+    "search.filters.selected": "Sélectionnés",
     "search.filters.publications.by-year": "Filtrer par année",
     "search.filters.publications.by-year-description": "Période sélectionnée {min} - {max}",
     "search.filters.publications.by-year-tooltip": "Publications en {year}",

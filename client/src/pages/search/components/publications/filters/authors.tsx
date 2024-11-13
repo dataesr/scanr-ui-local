@@ -41,14 +41,12 @@ export default function PublicationAuthorFilter() {
         </div>
         <OperatorButton
           operator={operator}
-          setOperator={(key) =>
-            setOperator("authors.person", key === "and" ? "and" : "or")
-          }
+          setOperator={(key) => setOperator("authors.person", key === "and" ? "and" : "or")}
         />
       </div>
       {currentFilters?.["authors.person"] ? (
         <Text bold size="sm" className="fr-mb-1v">
-          Sélectionnées:
+          <FormattedMessage id="search.filters.selected" /> {":"}
         </Text>
       ) : null}
       <TagGroup>
@@ -58,8 +56,8 @@ export default function PublicationAuthorFilter() {
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
-              e.preventDefault();
-              handleFilterChange({ field: "authors.person", value });
+              e.preventDefault()
+              handleFilterChange({ field: "authors.person", value })
             }}
           >
             {label || value}
@@ -75,16 +73,14 @@ export default function PublicationAuthorFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          if (!item) return;
-          const [value, label] = item.toString().split("###");
-          handleFilterChange({ field: "authors.person", value, label });
+          if (!item) return
+          const [value, label] = item.toString().split("###")
+          handleFilterChange({ field: "authors.person", value, label })
         }}
       >
         {(item) => (
           <AutocompleteItem
-            startContent={
-              <span className="fr-mr-3v fr-icon--md fr-icon-user-line" />
-            }
+            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
             description={item.topDomains
               ?.filter((el) => el.type === "wikidata")
               ?.slice(0, 3)
@@ -103,5 +99,5 @@ export default function PublicationAuthorFilter() {
         )}
       </Autocomplete>
     </>
-  );
+  )
 }

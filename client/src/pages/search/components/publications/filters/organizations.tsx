@@ -44,14 +44,12 @@ export default function PublicationOrganizationsFilter() {
         </div>
         <OperatorButton
           operator={operator}
-          setOperator={(key) =>
-            setOperator("affiliations.id", key === "and" ? "and" : "or")
-          }
+          setOperator={(key) => setOperator("affiliations.id", key === "and" ? "and" : "or")}
         />
       </div>
       {filter ? (
         <Text bold size="sm" className="fr-mb-1v">
-          Sélectionnées:
+          <FormattedMessage id="search.filters.selected" /> {":"}
         </Text>
       ) : null}
       <TagGroup>
@@ -61,8 +59,8 @@ export default function PublicationOrganizationsFilter() {
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
-              e.preventDefault();
-              handleFilterChange({ field: "affiliations.id", value });
+              e.preventDefault()
+              handleFilterChange({ field: "affiliations.id", value })
             }}
           >
             {label || value}
@@ -78,21 +76,15 @@ export default function PublicationOrganizationsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          if (!item) return;
-          const [value, label] = item.toString().split("###");
-          handleFilterChange({ field: "affiliations.id", value, label });
+          if (!item) return
+          const [value, label] = item.toString().split("###")
+          handleFilterChange({ field: "affiliations.id", value, label })
         }}
       >
         {(item) => (
           <AutocompleteItem
-            startContent={
-              <span className="fr-mr-3v fr-icon--md fr-icon-user-line" />
-            }
-            endContent={
-              <span className="fr-text--xs fr-text-mention--grey">
-                {item.publicationsCount} publications
-              </span>
-            }
+            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
+            endContent={<span className="fr-text--xs fr-text-mention--grey">{item.publicationsCount} publications</span>}
             description={item.address?.find((a) => a.main).city}
             key={`${item.id}###${getLangFieldValue(locale)(item.label)}`}
           >
@@ -101,5 +93,5 @@ export default function PublicationOrganizationsFilter() {
         )}
       </Autocomplete>
     </>
-  );
+  )
 }
