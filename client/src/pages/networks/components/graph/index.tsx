@@ -6,7 +6,7 @@ import Default from "./default"
 import useTab from "../../hooks/useTab"
 import useClusters from "../../hooks/useClusters"
 import useSearchData from "../../hooks/useSearchData"
-import Error204 from "../error204"
+import Error204 from "../errors/error204"
 
 export default function NetworkGraph() {
   const { currentTab } = useTab()

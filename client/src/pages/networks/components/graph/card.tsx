@@ -1,5 +1,5 @@
 import { Container } from "@dataesr/dsfr-plus"
-import NetworkGraph from "./graph"
+import NetworkGraph from "."
 
 export default function NetworkCard() {
   return (

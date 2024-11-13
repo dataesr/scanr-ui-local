@@ -3,11 +3,19 @@ import useIntegration from "../../hooks/useIntegration"
 import NetworksBreadcrumb from "./breadcrumb"
 import NetworksSearchBar from "./search"
 import NetworksSelect from "./select"
+import Options from "../options"
+import { useState } from "react"
+import useScreenSize from "../../../../hooks/useScreenSize"
+import NetworkFilters from "../filters"
 
 export default function NetworksHeader() {
   const { integrationOptions } = useIntegration()
+  const { screen } = useScreenSize()
+  const [showFilters, setShowFilters] = useState(false)
 
   if (integrationOptions?.useHeader === false) return null
+
+  const isScreenSmall = ["xs", "sm", "mg"].includes(screen)
 
   return (
     <Container className={"bg-network"} fluid>
@@ -17,10 +25,16 @@ export default function NetworksHeader() {
           <Col xs="12" sm="8" lg="8">
             <NetworksSearchBar />
           </Col>
-          <Col xs="12" sm="3" lg="3">
+          <Col xs="10" sm="3" lg="4">
             <NetworksSelect />
           </Col>
+          {isScreenSmall && (
+            <Col xs="2" sm="1">
+              <Options showOptions={showFilters} setShowOptions={setShowFilters} />
+            </Col>
+          )}
         </Row>
+        {isScreenSmall && showFilters && <NetworkFilters />}
       </Container>
     </Container>
   )

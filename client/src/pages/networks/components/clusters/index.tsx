@@ -13,13 +13,13 @@ import {
   ModalContent,
   ModalTitle,
 } from "@dataesr/dsfr-plus"
-import { PageSection } from "../../../components/page-content"
-import { NetworkCommunity, NetworkData } from "../../../types/network"
-import useSearchData from "../hooks/useSearchData"
-import BaseSkeleton from "../../../components/skeleton/base-skeleton"
-import { encode } from "../../../utils/string"
-import useTab from "../hooks/useTab"
-import useClusters from "../hooks/useClusters"
+import { PageSection } from "../../../../components/page-content"
+import { NetworkCommunity, NetworkData } from "../../../../types/network"
+import useSearchData from "../../hooks/useSearchData"
+import BaseSkeleton from "../../../../components/skeleton/base-skeleton"
+import { encode } from "../../../../utils/string"
+import useTab from "../../hooks/useTab"
+import useClusters from "../../hooks/useClusters"
 
 const SEE_MORE_AFTER = 5
 

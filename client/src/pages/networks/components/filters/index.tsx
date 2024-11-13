@@ -1,9 +1,9 @@
 import { Row, Col, Text, Title, Button, ButtonGroup, Tag } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import useUrl from "../../search/hooks/useUrl"
-import useTab from "../hooks/useTab"
-import useAggregateData from "../../search/hooks/useAggregationData"
-import useSearchData from "../hooks/useSearchData"
+import useUrl from "../../../search/hooks/useUrl"
+import useTab from "../../hooks/useTab"
+import useAggregateData from "../../../search/hooks/useAggregationData"
+import useSearchData from "../../hooks/useSearchData"
 
 export default function NetworkFilters() {
   const intl = useIntl()

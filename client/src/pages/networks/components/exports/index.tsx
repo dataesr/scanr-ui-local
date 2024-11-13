@@ -1,8 +1,8 @@
 import { Row, Title, MenuButton, MenuItem } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import useTab from "../hooks/useTab"
-import useSearchData from "../hooks/useSearchData"
-import useExportData from "../hooks/useExportData"
+import useTab from "../../hooks/useTab"
+import useSearchData from "../../hooks/useSearchData"
+import useExportData from "../../hooks/useExportData"
 
 export default function NetworkExports() {
   const intl = useIntl()

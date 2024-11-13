@@ -12,6 +12,7 @@ export default function useIntegration() {
   const integrationOptions = integrationId
     ? {
         useTitle: getBooleanParam(searchParams.get("useTitle")),
+        useSubtitle: getBooleanParam(searchParams.get("useSubtitle")),
         useClustersAnalytics: getBooleanParam(searchParams.get("useAnalytics")),
         useClusterButton: getBooleanParam(searchParams.get("useButton")),
         useSearchBar: getBooleanParam(searchParams.get("useSearch")),
@@ -23,6 +24,7 @@ export default function useIntegration() {
       }
     : {
         useTitle: true,
+        useSubtitle: true,
         useClustersAnalytics: true,
         useClustersButton: true,
         useSearchBar: true,

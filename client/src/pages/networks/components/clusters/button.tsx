@@ -1,8 +1,8 @@
 import { useIntl } from "react-intl"
 import { Row, Col, Button, ButtonGroup } from "@dataesr/dsfr-plus"
-import useSearchData from "../hooks/useSearchData"
-import useTab from "../hooks/useTab"
-import useClusters from "../hooks/useClusters"
+import useSearchData from "../../hooks/useSearchData"
+import useTab from "../../hooks/useTab"
+import useClusters from "../../hooks/useClusters"
 
 export default function ClustersButton() {
   const intl = useIntl()
