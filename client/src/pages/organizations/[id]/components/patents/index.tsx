@@ -3,11 +3,10 @@ import { Button, Row, Col, Text } from "@dataesr/dsfr-plus";
 import useScreenSize from "../../../../../hooks/useScreenSize";
 import YearBars from "../../../../../components/year-bars";
 import { useState } from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import PatentChart from "../../../../../components/patent-chart";
-// import { getCpcAggregation } from "../../../../../api/patents/[id]";
+import { useQuery } from "@tanstack/react-query";
+import { getCpcAggregation } from "../../../../../api/patents/[id]";
 import { OrganizationPatentsData } from "../../../../../types/organization";
-// import CpcWordCloud from "../../../../../components/patent-chart/indexA";
+import CpcWordCloud from "../../../../../components/patent-chart";
 
 type OrganizationPatentsProps = {
   data: OrganizationPatentsData;
@@ -28,22 +27,22 @@ export default function OrganizationPatents({
     "applicants.ids.id": { values: [{ value, label }], type: "terms" },
   };
 
-  // const patentId = searchFilters["applicants.ids.id"].values[0].value;
-  // const { data: patentsData = [] } = useQuery({
-  //   queryKey: ["patent", patentId],
-  //   queryFn: () => getCpcAggregation(patentId),
-  //   throwOnError: true,
-  // });
+  const patentId = searchFilters["applicants.ids.id"].values[0].value;
+  const { data: patentsData = [] } = useQuery({
+    queryKey: ["patent", patentId],
+    queryFn: () => getCpcAggregation(patentId),
+    throwOnError: true,
+  });
 
-  // const prepareCpcGraphData = (patentsData) => {
-  //   return patentsData.map((item) => ({
-  //     code: item.code,
-  //     doc_count: item.doc_count,
-  //     label: item.label,
-  //   }));
-  // };
+  const prepareCpcGraphData = (patentsData) => {
+    return patentsData.map((item) => ({
+      code: item.code,
+      doc_count: item.doc_count,
+      label: item.label,
+    }));
+  };
 
-  // const graphData = prepareCpcGraphData(patentsData);
+  const graphData = prepareCpcGraphData(patentsData);
 
   const patentsFilterUrl = `/search/patents?filters=${encodeURIComponent(
     JSON.stringify(searchFilters)
@@ -134,33 +133,19 @@ export default function OrganizationPatents({
                   {intl.formatMessage({ id: "organizations.patents.nav.year" })}
                 </label>
               </div>
-
-              {/* <div className="fr-segmented__element">
+              <div className="fr-segmented__element">
                 <input
                   checked={projectGraph === "cpc"}
                   type="radio"
-                  id="segmented-patents-2"
-                  onChange={() => setProjectGraph("cpc")}
-                />
-                <label className="fr-label" htmlFor="segmented-patents-2">
-                  {intl.formatMessage({
-                    id: "organizations.patents.nav.cpc-1",
-                  })}
-                </label>
-              </div>
-              <div className="fr-segmented__element">
-                <input
-                  checked={projectGraph === "cpc2"}
-                  type="radio"
                   id="segmented-patents-3"
-                  onChange={() => setProjectGraph("cpc2")}
+                  onChange={() => setProjectGraph("cpc")}
                 />
                 <label className="fr-label" htmlFor="segmented-patents-3">
                   {intl.formatMessage({
-                    id: "organizations.patents.nav.cpc-2",
+                    id: "organizations.patents.nav.cpc",
                   })}
                 </label>
-              </div> */}
+              </div>
             </div>
           </fieldset>
         </Col>
@@ -175,12 +160,11 @@ export default function OrganizationPatents({
               years={patents.byYear.map((year) => year.label)}
             />
           )}
-          {/* {projectGraph === "cpc" && patentsData && (
-            <PatentChart data={graphData} />
-          )}
-          {projectGraph === "cpc2" && patentsData && (
-            <CpcWordCloud data={graphData} />
-          )} */}
+          <>
+            {projectGraph === "cpc" && patentsData && (
+              <CpcWordCloud data={graphData} />
+            )}
+          </>
         </Col>
       </Row>
       <hr />

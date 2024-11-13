@@ -46,7 +46,7 @@ export type NetworkCommunity = {
   maxYear?: number
   publicationsByYear?: Record<string, number>
   publicationsCount?: number
-  publications?: Array<Record<string, string>>
+  publications?: Array<Record<string, string | number>>
   citationsByYear?: Record<string, number>
   citationsCount?: number
   citationsRecent?: number
@@ -118,6 +118,7 @@ export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
   title?: LangField
+  cited_by_counts_by_year?: Record<string, number>
 }
 export type ElasticAggregation = {
   buckets?: ElasticBuckets

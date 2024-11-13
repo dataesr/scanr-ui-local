@@ -211,7 +211,7 @@ export default function MainFooter() {
                       <li>
                         <Link
                           className="fr-footer__top-link"
-                          href="https://works-magnet.dataesr.ovh/"
+                          href="https://works-magnet.esr.gouv.fr/"
                           target="_blank"
                         >
                           Works Magnet

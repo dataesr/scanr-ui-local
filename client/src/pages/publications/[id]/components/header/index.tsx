@@ -12,7 +12,7 @@ export default function PublicationsHeader({ data, authors, affiliations }) {
     <section>
       <div>
         <BadgeGroup>
-          <Badge color="purple-glycine" noIcon>{publicationTypeMapping[data.type]}</Badge>
+          {publicationTypeMapping[data.type] && <Badge color="purple-glycine" noIcon>{publicationTypeMapping[data.type]}</Badge>}
           <Badge color={data.isOa ? 'green-emeraude' : 'pink-macaron'} icon={data.isOa ? 'lock-unlock-line' : 'lock-line'}>
             {intl.formatMessage({ id: `publications.header.oa.${data.isOa ? "true" : "false"}` })}
           </Badge>

@@ -32,6 +32,7 @@ export async function getPatentById(id: string): Promise<Patent> {
   if (!patent) throw new Error("404");
   return { ...patent, _id: data?.hits?.hits?.[0]._id };
 }
+
 export async function getCpcAggregation(value: string): Promise<Patent> {
   const body: any = {
     size: 10000,
@@ -49,8 +50,16 @@ export async function getCpcAggregation(value: string): Promise<Patent> {
     aggs: {
       byCpc: {
         terms: {
-          field: "cpc.ss_classe.code.keyword",
+          field: "cpc.classe.code.keyword",
           size: 10000,
+        },
+        aggs: {
+          bySectionLabel: {
+            terms: {
+              field: "cpc.section.label.keyword",
+              size: 1,
+            },
+          },
         },
       },
     },
@@ -68,7 +77,7 @@ export async function getCpcAggregation(value: string): Promise<Patent> {
   const hits = data?.hits?.hits;
 
   const labelsByCode = hits.reduce((acc: any, hit: any) => {
-    const cpcGroups = hit._source.cpc?.ss_classe ?? [];
+    const cpcGroups = hit._source.cpc?.classe ?? [];
     cpcGroups.forEach((cpc: any) => {
       if (!acc[cpc.code]) {
         acc[cpc.code] = cpc.label;
@@ -77,11 +86,18 @@ export async function getCpcAggregation(value: string): Promise<Patent> {
     return acc;
   }, {});
 
-  const patent = buckets.map((bucket: any) => ({
-    code: bucket.key,
-    doc_count: bucket.doc_count,
-    label: labelsByCode[bucket.key] || "Label non trouvé",
-  }));
+  const patent = buckets.map((bucket: any) => {
+    console.log(bucket);
+    const sectionLabel =
+      bucket.bySectionLabel?.buckets?.[0]?.key || "Label de section non trouvé";
+
+    return {
+      code: bucket.key,
+      doc_count: bucket.doc_count,
+      label: labelsByCode[bucket.key] || "Label non trouvé",
+      sectionLabel,
+    };
+  });
 
   return patent;
 }
