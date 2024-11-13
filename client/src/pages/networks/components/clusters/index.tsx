@@ -48,7 +48,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
               size="sm"
               color="purple-glycine"
             >
-              {`${community.size} ${intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}`}
+              {`${community.size} ${intl.formatMessage({ id: `networks.tab.${currentTab}` })}`}
             </Badge>
             <Badge
               onClick={() => {
@@ -105,7 +105,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
           : null}
       </Text>
       <Modal isOpen={showNodesModal} hide={() => setShowNodesModal(false)}>
-        <ModalTitle>{intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}</ModalTitle>
+        <ModalTitle>{intl.formatMessage({ id: `networks.tab.${currentTab}` })}</ModalTitle>
         <ModalContent>
           {community?.nodes?.map((node) => (
             <li>

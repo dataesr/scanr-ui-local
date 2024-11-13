@@ -55,8 +55,14 @@ export default function NetworkAnalytics() {
     <Row className="fr-mt-2w">
       <Col xs="12">
         <AnalyticsGraph
-          title={intl.formatMessage({ id: `networks.analytics.clusters.size.title.${currentTab}` })}
-          description={intl.formatMessage({ id: `networks.analytics.clusters.size.description.${currentTab}` })}
+          title={intl.formatMessage(
+            { id: "networks.analytics.clusters.size.title" },
+            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+          )}
+          description={intl.formatMessage(
+            { id: "networks.analytics.clusters.size.description" },
+            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+          )}
           options={sizeChartOptions}
         />
       </Col>

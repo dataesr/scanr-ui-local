@@ -15,7 +15,7 @@ export default function NetworksSelect() {
     <Select selectedKey={currentTab} onSelectionChange={(key) => handleTabChange(key.toString())}>
       {networkTabs.map(({ label, icon }) => (
         <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-${icon}`} />} key={label}>
-          {intl.formatMessage({ id: `networks.header.tab.${label}` })}
+          {intl.formatMessage({ id: `networks.tab.${label}` })}
         </SelectOption>
       ))}
     </Select>

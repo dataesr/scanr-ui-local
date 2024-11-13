@@ -22,7 +22,11 @@ export default function NetworkTitle() {
     <Container fluid className="fr-mb-2w">
       {useTitle && (
         <Title as="h4">
-          {intl.formatMessage({ id: `networks.header.title.${currentTab}` })} {comment}
+          {intl.formatMessage(
+            { id: "networks.header.title" },
+            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+          )}{" "}
+          {comment}
         </Title>
       )}
       {useSubtitle && (
