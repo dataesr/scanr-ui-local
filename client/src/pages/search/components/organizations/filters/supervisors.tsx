@@ -44,14 +44,12 @@ export default function OrganizationSupervisorsFilter() {
         </div>
         <OperatorButton
           operator={operator}
-          setOperator={(key) =>
-            setOperator("institutions.structure", key === "and" ? "and" : "or")
-          }
+          setOperator={(key) => setOperator("institutions.structure", key === "and" ? "and" : "or")}
         />
       </div>
       {filter ? (
         <Text bold size="sm" className="fr-mb-1v">
-          Sélectionnées:
+          <FormattedMessage id="search.filters.selected" /> {":"}
         </Text>
       ) : null}
       <TagGroup>
@@ -61,8 +59,8 @@ export default function OrganizationSupervisorsFilter() {
             className="fr-mr-1v"
             color="orange-terre-battue"
             onClick={(e) => {
-              e.preventDefault();
-              handleFilterChange({ field: "institutions.structure", value });
+              e.preventDefault()
+              handleFilterChange({ field: "institutions.structure", value })
             }}
           >
             {label || value}
@@ -78,16 +76,14 @@ export default function OrganizationSupervisorsFilter() {
         // menuTrigger="focus"
         size="md"
         onSelectionChange={(item) => {
-          if (!item) return;
-          const [value, label] = item.toString().split("###");
-          handleFilterChange({ field: "institutions.structure", value, label });
+          if (!item) return
+          const [value, label] = item.toString().split("###")
+          handleFilterChange({ field: "institutions.structure", value, label })
         }}
       >
         {(item) => (
           <AutocompleteItem
-            startContent={
-              <span className="fr-mr-3v fr-icon--md fr-icon-user-line" />
-            }
+            startContent={<span className="fr-mr-3v fr-icon--md fr-icon-user-line" />}
             description={item.address?.find((a) => a.main).city}
             key={`${item.id}###${getLangFieldValue(locale)(item.label)}`}
           >
@@ -96,5 +92,5 @@ export default function OrganizationSupervisorsFilter() {
         )}
       </Autocomplete>
     </>
-  );
+  )
 }
