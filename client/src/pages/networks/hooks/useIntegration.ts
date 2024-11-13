@@ -5,11 +5,11 @@ const getBooleanParam = (param: string) => (param ? (param.toLowerCase() === "tr
 
 export default function useIntegration() {
   const [searchParams] = useSearchParams()
-  const integrationId = window.location.href.includes("integration") ? searchParams.get("local") : undefined
-
+  const isIntegration = window.location.href.includes("integration")
+  const integrationId = isIntegration ? searchParams.get("local") : undefined
   const integrationLang = searchParams.get("lang") || "fr"
 
-  const integrationOptions = integrationId
+  const integrationOptions = isIntegration
     ? {
         useGraphOnly: getBooleanParam(searchParams.get("useGraphOnly")),
         useTitle: getBooleanParam(searchParams.get("useTitle")),
