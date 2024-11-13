@@ -1,11 +1,9 @@
 import { useSearchParams } from "react-router-dom"
 import { useMemo } from "react"
-import useClusters from "./useClusters"
 
 const getBooleanParam = (param: string) => (param ? (param.toLowerCase() === "true" ? true : false) : true)
 
 export default function useIntegration() {
-  const { clusters: displayClusters } = useClusters()
   const [searchParams] = useSearchParams()
   const integrationId = window.location.href.includes("integration") ? searchParams.get("local") : undefined
 
@@ -13,24 +11,30 @@ export default function useIntegration() {
 
   const integrationOptions = integrationId
     ? {
-        displayTitle: getBooleanParam(searchParams.get("displayTitle")),
-        displayClustersAnalytics: getBooleanParam(searchParams.get("displayAnalytics")),
-        enableClustersButton: getBooleanParam(searchParams.get("enableButton")),
-        enableSearch: getBooleanParam(searchParams.get("enableSearch")),
-        enableFilters: getBooleanParam(searchParams.get("enableFilters")),
-        enableExports: getBooleanParam(searchParams.get("enableExports")),
-        enableTabs: getBooleanParam(searchParams.get("enableTabs")),
+        useTitle: getBooleanParam(searchParams.get("useTitle")),
+        useClustersAnalytics: getBooleanParam(searchParams.get("useAnalytics")),
+        useClusterButton: getBooleanParam(searchParams.get("useButton")),
+        useSearchBar: getBooleanParam(searchParams.get("useSearch")),
+        useFilters: getBooleanParam(searchParams.get("useFilters")),
+        useExports: getBooleanParam(searchParams.get("useExports")),
+        useBreadcrumb: getBooleanParam(searchParams.get("useBreadcrumb")),
+        useSelect: getBooleanParam(searchParams.get("useSelect")),
+        useHeader: getBooleanParam(searchParams.get("useHeader")),
       }
-    : undefined
-
-  const displaySidePanel =
-    integrationOptions?.enableFilters ||
-    integrationOptions?.enableExports ||
-    integrationOptions?.enableClustersButton ||
-    (displayClusters && integrationOptions?.displayClustersAnalytics)
+    : {
+        useTitle: true,
+        useClustersAnalytics: true,
+        useClustersButton: true,
+        useSearchBar: true,
+        useFilters: true,
+        useExports: true,
+        useBreadcrumb: true,
+        useSelect: true,
+        useHeader: true,
+      }
 
   const values = useMemo(() => {
-    return { integrationId, integrationLang, integrationOptions, displaySidePanel }
-  }, [integrationId, integrationLang, integrationOptions, displaySidePanel])
+    return { integrationId, integrationLang, integrationOptions }
+  }, [integrationId, integrationLang, integrationOptions])
   return values
 }

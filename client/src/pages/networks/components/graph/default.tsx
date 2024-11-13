@@ -1,17 +1,13 @@
 import { useIntl } from "react-intl"
 import { Container, Row, Col, Title } from "@dataesr/dsfr-plus"
-import useUrl from "../../search/hooks/useUrl"
+import useTab from "../../hooks/useTab"
 
-type HomeArgs = { currentTab: string }
-
-export default function Home({ currentTab }: HomeArgs) {
+export default function NetworkGraphDefault() {
+  const { currentTab } = useTab()
   const intl = useIntl()
-  const { currentQuery } = useUrl()
-
-  if (currentQuery) return null
 
   return (
-    <Container className="fr-mt-5w" style={{ height: "200px" }}>
+    <Container>
       <Row>
         <Col xs="12" md="8">
           <Title as="h3" look="h5">

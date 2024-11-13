@@ -4,14 +4,10 @@ import useSearchData from "../hooks/useSearchData"
 import useTab from "../hooks/useTab"
 import useClusters from "../hooks/useClusters"
 
-type ClustersButtonArgs = {
-  handleChange: (value: boolean) => void
-}
-
-export default function ClustersButton({ handleChange }: ClustersButtonArgs) {
+export default function ClustersButton() {
   const intl = useIntl()
   const { currentTab } = useTab()
-  const { clusters: computeClusters } = useClusters()
+  const { clusters: computeClusters, handleClustersChange } = useClusters()
   const { search, currentQuery } = useSearchData(currentTab, computeClusters)
 
   return (
@@ -21,7 +17,7 @@ export default function ClustersButton({ handleChange }: ClustersButtonArgs) {
           <Button
             iconPosition="right"
             icon={computeClusters ? "arrow-up-line" : "arrow-down-line"}
-            onClick={() => handleChange(!computeClusters)}
+            onClick={() => handleClustersChange(!computeClusters)}
             disabled={search.isFetching || Boolean(search.error) || !currentQuery}
           >
             {intl.formatMessage({
@@ -29,6 +25,9 @@ export default function ClustersButton({ handleChange }: ClustersButtonArgs) {
             })}
           </Button>
         </ButtonGroup>
+        <p className="fr-text--xs fr-text-mention--grey">
+          {intl.formatMessage({ id: "networks.clusters.button.description" })}
+        </p>
       </Col>
     </Row>
   )
