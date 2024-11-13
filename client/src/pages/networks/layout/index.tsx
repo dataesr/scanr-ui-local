@@ -17,16 +17,26 @@ export default function NetworksLayout() {
         <Row gutters>
           <Col xs="12" sm="8" lg="8">
             <NetworkTitle />
-            <NetworkCard />
-            <NetworkClusters />
           </Col>
           <Col xs="12" sm="4" lg="4">
             <PublicationFilters />
             <NetworkFilters />
-            <hr />
-            <NetworkExports />
-            <hr />
+          </Col>
+        </Row>
+        <NetworkCard />
+        <Row gutters>
+          <Col xs="12" sm="8" lg="8">
             <ClustersButton />
+          </Col>
+          <Col xs="12" sm="4" lg="4">
+            <NetworkExports />
+          </Col>
+        </Row>
+        <Row gutters>
+          <Col xs="12" sm="8" lg="8">
+            <NetworkClusters />
+          </Col>
+          <Col xs="12" sm="4" lg="4">
             <ClustersAnalytics />
           </Col>
         </Row>
