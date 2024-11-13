@@ -147,13 +147,13 @@ export default function NetworkClusters() {
 
   if (search.isFetching)
     return (
-      <Container fluid className="fr-mt-5w">
+      <Container fluid className="fr-mt-2w">
         <BaseSkeleton width="100%" height="30rem" className="fr-my-1v" />
       </Container>
     )
 
   return (
-    <Container fluid className="fr-mt-5w">
+    <Container fluid className="fr-mt-2w">
       <PageSection
         size="lead"
         show={true}
