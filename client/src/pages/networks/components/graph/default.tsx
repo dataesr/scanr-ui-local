@@ -11,7 +11,10 @@ export default function NetworkGraphDefault() {
       <Row style={{ display: "flex", justifyContent: "center" }}>
         <Col sm="8" style={{ display: "flex", alignItems: "center" }}>
           <Title as="h3" look="h5">
-            {intl.formatMessage({ id: `networks.home.title.${currentTab}` })}
+            {intl.formatMessage(
+              { id: "networks.home.title" },
+              { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+            )}
           </Title>
         </Col>
         <svg className="fr-artwork" aria-hidden="true" viewBox="0 0 80 80" width="150px" height="auto">
