@@ -1,7 +1,8 @@
 import { useSearchParams } from "react-router-dom"
 import { useMemo } from "react"
 
-const getBooleanParam = (param: string) => (param ? (param.toLowerCase() === "true" ? true : false) : true)
+const getBooleanParam = (param: string, defaultValue = true) =>
+  param ? (param.toLowerCase() === "true" ? true : false) : defaultValue
 
 export default function useIntegration() {
   const [searchParams] = useSearchParams()
@@ -11,7 +12,7 @@ export default function useIntegration() {
 
   const integrationOptions = isIntegration
     ? {
-        useGraphOnly: getBooleanParam(searchParams.get("useGraphOnly")),
+        useGraphOnly: getBooleanParam(searchParams.get("useGraphOnly"), false),
         useTitle: getBooleanParam(searchParams.get("useTitle")),
         useSubtitle: getBooleanParam(searchParams.get("useSubtitle")),
         useClustersAnalytics: getBooleanParam(searchParams.get("useClustersAnalytics")),
