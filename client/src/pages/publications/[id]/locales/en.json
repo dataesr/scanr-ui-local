@@ -34,7 +34,7 @@
   "publications.signals.author": "Identify an author",
   "publications.signals.fundings": "Add funding",
   "publications.signals.bug": "Report an error",
-  "publications.section.softwares.title": "Software mentions",
-  "publications.section.softwares.legend": "Software mentions found by scanR in the publication.",
+  "publications.section.software.title": "Software mentions",
+  "publications.section.software.legend": "Software mentions found by scanR in the publication.",
   "search.publications.thesis.by": " by "
 }

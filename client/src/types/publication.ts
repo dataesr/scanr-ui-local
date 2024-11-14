@@ -56,24 +56,24 @@ export type LightPublication = BasePublication & {
 };
 
 export type Publication = BasePublication & {
-  _id: string;
-  summary: LangField;
-  domains: DomainsData[];
-  softwares: SoftwareMention[];
-  pdfUrl?: string;
+  _id: string
+  summary: LangField
+  domains: DomainsData[]
+  software: SoftwareMention[]
+  pdfUrl?: string
   affiliations: {
-    name: string;
-    id: string;
-  }[];
+    name: string
+    id: string
+  }[]
   authors: {
-    fullName: string;
-    person: string;
-    role: string;
-    affiliations: Record<string, unknown>[];
-  }[];
-  oaEvidence?: OaEvidenceData;
-  projects: ProjectData[];
-};
+    fullName: string
+    person: string
+    role: string
+    affiliations: Record<string, unknown>[]
+  }[]
+  oaEvidence?: OaEvidenceData
+  projects: ProjectData[]
+}
 
 export type ExportPublication = {
   id: string;

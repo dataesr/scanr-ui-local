@@ -34,6 +34,6 @@
   "publications.signals.author": "Einen Autor identifizieren",
   "publications.signals.fundings": "Finanzierung hinzufügen",
   "publications.signals.bug": "Einen Fehler melden",
-  "publications.section.softwares.title": "Softwareerwähnungen",
-  "publications.section.softwares.legend": "Softwareerwähnungen, die von scanR in der Veröffentlichung gefunden wurden."
+  "publications.section.software.title": "Softwareerwähnungen",
+  "publications.section.software.legend": "Softwareerwähnungen, die von scanR in der Veröffentlichung gefunden wurden."
 }
