@@ -88,7 +88,7 @@ export default async function networkCreate(
         Degree: graph.degree(key),
         ...(attr?.citationsCount !== undefined && { Citations: attr.citationsCount || 0 }),
       },
-      scores: { "Last publication": attr?.maxYear },
+      scores: { ...(attr?.maxYear && { "Last publication": attr.maxYear }) },
       page: configGetItemUrl(model, key, attr.label),
       ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
@@ -103,6 +103,5 @@ export default async function networkCreate(
     clusters: communities,
   }
 
-  console.log("network", network)
   return network
 }
