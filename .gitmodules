@@ -1,3 +1,0 @@
-[submodule "client/src/pages/networks/integration/config"]
-	path = client/src/pages/networks/integration/config
-	url = https://github.com/dataesr/bso-local-config
