@@ -66,7 +66,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
               {`${intl.formatMessage({ id: "networks.section.clusters.open-access" })}: ${community.oaPercent.toFixed(1)}%`}
             </Badge>
             <Badge size="sm" color="yellow-tournesol">
-              {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community.maxYear}`}
+              {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community?.maxYear || "N/A"}`}
             </Badge>
             <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
               { id: "networks.section.clusters.citations" },

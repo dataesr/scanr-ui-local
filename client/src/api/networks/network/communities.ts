@@ -36,8 +36,10 @@ const communityGetIds = (graph: Graph, community: number): Array<string> =>
 const communityGetSize = (graph: Graph, community: number): number =>
   graph.filterNodes((_, attr) => attr?.community === community).length
 
-const communityGetMaxYear = (graph: Graph, community: number): number =>
-  Math.max(...communityGetAttribute(graph, community, "maxYear").map(Number))
+const communityGetMaxYear = (graph: Graph, community: number): number => {
+  const maxYear = Math.max(...communityGetAttribute(graph, community, "maxYear").map(Number))
+  return Number.isFinite(maxYear) ? maxYear : undefined
+}
 
 const communityGetNodes = (graph: Graph, community: number): Array<{ id: string; weight: number; label: string }> => {
   const ids = communityGetIds(graph, community)
