@@ -67,8 +67,8 @@ export const CONFIG = {
     },
   },
   software: {
-    field: "softwares.id_name",
-    aggregation: "softwares.id_name.keyword",
+    field: "software.id_name",
+    aggregation: "software.id_name.keyword",
     co_aggregation: "co_software.keyword",
     url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {

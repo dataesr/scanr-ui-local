@@ -17,11 +17,11 @@ export const FIELDS = [
   "source.publisher",
   "affiliations.id",
   "affiliations.label.*",
-  "softwares.softwareName",
-  "softwares.contexts",
-  "softwares.wikidata",
+  "software.softwareName",
+  "software.contexts",
+  "software.wikidata",
   "projects.id",
   "projects.label.*",
-  "projects.acronym.*"
+  "projects.acronym.*",
 ]
 export const LIGHT_SOURCE = ["title.*", "authors.fullName", "authors.person", "authors.role", "source.*", "isOa", 'type', 'id', "year", "landingPage", "externalIds"]

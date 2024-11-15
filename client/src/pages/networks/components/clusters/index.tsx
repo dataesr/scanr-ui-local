@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import { Fragment, useState } from "react"
 import { useIntl } from "react-intl"
 import {
   Container,
@@ -13,27 +13,22 @@ import {
   ModalContent,
   ModalTitle,
 } from "@dataesr/dsfr-plus"
-// import Gauge from "../../../components/gauge"
-import { PageSection } from "../../../components/page-content"
-import { NetworkCommunity, NetworkData } from "../../../types/network"
-import useSearchData from "../hooks/useSearchData"
-import BaseSkeleton from "../../../components/skeleton/base-skeleton"
-import { encode } from "../../../utils/string"
+import { PageSection } from "../../../../components/page-content"
+import { NetworkCommunity, NetworkData } from "../../../../types/network"
+import useSearchData from "../../hooks/useSearchData"
+import BaseSkeleton from "../../../../components/skeleton/base-skeleton"
+import { encode } from "../../../../utils/string"
+import useTab from "../../hooks/useTab"
+import useClusters from "../../hooks/useClusters"
 
 const SEE_MORE_AFTER = 5
 
 type ClusterItemArgs = {
   currentTab: string
   community: NetworkCommunity
-  setFocusItem: React.Dispatch<React.SetStateAction<string>>
-}
-type ClustersSectionArgs = {
-  currentTab: string
-  enabled: boolean
-  setFocusItem: React.Dispatch<React.SetStateAction<string>>
 }
 
-function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
+function ClusterItem({ currentTab, community }: ClusterItemArgs) {
   const intl = useIntl()
   const currentYear = new Date().getFullYear()
   const [showNodesModal, setShowNodesModal] = useState(false)
@@ -53,7 +48,7 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
               size="sm"
               color="purple-glycine"
             >
-              {`${community.size} ${intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}`}
+              {`${community.size} ${intl.formatMessage({ id: `networks.tab.${currentTab}` })}`}
             </Badge>
             <Badge
               onClick={() => {
@@ -83,7 +78,7 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
       </Row>
       <Row>
         <div style={{ alignContent: "center", paddingRight: "0.5rem", color: `${community.color}` }}>{"█"} </div>
-        <Button variant="text" className="fr-link" onClick={() => setFocusItem(community.nodes[0].label)}>
+        <Button variant="text" className="fr-link" onClick={() => console.log("set focus item..")}>
           {community.label}
         </Button>
       </Row>
@@ -110,7 +105,7 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
           : null}
       </Text>
       <Modal isOpen={showNodesModal} hide={() => setShowNodesModal(false)}>
-        <ModalTitle>{intl.formatMessage({ id: `networks.header.tab.${currentTab}` })}</ModalTitle>
+        <ModalTitle>{intl.formatMessage({ id: `networks.tab.${currentTab}` })}</ModalTitle>
         <ModalContent>
           {community?.nodes?.map((node) => (
             <li>
@@ -137,25 +132,28 @@ function ClusterItem({ currentTab, community, setFocusItem }: ClusterItemArgs) {
   )
 }
 
-export default function ClustersSection({ currentTab, enabled, setFocusItem }: ClustersSectionArgs) {
+export default function NetworkClusters() {
   const intl = useIntl()
-  const { search, currentQuery } = useSearchData(currentTab, enabled)
+  const { currentTab } = useTab()
+  const { clusters: computeClusters } = useClusters()
+  const { search, currentQuery } = useSearchData(currentTab, computeClusters)
   const [seeMore, setSeeMore] = useState(false)
+
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const sectionTitle = `networks.section.clusters.${currentTab}`
 
-  if (!currentQuery || !enabled) return null
+  if (!currentQuery || !computeClusters) return null
 
   if (search.isFetching)
     return (
-      <Container fluid className="fr-mt-5w">
+      <Container fluid className="fr-mt-2w">
         <BaseSkeleton width="100%" height="30rem" className="fr-my-1v" />
       </Container>
     )
 
   return (
-    <Container fluid className="fr-mt-5w">
+    <Container fluid className="fr-mt-2w">
       <PageSection
         size="lead"
         show={true}
@@ -165,7 +163,7 @@ export default function ClustersSection({ currentTab, enabled, setFocusItem }: C
         <>
           <div className="cluster-list">
             {communities?.slice(0, seeMore ? communities?.length + 1 : SEE_MORE_AFTER)?.map((community, index) => (
-              <ClusterItem key={index} currentTab={currentTab} community={community} setFocusItem={setFocusItem} />
+              <ClusterItem key={index} currentTab={currentTab} community={community} />
             ))}
           </div>
           {communities?.length > SEE_MORE_AFTER ? (

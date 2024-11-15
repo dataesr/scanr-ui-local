@@ -1,15 +1,17 @@
-import { Container, Row, Col } from "@dataesr/dsfr-plus"
-import AnalyticsSkeleton from "../../../components/skeleton/analytics-skeleton"
+import { Container, Row, Col, Accordion } from "@dataesr/dsfr-plus"
+import AnalyticsSkeleton from "../../../../components/skeleton/analytics-skeleton"
 import { useIntl } from "react-intl"
-import useTab from "../hooks/useTab"
-import AnalyticsGraph from "../../../components/analytics-graph"
-import useSearchData from "../hooks/useSearchData"
-import getHorizontalBarChartOptions from "./charts/hbar"
-import getYearsChartOptions from "./charts/years"
-import useClusters from "../hooks/useClusters"
+import useTab from "../../hooks/useTab"
+import AnalyticsGraph from "../../../../components/analytics-graph"
+import useSearchData from "../../hooks/useSearchData"
+import getHorizontalBarChartOptions from "../charts/hbar"
+import getYearsChartOptions from "../charts/years"
+import useClusters from "../../hooks/useClusters"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
-export default function ClustersAnalytics() {
+export default function NetworkAnalytics() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
   const { currentTab } = useTab()
   const { clusters: computeClusters } = useClusters()
   const { search, currentQuery } = useSearchData(currentTab, computeClusters)
@@ -49,12 +51,18 @@ export default function ClustersAnalytics() {
     years: "citationsByYear",
   })
 
-  return (
+  const AnalyticsGraphs = () => (
     <Row className="fr-mt-2w">
       <Col xs="12">
         <AnalyticsGraph
-          title={intl.formatMessage({ id: `networks.analytics.clusters.size.title.${currentTab}` })}
-          description={intl.formatMessage({ id: `networks.analytics.clusters.size.description.${currentTab}` })}
+          title={intl.formatMessage(
+            { id: "networks.analytics.clusters.size.title" },
+            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+          )}
+          description={intl.formatMessage(
+            { id: "networks.analytics.clusters.size.description" },
+            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+          )}
           options={sizeChartOptions}
         />
       </Col>
@@ -88,4 +96,14 @@ export default function ClustersAnalytics() {
       </Col>
     </Row>
   )
+
+  if (["xs", "sm"].includes(screen)) {
+    return (
+      <Accordion title={intl.formatMessage({ id: "networks.analytics.clusters.title" })}>
+        <AnalyticsGraphs />
+      </Accordion>
+    )
+  }
+
+  return <AnalyticsGraphs />
 }
