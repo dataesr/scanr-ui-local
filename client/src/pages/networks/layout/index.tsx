@@ -16,7 +16,7 @@ export default function NetworksLayout() {
   const { integrationOptions } = useIntegration()
   const isScreenSmall = ["xs", "sm", "mg"].includes(screen)
 
-  const { showFilters, showExports, showGraphOnly } = integrationOptions
+  const { showFilters, showExports, showHeader, showGraphOnly } = integrationOptions
 
   if (showGraphOnly === true) return <NetworkCard />
 
@@ -28,6 +28,7 @@ export default function NetworksLayout() {
         <NetworkTitle />
         <Row gutters>
           <Col xs="12" sm="12" lg="8">
+            {isScreenSmall && showHeader === false && <NetworkFilters />}
             <NetworkCard />
           </Col>
           {!isScreenSmall && (
