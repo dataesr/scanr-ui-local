@@ -1,4 +1,4 @@
-import { publicationsIndex, postHeaders } from "../../../config/api"
+import { postHeaders } from "../../../config/api"
 import {
   Network,
   NetworkSearchBody,
@@ -47,7 +47,7 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
 
-  const res = await fetch(`${publicationsIndex}/_search`, {
+  const res = await fetch(`${CONFIG[model].index}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
@@ -101,7 +101,7 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
     },
   }
 
-  const res = await fetch(`${publicationsIndex}/_search`, {
+  const res = await fetch(`${CONFIG[model].index}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
@@ -152,7 +152,7 @@ export async function networkSearchAggs({
     },
   }
 
-  const res = await fetch(`${publicationsIndex}/_search`, {
+  const res = await fetch(`${CONFIG[model].index}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,

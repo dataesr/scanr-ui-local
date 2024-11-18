@@ -1,8 +1,10 @@
+import { patentsIndex, publicationsIndex } from "../../../config/api"
 import { NetworkConfig } from "../../../types/network"
 import { COLORS } from "../_utils/constants"
 
 export const CONFIG = {
   authors: {
+    index: publicationsIndex,
     field: "authors.id_name",
     aggregation: "authors.id_name.keyword",
     co_aggregation: "co_authors.keyword",
@@ -19,6 +21,7 @@ export const CONFIG = {
     },
   },
   institutions: {
+    index: publicationsIndex,
     field: "affiliations.id_name",
     aggregation: "affiliations.id_name.keyword",
     co_aggregation: "co_institutions.keyword",
@@ -35,6 +38,7 @@ export const CONFIG = {
     },
   },
   structures: {
+    index: publicationsIndex,
     field: "affiliations.id_name",
     aggregation: "affiliations.id_name.keyword",
     co_aggregation: "co_structures.keyword",
@@ -51,15 +55,16 @@ export const CONFIG = {
     },
   },
   domains: {
+    index: publicationsIndex,
     field: "domains.id_name",
     aggregation: "domains.id_name.keyword",
     co_aggregation: "co_domains.keyword",
     url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
-      item: "domain",
-      items: "domains",
-      link: "co-domain link",
-      links: "co-domain links",
+      item: "topic",
+      items: "topics",
+      link: "co-topic link",
+      links: "co-topic links",
       cluster: "community",
       clusters: "communities",
       link_strength: "co-publications",
@@ -67,6 +72,7 @@ export const CONFIG = {
     },
   },
   software: {
+    index: publicationsIndex,
     field: "software.id_name",
     aggregation: "software.id_name.keyword",
     co_aggregation: "co_software.keyword",
@@ -83,6 +89,7 @@ export const CONFIG = {
     },
   },
   projects: {
+    index: publicationsIndex,
     field: "projects.id_name",
     aggregation: "projects.id_name.keyword",
     co_aggregation: "co_projects.keyword",
@@ -99,6 +106,7 @@ export const CONFIG = {
     },
   },
   countries: {
+    index: publicationsIndex,
     field: "affiliations.country",
     aggregation: "affiliations.country.keyword",
     co_aggregation: "co_countries.keyword",
@@ -112,6 +120,23 @@ export const CONFIG = {
       clusters: "communities",
       link_strength: "co-publications",
       total_link_strength: "co-publications links",
+    },
+  },
+  patents: {
+    index: patentsIndex,
+    field: "cpc.classe.label",
+    aggregation: "cpc.classe.label.keyword",
+    co_aggregation: "co_cpc_classe.keyword",
+    url: (_: string, label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    terminology: {
+      item: "classe",
+      items: "classes",
+      link: "co-classes link",
+      links: "co-classes links",
+      cluster: "community",
+      clusters: "communities",
+      link_strength: "co-patents",
+      total_link_strength: "co-patents links",
     },
   },
 }
