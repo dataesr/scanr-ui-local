@@ -12,7 +12,7 @@ export default function ClustersButton() {
   const { clusters: computeClusters, handleClustersChange } = useClusters()
   const { search, currentQuery } = useSearchData(currentTab, computeClusters)
 
-  if (integrationOptions.useClustersButton === false) return null
+  if (integrationOptions.showClustersButton === false) return null
 
   return (
     <Row gutters>

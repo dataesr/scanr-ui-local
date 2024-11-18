@@ -12,7 +12,7 @@ export default function NetworkExports() {
   const { search, currentQuery } = useSearchData(currentTab, false)
   const { isExporting, exportFile } = useExportData()
 
-  if (integrationOptions?.useExports === false) return null
+  if (integrationOptions?.showExports === false) return null
 
   const handleExport = async (key: string) => {
     const format = key.split(">")[1] as "json" | "xlsx"

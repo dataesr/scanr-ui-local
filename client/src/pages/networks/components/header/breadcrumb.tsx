@@ -8,7 +8,7 @@ export default function NetworksBreadcrumb() {
   const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
 
-  if (integrationOptions?.useBreadcrumb === false) return null
+  if (integrationOptions?.showBreadcrumb === false) return null
 
   return (
     <Breadcrumb className="fr-mt-0 fr-mb-2w">

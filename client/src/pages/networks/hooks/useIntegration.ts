@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom"
 import { useMemo } from "react"
+import { NetworksIntegrationOptions } from "../../../types/network"
 
 const getBooleanParam = (param: string, defaultValue = true) =>
   param ? (param.toLowerCase() === "true" ? true : false) : defaultValue
@@ -10,32 +11,34 @@ export default function useIntegration() {
   const integrationId = isIntegration ? searchParams.get("local") : undefined
   const integrationLang = searchParams.get("lang") || "fr"
 
-  const integrationOptions = isIntegration
+  const integrationOptions: NetworksIntegrationOptions = isIntegration
     ? {
-        useGraphOnly: getBooleanParam(searchParams.get("useGraphOnly"), false),
-        useTitle: getBooleanParam(searchParams.get("useTitle")),
-        useSubtitle: getBooleanParam(searchParams.get("useSubtitle")),
-        useClustersAnalytics: getBooleanParam(searchParams.get("useClustersAnalytics")),
-        useClustersButton: getBooleanParam(searchParams.get("useClustersButton")),
-        useSearchBar: getBooleanParam(searchParams.get("useSearch")),
-        useFilters: getBooleanParam(searchParams.get("useFilters")),
-        useExports: getBooleanParam(searchParams.get("useExports")),
-        useBreadcrumb: false,
-        useSelect: getBooleanParam(searchParams.get("useSelect")),
-        useHeader: getBooleanParam(searchParams.get("useHeader")),
+        showGraphOnly: getBooleanParam(searchParams.get("showGraphOnly"), false),
+        showTitle: getBooleanParam(searchParams.get("showTitle")),
+        showSubtitle: getBooleanParam(searchParams.get("showSubtitle")),
+        showClustersAnalytics: getBooleanParam(searchParams.get("showClustersAnalytics")),
+        showClustersButton: getBooleanParam(searchParams.get("showClustersButton")),
+        showSearchBar: getBooleanParam(searchParams.get("useSearch")),
+        showFilters: getBooleanParam(searchParams.get("showFilters")),
+        showExports: getBooleanParam(searchParams.get("showExports")),
+        showBreadcrumb: false,
+        showSelect: getBooleanParam(searchParams.get("showSelect")),
+        showHeader: getBooleanParam(searchParams.get("showHeader")),
+        graphHeight: searchParams.get("graphHeight") || "500px",
       }
     : {
-        useGraphOnly: false,
-        useTitle: true,
-        useSubtitle: true,
-        useClustersAnalytics: true,
-        useClustersButton: true,
-        useSearchBar: true,
-        useFilters: true,
-        useExports: true,
-        useBreadcrumb: true,
-        useSelect: true,
-        useHeader: true,
+        showGraphOnly: false,
+        showTitle: true,
+        showSubtitle: true,
+        showClustersAnalytics: true,
+        showClustersButton: true,
+        showSearchBar: true,
+        showFilters: true,
+        showExports: true,
+        showBreadcrumb: true,
+        showSelect: true,
+        showHeader: true,
+        graphHeight: "500px",
       }
 
   const values = useMemo(() => {

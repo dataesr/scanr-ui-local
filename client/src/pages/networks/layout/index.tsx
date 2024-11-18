@@ -16,9 +16,9 @@ export default function NetworksLayout() {
   const { integrationOptions } = useIntegration()
   const isScreenSmall = ["xs", "sm", "mg"].includes(screen)
 
-  const { useFilters, useExports, useGraphOnly } = integrationOptions
+  const { showFilters, showExports, showGraphOnly } = integrationOptions
 
-  if (useGraphOnly === true) return <NetworkCard />
+  if (showGraphOnly === true) return <NetworkCard />
 
   return (
     <Container fluid>
@@ -33,9 +33,9 @@ export default function NetworksLayout() {
           {!isScreenSmall && (
             <Col lg="4">
               <NetworkFilters />
-              {useFilters && <hr />}
+              {showFilters && <hr />}
               <NetworkExports />
-              {useExports && <hr />}
+              {showExports && <hr />}
               <ClustersButton />
             </Col>
           )}
