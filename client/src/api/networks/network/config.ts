@@ -17,6 +17,7 @@ const publicationsSourceFields = [
 export const CONFIG = {
   authors: {
     index: publicationsIndex,
+    field: "authors.id_name",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "authors.id_name"],
     aggregation: "authors.id_name.keyword",
@@ -35,6 +36,7 @@ export const CONFIG = {
   },
   institutions: {
     index: publicationsIndex,
+    field: "affiliations.id_name",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
@@ -53,6 +55,7 @@ export const CONFIG = {
   },
   structures: {
     index: publicationsIndex,
+    field: "affiliations.id_name",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
@@ -71,6 +74,7 @@ export const CONFIG = {
   },
   domains: {
     index: publicationsIndex,
+    field: "domains.id_name",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "domains.id_name"],
     aggregation: "domains.id_name.keyword",
@@ -89,6 +93,7 @@ export const CONFIG = {
   },
   software: {
     index: publicationsIndex,
+    field: "software.id_name",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "software.id_name"],
     aggregation: "software.id_name.keyword",
@@ -107,6 +112,7 @@ export const CONFIG = {
   },
   projects: {
     index: publicationsIndex,
+    field: "projects.id_name",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "projects.id_name"],
     aggregation: "projects.id_name.keyword",
@@ -125,6 +131,7 @@ export const CONFIG = {
   },
   countries: {
     index: publicationsIndex,
+    field: "affiliations.country",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "affiliations.country"],
     aggregation: "affiliations.country.keyword",
@@ -143,9 +150,10 @@ export const CONFIG = {
   },
   patents: {
     index: patentsIndex,
+    field: "cpc.classe.id_name",
     search_fields: patentsFields,
-    source_fields: [...patentsSourceFields, "cpc.classe.label"],
-    aggregation: "cpc.classe.label.keyword",
+    source_fields: [...patentsSourceFields, "cpc.classe.id_name"],
+    aggregation: "cpc.classe.id_name.keyword",
     co_aggregation: "co_cpc_classe.keyword",
     url: (_: string, label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
     terminology: {
