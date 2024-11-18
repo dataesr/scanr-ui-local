@@ -42,12 +42,8 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
 export async function networkSearch({ model, query, options, filters }: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
-  console.log("body", body)
-
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
-
-  console.log("index", CONFIG[model].index)
 
   const res = await fetch(`${CONFIG[model].index}/_search`, {
     method: "POST",
@@ -59,8 +55,6 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   }
   const json = await res.json()
 
-  console.log("json", json)
-
   const aggregation = json.aggregations?.[model].buckets
   if (!aggregation?.length) {
     throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
@@ -71,9 +65,6 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   const network = await networkCreate(query, model, filters, aggregation, computeClusters, lang)
   const config = configCreate(model)
   const info = infoCreate(query, model)
-
-  console.log("aggregations", aggregation)
-  console.log("network", network)
 
   if (network.items.length < 3) {
     throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)
