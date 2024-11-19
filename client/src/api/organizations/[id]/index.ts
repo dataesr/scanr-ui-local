@@ -1,31 +1,42 @@
 import { organizationsIndex, patentsIndex, postHeaders, projectsIndex, publicationsIndex } from "../../../config/api"
 import { Organization } from "../../../types/organization"
 import { publicationTypeMapping } from "../../../utils/string"
+import { getStructureNetworkById } from "../../networks/search/organization"
 import { fillWithMissingYears } from "../../utils/years"
 
 export async function getOrganizationById(id: string): Promise<Organization> {
   const body: any = {
     _source: {
-      excludes: ["publications", "projects", "web_content", "patents", "autocompleted", "autocompletedText"]
+      excludes: ["publications", "projects", "web_content", "patents", "autocompleted", "autocompletedText"],
     },
     query: {
       bool: {
-        filter: [{term: { "id.keyword": id }}]
-      }
+        filter: [{ term: { "id.keyword": id } }],
+      },
     },
   }
-  const structureQuery = fetch(`${organizationsIndex}/_search`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
-    .then(r => r.json())
+  const structureQuery = fetch(`${organizationsIndex}/_search`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: postHeaders,
+  }).then((r) => r.json())
   const publicationsQuery = getStructurePublicationsById(id)
   const projectsQuery = getStructureProjectsById(id)
   const patentsQuery = getStructurePatentsById(id)
-  const [structure, publications, projects, patents] = await Promise.all([structureQuery, publicationsQuery, projectsQuery, patentsQuery])
+  const networkQuery = getStructureNetworkById(id, "domains")
+  const [structure, publications, projects, patents, network] = await Promise.all([
+    structureQuery,
+    publicationsQuery,
+    projectsQuery,
+    patentsQuery,
+    networkQuery,
+  ])
 
   const structureData = structure?.hits?.hits?.[0]?._source
-  if (!structureData) throw new Error('404')
+  if (!structureData) throw new Error("404")
   const { _id } = structure?.hits?.hits?.[0] || {}
 
-  return { ...structureData, _id, publications, projects, patents }
+  return { ...structureData, _id, publications, projects, patents, network }
 }
 
 async function getStructurePublicationsById(id: string): Promise<any> {

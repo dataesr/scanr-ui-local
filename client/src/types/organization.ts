@@ -1,4 +1,5 @@
 import { Aggregation, Address, LangField, ExternalIdsData } from "./commons";
+import { Network } from "./network";
 
 export type OrganizationPublicationsData = {
   byYear: Aggregation[];
@@ -108,6 +109,7 @@ export type Organization = {
   relationOf?: RelatedOrganizationData[];
   relations?: RelatedOrganizationData[];
   socialMedias: OrganizationSocialMediasData;
+  network?: Network
 };
 
 export type OrganizationAggregations = {

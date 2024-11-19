@@ -27,6 +27,7 @@ import getLangFieldValue from "../../../../utils/lang";
 import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
 import OrganizationAgreements from "./agreements";
 import OrganizationAwards from "./awards";
+import OrganizationNetwork from "./network"
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -38,26 +39,22 @@ const NETWORK_BADGES_CODES = [
   "irt",
   "polecompetitivite",
   "satt",
-];
+]
 
-export default function OrganizationPresentation({
-  data,
-}: {
-  data: Organization;
-}) {
-  const { locale } = useDSFRConfig();
-  const intl = useIntl();
-  const { publications, projects, patents } = data;
-  const { screen } = useScreenSize();
-  const networkBadges = data.badges?.filter((b) =>
-    NETWORK_BADGES_CODES.includes(b.code.toLowerCase())
-  );
+export default function OrganizationPresentation({ data }: { data: Organization }) {
+  const { locale } = useDSFRConfig()
+  const intl = useIntl()
+  const { publications, projects, patents, network } = data
+  const { screen } = useScreenSize()
+  const networkBadges = data.badges?.filter((b) => NETWORK_BADGES_CODES.includes(b.code.toLowerCase()))
   const networkFilter = stringifySearchFiltersForURL({
     "affiliations.id": {
       type: "terms",
       values: [{ value: data?.id, label: data?.label?.default }],
     },
-  });
+  })
+
+  console.log("organization", data)
 
   const networkUrl = `/networks?q=*&tab=domains&filters=${networkFilter}`
 
@@ -119,38 +116,28 @@ export default function OrganizationPresentation({
                 >
                   <OrganizationNetworks
                     data={data.institutions?.filter((institution) =>
-                      ["établissement tutelle", "primary"].includes(
-                        institution.relationType
-                      )
+                      ["établissement tutelle", "primary"].includes(institution.relationType)
                     )}
                     titleKey="organizations.section.networks.supervisors.title"
                     icon="building-line"
                   />
                   <OrganizationNetworks
                     data={data.institutionOf?.filter((institution) =>
-                      ["établissement tutelle", "primary"].includes(
-                        institution.relationType
-                      )
+                      ["établissement tutelle", "primary"].includes(institution.relationType)
                     )}
                     titleKey="organizations.section.networks.supervise.title"
                     icon="building-line"
                   />
                   <OrganizationNetworks
                     data={data.institutions?.filter(
-                      (institution) =>
-                        !["établissement tutelle", "primary"].includes(
-                          institution.relationType
-                        )
+                      (institution) => !["établissement tutelle", "primary"].includes(institution.relationType)
                     )}
                     titleKey="organizations.section.networks.participants.title"
                     icon="building-line"
                   />
                   <OrganizationNetworks
                     data={data.institutionOf?.filter(
-                      (institution) =>
-                        !["établissement tutelle", "primary"].includes(
-                          institution.relationType
-                        )
+                      (institution) => !["établissement tutelle", "primary"].includes(institution.relationType)
                     )}
                     titleKey="organizations.section.networks.participate-to.title"
                     icon="building-line"
@@ -176,51 +163,37 @@ export default function OrganizationPresentation({
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relations?.filter(
-                      (e) => e.type === "satt_actionnaire"
-                    )}
+                    data={data.relations?.filter((e) => e.type === "satt_actionnaire")}
                     titleKey="organizations.section.networks.satt.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relationOf?.filter(
-                      (e) => e.type === "satt_actionnaire"
-                    )}
+                    data={data.relationOf?.filter((e) => e.type === "satt_actionnaire")}
                     titleKey="organizations.section.networks.satt-of.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relations?.filter(
-                      (e) => e.type === "incubateur_public"
-                    )}
+                    data={data.relations?.filter((e) => e.type === "incubateur_public")}
                     titleKey="organizations.section.networks.incubateur.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relationOf?.filter(
-                      (e) => e.type === "incubateur_public"
-                    )}
+                    data={data.relationOf?.filter((e) => e.type === "incubateur_public")}
                     titleKey="organizations.section.networks.incubateur-of.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relations?.filter(
-                      (e) => e.type === "membre_carnot"
-                    )}
+                    data={data.relations?.filter((e) => e.type === "membre_carnot")}
                     titleKey="organizations.section.networks.carnot.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relations?.filter(
-                      (e) => e.type === "rachete_par"
-                    )}
+                    data={data.relations?.filter((e) => e.type === "rachete_par")}
                     titleKey="organizations.section.networks.eaten.title"
                     icon="community-fill"
                   />
                   <OrganizationNetworks
-                    data={data.relationOf?.filter(
-                      (e) => e.type === "rachete_par"
-                    )}
+                    data={data.relationOf?.filter((e) => e.type === "rachete_par")}
                     titleKey="organizations.section.networks.eat.title"
                     icon="community-fill"
                   />
@@ -247,9 +220,7 @@ export default function OrganizationPresentation({
                     titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
-                  {publications.publicationsCount > 3 && (
-                    <NetworksNotice url={networkUrl} />
-                  )}
+                  {publications.publicationsCount > 3 && <NetworksNotice url={networkUrl} />}
                 </PageSection>
                 <PageSection
                   size="lead"
@@ -257,29 +228,16 @@ export default function OrganizationPresentation({
                   title={intl.formatMessage({
                     id: "organizations.section.activities.title",
                   })}
-                  show={
-                    !!(
-                      publications.publicationsCount ||
-                      projects.projectsCount ||
-                      patents.patentsCount
-                    )
-                  }
+                  show={!!(publications.publicationsCount || projects.projectsCount || patents.patentsCount)}
                 >
                   <OrganizationPublications
                     data={publications}
                     value={data.id}
                     label={getLangFieldValue(locale)(data.label)}
                   />
-                  <OrganizationProjects
-                    data={projects}
-                    value={data.id}
-                    label={getLangFieldValue(locale)(data.label)}
-                  />
-                  <OrganizationPatents
-                    data={patents}
-                    value={data.id}
-                    label={getLangFieldValue(locale)(data.label)}
-                  />
+                  <OrganizationProjects data={projects} value={data.id} label={getLangFieldValue(locale)(data.label)} />
+                  <OrganizationPatents data={patents} value={data.id} label={getLangFieldValue(locale)(data.label)} />
+                  <OrganizationNetwork data={network} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                 </PageSection>
                 <PageSection
                   size="lead"
@@ -291,11 +249,7 @@ export default function OrganizationPresentation({
                 >
                   <MoreLikeThis id={data._id} api="organizations" />
                 </PageSection>
-                <PageSection
-                  title="Data JSON"
-                  description=""
-                  show={import.meta.env.DEV}
-                >
+                <PageSection title="Data JSON" description="" show={import.meta.env.DEV}>
                   <div>
                     <pre>{JSON.stringify(data || "", null, 2)}</pre>
                   </div>
@@ -372,5 +326,5 @@ export default function OrganizationPresentation({
         </Row>
       </Container>
     </>
-  );
+  )
 }
