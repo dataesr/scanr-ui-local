@@ -13,11 +13,14 @@ import NetworkSelectSource from "../components/select-source"
 import NetworkSearchBar from "../components/header/search"
 import NetworkParameters from "../components/parameters"
 import { useIntl } from "react-intl"
+import useScreenSize from "../../../hooks/useScreenSize"
 
 export default function NetworksLayout() {
   const intl = useIntl()
   const { integrationOptions } = useIntegration()
   const { showGraphOnly } = integrationOptions
+  const { screen } = useScreenSize()
+  const isMobile = ["xs", "sm"].includes(screen)
 
   if (showGraphOnly === true) return <NetworkCard />
 
@@ -27,10 +30,10 @@ export default function NetworksLayout() {
       <PublicationFilters />
       <Container>
         <Row gutters>
-          <Col xs="12" sm="12" lg="8">
+          <Col xs="12" sm="12" md="8" lg="8" xl="8">
             <NetworkCard />
             <ClustersButton />
-            <NetworkClusters />
+            {!isMobile && <NetworkClusters />}
           </Col>
           <Col lg="4">
             <NetworkSearchBar label={intl.formatMessage({ id: "networks.search-bar.label" })} />
@@ -41,6 +44,7 @@ export default function NetworksLayout() {
             <hr />
             <NetworkExports />
             <hr />
+            {isMobile && <NetworkClusters />}
             <NetworkAnalytics />
           </Col>
         </Row>
