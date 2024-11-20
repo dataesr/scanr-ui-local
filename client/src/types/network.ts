@@ -14,8 +14,8 @@ export type NetworkItems = Array<NetworkItem>
 export type NetworkItem = {
   id: string
   label: string
-  x: number
-  y: number
+  x?: number
+  y?: number
   cluster: number
   weights: Record<string, number>
   scores: Record<string, number>
@@ -84,6 +84,7 @@ export type NetworkSearchArgs = {
     computeClusters?: boolean
     lang?: string
   }
+  parameters?: NetworkParameters
 }
 export type NetworkSearchHitsArgs = {
   model: string
@@ -140,4 +141,13 @@ export type NetworksIntegrationOptions = {
   showSelect?: boolean
   showHeader?: boolean
   graphHeight?: string
+}
+
+export type NetworkParameter = number | boolean | string
+export type NetworkParameters = {
+  maxNodes: number
+  maxComponents: number
+  clusters: boolean
+  layout: string
+  filterNode: string
 }

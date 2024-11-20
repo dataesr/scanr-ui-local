@@ -88,4 +88,5 @@ export type ApiTypes =
   | "authors"
   | "projects"
   | "organizations"
-  | "patents";
+  | "patents"
+  | "networks";
