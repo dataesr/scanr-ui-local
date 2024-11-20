@@ -35,7 +35,7 @@ export default function NetworksHeader() {
             </Col>
           )}
         </Row>
-        {isScreenSmall && showFilters && <NetworkFilters />}
+        {isScreenSmall && showOptions && <NetworkFilters />}
       </Container>
     </Container>
   )
