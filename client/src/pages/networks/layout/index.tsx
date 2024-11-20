@@ -1,5 +1,4 @@
 import { Container, Row, Col } from "@dataesr/dsfr-plus"
-import useScreenSize from "../../../hooks/useScreenSize"
 import PublicationFilters from "../../search/components/publications/filters"
 import NetworksHeader from "../components/header"
 import NetworkFilters from "../components/filters"
@@ -11,15 +10,12 @@ import NetworkExports from "../components/exports"
 import useIntegration from "../hooks/useIntegration"
 import NetworkSelectModel from "../components/select-model"
 import NetworkSelectSource from "../components/select-source"
-import NetworksSearchBar from "../components/header/search"
-import NetworkOptions from "../components/options"
+import NetworkSearchBar from "../components/header/search"
+import NetworkParameters from "../components/parameters"
 
 export default function NetworksLayout() {
-  const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
-  const isScreenSmall = ["xs", "sm", "mg"].includes(screen)
-
-  const { showFilters, showExports, showHeader, showGraphOnly } = integrationOptions
+  const { showGraphOnly } = integrationOptions
 
   if (showGraphOnly === true) return <NetworkCard />
 
@@ -35,11 +31,11 @@ export default function NetworksLayout() {
             <NetworkClusters />
           </Col>
           <Col lg="4">
-            <NetworksSearchBar label="Recherche" />
+            <NetworkSearchBar label="Recherche" />
             <NetworkSelectModel />
             <NetworkSelectSource />
             <NetworkFilters />
-            <NetworkOptions />
+            <NetworkParameters />
             <hr />
             <NetworkExports />
             <hr />

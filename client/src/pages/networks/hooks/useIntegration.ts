@@ -1,9 +1,22 @@
 import { useSearchParams } from "react-router-dom"
 import { useMemo } from "react"
 import { NetworksIntegrationOptions } from "../../../types/network"
+import { getBooleanParam } from "../utils"
 
-const getBooleanParam = (param: string, defaultValue = true) =>
-  param ? (param.toLowerCase() === "true" ? true : false) : defaultValue
+const DEFAULT_INTEGRATION = {
+  showGraphOnly: false,
+  showTitle: true,
+  showSubtitle: true,
+  showClustersAnalytics: true,
+  showClustersButton: true,
+  showSearchBar: true,
+  showFilters: true,
+  showExports: true,
+  showBreadcrumb: true,
+  showSelect: true,
+  showHeader: true,
+  graphHeight: "500px",
+}
 
 export default function useIntegration() {
   const [searchParams] = useSearchParams()
@@ -26,20 +39,7 @@ export default function useIntegration() {
         showHeader: getBooleanParam(searchParams.get("showHeader")),
         graphHeight: searchParams.get("graphHeight") || "500px",
       }
-    : {
-        showGraphOnly: false,
-        showTitle: true,
-        showSubtitle: true,
-        showClustersAnalytics: true,
-        showClustersButton: true,
-        showSearchBar: true,
-        showFilters: true,
-        showExports: true,
-        showBreadcrumb: true,
-        showSelect: true,
-        showHeader: true,
-        graphHeight: "500px",
-      }
+    : DEFAULT_INTEGRATION
 
   const values = useMemo(() => {
     return { integrationId, integrationLang, integrationOptions }

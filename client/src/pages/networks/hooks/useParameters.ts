@@ -1,13 +1,8 @@
 import { useMemo, useCallback } from "react"
 import { NetworkParameter, NetworkParameters } from "../../../types/network"
 import { useSearchParams } from "react-router-dom"
-
-const DEFAULT_OPTIONS = {
-  maxNodes: 300,
-  maxComponents: 5,
-  enableClusters: true,
-  filterNode: "",
-}
+import { getBooleanParam } from "../utils"
+import { NETWORK_PARAMETERS } from "../../../api/networks/network/parameters"
 
 export default function useParameters() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -20,25 +15,35 @@ export default function useParameters() {
     [searchParams, setSearchParams]
   )
 
+  const resetParameter = useCallback(
+    (parameter: string) => {
+      searchParams.delete(parameter)
+      setSearchParams(searchParams)
+    },
+    [searchParams, setSearchParams]
+  )
+
   const resetParameters = useCallback(() => {
-    Object.keys(DEFAULT_OPTIONS).forEach((key) => searchParams.delete(key))
+    Object.keys(NETWORK_PARAMETERS).forEach((key) => searchParams.delete(key))
     setSearchParams(searchParams)
   }, [searchParams, setSearchParams])
 
   const parameters: NetworkParameters = {
-    maxNodes: Number(searchParams.get("maxNodes") || DEFAULT_OPTIONS.maxNodes),
-    maxComponents: Number(searchParams.get("maxComponents") || DEFAULT_OPTIONS.maxComponents),
-    enableClusters: DEFAULT_OPTIONS.enableClusters,
-    filterNode: DEFAULT_OPTIONS.filterNode,
+    maxNodes: Number(searchParams.get("maxNodes") || Number(NETWORK_PARAMETERS.maxNodes.default)),
+    maxComponents: Number(searchParams.get("maxComponents") || Number(NETWORK_PARAMETERS.maxComponents.default)),
+    clusters: getBooleanParam(searchParams.get("clusters"), Boolean(NETWORK_PARAMETERS.clusters.default)),
+    layout: searchParams.get("layout") || String(NETWORK_PARAMETERS.layout.default),
+    filterNode: searchParams.get("filterNode") || String(NETWORK_PARAMETERS.filterNode.default),
   }
 
   const values = useMemo(() => {
     return {
       parameters,
       handleParametersChange,
+      resetParameter,
       resetParameters,
     }
-  }, [parameters, handleParametersChange, resetParameters])
+  }, [parameters, handleParametersChange, resetParameter, resetParameters])
 
   return values
 }

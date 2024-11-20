@@ -13,20 +13,10 @@ export default function useSearchData(networkTab: string, computeClusters: boole
   const { parameters } = useParameters()
   const { currentTab } = useTab()
   const { locale } = useDSFRConfig()
-
   const lang = integrationId ? integrationLang : locale
 
   const { data, error, isFetching } = useQuery({
-    queryKey: [
-      "network",
-      networkTab,
-      currentQuery,
-      filters,
-      computeClusters,
-      lang,
-      parameters?.maxNodes,
-      parameters?.maxComponents,
-    ],
+    queryKey: ["network", networkTab, currentQuery, filters, computeClusters, lang, parameters],
     queryFn: () =>
       networkSearch({
         model: networkTab,

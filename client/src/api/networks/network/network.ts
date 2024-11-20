@@ -3,12 +3,11 @@ import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
 import circular from "graphology-layout/circular"
 import forceAtlas2 from "graphology-layout-forceatlas2"
+import betweenessCentrality from "graphology-metrics/centrality/betweenness"
 import { ElasticBuckets, NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
-
-export const GRAPH_MAX_ORDER = 300
-export const GRAPH_MAX_COMPONENTS = 5
+import { getParameters } from "./parameters"
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
 export const nodeGetId = (id: string) => {
@@ -37,7 +36,7 @@ export default async function networkCreate(
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
 
-  const { maxNodes, maxComponents } = parameters
+  const { maxNodes, maxComponents, layout, filterNode, clusters } = getParameters(parameters)
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -61,13 +60,27 @@ export default async function networkCreate(
     }))
   })
 
+  // Filter nodes
+  if (filterNode) {
+    graph = subgraph(graph, [...graph.neighbors(filterNode), filterNode])
+  }
+
   // Keep only largests components
   const sortedComponents = connectedComponents(graph).sort((a, b) => b.length - a.length)
   let numberOfComponents = maxComponents || sortedComponents.length
   graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
-  while (maxNodes > 0 && graph.order > maxNodes && numberOfComponents > 1) {
+  while (graph.order > maxNodes && numberOfComponents > 1) {
     numberOfComponents -= 1
     graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
+  }
+  // Keep only largests nodes
+  if (graph.order > maxNodes) {
+    betweenessCentrality.assign(graph)
+    const sortedNodes = graph
+      .mapNodes((node, attr) => ({ node: node, centrality: attr.betweennessCentrality }))
+      .sort((a, b) => b.centrality - a.centrality)
+      .map((node) => node.node)
+    graph = subgraph(graph, sortedNodes.slice(0, maxNodes))
   }
 
   // Add forceAtlas layout
@@ -82,14 +95,13 @@ export default async function networkCreate(
   const network: NetworkData = {
     items: graph.mapNodes((key, attr) => ({
       id: key,
-      x: attr.x,
-      y: attr.y,
+      ...(layout === "forceatlas" && { x: attr.x, y: attr.y }),
       label: attr.label,
       cluster: attr?.community + 1,
       weights: {
         Weight: attr.weight,
         Degree: graph.degree(key),
-        ...(attr?.citationsCount !== undefined && { Citations: attr.citationsCount || 0 }),
+        ...(clusters && { Citations: attr.citationsCount || 0 }),
       },
       scores: { ...(attr?.maxYear && { "Last publication": attr.maxYear }) },
       page: configGetItemUrl(model, key, attr.label),
