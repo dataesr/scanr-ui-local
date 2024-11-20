@@ -50,14 +50,18 @@ export async function networkSearch({ model, query, options, parameters, filters
     body: JSON.stringify(body),
     headers: postHeaders,
   })
+
   if (res.status !== 200) {
-    throw new Error(`Elasticsearch error: ${res.status}`)
+    console.error(`Elasticsearch error: ${res.status}`)
+    return null
   }
+
   const json = await res.json()
 
   const aggregation = json.aggregations?.[model].buckets
   if (!aggregation?.length) {
-    throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
+    console.error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
+    return null
   }
 
   const computeClusters = options?.computeClusters ?? false
@@ -67,7 +71,8 @@ export async function networkSearch({ model, query, options, parameters, filters
   const info = infoCreate(query, model)
 
   if (network.items.length < 3) {
-    throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)
+    console.error(`Network error: need at least three items to display the network (items=${network.items.length})`)
+    return null
   }
 
   const data = {
