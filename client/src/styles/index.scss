@@ -139,13 +139,31 @@
 
 }
 
-.network-default-light {
+.graph-background-light {
   background-image: url('/img/network-default-light.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
+.graph-background-dark {
+  background-image: url('/img/network-default-dark.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.graph-title-light {
+  background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+  padding-top: 4rem !important;
+  padding-bottom: 2.5rem !important;
+}
+
+.graph-title-dark {
+  background: linear-gradient(rgba(22, 22, 22, 0) 0%, rgba(22, 22, 22, 1) 25%, rgba(22, 22, 22, 1) 80%, rgba(22, 22, 22, 0) 100%);
+  padding-top: 4rem !important;
+  padding-bottom: 2.5rem !important;
+}
 .structure-badge-list li:not(:first-child)::before {
   flex: 0 0 auto;
   display: inline-block;
