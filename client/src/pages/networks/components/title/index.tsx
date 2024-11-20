@@ -21,7 +21,7 @@ export default function NetworkTitle() {
   return (
     <Container fluid className="fr-mb-2w">
       {showTitle && (
-        <Title as="h4">
+        <Title as="h4" className="fr-mb-1w">
           {intl.formatMessage(
             { id: "networks.header.title" },
             { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
