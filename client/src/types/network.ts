@@ -84,6 +84,7 @@ export type NetworkSearchArgs = {
     computeClusters?: boolean
     lang?: string
   }
+  parameters?: NetworkParameters
 }
 export type NetworkSearchHitsArgs = {
   model: string

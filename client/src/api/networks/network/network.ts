@@ -3,7 +3,7 @@ import subgraph from "graphology-operators/subgraph"
 import { connectedComponents } from "graphology-components"
 import circular from "graphology-layout/circular"
 import forceAtlas2 from "graphology-layout-forceatlas2"
-import { ElasticBuckets, NetworkFilters, NetworkData } from "../../../types/network"
+import { ElasticBuckets, NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
 
@@ -28,6 +28,7 @@ export default async function networkCreate(
   filters: NetworkFilters,
   aggregation: ElasticBuckets,
   computeClusters: boolean,
+  parameters: NetworkParameters,
   lang: string
 ): Promise<NetworkData> {
   // Create Graph object
@@ -35,6 +36,8 @@ export default async function networkCreate(
   graph.setAttribute("query", query)
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
+
+  const { maxNodes, maxComponents } = parameters
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -60,9 +63,9 @@ export default async function networkCreate(
 
   // Keep only largests components
   const sortedComponents = connectedComponents(graph).sort((a, b) => b.length - a.length)
-  let numberOfComponents = GRAPH_MAX_COMPONENTS
+  let numberOfComponents = maxComponents || sortedComponents.length
   graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
-  while (graph.order > GRAPH_MAX_ORDER && numberOfComponents > 1) {
+  while (maxNodes > 0 && graph.order > maxNodes && numberOfComponents > 1) {
     numberOfComponents -= 1
     graph = subgraph(graph, sortedComponents.slice(0, numberOfComponents).flat())
   }

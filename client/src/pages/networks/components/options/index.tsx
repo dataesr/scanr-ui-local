@@ -4,8 +4,6 @@ import useParameters from "../../hooks/useParameters"
 export default function NetworkOptions() {
   const { parameters, handleParametersChange } = useParameters()
 
-  console.log("parameters", parameters)
-
   return (
     <Accordion title="Options avancées" className="fr-mb-2w">
       <TextInput

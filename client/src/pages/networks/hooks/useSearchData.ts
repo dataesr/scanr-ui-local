@@ -5,22 +5,34 @@ import useUrl from "../../search/hooks/useUrl"
 import useTab from "./useTab"
 import { networkSearch } from "../../../api/networks/search/search"
 import useIntegration from "./useIntegration"
+import useParameters from "./useParameters"
 
 export default function useSearchData(networkTab: string, computeClusters: boolean) {
   const { currentQuery, filters } = useUrl()
   const { integrationId, integrationLang } = useIntegration()
+  const { parameters } = useParameters()
   const { currentTab } = useTab()
   const { locale } = useDSFRConfig()
 
   const lang = integrationId ? integrationLang : locale
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["network", networkTab, currentQuery, filters, computeClusters, lang],
+    queryKey: [
+      "network",
+      networkTab,
+      currentQuery,
+      filters,
+      computeClusters,
+      lang,
+      parameters?.maxNodes,
+      parameters?.maxComponents,
+    ],
     queryFn: () =>
       networkSearch({
         model: networkTab,
         query: currentQuery,
         options: { computeClusters: computeClusters, lang: lang },
+        parameters: parameters,
         filters,
       }),
     enabled: Boolean(currentQuery && networkTab === currentTab),
