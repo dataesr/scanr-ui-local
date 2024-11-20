@@ -126,3 +126,18 @@ export type ElasticAggregation = {
   value?: number
 }
 export type ElasticAggregations = Record<string, ElasticAggregation>
+
+export type NetworksIntegrationOptions = {
+  showGraphOnly?: boolean
+  showTitle?: boolean
+  showSubtitle?: boolean
+  showClustersAnalytics?: boolean
+  showClustersButton?: boolean
+  showSearchBar?: boolean
+  showFilters?: boolean
+  showExports?: boolean
+  showBreadcrumb?: boolean
+  showSelect?: boolean
+  showHeader?: boolean
+  graphHeight?: string
+}

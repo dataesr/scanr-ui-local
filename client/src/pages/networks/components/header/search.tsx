@@ -9,7 +9,7 @@ export default function NetworksSearchBar() {
   const { currentQuery, handleQueryChange } = useUrl()
   const { integrationOptions } = useIntegration()
 
-  if (integrationOptions?.useSearchBar === false) return null
+  if (integrationOptions?.showSearchBar === false) return null
 
   return (
     <SearchBar

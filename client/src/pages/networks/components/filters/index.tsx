@@ -15,7 +15,7 @@ export default function NetworkFilters() {
   const { isLoading, isError } = useAggregateData("filters")
   const { search } = useSearchData(currentTab, false)
 
-  if (integrationOptions?.useFilters === false) return null
+  if (integrationOptions?.showFilters === false) return null
 
   return (
     <Row gutters className="fr-mb-1w">

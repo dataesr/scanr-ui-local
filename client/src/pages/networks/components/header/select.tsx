@@ -9,7 +9,7 @@ export default function NetworksSelect() {
   const { currentTab, handleTabChange } = useTab()
   const { integrationOptions } = useIntegration()
 
-  if (integrationOptions?.useSelect === false) return null
+  if (integrationOptions?.showSelect === false) return null
 
   return (
     <Select selectedKey={currentTab} onSelectionChange={(key) => handleTabChange(key.toString())}>

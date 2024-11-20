@@ -10,11 +10,11 @@ import NetworkFilters from "../filters"
 
 export default function NetworksHeader() {
   const { integrationOptions } = useIntegration()
-  const { useHeader, useFilters } = integrationOptions
+  const { showHeader, showFilters } = integrationOptions
   const { screen } = useScreenSize()
-  const [showFilters, setShowFilters] = useState(false)
+  const [showOptions, setShowOptions] = useState(false)
 
-  if (useHeader === false) return null
+  if (showHeader === false) return null
 
   const isScreenSmall = ["xs", "sm", "mg"].includes(screen)
 
@@ -29,9 +29,9 @@ export default function NetworksHeader() {
           <Col xs="10" sm="3" lg="4">
             <NetworksSelect />
           </Col>
-          {isScreenSmall && useFilters && (
+          {isScreenSmall && showFilters && (
             <Col xs="2" sm="1">
-              <Options showOptions={showFilters} setShowOptions={setShowFilters} />
+              <Options showOptions={showOptions} setShowOptions={setShowOptions} />
             </Col>
           )}
         </Row>

@@ -9,6 +9,7 @@ export default function Networks() {
     locale,
     messages: messages[locale],
   })
+
   return (
     <RawIntlProvider value={intl}>
       <NetworksLayout />
