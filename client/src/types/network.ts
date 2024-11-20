@@ -141,3 +141,11 @@ export type NetworksIntegrationOptions = {
   showHeader?: boolean
   graphHeight?: string
 }
+
+export type NetworkParameter = number | boolean | string
+export type NetworkParameters = {
+  maxNodes: number
+  maxComponents: number
+  enableClusters: boolean
+  filterNode: string
+}

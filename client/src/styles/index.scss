@@ -139,7 +139,12 @@
 
 }
 
-
+.network-default-light {
+  background-image: url('/img/network-default-light.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 .structure-badge-list li:not(:first-child)::before {
   flex: 0 0 auto;
