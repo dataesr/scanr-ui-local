@@ -9,9 +9,9 @@ export default function NetworkTitle() {
   const intl = useIntl()
   const { currentTab } = useTab()
   const { integrationId, integrationOptions } = useIntegration()
-  const { useTitle, useSubtitle } = integrationOptions
+  const { showTitle, showSubtitle } = integrationOptions
 
-  if (useTitle === false && useSubtitle === false) return null
+  if (showTitle === false && showSubtitle === false) return null
 
   const locals = integrationId ? getBsoLocals() : {}
   const comment: string =
@@ -20,8 +20,8 @@ export default function NetworkTitle() {
 
   return (
     <Container fluid className="fr-mb-2w">
-      {useTitle && (
-        <Title as="h4">
+      {showTitle && (
+        <Title as="h4" className="fr-mb-1w">
           {intl.formatMessage(
             { id: "networks.header.title" },
             { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
@@ -29,7 +29,7 @@ export default function NetworkTitle() {
           {comment}
         </Title>
       )}
-      {useSubtitle && (
+      {showSubtitle && (
         <Notice type="info" closeMode="disallow">
           {intl.formatMessage({ id: "networks.header.subtitle" })}{" "}
           <IconLink

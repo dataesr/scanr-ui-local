@@ -6,20 +6,20 @@ import AnalyticsGraph from "../../../../components/analytics-graph"
 import useSearchData from "../../hooks/useSearchData"
 import getHorizontalBarChartOptions from "../charts/hbar"
 import getYearsChartOptions from "../charts/years"
-import useClusters from "../../hooks/useClusters"
 import useScreenSize from "../../../../hooks/useScreenSize"
+import useParameters from "../../hooks/useParameters"
 
 export default function NetworkAnalytics() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { currentTab } = useTab()
-  const { clusters: computeClusters } = useClusters()
-  const { search, currentQuery } = useSearchData(currentTab, computeClusters)
+  const { parameters } = useParameters()
+  const { search, currentQuery } = useSearchData(currentTab, parameters.clusters)
   const clusters = search.data?.network?.clusters
 
-  if (Boolean(search.error) || !currentQuery || !computeClusters) return null
+  if (Boolean(search.error) || !currentQuery || !parameters.clusters) return null
 
-  if (computeClusters && search.isFetching)
+  if (parameters.clusters && search.isFetching)
     return (
       <Container className="fr-mt-2w">
         <AnalyticsSkeleton />

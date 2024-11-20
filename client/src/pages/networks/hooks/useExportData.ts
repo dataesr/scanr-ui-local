@@ -2,8 +2,8 @@ import { useCallback, useMemo, useState } from "react"
 import useTab from "./useTab"
 import useSearchData from "./useSearchData"
 import { NetworkData } from "../../../types/network"
-import useClusters from "./useClusters"
 import * as XLSX from "xlsx"
+import useParameters from "./useParameters"
 
 function stringToArrayBuffer(string: string) {
   const buffer = new ArrayBuffer(string.length)
@@ -30,7 +30,6 @@ const XSLXFormatter = (network: any) => {
   )
 
   const publicationsList = network.clusters?.reduce((acc, cluster) => {
-    console.log("cluster", cluster)
     cluster?.publications.forEach((publication) => {
       acc = [
         ...acc,
@@ -88,8 +87,8 @@ const exportNetwork = (network: NetworkData) => ({
 
 export default function useExportData() {
   const { currentTab } = useTab()
-  const { clusters: computeClusters } = useClusters()
-  const { search } = useSearchData(currentTab, computeClusters)
+  const { parameters } = useParameters()
+  const { search } = useSearchData(currentTab, parameters.clusters)
   const [isLoading, setIsLoading] = useState(false)
 
   const exportFile = useCallback(
