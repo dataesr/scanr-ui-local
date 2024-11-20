@@ -1,4 +1,4 @@
-import { Button, Container, Text } from "@dataesr/dsfr-plus"
+import { Button, Container, Row, Text } from "@dataesr/dsfr-plus"
 import { Network } from "../../../../../types/network"
 import { VOSviewerOnline } from "vosviewer-online"
 import { stringifySearchFiltersForURL } from "../../../../search/hooks/useUrl"
@@ -42,17 +42,19 @@ export default function OrganizationNetwork({ data: network, value, label }: Org
         }}
       >
         <Container fluid style={{ flexGrow: 1 }}>
-          <Text className="fr-m-0" bold>
+          <Text className="fr-m-0" size="lg" bold>
             {intl.formatMessage({ id: "organizations.network.title" })}
           </Text>
         </Container>
-        <Button as="a" variant="text" icon="arrow-right-s-line" iconPosition="right" href={networkUrl}>
+      </Container>
+      <Container fluid className="fr-mt-2w" style={{ height: "400px" }}>
+        <VOSviewerOnline key={[value, theme]} data={network} parameters={parameters} />
+      </Container>
+      <Row horizontalAlign="right" className="fr-mb-2w">
+        <Button as="a" color="blue-ecume" variant="primary" icon="arrow-right-s-line" iconPosition="right" href={networkUrl}>
           {intl.formatMessage({ id: "organizations.network.search" })}
         </Button>
-      </Container>
-      <Container fluid className="fr-mt-2w fr-mb-2w" style={{ height: "400px" }}>
-        <VOSviewerOnline key={value} data={network} parameters={parameters} />
-      </Container>
+      </Row>
       <hr />
     </>
   )

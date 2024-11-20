@@ -222,9 +222,9 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     value={data.id}
                     label={getLangFieldValue(locale)(data.label)}
                   />
+                  <OrganizationNetwork data={network} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                   <OrganizationProjects data={projects} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                   <OrganizationPatents data={patents} value={data.id} label={getLangFieldValue(locale)(data.label)} />
-                  <OrganizationNetwork data={network} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                 </PageSection>
                 <PageSection
                   size="lead"
