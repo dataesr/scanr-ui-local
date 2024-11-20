@@ -5,7 +5,12 @@ import useIntegration from "../../hooks/useIntegration"
 import { networkQuery } from "../../config/query"
 import useParameters from "../../hooks/useParameters"
 
-export default function NetworksSearchBar({ label = null, isLarge = false }) {
+type NetworksSearchBarArgs = {
+  label?: string
+  isLarge?: boolean
+}
+
+export default function NetworksSearchBar({ label = null, isLarge = false }: NetworksSearchBarArgs) {
   const intl = useIntl()
   const { currentQuery, handleQueryChange } = useUrl()
   const { resetParameters } = useParameters()
