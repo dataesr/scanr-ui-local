@@ -7,6 +7,8 @@
     "networks.search-bar.placeholder": "\"one health\" OR \"santé mondiale\"",
     "networks.select-model.label": "Network",
     "networks.select-source.label": "Source",
+    "networks.select-source.publications": "Publications",
+    "networks.select-source.patents": "Patents",
     "networks.parameters.title": "Advanced parameters",
     "networks.parameters.input-max-nodes.label": "Max number of nodes",
     "networks.parameters.input-max-nodes.hint": "Number between 1 and 1000 (default=300)",

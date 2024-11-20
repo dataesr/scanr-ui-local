@@ -12,10 +12,14 @@ export default function NetworkSelectSource() {
     <Select
       label={intl.formatMessage({ id: "networks.select-source.label" })}
       selectedKey={"publications"}
+      disabledKeys={["patents"]}
       onSelectionChange={() => {}}
     >
-      <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-profil-line`} />} key={"publications"}>
-        {"Publications"}
+      <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-article-line`} />} key={"publications"}>
+        {intl.formatMessage({ id: "networks.select-source.publications" })}
+      </SelectOption>
+      <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-award-line`} />} key={"patents"}>
+        {intl.formatMessage({ id: "networks.select-source.patents" })}
       </SelectOption>
     </Select>
   )
