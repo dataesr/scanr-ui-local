@@ -12,8 +12,10 @@ import NetworkSelectModel from "../components/select-model"
 import NetworkSelectSource from "../components/select-source"
 import NetworkSearchBar from "../components/header/search"
 import NetworkParameters from "../components/parameters"
+import { useIntl } from "react-intl"
 
 export default function NetworksLayout() {
+  const intl = useIntl()
   const { integrationOptions } = useIntegration()
   const { showGraphOnly } = integrationOptions
 
@@ -31,7 +33,7 @@ export default function NetworksLayout() {
             <NetworkClusters />
           </Col>
           <Col lg="4">
-            <NetworkSearchBar label="Recherche" />
+            <NetworkSearchBar label={intl.formatMessage({ id: "networks.search-bar.label" })} />
             <NetworkSelectModel />
             <NetworkSelectSource />
             <NetworkFilters />

@@ -12,7 +12,11 @@ export default function NetworkSelectModel() {
   if (integrationOptions?.showSelect === false) return null
 
   return (
-    <Select label="Modèle" selectedKey={currentTab} onSelectionChange={(key) => handleTabChange(key.toString())}>
+    <Select
+      label={intl.formatMessage({ id: "networks.select-model.label" })}
+      selectedKey={currentTab}
+      onSelectionChange={(key) => handleTabChange(key.toString())}
+    >
       {networkTabs.map(({ label, icon }) => (
         <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-${icon}`} />} key={label}>
           {intl.formatMessage({ id: `networks.tab.${label}` })}
