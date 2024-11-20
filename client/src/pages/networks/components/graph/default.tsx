@@ -1,5 +1,5 @@
 import { Container, Text } from "@dataesr/dsfr-plus"
-import NetworksSearchBar from "../header/search"
+import NetworksSearchBar from "../search-bar"
 
 export default function NetworkGraphDefault() {
   return (

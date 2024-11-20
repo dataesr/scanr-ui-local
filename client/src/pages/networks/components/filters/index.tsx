@@ -98,7 +98,7 @@ export default function NetworkFilters() {
               icon="add-circle-line"
               iconPosition="left"
               as="button"
-              aria-controls="publications-filters"
+              aria-controls="networks-filters"
               data-fr-opened="false"
               disabled={Boolean(search.error) || search.isFetching || !currentQuery || isLoading || isError}
               variant="secondary"

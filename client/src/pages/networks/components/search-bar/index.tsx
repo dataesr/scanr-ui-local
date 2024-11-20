@@ -3,7 +3,6 @@ import { useIntl } from "react-intl"
 import useUrl from "../../../search/hooks/useUrl"
 import useIntegration from "../../hooks/useIntegration"
 import { networkQuery } from "../../config/query"
-import useParameters from "../../hooks/useParameters"
 
 type NetworksSearchBarArgs = {
   label?: string
@@ -13,7 +12,6 @@ type NetworksSearchBarArgs = {
 export default function NetworksSearchBar({ label = null, isLarge = false }: NetworksSearchBarArgs) {
   const intl = useIntl()
   const { currentQuery, handleQueryChange } = useUrl()
-  const { resetParameters } = useParameters()
   const { integrationOptions } = useIntegration()
 
   if (integrationOptions?.showSearchBar === false) return null
@@ -29,7 +27,6 @@ export default function NetworksSearchBar({ label = null, isLarge = false }: Net
         placeholder={intl.formatMessage({ id: "networks.search-bar.placeholder" })}
         onSearch={(value) => {
           handleQueryChange(networkQuery(value))
-          resetParameters()
         }}
       />
     </Container>

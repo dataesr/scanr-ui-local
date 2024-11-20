@@ -86,13 +86,14 @@ const getAPI = (pathname: string) => {
     pathname.split("/")?.[1] === "trouver-des-partenaires-pour-horizon-europe"
   )
     return "he";
-  if (pathname.split("/")?.[1] === "networks") return "publications";
+  if (pathname.split("/")?.[1] === "networks") return "networks";
   return api as ApiTypes;
 };
 
 export default function useUrl() {
   const { pathname } = useLocation();
   const { integrationId } = useIntegration();
+
   const api = getAPI(pathname);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -211,12 +212,16 @@ export default function useUrl() {
 
   const handleQueryChange = useCallback(
     (query) => {
-      searchParams.delete("filters")
-      searchParams.delete("clusters")
+      if(api === "networks") {
+        searchParams.delete("clusters")
+      }
+      else {
+        searchParams.delete("filters")
+      }
       searchParams.set("q", query)
       setSearchParams(searchParams)
     },
-    [searchParams, setSearchParams]
+    [api, searchParams, setSearchParams]
   );
 
   const values = useMemo(() => {

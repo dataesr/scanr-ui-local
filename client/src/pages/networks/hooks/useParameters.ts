@@ -26,7 +26,15 @@ export default function useParameters() {
   const resetParameters = useCallback(() => {
     Object.keys(NETWORK_PARAMETERS).forEach((key) => searchParams.delete(key))
     setSearchParams(searchParams)
-  }, [searchParams, setSearchParams])
+  }, [searchParams, setSearchParams, NETWORK_PARAMETERS])
+
+  const resetParametersExternal = useCallback(
+    (externalSearchParams: URLSearchParams) => {
+      Object.keys(NETWORK_PARAMETERS).forEach((key) => externalSearchParams.delete(key))
+      return externalSearchParams
+    },
+    [NETWORK_PARAMETERS]
+  )
 
   const parameters: NetworkParameters = {
     maxNodes: Number(searchParams.get("maxNodes") || Number(NETWORK_PARAMETERS.maxNodes.default)),
@@ -42,8 +50,9 @@ export default function useParameters() {
       handleParametersChange,
       resetParameter,
       resetParameters,
+      resetParametersExternal
     }
-  }, [parameters, handleParametersChange, resetParameter, resetParameters])
+  }, [parameters, handleParametersChange, resetParameter, resetParameters, resetParametersExternal])
 
   return values
 }
