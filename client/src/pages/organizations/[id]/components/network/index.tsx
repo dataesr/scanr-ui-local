@@ -1,4 +1,4 @@
-import { Container } from "@dataesr/dsfr-plus"
+import { Button, Container, Text } from "@dataesr/dsfr-plus"
 import { Network } from "../../../../../types/network"
 import { VOSviewerOnline } from "vosviewer-online"
 
@@ -19,8 +19,29 @@ export default function OrganizationNetwork({ data: network, value, label }: Org
   }
 
   return (
-    <Container fluid style={{ height: "400px" }}>
-      <VOSviewerOnline key={value} data={network} parameters={parameters} />
-    </Container>
+    <>
+      <Container
+        fluid
+        className="fr-mb-3w"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Container fluid style={{ flexGrow: 1 }}>
+          <Text className="fr-m-0" bold>
+            Analyse des communautés scientifiques
+          </Text>
+        </Container>
+        <Button as="a" variant="text" icon="arrow-right-s-line" iconPosition="right" href="#">
+          Explorez les réseaux
+        </Button>
+      </Container>
+      <Container fluid className="fr-mt-2w fr-mb-2w" style={{ height: "400px" }}>
+        <VOSviewerOnline key={value} data={network} parameters={parameters} />
+      </Container>
+      <hr />
+    </>
   )
 }
