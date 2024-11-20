@@ -40,7 +40,7 @@ export default function AutocompleteFilterNode() {
         </Autocomplete>
       ) : (
         <Autocomplete label="Filter the network" size="md" isDisabled>
-          {}
+          {<div></div>}
         </Autocomplete>
       )}
     </Container>
