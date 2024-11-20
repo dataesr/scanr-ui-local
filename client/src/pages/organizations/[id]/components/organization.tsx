@@ -21,10 +21,8 @@ import { OrganizationNetworks, OrganizationNetworksBadges } from "./networks";
 import useScreenSize from "../../../../hooks/useScreenSize";
 import OrganizationHeader from "./header";
 import Identifiers from "../../../../components/identifiers";
-import MoreLikeThis from "../../../../components/more-like-this";
-import NetworksNotice from "../../../../components/networks-notice";
-import getLangFieldValue from "../../../../utils/lang";
-import { stringifySearchFiltersForURL } from "../../../search/hooks/useUrl";
+import MoreLikeThis from "../../../../components/more-like-this"
+import getLangFieldValue from "../../../../utils/lang"
 import OrganizationAgreements from "./agreements";
 import OrganizationAwards from "./awards";
 import OrganizationNetwork from "./network"
@@ -47,16 +45,6 @@ export default function OrganizationPresentation({ data }: { data: Organization 
   const { publications, projects, patents, network } = data
   const { screen } = useScreenSize()
   const networkBadges = data.badges?.filter((b) => NETWORK_BADGES_CODES.includes(b.code.toLowerCase()))
-  const networkFilter = stringifySearchFiltersForURL({
-    "affiliations.id": {
-      type: "terms",
-      values: [{ value: data?.id, label: data?.label?.default }],
-    },
-  })
-
-  console.log("organization", data)
-
-  const networkUrl = `/networks?q=*&tab=domains&filters=${networkFilter}`
 
   return (
     <>
@@ -220,7 +208,6 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
-                  {publications.publicationsCount > 3 && <NetworksNotice url={networkUrl} />}
                 </PageSection>
                 <PageSection
                   size="lead"
