@@ -16,8 +16,6 @@ const CURRENT_YEAR = new Date().getFullYear()
 const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_, i) => CURRENT_YEAR + i * -1)
 
 const DEFAULT_SIZE = 2000
-const SEARCH_FIELDS = ["title.*^3", "authors.fullName^3", "summary.*^2", "domains.label.*^2"]
-const HIT_FIELDS = ["id", "title.default", "year", "productionType", "isOa", "domains", "cited_by_counts_by_year"]
 
 const networkSearchBody = (model: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,
@@ -27,7 +25,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
         {
           query_string: {
             query: query || "*",
-            fields: SEARCH_FIELDS,
+            fields: CONFIG[model].search_fields,
           },
         },
       ],
@@ -44,8 +42,12 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
 export async function networkSearch({ model, query, options, filters }: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
+  console.log("body", body)
+
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
+
+  console.log("index", CONFIG[model].index)
 
   const res = await fetch(`${CONFIG[model].index}/_search`, {
     method: "POST",
@@ -57,6 +59,8 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   }
   const json = await res.json()
 
+  console.log("json", json)
+
   const aggregation = json.aggregations?.[model].buckets
   if (!aggregation?.length) {
     throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
@@ -67,6 +71,9 @@ export async function networkSearch({ model, query, options, filters }: NetworkS
   const network = await networkCreate(query, model, filters, aggregation, computeClusters, lang)
   const config = configCreate(model)
   const info = infoCreate(query, model)
+
+  console.log("aggregations", aggregation)
+  console.log("network", network)
 
   if (network.items.length < 3) {
     throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)
@@ -85,14 +92,14 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
   const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
   const body = {
     size: DEFAULT_SIZE,
-    _source: [...HIT_FIELDS, CONFIG[model].field],
+    _source: CONFIG[model].source_fields,
     query: {
       bool: {
         must: [
           {
             query_string: {
               query: query || "*",
-              fields: SEARCH_FIELDS,
+              fields: CONFIG[model].search_fields,
             },
           },
         ],
@@ -125,7 +132,7 @@ export async function networkSearchAggs({
           {
             query_string: {
               query: query || "*",
-              fields: SEARCH_FIELDS,
+              fields: CONFIG[model].search_fields,
             },
           },
         ],
