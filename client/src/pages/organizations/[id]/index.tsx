@@ -35,32 +35,28 @@ export default function Organization() {
     queryFn: () => getOrganizationById(id),
     throwOnError: true,
   });
+
   return (
     <RawIntlProvider value={intl}>
-      {!data?.isFrench && (
+      {data && !data?.isFrench && (
         <Notice closeMode="disallow" type="warning">
           {intl.formatMessage({ id: "organizations.notice.not-french" })}
         </Notice>
       )}
       {data?.endDate && (
         <Notice closeMode="disallow" type="warning">
-          {intl.formatMessage({ id: "organizations.notice.closed" })}{" "}
-          {data.endDate.slice(0, 4)}.
+          {intl.formatMessage({ id: "organizations.notice.closed" })} {data.endDate.slice(0, 4)}.
         </Notice>
       )}
       <Container>
         <Breadcrumb>
-          <Link href="/">
-            {intl.formatMessage({ id: "organizations.breadcrumb.home" })}
-          </Link>
-          <Link href="/search/organizations">
-            {intl.formatMessage({ id: "organizations.breadcrumb.search" })}
-          </Link>
+          <Link href="/">{intl.formatMessage({ id: "organizations.breadcrumb.home" })}</Link>
+          <Link href="/search/organizations">{intl.formatMessage({ id: "organizations.breadcrumb.search" })}</Link>
           <Link>{getLangFieldValue(locale)(data?.label)}</Link>
         </Breadcrumb>
         {(isLoading || !data?.id) && <PageSkeleton />}
         {data?.id && <OrganizationPresentation data={data} />}
       </Container>
     </RawIntlProvider>
-  );
+  )
 }
