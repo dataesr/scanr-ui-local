@@ -1,4 +1,3 @@
-import { useMemo } from "react"
 import { Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
@@ -16,13 +15,10 @@ export default function NetworkGraph() {
   const { search, currentQuery, filters } = useSearchData(currentTab, false)
   const { search: searchClusters } = useSearchData(currentTab, parameters.clusters)
   const { locale: lang } = useDSFRConfig()
+  const theme = document.documentElement.getAttribute("data-fr-theme")
 
-  const keyClusters = searchClusters.isFetching ? false : parameters.clusters
-  const vosviewer = keyClusters ? searchClusters?.data : search?.data
-  const key = useMemo(
-    () => JSON.stringify({ currentTab, currentQuery, filters, keyClusters, lang, focusItem, parameters }),
-    [currentTab, currentQuery, filters, keyClusters, lang, focusItem, parameters]
-  )
+  if (searchClusters.isFetching) parameters.clusters = false
+  const vosviewer = parameters.clusters ? searchClusters?.data : search?.data
 
   if (!currentQuery) return <Default />
 
@@ -30,7 +26,8 @@ export default function NetworkGraph() {
 
   if (!vosviewer?.network) return <Error204 />
 
-  const theme = document.documentElement.getAttribute("data-fr-scheme")
+  const key = JSON.stringify({ currentTab, currentQuery, filters, ...parameters, lang, theme, focusItem })
+
   const vosparams = {
     largest_component: false,
     dark_ui: theme === "dark",
