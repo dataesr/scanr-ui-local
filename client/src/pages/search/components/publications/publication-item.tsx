@@ -9,57 +9,71 @@ import { IntlShape, useIntl } from "react-intl";
 
 const AUTHOR_DISPLAY_LIMIT = 3;
 
-const isThesis = (publication: LightPublication) => publication.type === "thesis";
+const isThesis = (publication: LightPublication) =>
+  publication.type === "thesis";
 
-type TAuthors = LightPublication["authors"]
+type TAuthors = LightPublication["authors"];
 
 const AuthorDisplay = ({ author }: { author: TAuthors[0] }) => {
   if (!author?.person) return author.fullName;
   return (
-    <Link href={`/authors/${encode(author.person)}`}>
-      {author.fullName}
-    </Link>
+    <Link href={`/authors/${encode(author.person)}`}>{author.fullName}</Link>
   );
-}
+};
 type AuthorListDisplayProps = {
   authors: TAuthors;
   intl: IntlShape;
   limit?: number;
-}
-
-const AuthorListDisplay = (
-  { authors, intl, limit = AUTHOR_DISPLAY_LIMIT }: AuthorListDisplayProps
-) => {
-  if (authors.length === 0) return null;
+};
+const AuthorListDisplay = ({
+  authors,
+  intl,
+  limit = AUTHOR_DISPLAY_LIMIT,
+}: AuthorListDisplayProps) => {
+  if (!authors || authors.length === 0) return null;
   if (authors.length === 1) return <AuthorDisplay author={authors[0]} />;
 
   const shouldShowAllAuthors = !limit || authors.length <= limit;
-  const displayedAuthors = authors.slice(0, shouldShowAllAuthors ? authors.length : 1);
+  const displayedAuthors = authors.slice(
+    0,
+    shouldShowAllAuthors ? authors.length : 1
+  );
 
   return (
     <>
       {displayedAuthors.map((author, index) => (
         <Fragment key={index}>
-          {index > 0 && index === displayedAuthors.length - 1 && authors.length <= limit
-            ? ` ${intl.formatMessage({ id: "search.publications.thesis.and" })} `
+          {index > 0 &&
+          index === displayedAuthors.length - 1 &&
+          authors.length <= limit
+            ? ` ${intl.formatMessage({
+                id: "search.publications.thesis.and",
+              })} `
             : index > 0
-              ? ', '
-              : ''}
+            ? ", "
+            : ""}
           <AuthorDisplay author={author} />
         </Fragment>
       ))}
-      {(!shouldShowAllAuthors && authors.length > limit) && (
-        <Text bold as="span"><i>{' '}et al.</i></Text>
+      {!shouldShowAllAuthors && authors.length > limit && (
+        <Text bold as="span">
+          <i> et al.</i>
+        </Text>
       )}
     </>
   );
 };
-
-const ThesisAuthors = (
-  { intl, authors }: { authors: LightPublication["authors"], intl: IntlShape }
-) => {
-  const _authors = authors?.filter((author) => author.role === "author") || [];
-  const _directors = authors?.filter((author) => author.role === "directeurthese") || [];
+const ThesisAuthors = ({
+  intl,
+  authors,
+}: {
+  authors: LightPublication["authors"];
+  intl: IntlShape;
+}) => {
+  const _authors = (authors || []).filter((author) => author.role === "author");
+  const _directors = (authors || []).filter(
+    (author) => author.role === "directeurthese"
+  );
 
   return (
     <>
@@ -79,25 +93,36 @@ const ThesisAuthors = (
       </Text>
     </>
   );
-}
+};
 
-const ArticleAuthors = (
-  { intl, authors }: { authors: LightPublication["authors"], intl: IntlShape }
-) => {
+const ArticleAuthors = ({
+  intl,
+  authors,
+}: {
+  authors: LightPublication["authors"];
+  intl: IntlShape;
+}) => {
   return (
     <Text bold size="sm" className="fr-mb-0">
       <AuthorListDisplay authors={authors} intl={intl} />
     </Text>
-  )
-}
-
-const Authors = (
-  { intl, authors, isThesis }: { authors: LightPublication["authors"], intl: IntlShape, isThesis: boolean }
-) => {
-  return isThesis
-    ? <ThesisAuthors intl={intl} authors={authors} />
-    : <ArticleAuthors intl={intl} authors={authors} />
-}
+  );
+};
+const Authors = ({
+  intl,
+  authors = [],
+  isThesis,
+}: {
+  authors: LightPublication["authors"];
+  intl: IntlShape;
+  isThesis: boolean;
+}) => {
+  return isThesis ? (
+    <ThesisAuthors intl={intl} authors={authors} />
+  ) : (
+    <ArticleAuthors intl={intl} authors={authors} />
+  );
+};
 
 export default function PublicationItem({
   data: publication,
@@ -113,7 +138,6 @@ export default function PublicationItem({
       queryFn: () => getPublicationById(id),
     });
   }
-
   return (
     <Fragment key={publication.id}>
       <div className="result-item">
@@ -144,13 +168,19 @@ export default function PublicationItem({
                 }}
               />
             ) : (
-              publication.title.default ||
+              publication.title?.default ||
               publication.title?.fr ||
               publication.title?.en
             )}
           </Link>
         </span>
-        <Authors intl={intl} authors={publication.authors} isThesis={isThesis(publication)} />
+        {publication.authors && (
+          <Authors
+            intl={intl}
+            authors={publication.authors}
+            isThesis={isThesis(publication)}
+          />
+        )}
         <Text size="sm" className="fr-card__detail fr-mb-0">
           <i>
             {[
@@ -158,8 +188,10 @@ export default function PublicationItem({
               publication.source?.volume && `${publication.source?.volume}`,
               publication.source?.issue && `(${publication.source?.issue})`,
               publication.year,
-              publication.source?.publisher
-            ].filter(Boolean).join(', ')}
+              publication.source?.publisher,
+            ]
+              .filter(Boolean)
+              .join(", ")}
           </i>
         </Text>
         {Object.values(highlight || {}).map((value, i) => (
