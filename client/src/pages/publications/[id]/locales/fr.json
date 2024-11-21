@@ -39,5 +39,6 @@
   "search.publications.thesis.by": " par ",
   "search.publications.openAccess": "Accès ouvert",
   "search.publications.closedAccess": "Accès fermé",
-  "search.publications.other": "Autre"
+  "search.publications.other": "Autre",
+  "search.publications.thesis.and": " et "
 }

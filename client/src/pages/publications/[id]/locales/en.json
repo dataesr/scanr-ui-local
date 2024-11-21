@@ -36,5 +36,8 @@
   "publications.signals.bug": "Report an error",
   "publications.section.software.title": "Software mentions",
   "publications.section.software.legend": "Software mentions found by scanR in the publication.",
-  "search.publications.thesis.by": " by "
+  "search.publications.thesis.by": " by ",
+  "search.publications.closedAccess": "Closed access",
+  "search.publications.openAccess": "Open access",
+  "search.publications.thesis.and": " and "
 }
