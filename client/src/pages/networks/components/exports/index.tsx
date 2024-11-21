@@ -35,7 +35,9 @@ export default function NetworkExports() {
         <div className="fr-pl-2w">
           <MenuButton
             disabledKeys={
-              isExporting || search.isFetching || Boolean(search.error) || !currentQuery ? ["export>json", "export>csv"] : []
+              isExporting || search.isFetching || Boolean(search.error) || !currentQuery
+                ? ["export>json", "export>xlsx"]
+                : []
             }
             placement="end"
             size="sm"
