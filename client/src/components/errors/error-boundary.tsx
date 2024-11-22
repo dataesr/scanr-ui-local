@@ -1,39 +1,45 @@
-import { Component, ReactNode } from "react";
+import { Component, type ReactNode } from "react";
 
+import { useLocation } from "react-router-dom";
 import Error404 from "./error-404";
 import Error500 from "./error-500";
 
 interface Props {
-  children?: ReactNode;
+	children?: ReactNode;
 }
 
 interface State {
-  error: string;
-  hasError: boolean;
+	error: string;
+	hasError: boolean;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    error: '',
-    hasError: false,
-  };
+function ErrorBoundary(props: Props) {
+	const { pathname } = useLocation();
+	return <ErrorBoundaryClass key={pathname} {...props} />;
+}
 
-  public static getDerivedStateFromError(error: Error): State {
-    console.error('ERROR_BOUNDARY', error);
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true, error: error.message };
-  }
+class ErrorBoundaryClass extends Component<Props, State> {
+	public state: State = {
+		error: "",
+		hasError: false,
+	};
 
-  public render() {
-    if (!this.state.hasError) return this.props.children;
+	public static getDerivedStateFromError(error: Error): State {
+		console.error("ERROR_BOUNDARY", error);
+		// Update state so the next render will show the fallback UI.
+		return { hasError: true, error: error.message };
+	}
 
-    if (this.state.error === '404') {
-      return <Error404 error={this.state.error} />;
-    }
-    if (this.state.error !== '500') {
-      return <Error500 error={this.state.error} />;
-    }
-  }
+	public render() {
+		if (!this.state.hasError) return this.props.children;
+
+		if (this.state.error === "404") {
+			return <Error404 error={this.state.error} />;
+		}
+		if (this.state.error !== "500") {
+			return <Error500 error={this.state.error} />;
+		}
+	}
 }
 
 export default ErrorBoundary;
