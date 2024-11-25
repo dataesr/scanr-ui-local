@@ -36,8 +36,10 @@ const communityGetIds = (graph: Graph, community: number): Array<string> =>
 const communityGetSize = (graph: Graph, community: number): number =>
   graph.filterNodes((_, attr) => attr?.community === community).length
 
-const communityGetMaxYear = (graph: Graph, community: number): number =>
-  Math.max(...communityGetAttribute(graph, community, "maxYear").map(Number))
+const communityGetMaxYear = (graph: Graph, community: number): number => {
+  const maxYear = Math.max(...communityGetAttribute(graph, community, "maxYear").map(Number))
+  return Number.isFinite(maxYear) ? maxYear : undefined
+}
 
 const communityGetNodes = (graph: Graph, community: number): Array<{ id: string; weight: number; label: string }> => {
   const ids = communityGetIds(graph, community)
@@ -91,10 +93,10 @@ const communityGetPublications = (hits: ElasticHits): Array<Record<string, strin
 
 const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
   hits.reduce((acc, hit) => {
-    const field = CONFIG[model].field.split(".")[0]
+    const field = CONFIG[model].field.split(".").slice(0, -1).join(".")
     const citationsByYear = hit?.cited_by_counts_by_year
     hit?.[field]?.forEach((node) => {
-      const key = node[CONFIG[model].field.split(".")[1]]
+      const key = node[CONFIG[model].field.split(".").at(-1)]
       if (!key) return
       const id = nodeGetId(key)
       acc[id] = {

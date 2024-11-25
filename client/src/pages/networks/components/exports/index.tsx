@@ -12,7 +12,7 @@ export default function NetworkExports() {
   const { search, currentQuery } = useSearchData(currentTab, false)
   const { isExporting, exportFile } = useExportData()
 
-  if (integrationOptions?.useExports === false) return null
+  if (integrationOptions?.showExports === false) return null
 
   const handleExport = async (key: string) => {
     const format = key.split(">")[1] as "json" | "xlsx"
@@ -35,7 +35,9 @@ export default function NetworkExports() {
         <div className="fr-pl-2w">
           <MenuButton
             disabledKeys={
-              isExporting || search.isFetching || Boolean(search.error) || !currentQuery ? ["export>json", "export>csv"] : []
+              isExporting || search.isFetching || Boolean(search.error) || !currentQuery
+                ? ["export>json", "export>xlsx"]
+                : []
             }
             placement="end"
             size="sm"
