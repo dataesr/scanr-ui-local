@@ -16,11 +16,14 @@
   "suggest.form.hint": "Cet email ne sera utilisé que pour vous informer de la prise en compte de votre contribution.",
   "suggest.form.submit": "Soumettre la liste des publications",
   "suggest.items.add": "Ajouter aux suggestions",
+  "suggest.items.already.added": "Déja ajouté aux suggestions",
   "suggest.items.remove": "Retirer des suggestions",
   "suggest.items.is-oa.true": "Accès ouvert",
   "suggest.items.is-oa.false": "Accès fermé",
   "suggest.items.type.other": "Autre",
   "suggest.items.landing-page": "Voir sur la page de l'éditeur",
   "suggest.items.identified": "Déja liée à l'auteur",
+  "suggest.thanks.message": "Merci pour votre contribution, vos demandes ont été prises en compte et seront ajoutées à la prochaine mise à jour.",
+  "suggest.thanks.return": "Retour",
   "suggest.items.in-hal": "Apparait dans HAL"
 }
