@@ -7,12 +7,15 @@ import {
   Col,
   Container,
   Link,
+  ModalContent,
+  ModalTitle,
   Notice,
   Row,
   SearchBar,
   Text,
   TextInput,
   useDSFRConfig,
+  Modal,
 } from "@dataesr/dsfr-plus";
 import { FormattedMessage, createIntl, RawIntlProvider } from "react-intl";
 import Separator from "../../components/separator";
@@ -28,6 +31,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAuthorById } from "../../api/authors/[id]";
 import { postHeadersTicketOffice } from "../../config/api";
+import { useNavigate } from "react-router-dom";
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -46,6 +50,8 @@ export default function Suggest() {
   const intl = createIntl({ locale, messages: messages[locale] });
   const { id } = useParams();
   const [ref, inView] = useInView();
+  const navigate = useNavigate();
+
   const { search, currentQuery, total, handleQueryChange } = useData(id);
   const {
     data,
@@ -59,7 +65,8 @@ export default function Suggest() {
   const [successfullSubmission, setSuccessfullSubmission] = useState(false);
   const [errorSubmission, setErrorSubmission] = useState(false);
   const [email, setEmail] = useState("");
-
+  const [thanks, setThanks] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: author } = useQuery({
     queryKey: ["author", id],
     queryFn: () => getAuthorById(id),
@@ -76,6 +83,8 @@ export default function Suggest() {
       productions: items.map((item) => ({ id: item.id })),
     };
     const resp = await fetch("/ticket/api/production", {
+      // If you want to test locally, use this URL: "http://localhost:3000/api/production"
+      // Run ticket-office (at the root of the project -> bun start)
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -88,8 +97,18 @@ export default function Suggest() {
       setErrorSubmission(true);
     } else {
       setSuccessfullSubmission(true);
+      setThanks(true);
+
       deleteAllItems();
     }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
 
   const shouldClickToLoad = data?.length
@@ -106,6 +125,20 @@ export default function Suggest() {
     return <Error500 error={error} />;
   }
 
+  if (thanks) {
+    return (
+      <RawIntlProvider value={intl}>
+        <Notice className="fr-mb-2w" type="success" closeMode="disallow">
+          <span>{intl.formatMessage({ id: "suggest.thanks.message" })}</span>
+          <ButtonGroup className="fr-mt-5w" isInlineFrom="xs">
+            <Button variant="secondary" onClick={() => navigate(-1)}>
+              {intl.formatMessage({ id: "suggest.thanks.return" })}
+            </Button>
+          </ButtonGroup>
+        </Notice>
+      </RawIntlProvider>
+    );
+  }
   return (
     <RawIntlProvider value={intl}>
       {successfullSubmission && (
@@ -244,45 +277,32 @@ export default function Suggest() {
               ))}
             </div>
             <hr />
-            {!!items.filter((item) =>
-              item.externalIds?.find((i) => i.type === "hal")
-            )?.length && (
-              <Notice closeMode="disallow" type="warning" className="fr-my-3w">
-                <Text as="span">
-                  {intl.formatMessage({ id: "suggest.notice.title" })}
-                </Text>
-                <br />
-                <Text as="span" size="xs">
-                  {intl.formatMessage({ id: "suggest.notice.text" })}
-                </Text>
-                <Button
-                  className="fr-mt-3w"
-                  size="sm"
-                  as="a"
-                  variant="secondary"
-                  href="http://doc.hal.science/identifiant-auteur-idhal-cv/"
-                  target="_blank"
-                >
-                  {intl.formatMessage({ id: "suggest.notice.link" })}
-                </Button>
-              </Notice>
-            )}
-            <TextInput
-              label={intl.formatMessage({ id: "suggest.form.label" })}
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              hint={intl.formatMessage({ id: "suggest.form.hint" })}
-            />
-            <ButtonGroup>
+            {items.length > 0 && (
               <Button
-                disabled={!items?.length || !email}
-                onClick={submitSuggestions}
+                onClick={handleModalOpen}
+                variant="primary"
+                className="fr-mt-3w"
               >
-                {intl.formatMessage({ id: "suggest.form.submit" })}
+                Valider
               </Button>
-            </ButtonGroup>
+            )}
+            <Modal isOpen={isModalOpen} hide={handleModalClose}>
+              <ModalTitle>Soumettre la liste des publications</ModalTitle>
+              <ModalContent>
+                <Text size="sm">
+                  Veuillez entrer votre adresse email pour soumettre la liste.
+                </Text>
+                <TextInput
+                  label="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <ButtonGroup isInlineFrom="xs">
+                  <Button onClick={submitSuggestions}>Soumettre</Button>
+                  <Button onClick={handleModalClose}>Annuler</Button>
+                </ButtonGroup>
+              </ModalContent>
+            </Modal>
           </Col>
         </Row>
       </Container>
