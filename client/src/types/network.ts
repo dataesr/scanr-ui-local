@@ -80,10 +80,7 @@ export type NetworkSearchArgs = {
   model: string
   query?: string
   filters?: NetworkFilters
-  options?: {
-    computeClusters?: boolean
-    lang?: string
-  }
+  lang?: string
   parameters?: NetworkParameters
 }
 export type NetworkSearchHitsArgs = {

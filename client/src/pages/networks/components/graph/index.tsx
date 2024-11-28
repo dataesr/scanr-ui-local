@@ -13,7 +13,7 @@ export default function NetworkGraph() {
   const { parameters } = useParameters()
   const { focusItem } = useNetworkContext()
   const { search, currentQuery, filters } = useSearchData(currentTab, false)
-  const { search: searchClusters } = useSearchData(currentTab, parameters.clusters)
+  const { search: searchClusters } = useSearchData(currentTab)
   const { locale: lang } = useDSFRConfig()
   const theme = document.documentElement.getAttribute("data-fr-theme")
 
@@ -27,6 +27,7 @@ export default function NetworkGraph() {
   if (!vosviewer?.network) return <Error204 />
 
   const key = JSON.stringify({ currentTab, currentQuery, filters, ...parameters, lang, theme, focusItem })
+  console.log("key", key)
 
   const vosparams = {
     largest_component: false,

@@ -139,7 +139,7 @@ export default function NetworkClusters() {
   const intl = useIntl()
   const { currentTab } = useTab()
   const { parameters } = useParameters()
-  const { search, currentQuery } = useSearchData(currentTab, parameters.clusters)
+  const { search, currentQuery } = useSearchData(currentTab)
   const [seeMore, setSeeMore] = useState(false)
 
   const network = search?.data?.network as NetworkData

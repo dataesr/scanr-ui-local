@@ -10,7 +10,7 @@ export default function ClustersButton() {
   const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
   const { parameters, handleParametersChange } = useParameters()
-  const { search, currentQuery } = useSearchData(currentTab, parameters.clusters)
+  const { search, currentQuery } = useSearchData(currentTab)
 
   if (integrationOptions.showClustersButton === false) return null
 

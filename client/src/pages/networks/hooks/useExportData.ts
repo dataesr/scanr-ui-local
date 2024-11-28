@@ -3,7 +3,6 @@ import useTab from "./useTab"
 import useSearchData from "./useSearchData"
 import { NetworkData } from "../../../types/network"
 import * as XLSX from "xlsx"
-import useParameters from "./useParameters"
 
 function stringToArrayBuffer(string: string) {
   const buffer = new ArrayBuffer(string.length)
@@ -87,8 +86,7 @@ const exportNetwork = (network: NetworkData) => ({
 
 export default function useExportData() {
   const { currentTab } = useTab()
-  const { parameters } = useParameters()
-  const { search } = useSearchData(currentTab, parameters.clusters)
+  const { search } = useSearchData(currentTab)
   const [isLoading, setIsLoading] = useState(false)
 
   const exportFile = useCallback(

@@ -5,8 +5,8 @@ import useSearchData from "../../../hooks/useSearchData"
 
 export default function AutocompleteFilterNode() {
   const { currentTab } = useTab()
-  const { parameters, handleParametersChange } = useParameters()
-  const { search } = useSearchData(currentTab, parameters.clusters)
+  const { handleParametersChange } = useParameters()
+  const { search } = useSearchData(currentTab)
 
   const nodes = search?.data?.network?.items?.map((item) => ({ label: item.label, id: item.id }))
   const autocomplete =
