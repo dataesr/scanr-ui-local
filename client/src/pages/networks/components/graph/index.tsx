@@ -27,7 +27,6 @@ export default function NetworkGraph() {
   if (!vosviewer?.network) return <Error204 />
 
   const key = JSON.stringify({ currentTab, currentQuery, filters, ...parameters, lang, theme, focusItem })
-  console.log("key", key)
 
   const vosparams = {
     largest_component: false,
