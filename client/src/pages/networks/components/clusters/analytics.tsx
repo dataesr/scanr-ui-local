@@ -14,7 +14,7 @@ export default function NetworkAnalytics() {
   const { screen } = useScreenSize()
   const { currentTab } = useTab()
   const { parameters } = useParameters()
-  const { search, currentQuery } = useSearchData(currentTab, parameters.clusters)
+  const { search, currentQuery } = useSearchData(currentTab)
   const clusters = search.data?.network?.clusters
 
   if (Boolean(search.error) || !currentQuery || !parameters.clusters) return null

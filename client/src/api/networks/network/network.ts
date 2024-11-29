@@ -26,7 +26,6 @@ export default async function networkCreate(
   model: string,
   filters: NetworkFilters,
   aggregation: ElasticBuckets,
-  computeClusters: boolean,
   parameters: NetworkParameters,
   lang: string
 ): Promise<NetworkData> {
@@ -89,7 +88,7 @@ export default async function networkCreate(
   forceAtlas2.assign(graph, { iterations: 100, settings: sensibleSettings })
 
   // Add communities
-  const communities = await communitiesCreate(graph, computeClusters)
+  const communities = await communitiesCreate(graph, parameters.clusters)
 
   // Create network
   const network: NetworkData = {
