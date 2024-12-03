@@ -1,10 +1,18 @@
+import { useIntl } from "react-intl"
 import AnalyticsGraph from "../../../../components/analytics-graph"
 
-export default function LineChart({ data }) {
-  console.log("line chart data", data)
+const CURRENT_YEAR = new Date().getFullYear()
+const MAX_YEAR = CURRENT_YEAR - 1
+const MIN_YEAR = MAX_YEAR - 5
+const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
 
-  const regression = Object.keys(data.count).map((key) => Number(key) * data.slope + data.intercept)
-  console.log("line chart regression", regression)
+export default function LineChart({ data, normalized, source }) {
+  const intl = useIntl()
+
+  const _data = YEARS.map((year) => data?.[normalized ? "norm" : "count"]?.[year] || 0)
+  const _reg = YEARS.map((year) => Number(year) * data.slope + data.intercept)
+
+  if (!_data) return null
 
   const highchartsOptions = {
     chart: {
@@ -12,31 +20,47 @@ export default function LineChart({ data }) {
     },
     xAxis: {
       accessibility: {
-        description: "Range: 2018 to 2023",
+        description: intl.formatMessage(
+          { id: "trends.line-chart.xAxis.accessibility.description" },
+          { min: MIN_YEAR, max: MAX_YEAR }
+        ),
       },
     },
     yAxis: {
       accessibility: {
-        description: "Fraction of publications",
+        description: intl.formatMessage(
+          { id: `trends.line-chart.yAxis.accessibility.description${normalized ? "-normalized" : ""}` },
+          {
+            source: intl.formatMessage({ id: `trends.select-source.publications.${source}` }).toLowerCase(),
+          }
+        ),
       },
-      title: { text: "Fraction of publications" },
+      title: {
+        text: intl.formatMessage(
+          { id: `trends.line-chart.yAxis.title.text${normalized ? "-normalized" : ""}` },
+          {
+            source: intl.formatMessage({ id: `trends.select-source.${source}` }).toLowerCase(),
+          }
+        ),
+      },
     },
     plotOptions: {
       series: {
-        pointStart: 2018,
-        pointInterval: 2, // one year
+        pointStart: MIN_YEAR,
+        pointInterval: 1, // one year
       },
     },
     legend: { enabled: true },
     series: [
       {
         name: data.label,
-        data: Object.values(data.norm),
+        data: _data,
         marker: { enabled: true },
+        color: "#0078f3",
       },
       {
-        name: "linear regression",
-        data: regression,
+        name: intl.formatMessage({ id: "trends.line-chart.series.regression.name" }),
+        data: _reg,
         marker: { enabled: false },
         dashStyle: "dash",
         color: "grey",
@@ -47,8 +71,14 @@ export default function LineChart({ data }) {
 
   return (
     <AnalyticsGraph
-      title={`Evolution over time for '${data.label}'`}
-      description={`Fraction of publications per year where '${data.label}' was detected`}
+      title={intl.formatMessage({ id: "trends.line-chart.title" }, { label: data.label })}
+      description={intl.formatMessage(
+        { id: `trends.line-chart.description${normalized ? "-normalized" : ""}` },
+        {
+          label: data.label,
+          source: intl.formatMessage({ id: `trends.select-source.${source}` }).toLowerCase(),
+        }
+      )}
       options={highchartsOptions}
     />
   )

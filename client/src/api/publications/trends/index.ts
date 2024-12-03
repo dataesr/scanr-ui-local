@@ -6,7 +6,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 const MAX_YEAR = CURRENT_YEAR - 1
 const MIN_YEAR = MAX_YEAR - 5
 const EXCLUDE_WORDS = [""]
-export const YEARS = Array.from({ length: (MIN_YEAR - MAX_YEAR) / -1 }, (_, i) => MAX_YEAR + i * -1).sort()
+export const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
 
 type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
 

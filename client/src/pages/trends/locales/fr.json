@@ -16,5 +16,14 @@
   "trends.views.count.header.diff": "Tendance (1 an)",
   "trends.views.count.header.trend": "Tendance (5 ans)",
   "trends.views.trend.header.top": "Plus forte hausse",
-  "trends.views.trend.header.bot": "Plus forte baisse"
+  "trends.views.trend.header.bot": "Plus forte baisse",
+  "trends.line-chart.xAxis.accessibility.description": "Années de {min, number} à {max, number}",
+  "trends.line-chart.yAxis.accessibility.description": "Nombre de {source}",
+  "trends.line-chart.yAxis.accessibility.description-normalized": "Fraction de {source}",
+  "trends.line-chart.yAxis.title.text": "Nombre de {source}",
+  "trends.line-chart.yAxis.title.text-normalized": "Fraction de {source}",
+  "trends.line-chart.series.regression.name": "courbe de tendance",
+  "trends.line-chart.title": "Évolution temporelle pour ''{label}''",
+  "trends.line-chart.description": "Nombre de {source} par année ou ''{label}'' a été detecté",
+  "trends.line-chart.description-normalized": "Fraction de {source} par année ou ''{label}'' a été detecté"
 }

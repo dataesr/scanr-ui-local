@@ -14,7 +14,7 @@ export default function TrendsFocus() {
 
   return (
     <Container fluid className="fr-mt-5w">
-      <LineChart data={data} />
+      <LineChart data={data} normalized={true} source={"publications"} />
     </Container>
   )
 }
