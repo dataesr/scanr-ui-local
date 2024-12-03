@@ -3,6 +3,7 @@ import { useTrendsContext } from "../../../context"
 import { MAX_YEAR } from "../../../config/years"
 import { itemGetColor, itemGetTrendState } from "../_utils"
 import TrendsFocus from "../../focus"
+import Wikidata from "../../wiki"
 
 export default function TrendsViewItem({ item }) {
   const { focus, setFocus, normalized } = useTrendsContext()
@@ -15,13 +16,16 @@ export default function TrendsViewItem({ item }) {
     <Container fluid>
       <Row key={item.label}>
         <Col lg="3">
-          <Button
-            key={item.label}
-            variant={isFocused ? "tertiary" : "text"}
-            onClick={() => setFocus(isFocused ? "" : item.label)}
-          >
-            {item.label}
-          </Button>
+          <Row verticalAlign="middle">
+            <Button
+              key={item.label}
+              variant={isFocused ? "tertiary" : "text"}
+              onClick={() => setFocus(isFocused ? "" : item.label)}
+            >
+              {item.label}
+            </Button>
+            {isFocused && <Wikidata item={item} />}
+          </Row>
         </Col>
         <Col lg="3">
           <Row horizontalAlign="right">
