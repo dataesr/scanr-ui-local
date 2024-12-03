@@ -13,6 +13,7 @@ export default function LineChart({ data, source }) {
   const highchartsOptions = {
     chart: {
       type: "line",
+      height: "350px",
     },
     xAxis: {
       accessibility: {
