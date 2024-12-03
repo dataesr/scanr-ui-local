@@ -1,5 +1,6 @@
 import { ElasticAggregation, ElasticBucket } from "../../types/commons"
 import { linearRegressionSlope } from "./_utils/regression"
+import variation from "./_utils/variation"
 import { MAX_YEAR } from "./config/years"
 
 const EXCLUDE_WORDS = [""]
@@ -28,20 +29,20 @@ export default function aggregationToTrends(aggregation: TrendsAggregation, norm
     const { slope, intercept } = linearRegressionSlope(normalized ? item.norm : item.count)
     item.slope = normalized ? slope / item.sum : slope
     item.intercept = intercept
-    item.diff = item.count?.[MAX_YEAR]
-      ? (item.count[MAX_YEAR] - (item?.count?.[MAX_YEAR - 1] || 0)) / item.count[MAX_YEAR]
-      : 0
+    item.diff = variation(item.count)
   })
 
-  // Sort items by volume
-  items.sort((a, b) => (b?.count?.[MAX_YEAR] || 0) - (a?.count?.[MAX_YEAR] || 0))
+  // Sort items by volume max year
+  const sortedItems = items.sort((a, b) => (b?.count?.[MAX_YEAR] || 0) - (a?.count?.[MAX_YEAR] || 0))
 
   // Compute top items
-  const topCount = items.slice(0, MAX_ITEMS)
-  const topDiff = items.sort((a, b) => b.diff - a.diff).slice(0, MAX_ITEMS)
-  const botDiff = items.sort((a, b) => a.diff - b.diff).slice(0, MAX_ITEMS)
-  const topSlope = items.sort((a, b) => b.slope - a.slope).slice(0, MAX_ITEMS)
-  const botSlope = items.sort((a, b) => a.slope - b.slope).slice(0, MAX_ITEMS)
+  const topCount = sortedItems.slice(0, MAX_ITEMS)
+  const topDiff = sortedItems.sort((a, b) => b.diff - a.diff).slice(0, MAX_ITEMS)
+  const topSlope = sortedItems.sort((a, b) => b.slope - a.slope).slice(0, MAX_ITEMS)
+
+  // Compute bot items
+  const botDiff = sortedItems.sort((a, b) => a.diff - b.diff).slice(0, MAX_ITEMS)
+  const botSlope = sortedItems.sort((a, b) => a.slope - b.slope).slice(0, MAX_ITEMS)
 
   const data = {
     "count-top": topCount,

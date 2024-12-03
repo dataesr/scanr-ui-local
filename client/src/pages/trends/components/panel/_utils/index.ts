@@ -4,7 +4,7 @@ import { useIntl } from "react-intl"
 const DEFAULT_COLOR = "beige-gris-galet"
 const DIFF_THRESHOLD = 0.15 // 15%
 const SLOPE_THRESHOLD = (normalized: boolean): number => {
-  return normalized ? 0.00005 : 0.5
+  return normalized ? 0.000000005 : 0.5
 }
 
 export function itemGetColor(item: any, field: "diff" | "slope", normalized: boolean): DSFRColors {

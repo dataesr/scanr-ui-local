@@ -5,6 +5,8 @@ import { MAX_YEAR, MIN_YEAR, YEARS } from "../../config/years"
 export default function LineChart({ data, normalized, source }) {
   const intl = useIntl()
 
+  console.log("line-chart-data", data)
+
   const _data = YEARS.map((year) => data?.[normalized ? "norm" : "count"]?.[year] || 0)
   const _reg = YEARS.map((year) => Number(year) * (normalized ? data.slope * data.sum : data.slope) + data.intercept)
 
