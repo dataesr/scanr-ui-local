@@ -88,7 +88,7 @@ export default async function networkCreate(
   forceAtlas2.assign(graph, { iterations: 100, settings: sensibleSettings })
 
   // Add communities
-  const communities = await communitiesCreate(graph, parameters.clusters)
+  const communities = await communitiesCreate(graph, clusters)
 
   // Create network
   const network: NetworkData = {
