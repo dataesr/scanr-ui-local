@@ -21,11 +21,11 @@
   "trends.line-chart.yAxis.accessibility.description-normalized": "Part de {source}",
   "trends.line-chart.yAxis.title.text": "Nombre de {source}",
   "trends.line-chart.yAxis.title.text-normalized": "Part de {source}",
-  "trends.line-chart.series.regression.name": "courbe de tendance",
+  "trends.line-chart.series.regression.name": "Courbe de tendance",
   "trends.line-chart.title": "Évolution temporelle pour ''{label}''",
   "trends.line-chart.description": "Nombre de {source} par année ou ''{label}'' a été detecté",
   "trends.line-chart.description-normalized": "Part de {source} par année ou ''{label}'' a été detecté",
   "trends.parameters.title": "Paramètres avancés",
   "trends.parameters.toggle-normalize.label": "Normalisation",
-  "trends.parameters.toggle-normalize.hint": "Normalise les tendances par rapport au volume total"
+  "trends.parameters.toggle-normalize.hint": "Normalise les tendances par rapport à leur volume total"
 }

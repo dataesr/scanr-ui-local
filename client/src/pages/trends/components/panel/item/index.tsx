@@ -9,8 +9,10 @@ export default function TrendsViewItem({ item }) {
   const { model, focus, setFocus, normalized } = useTrendsContext()
   const isFocused = Boolean(focus === item.label)
   const diffColor = itemGetColor(item, "diff", normalized)
-  const slopeColor = itemGetColor(item, "slope", normalized)
-  const trendState = itemGetTrendState(item.slope, normalized)
+  const slopeColor = itemGetColor(item, normalized ? "norm_slope" : "slope", normalized)
+  const trendState = itemGetTrendState(item, normalized)
+
+  isFocused && console.log("item", item)
 
   return (
     <Container fluid>

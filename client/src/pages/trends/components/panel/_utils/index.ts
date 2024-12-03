@@ -4,11 +4,11 @@ import { useIntl } from "react-intl"
 const DEFAULT_COLOR = "beige-gris-galet"
 const DIFF_THRESHOLD = 0.15 // 15%
 const SLOPE_THRESHOLD = (normalized: boolean): number => {
-  return normalized ? 0.000000005 : 0.5
+  return normalized ? 0.005 : 0.5
 }
 
-export function itemGetColor(item: any, field: "diff" | "slope", normalized: boolean): DSFRColors {
-  const threshold = field === "slope" ? SLOPE_THRESHOLD(normalized) : DIFF_THRESHOLD
+export function itemGetColor(item: any, field: "diff" | "slope" | "norm_slope", normalized: boolean): DSFRColors {
+  const threshold = field === "diff" ? DIFF_THRESHOLD : SLOPE_THRESHOLD(normalized)
   const value = item?.[field] || 0
 
   if (value > threshold) return "success"
@@ -17,9 +17,11 @@ export function itemGetColor(item: any, field: "diff" | "slope", normalized: boo
   return DEFAULT_COLOR
 }
 
-export function itemGetTrendState(slope: number, normalized: boolean) {
+export function itemGetTrendState(item: any, normalized: boolean) {
   const intl = useIntl()
   const threshold = SLOPE_THRESHOLD(normalized)
+
+  const slope = normalized ? item.norm_slope : item.slope
 
   if (slope > threshold) return intl.formatMessage({ id: "trends.trending" })
   if (slope < -threshold) return intl.formatMessage({ id: "trends.fading" })

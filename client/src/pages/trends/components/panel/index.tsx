@@ -13,6 +13,7 @@ function TrendsView() {
 
   if (!trends || !trends?.[view] || error) return <div>no data</div>
 
+  console.log("trends", trends, view)
   const data = trends[view]
 
   return (
