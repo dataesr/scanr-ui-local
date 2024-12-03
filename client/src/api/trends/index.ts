@@ -37,12 +37,23 @@ export default function aggregationToTrends(aggregation: TrendsAggregation, norm
 
   // Compute top items
   const topCount = sortedItems.slice(0, MAX_ITEMS)
-  const topDiff = sortedItems.sort((a, b) => b.diff - a.diff).slice(0, MAX_ITEMS)
-  const topSlope = sortedItems.sort((a, b) => b.slope - a.slope).slice(0, MAX_ITEMS)
-
-  // Compute bot items
-  const botDiff = sortedItems.sort((a, b) => a.diff - b.diff).slice(0, MAX_ITEMS)
-  const botSlope = sortedItems.sort((a, b) => a.slope - b.slope).slice(0, MAX_ITEMS)
+  const topDiff = sortedItems
+    .slice()
+    .sort((a, b) => b.diff - a.diff)
+    .slice(0, MAX_ITEMS)
+  const botDiff = sortedItems
+    .slice()
+    .sort((a, b) => (b?.count?.[MAX_YEAR - 1] || 0) - (a?.count?.[MAX_YEAR - 1] || 0))
+    .sort((a, b) => a.diff - b.diff)
+    .slice(0, MAX_ITEMS)
+  const topSlope = sortedItems
+    .slice()
+    .sort((a, b) => b.slope - a.slope)
+    .slice(0, MAX_ITEMS)
+  const botSlope = sortedItems
+    .slice()
+    .sort((a, b) => a.slope - b.slope)
+    .slice(0, MAX_ITEMS)
 
   const data = {
     "count-top": topCount,
