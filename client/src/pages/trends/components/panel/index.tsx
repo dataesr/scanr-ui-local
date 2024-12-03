@@ -5,7 +5,7 @@ import TrendsViewItem from "./item"
 import TrendsViewHeader from "./header"
 import TrendsViewSkeleton from "./skeleton"
 
-function TrendsView() {
+export default function TrendsView() {
   const { view } = useTrendsContext()
   const { trends, isFetching, error } = useTrends()
 
@@ -23,14 +23,6 @@ function TrendsView() {
           <TrendsViewItem key={index} item={item} />
         ))}
       </div>
-    </Container>
-  )
-}
-
-export default function TrendsPanel() {
-  return (
-    <Container fluid className="fr-mr-2w">
-      <TrendsView />
     </Container>
   )
 }
