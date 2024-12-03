@@ -2,7 +2,7 @@ import { useIntl } from "react-intl"
 import AnalyticsGraph from "../../../../components/analytics-graph"
 import { MAX_YEAR, MIN_YEAR, YEARS } from "../../config/years"
 
-export default function LineChart({ data, normalized, source }) {
+export default function LineChart({ data, source }) {
   const intl = useIntl()
 
   const _data = YEARS.map((year) => data?.count?.[year] || 0)
@@ -25,7 +25,7 @@ export default function LineChart({ data, normalized, source }) {
     yAxis: {
       accessibility: {
         description: intl.formatMessage(
-          { id: `trends.line-chart.yAxis.accessibility.description${normalized ? "-normalized" : ""}` },
+          { id: "trends.line-chart.yAxis.accessibility.description" },
           {
             source: intl.formatMessage({ id: `trends.select-source.${source}` }).toLowerCase(),
           }
@@ -33,7 +33,7 @@ export default function LineChart({ data, normalized, source }) {
       },
       title: {
         text: intl.formatMessage(
-          { id: `trends.line-chart.yAxis.title.text${normalized ? "-normalized" : ""}` },
+          { id: "trends.line-chart.yAxis.title.text" },
           {
             source: intl.formatMessage({ id: `trends.select-source.${source}` }).toLowerCase(),
           }
@@ -69,10 +69,9 @@ export default function LineChart({ data, normalized, source }) {
     <AnalyticsGraph
       title={intl.formatMessage({ id: "trends.line-chart.title" }, { label: data.label })}
       description={intl.formatMessage(
-        { id: `trends.line-chart.description${normalized ? "-normalized" : ""}` },
+        { id: `trends.line-chart.description.${source}` },
         {
           label: data.label,
-          source: intl.formatMessage({ id: `trends.select-source.${source}` }).toLowerCase(),
         }
       )}
       options={highchartsOptions}
