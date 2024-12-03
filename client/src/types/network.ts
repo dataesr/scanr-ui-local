@@ -103,27 +103,12 @@ export type NetworkHit = {
 export type NetworkFilters = Array<NetworkFilter>
 export type NetworkFilter = Record<string, unknown>
 
-export type ElasticBuckets = Array<ElasticBucket>
-export type ElasticBucket = {
-  key: string
-  doc_count: number
-  key_as_string?: string
-  max_year?: {
-    value: number
-  }
-}
 export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
   title?: LangField
   cited_by_counts_by_year?: Record<string, number>
 }
-export type ElasticAggregation = {
-  buckets?: ElasticBuckets
-  sum_other_doc_count?: number
-  value?: number
-}
-export type ElasticAggregations = Record<string, ElasticAggregation>
 
 export type NetworksIntegrationOptions = {
   showGraphOnly?: boolean

@@ -33,6 +33,20 @@ export type ElasticResult<T> = {
   sort: number[];
 };
 
+
+export type ElasticBuckets = Array<ElasticBucket>
+export type ElasticBucket = {
+  key: string
+  key_as_string?: string
+  doc_count?: number
+}
+export type ElasticAggregations = Record<string, ElasticAggregation>
+export type ElasticAggregation = {
+  buckets?: ElasticBuckets
+  sum_other_doc_count?: number
+  value?: number
+}
+
 export type SearchResponse<T> = {
   data: ElasticResult<T>[];
   cursor: string;

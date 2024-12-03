@@ -10,6 +10,7 @@ import {
 } from "@dataesr/dsfr-plus";
 import { RawIntlProvider, createIntl, useIntl } from "react-intl";
 import "./styles.scss";
+import TrendsBanner from "./components/trends-banner"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -475,9 +476,10 @@ export default function Home() {
     <RawIntlProvider value={intl}>
       <MainBanner />
       <ObjectsBanner />
+      <TrendsBanner />
       <NetworksBanner />
       <ServicesBanner />
       <OpendataBanner />
     </RawIntlProvider>
-  );
+  )
 }

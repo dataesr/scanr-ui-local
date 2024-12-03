@@ -30,6 +30,7 @@
     "highcharts": "^11.3.0",
     "highcharts-react-official": "^3.2.1",
     "leaflet": "^1.9.4",
+    "ml-regression-simple-linear": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.3",

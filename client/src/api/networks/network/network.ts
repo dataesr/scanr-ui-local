@@ -4,10 +4,13 @@ import { connectedComponents } from "graphology-components"
 import circular from "graphology-layout/circular"
 import forceAtlas2 from "graphology-layout-forceatlas2"
 import betweenessCentrality from "graphology-metrics/centrality/betweenness"
-import { ElasticBuckets, NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
+import { NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
 import { getParameters } from "./parameters"
+import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
+
+type NetworkBucket = ElasticBucket & { max_year: ElasticAggregation }
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
 export const nodeGetId = (id: string) => {
