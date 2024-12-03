@@ -9,6 +9,7 @@ export function useTrendsContext() {
 
 export function TrendsContext({ children }) {
   const [view, setView] = useState(TRENDS_VIEWS[0])
+  const [focus, setFocus] = useState("")
 
-  return <Context.Provider value={{ view, setView }}>{children}</Context.Provider>
+  return <Context.Provider value={{ view, setView, focus, setFocus }}>{children}</Context.Provider>
 }

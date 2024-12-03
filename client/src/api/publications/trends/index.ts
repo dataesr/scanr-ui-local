@@ -43,7 +43,7 @@ const aggregationToTrends = (aggregation: TrendsAggregation) => {
   const topSlope = domains.sort((a, b) => b.slope - a.slope).slice(0, 10)
   const botSlope = domains.sort((a, b) => a.slope - b.slope).slice(0, 10)
 
-  return { byCount: topCount, byDiff: { top: topDiff, bot: botDiff }, bySlope: { top: topSlope, bot: botSlope } }
+  return { count: topCount, byDiff: { top: topDiff, bot: botDiff }, bySlope: { top: topSlope, bot: botSlope } }
 }
 
 export default async function getPublicationsTrends() {

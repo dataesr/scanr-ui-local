@@ -1,10 +1,10 @@
 import AnalyticsGraph from "../../../../components/analytics-graph"
 
 export default function LineChart({ data }) {
-  console.log("data", data)
+  console.log("line chart data", data)
 
   const regression = Object.keys(data.count).map((key) => Number(key) * data.slope + data.intercept)
-  console.log("regression", regression)
+  console.log("line chart regression", regression)
 
   const highchartsOptions = {
     chart: {
@@ -24,7 +24,7 @@ export default function LineChart({ data }) {
     plotOptions: {
       series: {
         pointStart: 2018,
-        pointInterval: 1, // one year
+        pointInterval: 2, // one year
       },
     },
     legend: { enabled: true },

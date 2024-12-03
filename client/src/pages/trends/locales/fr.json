@@ -10,5 +10,11 @@
   "trends.select-source.citations": "Citations",
   "trends.control-views.count": "Nombre",
   "trends.control-views.diff": "Tendance (1 an)",
-  "trends.control-views.trend": "Tendance (5 ans)"
+  "trends.control-views.trend": "Tendance (5 ans)",
+  "trends.views.count.header.domain": "Thématique",
+  "trends.views.count.header.count": "Publications (2023)",
+  "trends.views.count.header.diff": "Tendance (1 an)",
+  "trends.views.count.header.trend": "Tendance (5 ans)",
+  "trends.views.trend.header.top": "Plus forte hausse",
+  "trends.views.trend.header.bot": "Plus forte baisse"
 }
