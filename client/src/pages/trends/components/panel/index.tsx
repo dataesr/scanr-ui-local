@@ -20,8 +20,8 @@ function TrendsView() {
     <Container fluid>
       <TrendsViewHeader />
       <hr />
-      {data.map((item) => (
-        <TrendsViewItem item={item} />
+      {data.map((item, index) => (
+        <TrendsViewItem key={index} item={item} />
       ))}
     </Container>
   )
