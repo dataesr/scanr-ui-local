@@ -26,16 +26,15 @@ const aggregationToTrends = (aggregation: TrendsAggregation) => {
   }, {})
   const domains = Object.values(_domains).filter(({ label }) => !EXCLUDE_WORDS.includes(label))
 
-  // Add diff from last year
-  domains.forEach(
-    (domain) =>
-      (domain.diff = domain.count?.[MAX_YEAR]
-        ? (domain.count[MAX_YEAR] - (domain?.count?.[MAX_YEAR - 1] || 0)) / domain.count[MAX_YEAR]
-        : 0)
-  )
-
-  // Add linear regression slope
-  domains.forEach((domain) => (domain.slope = linearRegressionSlope(domain.norm)))
+  // Add linear regression + diff from last year
+  domains.forEach((domain) => {
+    const { slope, intercept } = linearRegressionSlope(domain.norm)
+    domain.slope = slope
+    domain.intercept = intercept
+    domain.diff = domain.count?.[MAX_YEAR]
+      ? (domain.count[MAX_YEAR] - (domain?.count?.[MAX_YEAR - 1] || 0)) / domain.count[MAX_YEAR]
+      : 0
+  })
 
   // Compute top domains
   const topCount = domains.sort((a, b) => (b?.count?.[MAX_YEAR] || 0) - (a?.count?.[MAX_YEAR] || 0)).slice(0, 10)

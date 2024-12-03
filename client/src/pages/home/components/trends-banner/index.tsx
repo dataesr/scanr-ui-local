@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Badge, Button, Col, Container, Row, SegmentedControl, SegmentedElement, Text, Title } from "@dataesr/dsfr-plus"
-import usePublicationsTrends from "../../hooks/usePublicationsTrends"
+import usePublicationsTrends from "../../../trends/hooks/usePublicationsTrends"
 
 const diffColor = (diff: number) => (diff > 0.15 ? "success" : diff < -0.15 ? "warning" : "beige-gris-galet")
 const slopeColor = (slope: number) => (slope > 0.00005 ? "success" : slope < -0.00005 ? "warning" : "beige-gris-galet")

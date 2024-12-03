@@ -31,6 +31,7 @@ import OrganizationsDocs from "./pages/docs/objects/organizations";
 import PersonsDocs from "./pages/docs/objects/persons";
 import Overview from "./pages/docs/objects/overview";
 import NetworksIntegration from "./pages/networks/integration"
+import Trends from "./pages/trends"
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation();
@@ -90,6 +91,7 @@ export default function Router() {
             <Route path="patents" element={<Search />} />
           </Route>
           <Route path="/networks" element={<Networks />} />
+          <Route path="/trends" element={<Trends />} />
           <Route path="/trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
           <Route path="*" element={<Error404 error={null} />} />
         </Route>

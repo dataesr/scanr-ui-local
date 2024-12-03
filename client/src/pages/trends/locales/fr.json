@@ -1,0 +1,11 @@
+{
+  "trends.header.breadcrumb.home": "Accueil",
+  "trends.header.breadcrumb.explore": "Explorer les tendances",
+  "trends.header.title": "Explorez les tendances",
+  "trends.select-model.label": "Modèle",
+  "trends.select-model.domains": "Thématiques",
+  "trends.select-model.authors": "Auteurs",
+  "trends.select-source.label": "Source",
+  "trends.select-source.publications": "Publications",
+  "trends.select-source.citations": "Citations"
+}

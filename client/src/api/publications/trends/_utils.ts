@@ -6,5 +6,5 @@ export const linearRegressionSlope = (values) => {
   const y = YEARS?.map((year) => values?.[year] || 0.0)
   const regression = new SimpleLinearRegression(X, y)
 
-  return regression?.slope
+  return { slope: regression?.slope, intercept: regression?.intercept }
 }
