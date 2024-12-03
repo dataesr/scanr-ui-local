@@ -9,15 +9,19 @@ const MAX_ITEMS = 15
 type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
 
 export default function aggregationToTrends(aggregation: TrendsAggregation, normalized: boolean) {
+  console.log("aggregation", aggregation)
+
   // Domains count by year
   const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
     bucket?.domains?.buckets.forEach((item) => {
-      acc[item.key] = {
-        ...acc?.[item.key],
-        label: item.key,
-        count: { ...acc?.[item.key]?.count, [bucket.key]: item.doc_count },
-        norm: { ...acc?.[item.key]?.norm, [bucket.key]: item.doc_count / bucket.doc_count },
-        sum: (acc?.[item.key]?.sum || 0) + item.doc_count,
+      const [id, label] = item.key.split("###")
+      acc[id] = {
+        ...acc?.[id],
+        id: id,
+        label: acc?.[id]?.label || label,
+        count: { ...acc?.[id]?.count, [bucket.key]: (acc?.[id]?.count?.[bucket.key] || 0) + item.doc_count },
+        norm: { ...acc?.[id]?.norm, [bucket.key]: (acc?.[id]?.norm?.[bucket.key] || 0) + item.doc_count / bucket.doc_count },
+        sum: (acc?.[id]?.sum || 0) + item.doc_count,
       }
     })
     return acc

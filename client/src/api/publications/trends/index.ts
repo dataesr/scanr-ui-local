@@ -13,7 +13,7 @@ export default async function getPublicationsTrends({ normalized }: TrendsArgs) 
       years: {
         terms: { field: "year", size: CURRENT_YEAR - MIN_YEAR },
         aggs: {
-          domains: { terms: { field: "domains.naturalKey.keyword", size: 10000 } },
+          domains: { terms: { field: "domains.id_name.keyword", size: 10000 } },
         },
       },
     },
