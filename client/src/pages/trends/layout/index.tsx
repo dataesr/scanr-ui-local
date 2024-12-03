@@ -17,10 +17,10 @@ export default function TrendsLayout() {
       <PublicationFilters />
       <Container>
         <Row gutters>
-          <Col xs="12" sm="12" md="8" lg="8" xl="8">
+          <Col xs="12" sm="12" md="9" lg="8" xl="8">
             <TrendsView />
           </Col>
-          <Col lg="4">
+          <Col md="3" lg="4">
             <TrendsSearchBar label={intl.formatMessage({ id: "trends.search-bar.label" })} />
             <TrendsSelectSource />
             <TrendsFilters />
