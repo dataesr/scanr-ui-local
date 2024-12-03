@@ -28,9 +28,10 @@ export default function aggregationToTrends(aggregation: TrendsAggregation, fiel
 
   // Add linear regression + diff from last year
   items.forEach((item) => {
-    const { slope, intercept } = linearRegressionSlope(normalized ? item.norm : item.count)
+    const { slope, intercept, r2 } = linearRegressionSlope(normalized ? item.norm : item.count)
     item.slope = normalized ? slope / item.sum : slope
     item.intercept = intercept
+    item.r2 = r2
     item.diff = variation(item.count)
   })
 
@@ -50,11 +51,11 @@ export default function aggregationToTrends(aggregation: TrendsAggregation, fiel
     .slice(0, MAX_ITEMS)
   const topSlope = sortedItems
     .slice()
-    .sort((a, b) => b.slope - a.slope)
+    .sort((a, b) => b.angle - a.angle)
     .slice(0, MAX_ITEMS)
   const botSlope = sortedItems
     .slice()
-    .sort((a, b) => a.slope - b.slope)
+    .sort((a, b) => a.angle - b.angle)
     .slice(0, MAX_ITEMS)
 
   const data = {
