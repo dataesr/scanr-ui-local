@@ -1,4 +1,4 @@
-import { Select, SelectOption } from "@dataesr/dsfr-plus"
+import { SegmentedControl, SegmentedElement } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import { useTrendsContext } from "../../context"
 
@@ -7,20 +7,24 @@ export default function TrendsSelectSource() {
   const { source, setSource } = useTrendsContext()
 
   return (
-    <Select
+    <SegmentedControl
+      className="fr-mb-2w"
+      name="select-source"
       label={intl.formatMessage({ id: "trends.select-source.label" })}
-      selectedKey={source}
-      // disabledKeys={["citations"]}
-      onSelectionChange={(value) => {
-        setSource(value)
-      }}
+      onChangeValue={(value) => setSource(value)}
     >
-      <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-article-line`} />} key={"publications"}>
-        {intl.formatMessage({ id: "trends.select-source.publications" })}
-      </SelectOption>
-      <SelectOption startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-chat-3-line`} />} key={"citations"}>
-        {intl.formatMessage({ id: "trends.select-source.citations" })}
-      </SelectOption>
-    </Select>
+      <SegmentedElement
+        value="publications"
+        checked={source === "publications"}
+        label={intl.formatMessage({ id: "trends.select-source.publications" })}
+        icon="fr-icon-article-line"
+      />
+      <SegmentedElement
+        value="citations"
+        checked={source === "citations"}
+        label={intl.formatMessage({ id: "trends.select-source.citations" })}
+        icon="fr-icon-chat-3-line"
+      />
+    </SegmentedControl>
   )
 }
