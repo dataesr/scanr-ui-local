@@ -1,6 +1,7 @@
 import { createIntl, RawIntlProvider } from "react-intl"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import { messages } from "./config/messages"
+import { TrendsContext } from "./context"
 import TrendsLayout from "./layout"
 
 export default function Trends() {
@@ -12,7 +13,9 @@ export default function Trends() {
 
   return (
     <RawIntlProvider value={intl}>
-      <TrendsLayout />
+      <TrendsContext>
+        <TrendsLayout />
+      </TrendsContext>
     </RawIntlProvider>
   )
 }
