@@ -37,6 +37,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
   const { setFocusItem } = useNetworkContext()
 
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
+  console.log("windows", window)
 
   return (
     <Container fluid className="cluster-item">
@@ -122,9 +123,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
         <ModalContent>
           {community?.publications?.map((publication) => (
             <li className="fr-mt-1w">
-              <Link
-                href={window?.location?.href?.split("/networks")[0] + "/publications/" + encode(publication.id as string)}
-              >
+              <Link href={window.location.origin + "/publications/" + encode(publication.id as string)}>
                 {publication.title}
               </Link>
             </li>

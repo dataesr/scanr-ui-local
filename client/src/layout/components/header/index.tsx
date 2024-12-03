@@ -111,12 +111,17 @@ export default function Header() {
             {intl.formatMessage({ id: "layout.header.nav.search.patents" })}
           </Link>
         </NavItem>
-        <Link current={pathname.startsWith("/networks")} href="/networks">
-          {intl.formatMessage({ id: "layout.header.nav.networks" })}
-        </Link>
-        <Link current={pathname.startsWith("/trends")} href="/trends">
-          {intl.formatMessage({ id: "layout.header.nav.trends" })}
-        </Link>
+        <NavItem
+          current={pathname.split("/").includes("networks") || pathname.split("/").includes("trends")}
+          title={intl.formatMessage({ id: "layout.header.nav.analyze" })}
+        >
+          <Link current={pathname.split("/").includes("networks")} href="/networks">
+            {intl.formatMessage({ id: "layout.header.nav.analyze.networks" })}
+          </Link>
+          <Link current={pathname.split("/").includes("trends")} href="/trends">
+            {intl.formatMessage({ id: "layout.header.nav.analyze.trends" })}
+          </Link>
+        </NavItem>
       </Nav>
     </HeaderWrapper>
   )

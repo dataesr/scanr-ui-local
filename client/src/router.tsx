@@ -96,6 +96,7 @@ export default function Router() {
           <Route path="*" element={<Error404 error={null} />} />
         </Route>
         <Route path="/networks/integration" element={<NetworksIntegration />} />
+        {/* <Route path="/trends/integration" element={<TrendsIntegration />} /> */}
       </Routes>
     </>
   )

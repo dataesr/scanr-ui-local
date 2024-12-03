@@ -1,15 +1,13 @@
 import { Breadcrumb, Container, Link, Title } from "@dataesr/dsfr-plus"
-import { FormattedMessage, useIntl } from "react-intl"
+import { useIntl } from "react-intl"
 
 function TrendsBreadcrum() {
   const intl = useIntl()
 
   return (
     <Breadcrumb className="fr-mt-0 fr-mb-2w">
-      <Link href="/">
-        <FormattedMessage id="trends.header.breadcrumb.home" />
-      </Link>
-      <Link current>{intl.formatMessage({ id: "trends.header.breadcrumb.explore" })}</Link>
+      <Link href="/">{intl.formatMessage({ id: "trends.header.breadcrumb.home" })}</Link>
+      <Link current>{intl.formatMessage({ id: "trends.header.breadcrumb.analyze" })}</Link>
     </Breadcrumb>
   )
 }

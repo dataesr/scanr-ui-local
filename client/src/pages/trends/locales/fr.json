@@ -1,7 +1,7 @@
 {
   "trends.header.breadcrumb.home": "Accueil",
-  "trends.header.breadcrumb.explore": "Explorer les tendances",
-  "trends.header.title": "Explorez les tendances",
+  "trends.header.breadcrumb.analyze": "Analyser les tendances",
+  "trends.header.title": "Explorez les tendances via une analyse des publications",
   "trends.trending": "Trending",
   "trends.fading": "Declining",
   "trends.stable": "Stable",

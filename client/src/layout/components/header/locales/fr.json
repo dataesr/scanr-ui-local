@@ -8,6 +8,7 @@
   "layout.header.nav.search.projects": "Financements",
   "layout.header.nav.search.authors": "Auteurs",
   "layout.header.nav.search.patents": "Brevets",
-  "layout.header.nav.networks": "Explorer les réseaux",
-  "layout.header.nav.trends": "Explorer les tendances"
+  "layout.header.nav.analyze": "Analyser",
+  "layout.header.nav.analyze.networks": "Communautés",
+  "layout.header.nav.analyze.trends": "Tendances"
 }
