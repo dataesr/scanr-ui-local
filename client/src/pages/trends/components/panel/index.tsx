@@ -1,7 +1,7 @@
 import { Badge, Button, Col, Container, Row, Text } from "@dataesr/dsfr-plus"
+import { TRENDS_VIEWS_LABELS, trendsViewGetConfig, trendsViewFromLabel } from "../../config/views"
 import usePublicationsTrends from "../../hooks/usePublicationsTrends"
 import { useTrendsContext } from "../../context"
-import TrendsControlViews from "../control-tabs"
 import { useIntl } from "react-intl"
 import TrendsFocus from "../focus"
 
@@ -9,7 +9,7 @@ const diffColor = (diff: number) => (diff > 0.15 ? "success" : diff < -0.15 ? "w
 const slopeColor = (slope: number) => (slope > 0.00005 ? "success" : slope < -0.00005 ? "warning" : "beige-gris-galet")
 const slopeMessage = (slope: number) => (slope > 0.00005 ? "trending" : slope < -0.00005 ? "fading" : "stable")
 
-function CountItem({ domain }) {
+function TrendsViewItem({ domain }) {
   const { focus, setFocus } = useTrendsContext()
   const isFocused = Boolean(focus === domain.label)
 
@@ -41,99 +41,65 @@ function CountItem({ domain }) {
   )
 }
 
-function CountView({ data }) {
+function TrendsViewButton({ label }) {
   const intl = useIntl()
+  const { view, setView, setFocus } = useTrendsContext()
+  const viewConfig = trendsViewGetConfig(view)
+  const defaultView = trendsViewFromLabel(label)
+
+  const isSelected = Boolean(label === viewConfig.label)
+  const onButtonClick = () => {
+    isSelected ? viewConfig?.nextView && setView(viewConfig.nextView) : setView(defaultView)
+    setFocus("")
+  }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col lg="3">
-          <Text>{intl.formatMessage({ id: "trends.views.count.header.domain" })}</Text>
-        </Col>
-        <Col lg="3">
-          <Text>{intl.formatMessage({ id: "trends.views.count.header.count" })}</Text>
-        </Col>
-        <Col lg="3">
-          <Text>{intl.formatMessage({ id: "trends.views.count.header.diff" })}</Text>
-        </Col>
-        <Col lg="3">
-          <Text>{intl.formatMessage({ id: "trends.views.count.header.trend" })}</Text>
-        </Col>
-      </Row>
-      {data.map((domain) => (
-        <CountItem domain={domain} />
-      ))}
-    </Container>
+    <Button
+      id={label}
+      icon={isSelected ? (viewConfig.order == "top" ? "arrow-up-line" : "arrow-down-line") : ""}
+      iconPosition="right"
+      variant={isSelected ? "tertiary" : "text"}
+      onClick={onButtonClick}
+    >
+      {intl.formatMessage({ id: `trends.views.count.header.${label}` })}
+    </Button>
   )
 }
 
-function TrendItem({ domain, color }) {
-  const { focus, setFocus } = useTrendsContext()
-  const isFocused = Boolean(focus === domain.label)
-
-  return (
-    <Row key={domain.label} verticalAlign="middle">
-      <Col lg="8">
-        <Button
-          key={domain.label}
-          variant={isFocused ? "tertiary" : "text"}
-          color={color}
-          onClick={() => setFocus(isFocused ? "" : domain.label)}
-        >
-          {domain.label}
-        </Button>
-      </Col>
-      <Col lg="4"></Col>
-    </Row>
-  )
-}
-
-function TrendView({ data }) {
+function TrendsView() {
   const intl = useIntl()
-
-  return (
-    <Container fluid>
-      <Row>
-        <Col lg="6">
-          <Text>{intl.formatMessage({ id: "trends.views.trend.header.top" })}</Text>
-        </Col>
-        <Col lg="6">
-          <Text>{intl.formatMessage({ id: "trends.views.trend.header.bot" })}</Text>
-        </Col>
-      </Row>
-      <Row>
-        <Col lg="6">
-          {data.top.map((domain) => (
-            <TrendItem domain={domain} color="success" />
-          ))}
-        </Col>
-        <Col lg="6">
-          {data.bot.map((domain) => (
-            <TrendItem domain={domain} color="error" />
-          ))}
-        </Col>
-      </Row>
-    </Container>
-  )
-}
-
-export default function TrendsPanel() {
   const { view } = useTrendsContext()
   const { trends, isFetching } = usePublicationsTrends()
 
   if (!trends || isFetching) return null
 
-  console.log("trends", trends)
-
-  const { count: byCount, byDiff, bySlope } = trends
+  const data = trends?.[view]
+  if (!data) return null
 
   return (
     <Container fluid>
-      <TrendsControlViews />
+      <Row verticalAlign="middle">
+        <Col lg="3">
+          <Text className="fr-mb-0">{intl.formatMessage({ id: "trends.views.count.header.domain" })}</Text>
+        </Col>
+        {TRENDS_VIEWS_LABELS.map((label) => (
+          <Col lg="3">
+            <TrendsViewButton label={label} />
+          </Col>
+        ))}
+      </Row>
+      {data.map((domain) => (
+        <TrendsViewItem domain={domain} />
+      ))}
+    </Container>
+  )
+}
+
+export default function TrendsPanel() {
+  return (
+    <Container fluid>
       <Container fluid className="fr-mt-2w">
-        {view === "count" && <CountView data={byCount} />}
-        {view === "diff" && <TrendView data={byDiff} />}
-        {view === "trend" && <TrendView data={bySlope} />}
+        <TrendsView />
       </Container>
       <TrendsFocus />
     </Container>

@@ -1,5 +1,5 @@
-import { postHeaders, publicationsIndex } from "../../../config/api"
-import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
+import { postHeaders, publicationsIndex } from "../../config/api"
+import { ElasticAggregation, ElasticBucket } from "../../types/commons"
 import { linearRegressionSlope } from "./_utils"
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -43,7 +43,7 @@ const aggregationToTrends = (aggregation: TrendsAggregation) => {
   const topSlope = domains.sort((a, b) => b.slope - a.slope).slice(0, 10)
   const botSlope = domains.sort((a, b) => a.slope - b.slope).slice(0, 10)
 
-  return { count: topCount, byDiff: { top: topDiff, bot: botDiff }, bySlope: { top: topSlope, bot: botSlope } }
+  return { "count-top": topCount, "diff-top": topDiff, "diff-bot": botDiff, "trend-top": topSlope, "trend-bot": botSlope }
 }
 
 export default async function getPublicationsTrends() {

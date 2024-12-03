@@ -7,7 +7,7 @@ export default function TrendsFocus() {
   const { focus, view } = useTrendsContext()
   const { trends } = usePublicationsTrends()
 
-  if (!trends || !focus || !(view === "count")) return null
+  if (!trends || !focus) return null
 
   const data = trends?.[view]?.find((el) => el.label === focus)
   if (!data) return null

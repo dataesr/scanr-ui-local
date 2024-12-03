@@ -8,8 +8,8 @@ export function useTrendsContext() {
 }
 
 export function TrendsContext({ children }) {
-  const [view, setView] = useState(TRENDS_VIEWS[0])
-  const [focus, setFocus] = useState("")
+  const [view, setView] = useState<string>(TRENDS_VIEWS[0].id)
+  const [focus, setFocus] = useState<string>("")
 
   return <Context.Provider value={{ view, setView, focus, setFocus }}>{children}</Context.Provider>
 }

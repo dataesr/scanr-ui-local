@@ -101,9 +101,7 @@ export default function TrendsBanner() {
 
   if (!trends || isFetching) return null
 
-  console.log("trends", trends)
-
-  const { byCount, byDiff, bySlope } = trends
+  return null 
 
   return (
     <Container className="fr-mt-5w">

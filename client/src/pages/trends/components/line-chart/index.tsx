@@ -31,7 +31,7 @@ export default function LineChart({ data, normalized, source }) {
         description: intl.formatMessage(
           { id: `trends.line-chart.yAxis.accessibility.description${normalized ? "-normalized" : ""}` },
           {
-            source: intl.formatMessage({ id: `trends.select-source.publications.${source}` }).toLowerCase(),
+            source: intl.formatMessage({ id: `trends.select-source.${source}` }).toLowerCase(),
           }
         ),
       },
