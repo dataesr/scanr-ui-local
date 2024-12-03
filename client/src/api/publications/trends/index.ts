@@ -5,7 +5,7 @@ import { CURRENT_YEAR, MAX_YEAR, MIN_YEAR } from "../../trends/config/years"
 
 type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
 
-export default async function getPublicationsTrends({ normalized }: TrendsArgs) {
+export default async function getPublicationsTrends({ model, normalized }: TrendsArgs) {
   const body: any = {
     size: 0,
     query: { bool: { must: { range: { year: { gte: MIN_YEAR } } } } },
@@ -13,7 +13,7 @@ export default async function getPublicationsTrends({ normalized }: TrendsArgs) 
       years: {
         terms: { field: "year", size: CURRENT_YEAR - MIN_YEAR },
         aggs: {
-          domains: { terms: { field: "domains.id_name.keyword", size: 10000 } },
+          domains: { terms: { field: `${model}.id_name.keyword`, size: 10000 } },
         },
       },
     },
@@ -38,7 +38,7 @@ export default async function getPublicationsTrends({ normalized }: TrendsArgs) 
     return null
   }
 
-  const data = aggregationToTrends(aggregation, normalized)
+  const data = aggregationToTrends(aggregation, "domains", normalized)
 
   return data
 }

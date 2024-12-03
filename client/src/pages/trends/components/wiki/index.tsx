@@ -6,6 +6,8 @@ export default function Wikidata({ item }) {
   const { wikis } = useWikidata()
   const wiki = wikis?.find((w) => w.code === item.id)
 
+  if (!wiki?.title) return null
+
   return (
     <div key={item.id}>
       <Text size="lg" className="fr-mb-0" bold>

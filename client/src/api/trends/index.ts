@@ -6,14 +6,12 @@ import { MAX_YEAR } from "./config/years"
 const EXCLUDE_WORDS = [""]
 const MAX_ITEMS = 15
 
-type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
+type TrendsAggregation = Array<ElasticBucket & { [x: string]: ElasticAggregation }>
 
-export default function aggregationToTrends(aggregation: TrendsAggregation, normalized: boolean) {
-  console.log("aggregation", aggregation)
-
-  // Domains count by year
+export default function aggregationToTrends(aggregation: TrendsAggregation, field: string, normalized: boolean) {
+  // Items count by year
   const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
-    bucket?.domains?.buckets.forEach((item) => {
+    bucket?.[field]?.buckets.forEach((item) => {
       const [id, label] = item.key.split("###")
       acc[id] = {
         ...acc?.[id],

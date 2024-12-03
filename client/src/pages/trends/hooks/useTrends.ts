@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
-import getPublicationsTrends from "../../../api/publications/trends"
 import { useTrendsContext } from "../context"
+import getPublicationsTrends from "../../../api/publications/trends"
 
 export default function useTrends() {
-  const { normalized } = useTrendsContext()
+  const { model, normalized } = useTrendsContext()
   const { data, error, isFetching } = useQuery({
-    queryKey: ["trends", "publications", normalized],
-    queryFn: () => getPublicationsTrends({ normalized: normalized }),
+    queryKey: ["trends", model, "publications", normalized],
+    queryFn: () => getPublicationsTrends({ model: model, normalized: normalized }),
   })
 
   const values = useMemo(() => {

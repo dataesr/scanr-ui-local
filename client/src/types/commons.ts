@@ -12,6 +12,7 @@ export type SearchArgs = {
 };
 
 export type TrendsArgs = {
+  model: string
   normalized: boolean
 }
 
