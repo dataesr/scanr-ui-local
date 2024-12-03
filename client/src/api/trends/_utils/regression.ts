@@ -1,5 +1,5 @@
 import { SimpleLinearRegression } from "ml-regression-simple-linear"
-import { YEARS } from "."
+import { YEARS } from "../config/years"
 
 export const linearRegressionSlope = (values) => {
   const X = YEARS

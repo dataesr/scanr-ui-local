@@ -1,16 +1,13 @@
-import { postHeaders, publicationsIndex } from "../../config/api"
 import { ElasticAggregation, ElasticBucket } from "../../types/commons"
-import { linearRegressionSlope } from "./_utils"
+import { linearRegressionSlope } from "./_utils/regression"
+import { MAX_YEAR } from "./config/years"
 
-const CURRENT_YEAR = new Date().getFullYear()
-const MAX_YEAR = CURRENT_YEAR - 1
-const MIN_YEAR = MAX_YEAR - 5
 const EXCLUDE_WORDS = [""]
-export const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
+const MAX_ITEMS = 15
 
 type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
 
-const aggregationToTrends = (aggregation: TrendsAggregation) => {
+export default function aggregationToTrends(aggregation: TrendsAggregation) {
   // Domains count by year
   const _domains: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
     bucket?.domains?.buckets.forEach((domain) => {
@@ -37,49 +34,11 @@ const aggregationToTrends = (aggregation: TrendsAggregation) => {
   })
 
   // Compute top domains
-  const topCount = domains.sort((a, b) => (b?.count?.[MAX_YEAR] || 0) - (a?.count?.[MAX_YEAR] || 0)).slice(0, 10)
-  const topDiff = domains.sort((a, b) => b.diff - a.diff).slice(0, 10)
-  const botDiff = domains.sort((a, b) => a.diff - b.diff).slice(0, 10)
-  const topSlope = domains.sort((a, b) => b.slope - a.slope).slice(0, 10)
-  const botSlope = domains.sort((a, b) => a.slope - b.slope).slice(0, 10)
+  const topCount = domains.sort((a, b) => (b?.count?.[MAX_YEAR] || 0) - (a?.count?.[MAX_YEAR] || 0)).slice(0, MAX_ITEMS)
+  const topDiff = domains.sort((a, b) => b.diff - a.diff).slice(0, MAX_ITEMS)
+  const botDiff = domains.sort((a, b) => a.diff - b.diff).slice(0, MAX_ITEMS)
+  const topSlope = domains.sort((a, b) => b.slope - a.slope).slice(0, MAX_ITEMS)
+  const botSlope = domains.sort((a, b) => a.slope - b.slope).slice(0, MAX_ITEMS)
 
   return { "count-top": topCount, "diff-top": topDiff, "diff-bot": botDiff, "trend-top": topSlope, "trend-bot": botSlope }
-}
-
-export default async function getPublicationsTrends() {
-  const body: any = {
-    size: 0,
-    query: { bool: { must: { range: { year: { gte: MIN_YEAR } } } } },
-    aggs: {
-      years: {
-        terms: { field: "year", size: CURRENT_YEAR - MIN_YEAR },
-        aggs: {
-          domains: { terms: { field: "domains.naturalKey.keyword", size: 10000 } },
-        },
-      },
-    },
-  }
-
-  const res = await fetch(`${publicationsIndex}/_search`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: postHeaders,
-  })
-
-  if (res.status !== 200) {
-    console.error(`Elasticsearch error: ${res.status}`)
-    return null
-  }
-
-  const json = await res.json()
-  const aggregation: TrendsAggregation = json.aggregations?.["years"]?.buckets
-
-  if (!aggregation?.length) {
-    console.error(`Elasticsearch error: no aggregation found for years ${MIN_YEAR}-${MAX_YEAR}`)
-    return null
-  }
-
-  const data = aggregationToTrends(aggregation)
-
-  return data
 }
