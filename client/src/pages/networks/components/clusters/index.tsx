@@ -37,7 +37,6 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
   const { setFocusItem } = useNetworkContext()
 
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
-  console.log("windows", window)
 
   return (
     <Container fluid className="cluster-item">
