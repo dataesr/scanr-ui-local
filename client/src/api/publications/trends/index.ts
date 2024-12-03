@@ -1,11 +1,11 @@
 import { postHeaders, publicationsIndex } from "../../../config/api"
-import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
+import { ElasticAggregation, ElasticBucket, TrendsArgs } from "../../../types/commons"
 import aggregationToTrends from "../../trends"
 import { CURRENT_YEAR, MAX_YEAR, MIN_YEAR } from "../../trends/config/years"
 
 type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
 
-export default async function getPublicationsTrends() {
+export default async function getPublicationsTrends({ normalized }: TrendsArgs) {
   const body: any = {
     size: 0,
     query: { bool: { must: { range: { year: { gte: MIN_YEAR } } } } },
@@ -38,7 +38,7 @@ export default async function getPublicationsTrends() {
     return null
   }
 
-  const data = aggregationToTrends(aggregation)
+  const data = aggregationToTrends(aggregation, normalized)
 
   return data
 }

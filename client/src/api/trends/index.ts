@@ -7,7 +7,7 @@ const MAX_ITEMS = 15
 
 type TrendsAggregation = Array<ElasticBucket & { domains: ElasticAggregation }>
 
-export default function aggregationToTrends(aggregation: TrendsAggregation) {
+export default function aggregationToTrends(aggregation: TrendsAggregation, normalized: boolean) {
   // Domains count by year
   const _domains: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
     bucket?.domains?.buckets.forEach((domain) => {
@@ -25,7 +25,7 @@ export default function aggregationToTrends(aggregation: TrendsAggregation) {
 
   // Add linear regression + diff from last year
   domains.forEach((domain) => {
-    const { slope, intercept } = linearRegressionSlope(domain.norm)
+    const { slope, intercept } = linearRegressionSlope(normalized ? domain.norm : domain.count)
     domain.slope = slope
     domain.intercept = intercept
     domain.diff = domain.count?.[MAX_YEAR]

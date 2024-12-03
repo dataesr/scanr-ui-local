@@ -11,6 +11,10 @@ export type SearchArgs = {
   size?: number;
 };
 
+export type TrendsArgs = {
+  normalized: boolean
+}
+
 export type ExportArgs = {
   query?: string;
   filters?: Record<string, unknown>[];

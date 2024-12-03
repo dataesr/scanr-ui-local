@@ -1,11 +1,13 @@
 import { Container } from "@dataesr/dsfr-plus"
 import { useTrendsContext } from "../../context"
-import usePublicationsTrends from "../../hooks/usePublicationsTrends"
+import useTrends from "../../hooks/useTrends"
 import LineChart from "../line-chart"
 
 export default function TrendsFocus() {
-  const { focus, view } = useTrendsContext()
-  const { trends } = usePublicationsTrends()
+  const { view, focus, normalized } = useTrendsContext()
+  const { trends } = useTrends()
+  console.log("normalized", normalized)
+  console.log("trends", trends)
 
   if (!trends || !focus) return null
 
@@ -13,8 +15,9 @@ export default function TrendsFocus() {
   if (!data) return null
 
   return (
-    <Container fluid className="fr-mt-5w">
-      <LineChart data={data} normalized={true} source={"publications"} />
+    <Container fluid className="fr-mt-3w">
+      <LineChart data={data} normalized={normalized} source={"publications"} />
+      <hr />
     </Container>
   )
 }
