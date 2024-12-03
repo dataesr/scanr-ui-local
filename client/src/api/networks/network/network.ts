@@ -28,7 +28,7 @@ export default async function networkCreate(
   query: string,
   model: string,
   filters: NetworkFilters,
-  aggregation: ElasticBuckets,
+  aggregation: Array<NetworkBucket>,
   parameters: NetworkParameters,
   lang: string
 ): Promise<NetworkData> {
