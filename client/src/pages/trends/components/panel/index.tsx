@@ -1,35 +1,23 @@
-import { Col, Container, Row, Text } from "@dataesr/dsfr-plus"
-import { TRENDS_VIEWS_LABELS } from "../../config/views"
+import { Container } from "@dataesr/dsfr-plus"
 import useTrends from "../../hooks/useTrends"
 import { useTrendsContext } from "../../context"
-import { useIntl } from "react-intl"
-import TrendsViewButton from "./button"
 import TrendsViewItem from "./item"
+import TrendsViewHeader from "./header"
+import TrendsViewSkeleton from "./skeleton"
 
 function TrendsView() {
-  const intl = useIntl()
   const { view } = useTrendsContext()
-  const { trends, isFetching } = useTrends()
+  const { trends, isFetching, error } = useTrends()
 
-  if (!trends || isFetching) return null
+  if (isFetching) return <TrendsViewSkeleton />
 
-  const data = trends?.[view]
-  if (!data) return null
+  if (!trends || !trends?.[view] || error) return <div>no data</div>
+
+  const data = trends[view]
 
   return (
     <Container fluid>
-      <Row verticalAlign="middle">
-        <Col lg="3">
-          <Text className="fr-mb-0">{intl.formatMessage({ id: "trends.views.header.domain" })}</Text>
-        </Col>
-        {TRENDS_VIEWS_LABELS.map((label) => (
-          <Col lg="3">
-            <Row horizontalAlign="right">
-              <TrendsViewButton label={label} />
-            </Row>
-          </Col>
-        ))}
-      </Row>
+      <TrendsViewHeader />
       <hr />
       {data.map((item) => (
         <TrendsViewItem item={item} />
@@ -40,10 +28,8 @@ function TrendsView() {
 
 export default function TrendsPanel() {
   return (
-    <Container fluid>
-      <Container fluid className="fr-mt-2w fr-mr-2w">
-        <TrendsView />
-      </Container>
+    <Container fluid className="fr-mt-2w fr-mr-2w">
+      <TrendsView />
     </Container>
   )
 }
