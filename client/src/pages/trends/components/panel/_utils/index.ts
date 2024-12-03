@@ -1,20 +1,28 @@
+import { DSFRColors } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 
-const DEFAULT_DIFF = 0.15
-const DEFAULT_SLOPE = (): number => {
-  const normalized = true
+const DEFAULT_COLOR = "beige-gris-galet"
+const DIFF_THRESHOLD = 0.15 // 15%
+const SLOPE_THRESHOLD = (normalized: boolean): number => {
   return normalized ? 0.00005 : 0.5
 }
 
-export const diffColor = (diff: number) =>
-  diff > DEFAULT_DIFF ? "success" : diff < -DEFAULT_DIFF ? "warning" : "beige-gris-galet"
-export const slopeColor = (slope: number) =>
-  slope > DEFAULT_SLOPE() ? "success" : slope < -DEFAULT_SLOPE() ? "warning" : "beige-gris-galet"
-export const slopeMessage = (slope: number) => {
+export function itemGetColor(item: any, field: "diff" | "slope", normalized: boolean): DSFRColors {
+  const threshold = field === "slope" ? SLOPE_THRESHOLD(normalized) : DIFF_THRESHOLD
+  const value = item?.[field] || 0
+
+  if (value > threshold) return "success"
+  if (value < -threshold) return "warning"
+
+  return DEFAULT_COLOR
+}
+
+export function itemGetTrendState(slope: number, normalized: boolean) {
   const intl = useIntl()
-  return slope > DEFAULT_SLOPE()
-    ? intl.formatMessage({ id: "trends.trending" })
-    : slope < -DEFAULT_SLOPE()
-    ? intl.formatMessage({ id: "trends.fading" })
-    : intl.formatMessage({ id: "trends.stable" })
+  const threshold = SLOPE_THRESHOLD(normalized)
+
+  if (slope > threshold) return intl.formatMessage({ id: "trends.trending" })
+  if (slope < -threshold) return intl.formatMessage({ id: "trends.fading" })
+
+  return intl.formatMessage({ id: "trends.stable" })
 }

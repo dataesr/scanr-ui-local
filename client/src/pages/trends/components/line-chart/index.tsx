@@ -6,7 +6,7 @@ export default function LineChart({ data, normalized, source }) {
   const intl = useIntl()
 
   const _data = YEARS.map((year) => data?.[normalized ? "norm" : "count"]?.[year] || 0)
-  const _reg = YEARS.map((year) => Number(year) * data.slope + data.intercept)
+  const _reg = YEARS.map((year) => Number(year) * (normalized ? data.slope * data.sum : data.slope) + data.intercept)
 
   if (!_data) return null
 

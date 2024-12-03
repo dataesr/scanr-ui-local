@@ -1,12 +1,15 @@
 import { Badge, Button, Col, Container, Row } from "@dataesr/dsfr-plus"
 import { useTrendsContext } from "../../../context"
 import { MAX_YEAR } from "../../../config/years"
-import { diffColor, slopeColor, slopeMessage } from "../_utils"
+import { itemGetColor, itemGetTrendState } from "../_utils"
 import TrendsFocus from "../../focus"
 
 export default function TrendsViewItem({ item }) {
-  const { focus, setFocus } = useTrendsContext()
+  const { focus, setFocus, normalized } = useTrendsContext()
   const isFocused = Boolean(focus === item.label)
+  const diffColor = itemGetColor(item, "diff", normalized)
+  const slopeColor = itemGetColor(item, "slope", normalized)
+  const trendState = itemGetTrendState(item.slope, normalized)
 
   return (
     <Container fluid>
@@ -27,20 +30,20 @@ export default function TrendsViewItem({ item }) {
         </Col>
         <Col lg="3">
           <Row horizontalAlign="right">
-            <Badge noIcon color={diffColor(item.diff)}>
+            <Badge noIcon key={`diff-${item.label}`} color={diffColor}>
               {`${Number(item.diff * 100).toFixed(0.1)} %`}
             </Badge>
           </Row>
         </Col>
         <Col lg="3">
           <Row horizontalAlign="right">
-            <Badge noIcon key={item.label} color={slopeColor(item.slope)}>
-              {slopeMessage(item.slope)}
+            <Badge noIcon key={`trend-${item.label}`} color={slopeColor}>
+              {trendState}
             </Badge>
           </Row>
         </Col>
       </Row>
-      {isFocused && <TrendsFocus />}
+      {isFocused && <TrendsFocus item={item} />}
     </Container>
   )
 }
