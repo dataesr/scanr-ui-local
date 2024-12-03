@@ -1,10 +1,6 @@
 import { useIntl } from "react-intl"
 import AnalyticsGraph from "../../../../components/analytics-graph"
-
-const CURRENT_YEAR = new Date().getFullYear()
-const MAX_YEAR = CURRENT_YEAR - 1
-const MIN_YEAR = MAX_YEAR - 5
-const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
+import { MAX_YEAR, MIN_YEAR, YEARS } from "../../config/years"
 
 export default function LineChart({ data, normalized, source }) {
   const intl = useIntl()

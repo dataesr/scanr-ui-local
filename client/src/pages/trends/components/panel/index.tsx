@@ -4,40 +4,47 @@ import usePublicationsTrends from "../../hooks/usePublicationsTrends"
 import { useTrendsContext } from "../../context"
 import { useIntl } from "react-intl"
 import TrendsFocus from "../focus"
+import { MAX_YEAR } from "../../config/years"
+import { diffColor, slopeColor, slopeMessage } from "./_utils"
 
-const diffColor = (diff: number) => (diff > 0.15 ? "success" : diff < -0.15 ? "warning" : "beige-gris-galet")
-const slopeColor = (slope: number) => (slope > 0.00005 ? "success" : slope < -0.00005 ? "warning" : "beige-gris-galet")
-const slopeMessage = (slope: number) => (slope > 0.00005 ? "trending" : slope < -0.00005 ? "fading" : "stable")
-
-function TrendsViewItem({ domain }) {
+function TrendsViewItem({ item }) {
   const { focus, setFocus } = useTrendsContext()
-  const isFocused = Boolean(focus === domain.label)
+  const isFocused = Boolean(focus === item.label)
 
   return (
-    <Row key={domain.label} verticalAlign="middle">
-      <Col lg="3">
-        <Button
-          key={domain.label}
-          variant={isFocused ? "tertiary" : "text"}
-          onClick={() => setFocus(isFocused ? "" : domain.label)}
-        >
-          {domain.label}
-        </Button>
-      </Col>
-      <Col lg="3">
-        <div>{domain?.count?.["2023"] || 0}</div>
-      </Col>
-      <Col lg="3">
-        <Badge noIcon color={diffColor(domain.diff)}>
-          {`${Number(domain.diff * 100).toFixed(0.1)} %`}
-        </Badge>
-      </Col>
-      <Col lg="3">
-        <Badge noIcon key={domain.label} color={slopeColor(domain.slope)}>
-          {slopeMessage(domain.slope)}
-        </Badge>
-      </Col>
-    </Row>
+    <Container fluid>
+      <Row key={item.label}>
+        <Col lg="3">
+          <Button
+            key={item.label}
+            variant={isFocused ? "tertiary" : "text"}
+            onClick={() => setFocus(isFocused ? "" : item.label)}
+          >
+            {item.label}
+          </Button>
+        </Col>
+        <Col lg="3">
+          <Row horizontalAlign="right">
+            <div>{item?.count?.[MAX_YEAR] || 0}</div>
+          </Row>
+        </Col>
+        <Col lg="3">
+          <Row horizontalAlign="right">
+            <Badge noIcon color={diffColor(item.diff)}>
+              {`${Number(item.diff * 100).toFixed(0.1)} %`}
+            </Badge>
+          </Row>
+        </Col>
+        <Col lg="3">
+          <Row horizontalAlign="right">
+            <Badge noIcon key={item.label} color={slopeColor(item.slope)}>
+              {slopeMessage(item.slope)}
+            </Badge>
+          </Row>
+        </Col>
+      </Row>
+      {isFocused && <TrendsFocus />}
+    </Container>
   )
 }
 
@@ -84,12 +91,15 @@ function TrendsView() {
         </Col>
         {TRENDS_VIEWS_LABELS.map((label) => (
           <Col lg="3">
-            <TrendsViewButton label={label} />
+            <Row horizontalAlign="right">
+              <TrendsViewButton label={label} />
+            </Row>
           </Col>
         ))}
       </Row>
-      {data.map((domain) => (
-        <TrendsViewItem domain={domain} />
+      <hr />
+      {data.map((item) => (
+        <TrendsViewItem item={item} />
       ))}
     </Container>
   )
@@ -98,10 +108,9 @@ function TrendsView() {
 export default function TrendsPanel() {
   return (
     <Container fluid>
-      <Container fluid className="fr-mt-2w">
+      <Container fluid className="fr-mt-2w fr-mr-2w">
         <TrendsView />
       </Container>
-      <TrendsFocus />
     </Container>
   )
 }
