@@ -5,3 +5,14 @@ export type TrendsView = {
   order: string
   nextView?: string
 }
+
+export type TrendsFilters = Array<TrendsFilters>
+export type TrendsFilter = Record<string, unknown>
+
+export type TrendsArgs = {
+  model: string
+  query: string
+  normalized: boolean
+  filters?: TrendsFilters
+}
+

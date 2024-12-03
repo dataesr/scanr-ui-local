@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { useTrendsContext } from "../context"
 import { getPublicationsTrends, getCitationsTrends } from "../../../api/publications/trends"
+import useUrl from "../../search/hooks/useUrl"
 
 const API_MAPPING = {
   publications: getPublicationsTrends,
@@ -9,10 +10,11 @@ const API_MAPPING = {
 }
 
 export default function useTrends() {
-  const { model, source, normalized } = useTrendsContext()
+  const { currentQuery, filters } = useUrl()
+  const { source, normalized } = useTrendsContext()
   const { data, error, isFetching } = useQuery({
-    queryKey: ["trends", model, source, normalized],
-    queryFn: () => API_MAPPING[source]({ model: model, normalized: normalized }),
+    queryKey: ["trends", currentQuery, filters, source, normalized],
+    queryFn: () => API_MAPPING[source]({ model: "domains", query: currentQuery, filters: filters, normalized: normalized }),
   })
 
   const values = useMemo(() => {

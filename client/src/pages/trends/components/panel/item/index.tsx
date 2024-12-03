@@ -6,7 +6,7 @@ import TrendsFocus from "../../focus"
 import Wikidata from "../../wiki"
 
 export default function TrendsViewItem({ item }) {
-  const { model, focus, setFocus, normalized } = useTrendsContext()
+  const { focus, setFocus, normalized } = useTrendsContext()
   const isFocused = Boolean(focus === item.label)
   const diffColor = itemGetColor(item, "diff", normalized)
   const slopeColor = itemGetColor(item, normalized ? "norm_slope" : "slope", normalized)
@@ -26,7 +26,7 @@ export default function TrendsViewItem({ item }) {
             >
               {item.label}
             </Button>
-            {isFocused && model === "domains" && <Wikidata item={item} />}
+            {isFocused && <Wikidata item={item} />}
           </Row>
         </Col>
         <Col lg="3">

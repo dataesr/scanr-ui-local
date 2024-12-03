@@ -29,7 +29,7 @@ function TrendsView() {
 
 export default function TrendsPanel() {
   return (
-    <Container fluid className="fr-mt-2w fr-mr-2w">
+    <Container fluid className="fr-mr-2w">
       <TrendsView />
     </Container>
   )

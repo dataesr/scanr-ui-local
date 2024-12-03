@@ -11,11 +11,6 @@ export type SearchArgs = {
   size?: number;
 };
 
-export type TrendsArgs = {
-  model: string
-  normalized: boolean
-}
-
 export type ExportArgs = {
   query?: string;
   filters?: Record<string, unknown>[];

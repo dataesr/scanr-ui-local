@@ -22,8 +22,9 @@ const API_MAPPING = {
   organizations: aggregateOrganizations,
   he: aggregateOrganizationsForHe,
   patents: aggregatePatents,
-  networks: aggregatePublications
-};
+  networks: aggregatePublications,
+  trends: aggregatePublications,
+}
 
 type AggregationsModel =
   | PublicationAggregations
