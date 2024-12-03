@@ -1,7 +1,33 @@
-import { Button, Col, Row, Text } from "@dataesr/dsfr-plus"
+import { Button, Col, MenuButton, MenuItem, Row, Text } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import { useTrendsContext } from "../../../context"
 import { trendsViewFromLabel, trendsViewGetConfig } from "../../../config/views"
+import useScreenSize from "../../../../../hooks/useScreenSize"
+
+function TrendsViewMobileButton() {
+  const intl = useIntl()
+  const { view, setView, setFocus } = useTrendsContext()
+  const viewConfig = trendsViewGetConfig(view)
+
+  const onMenuAction = (key: string) => {
+    key === viewConfig.label ? viewConfig?.nextView && setView(viewConfig.nextView) : setView(trendsViewFromLabel(key))
+    setFocus("")
+  }
+
+  return (
+    <MenuButton
+      label={intl.formatMessage({ id: `trends.views.header.${viewConfig.label}` })}
+      variant="tertiary"
+      icon="more-fill"
+      onAction={onMenuAction}
+      iconPosition="right"
+    >
+      <MenuItem key="count">{intl.formatMessage({ id: `trends.views.header.count` })}</MenuItem>
+      <MenuItem key="diff">{intl.formatMessage({ id: `trends.views.header.diff` })}</MenuItem>
+      <MenuItem key="trend">{intl.formatMessage({ id: `trends.views.header.trend` })}</MenuItem>
+    </MenuButton>
+  )
+}
 
 function TrendsViewButton({ label }) {
   const intl = useIntl()
@@ -30,23 +56,36 @@ function TrendsViewButton({ label }) {
 
 export default function TrendsViewHeader() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
+  const isMobile = ["xs", "sm"].includes(screen)
 
   return (
     <Row verticalAlign="middle" horizontalAlign="center">
-      <Col lg="4">
+      <Col xs="8" sm="8" md="4" lg="4">
         <Text style={{ justifySelf: "center" }} className="fr-mb-0">
           {intl.formatMessage({ id: `trends.views.header.domains` })}
         </Text>
       </Col>
-      <Col lg="2">
-        <TrendsViewButton label="count" />
-      </Col>
-      <Col lg="3">
-        <TrendsViewButton label="diff" />
-      </Col>
-      <Col lg="3">
-        <TrendsViewButton label="trend" />
-      </Col>
+      {!isMobile && (
+        <>
+          <Col md="2" lg="2">
+            <TrendsViewButton label="count" />
+          </Col>
+          <Col md="3" lg="3">
+            <TrendsViewButton label="diff" />
+          </Col>
+          <Col md="3" lg="3">
+            <TrendsViewButton label="trend" />
+          </Col>
+        </>
+      )}
+      {isMobile && (
+        <Col xs="4" sm="4">
+          <Row horizontalAlign="right">
+            <TrendsViewMobileButton />
+          </Row>
+        </Col>
+      )}
     </Row>
   )
 }
