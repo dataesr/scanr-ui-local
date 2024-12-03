@@ -13,16 +13,16 @@ function TrendsView() {
 
   if (!trends || !trends?.[view] || error) return <div>no data</div>
 
-  console.log("trends", trends, view)
   const data = trends[view]
 
   return (
     <Container fluid>
       <TrendsViewHeader />
-      <hr />
-      {data.map((item, index) => (
-        <TrendsViewItem key={index} item={item} />
-      ))}
+      <div className="fr-accordions-group">
+        {data.map((item, index) => (
+          <TrendsViewItem key={index} item={item} />
+        ))}
+      </div>
     </Container>
   )
 }

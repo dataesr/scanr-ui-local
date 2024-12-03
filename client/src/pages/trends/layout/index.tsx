@@ -4,9 +4,9 @@ import TrendsHeader from "../components/header"
 import TrendsPanel from "../components/panel"
 import TrendsSelectSource from "../components/select-source"
 import TrendsParameters from "../components/parameters"
-import PublicationFilters from "../../search/components/publications/filters"
 import TrendsFilters from "../components/filters"
 import TrendsSearchBar from "../components/search-bar"
+import PublicationFilters from "../../search/components/publications/filters"
 
 export default function TrendsLayout() {
   const intl = useIntl()
