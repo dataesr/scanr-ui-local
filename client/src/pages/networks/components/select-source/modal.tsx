@@ -8,10 +8,11 @@ export default function NetworkSelectSourceModal() {
   return (
     <Modal id={"networks-options-select-source-modal"} size="lg" title={"Source"}>
       <Container fluid className="fr-mb-4w">
-        <Listbox selectionMode="single">
+        <Listbox selectedKeys={["publications"]} selectionMode="single">
           <ListboxItem
+            key={"publications"}
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-article-line`} />}
-            description="A small description"
+            description="Corpus de publications scanR"
           >
             {intl.formatMessage({ id: "networks.select-source.publications" })}
           </ListboxItem>

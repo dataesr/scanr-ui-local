@@ -9,7 +9,7 @@ export default function NetworkSelectModelModal() {
   const { currentTab, handleTabChange } = useTab()
 
   return (
-    <Modal id={"networks-options-select-tab-modal"} size="lg" title={"Modèle"}>
+    <Modal id={"networks-options-select-tab-modal"} size="lg" title={"Réseau"}>
       <Container fluid className="fr-mb-4w">
         <Listbox
           selectedKeys={[currentTab]}
@@ -20,7 +20,7 @@ export default function NetworkSelectModelModal() {
             <ListboxItem
               startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-${icon}`} />}
               key={label}
-              description="A small description"
+              description={intl.formatMessage({ id: `networks.tab.${label}.description` })}
             >
               {intl.formatMessage({ id: `networks.tab.${label}` })}
             </ListboxItem>

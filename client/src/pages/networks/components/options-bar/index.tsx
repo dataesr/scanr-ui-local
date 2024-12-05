@@ -3,9 +3,11 @@ import useUrl from "../../../search/hooks/useUrl"
 import useTab from "../../hooks/useTab"
 import { networkTabFindIcon } from "../../config/tabs"
 import { useIntl } from "react-intl"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function NetworksOptionsBar() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
   const { currentQuery, currentFilters } = useUrl()
   const { currentTab } = useTab()
   const currentTabIcon = networkTabFindIcon(currentTab)
@@ -79,7 +81,7 @@ export default function NetworksOptionsBar() {
               data-fr-opened="false"
               variant={"tertiary"}
             >
-              {"Filtres"}
+              {["xs", "sm", "md"].includes(screen) ? "" : "Filtres"}
             </Button>
             <Button
               icon="equalizer-line"
@@ -89,7 +91,7 @@ export default function NetworksOptionsBar() {
               data-fr-opened="false"
               variant={"tertiary"}
             >
-              {"Paramètres"}
+              {["xs", "sm", "md"].includes(screen) ? "" : "Paramètres"}
             </Button>
           </Row>
         </Col>
