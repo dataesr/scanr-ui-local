@@ -20,19 +20,24 @@ export default function NetworksLayout() {
 
   if (showGraphOnly === true) return <NetworkCard />
 
+  console.log("screen", screen)
+
   return (
     <Container fluid>
       <NetworksHeader />
       <NetworksOptionsBar />
       <NetworksOptionsModals />
       <Container>
+        <NetworkCard />
+        <Row horizontalAlign="center">
+          <ClustersButton />
+        </Row>
         <Row gutters>
-          <Col md={12} lg={8}>
-            <NetworkCard />
-          </Col>
-          <Col md={12} lg={4}>
-            <ClustersButton />
+          <Col xs={12} sm={12} md={8} lg={8} xl={8}>
             <NetworkClusters />
+          </Col>
+          <Col xs={12} sm={12} md={4} lg={4} xl={4}>
+            <NetworkAnalytics />
           </Col>
         </Row>
       </Container>

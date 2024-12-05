@@ -4,9 +4,11 @@ import useTab from "../../hooks/useTab"
 import useSearchData from "../../hooks/useSearchData"
 import useExportData from "../../hooks/useExportData"
 import useIntegration from "../../hooks/useIntegration"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function NetworkExportsButton() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
   const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
   const { search, currentQuery } = useSearchData(currentTab)
@@ -25,7 +27,9 @@ export default function NetworkExportsButton() {
         isExporting || search.isFetching || Boolean(search.error) || !currentQuery ? ["export>json", "export>xlsx"] : []
       }
       label={
-        isExporting
+        ["xs", "sm", "md"].includes(screen)
+          ? ""
+          : isExporting
           ? intl.formatMessage({ id: "networks.exports.is-exporting" })
           : intl.formatMessage({ id: "networks.exports.title" })
       }
@@ -36,7 +40,6 @@ export default function NetworkExportsButton() {
       iconPosition="right"
       icon="download-line"
       onAction={handleExport}
-      className="fr-mb-1w"
     >
       <MenuItem
         key="export>json"

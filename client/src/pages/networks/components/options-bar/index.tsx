@@ -1,4 +1,4 @@
-import { Button, Col, Container, MenuButton, Row } from "@dataesr/dsfr-plus"
+import { Button, Col, Container, Row } from "@dataesr/dsfr-plus"
 import useUrl from "../../../search/hooks/useUrl"
 import useTab from "../../hooks/useTab"
 import { networkTabFindIcon } from "../../config/tabs"
@@ -14,12 +14,12 @@ export default function NetworksOptionsBar() {
   const currentTabIcon = networkTabFindIcon(currentTab)
 
   const isEmptyQuery = !currentQuery || currentQuery === "*"
-  const shortQuery = currentQuery?.length || 0 > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
+  const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
 
   return (
     <Container className="fr-mb-2w">
       <Row>
-        <Col lg={6}>
+        <Col lg={8}>
           <Row horizontalAlign="left">
             <Button
               icon="search-line"
@@ -69,6 +69,7 @@ export default function NetworksOptionsBar() {
               {["xs", "sm", "md"].includes(screen) ? "" : "Filtres"}
             </Button>
             <Button
+              className="fr-mr-1w"
               icon="equalizer-line"
               iconPosition="right"
               as="button"
@@ -78,10 +79,6 @@ export default function NetworksOptionsBar() {
             >
               {["xs", "sm", "md"].includes(screen) ? "" : "Paramètres"}
             </Button>
-          </Row>
-        </Col>
-        <Col lg={2}>
-          <Row horizontalAlign="right">
             <NetworkExportsButton />
           </Row>
         </Col>
