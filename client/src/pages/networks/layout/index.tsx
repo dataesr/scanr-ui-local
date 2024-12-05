@@ -4,13 +4,11 @@ import NetworkCard from "../components/graph/card"
 import ClustersButton from "../components/clusters/button"
 import NetworkClusters from "../components/clusters"
 import NetworkAnalytics from "../components/clusters/analytics"
-import NetworkExports from "../components/exports"
 import useIntegration from "../hooks/useIntegration"
 import { useIntl } from "react-intl"
 import useScreenSize from "../../../hooks/useScreenSize"
 import NetworksOptionsBar from "../components/options-bar"
 import NetworksOptionsModals from "../components/options-bar/modals"
-import NetworkFiltersBar from "../components/filters/filters-bar"
 
 export default function NetworksLayout() {
   const intl = useIntl()
@@ -27,7 +25,6 @@ export default function NetworksLayout() {
     <Container fluid>
       <NetworksHeader />
       <NetworksOptionsBar />
-      <NetworkFiltersBar />
       <NetworksOptionsModals />
       <Container>
         <NetworkCard />

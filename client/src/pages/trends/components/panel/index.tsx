@@ -16,7 +16,7 @@ export default function TrendsView() {
   const data = trends[view]
 
   return (
-    <Container fluid>
+    <Container fluid className="fr-card">
       <TrendsViewHeader />
       <div className="fr-accordions-group">
         {data.map((item, index) => (

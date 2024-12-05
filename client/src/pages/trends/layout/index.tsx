@@ -7,6 +7,8 @@ import TrendsParameters from "../components/parameters"
 import TrendsFilters from "../components/filters"
 import TrendsSearchBar from "../components/search-bar"
 import PublicationFilters from "../../search/components/publications/filters"
+import TrendsOptionsBar from "../components/options-bar"
+import TrendsOptionsModals from "../components/options-bar/modals"
 
 export default function TrendsLayout() {
   const intl = useIntl()
@@ -14,19 +16,11 @@ export default function TrendsLayout() {
   return (
     <Container fluid>
       <TrendsHeader />
+      <TrendsOptionsBar />
+      <TrendsOptionsModals />
       <PublicationFilters />
       <Container>
-        <Row gutters>
-          <Col xs="12" sm="12" md="9" lg="8" xl="8">
-            <TrendsView />
-          </Col>
-          <Col md="3" lg="4">
-            <TrendsSearchBar label={intl.formatMessage({ id: "trends.search-bar.label" })} />
-            <TrendsSelectSource />
-            <TrendsFilters />
-            <TrendsParameters />
-          </Col>
-        </Row>
+        <TrendsView />
       </Container>
     </Container>
   )
