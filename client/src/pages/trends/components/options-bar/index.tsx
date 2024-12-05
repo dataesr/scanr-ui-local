@@ -6,7 +6,7 @@ import { useTrendsContext } from "../../context"
 
 export default function TrendsOptionsBar() {
   const intl = useIntl()
-  const { source } = useTrendsContext()
+  const { model, source } = useTrendsContext()
   const { screen } = useScreenSize()
   const { currentQuery } = useUrl()
 
@@ -27,6 +27,17 @@ export default function TrendsOptionsBar() {
               variant={isEmptyQuery ? "tertiary" : "secondary"}
             >
               {isEmptyQuery ? "Tout" : shortQuery}
+            </Button>
+            <Button
+              className="fr-ml-1w"
+              icon={"book-2-line"}
+              iconPosition="left"
+              as="button"
+              aria-controls="trends-options-select-model-modal"
+              data-fr-opened="false"
+              variant="secondary"
+            >
+              {intl.formatMessage({ id: `trends.select-model.${model}` })}
             </Button>
             <Button
               className="fr-ml-1w"
