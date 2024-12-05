@@ -7,14 +7,19 @@ import useTab from "../../hooks/useTab"
 export default function NetworkSelectModelModal() {
   const intl = useIntl()
   const { currentTab, handleTabChange } = useTab()
+  const id = "networks-options-select-tab-modal"
 
   return (
-    <Modal id={"networks-options-select-tab-modal"} size="lg" title={"Réseau"}>
+    <Modal id={id} size="lg" title={"Réseau"}>
       <Container fluid className="fr-mb-4w">
         <Listbox
           selectedKeys={[currentTab]}
           selectionMode="single"
-          onSelectionChange={(value) => handleTabChange(Object.values(value)[0])}
+          onSelectionChange={(value) => {
+            handleTabChange(Object.values(value)[0])
+            // @ts-expect-error dsfr does not have types
+            window.dsfr(document.getElementById(id)).modal.conceal()
+          }}
         >
           {networkTabs.map(({ label, icon }) => (
             <ListboxItem

@@ -27,10 +27,12 @@ export default function NetworksLayout() {
       <NetworksOptionsModals />
       <Container>
         <Row gutters>
-          <Col>
+          <Col md={12} lg={8}>
             <NetworkCard />
+          </Col>
+          <Col md={12} lg={4}>
             <ClustersButton />
-            {!isMobile && <NetworkClusters />}
+            <NetworkClusters />
           </Col>
         </Row>
       </Container>

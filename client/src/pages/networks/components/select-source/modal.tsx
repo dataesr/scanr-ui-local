@@ -4,11 +4,20 @@ import { useIntl } from "react-intl"
 
 export default function NetworkSelectSourceModal() {
   const intl = useIntl()
+  const id = "networks-options-select-source-modal"
 
   return (
-    <Modal id={"networks-options-select-source-modal"} size="lg" title={"Source"}>
+    <Modal id={id} size="lg" title={"Source"}>
       <Container fluid className="fr-mb-4w">
-        <Listbox selectedKeys={["publications"]} selectionMode="single">
+        <Listbox
+          selectedKeys={["publications"]}
+          selectionMode="single"
+          onSelectionChange={() => {
+            const element = document.getElementById(id)
+            // @ts-expect-error dsfr does not have types
+            window.dsfr(element).modal.conceal()
+          }}
+        >
           <ListboxItem
             key={"publications"}
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-article-line`} />}
