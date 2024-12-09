@@ -8,22 +8,42 @@ import { RawIntlProvider, createIntl } from "react-intl"
 import { messages } from "../../config/messages"
 import { useParams } from "react-router-dom"
 
-function NetworkGetStartedButton() {
+function NetworkGetStartedHome() {
+  const theme = document.documentElement.getAttribute("data-fr-theme")
+
   return (
-    <Container style={{ maxWidth: "1000px" }}>
-      <Row horizontalAlign="center">
-        <Text>
-          {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna \
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-          }
-        </Text>
-      </Row>
-      <Row horizontalAlign="center">
-        <Button as="a" icon="arrow-right-line" iconPosition="right" href="/networks/get-started/1">
-          {"Créer un réseau"}
-        </Button>
-      </Row>
+    <Container>
+      <Container className="fr-card">
+        <Container
+          className={`graph-background-${theme}`}
+          style={{ display: "flex", maxWidth: "1000px", minHeight: "500px" }}
+        >
+          <Container className={`graph-title-${theme}`} style={{ maxWidth: "80%", alignSelf: "center" }}>
+            <Row className="fr-mt-5w" horizontalAlign="center">
+              <Text>
+                {
+                  "Bienvenue sur la page réseau nanani nanan lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+                }
+              </Text>
+            </Row>
+            <Row className="fr-mb-5w" horizontalAlign="center">
+              <Button as="a" icon="arrow-right-line" iconPosition="right" variant="secondary" href="/networks">
+                {"Accéder directement au réseau"}
+              </Button>
+              <Button
+                className="fr-ml-2w"
+                as="a"
+                icon="arrow-right-line"
+                iconPosition="right"
+                variant="primary"
+                href="/networks/get-started/1"
+              >
+                {"Créer un réseau"}
+              </Button>
+            </Row>
+          </Container>
+        </Container>
+      </Container>
     </Container>
   )
 }
@@ -33,7 +53,7 @@ function NetworkGetStartedPages() {
 
   switch (page) {
     case "0":
-      return <NetworkGetStartedButton />
+      return <NetworkGetStartedHome />
     case "1":
       return <NetworkSearchBarGetStarted />
     case "2":
@@ -41,7 +61,7 @@ function NetworkGetStartedPages() {
     case "3":
       return <NetworkSelectModelGetStarted />
     default:
-      return <NetworkGetStartedButton />
+      return <NetworkGetStartedHome />
   }
 }
 
@@ -56,12 +76,7 @@ export default function NetworksGetStarted() {
     <RawIntlProvider value={intl}>
       <NetworkContext>
         <NetworksHeader />
-        {/* <NetworksOptionsBar /> */}
-        <Container>
-          <Container className="fr-card" style={{ minHeight: "500px", justifyContent: "center" }}>
-            <NetworkGetStartedPages />
-          </Container>
-        </Container>
+        <NetworkGetStartedPages />
       </NetworkContext>
     </RawIntlProvider>
   )

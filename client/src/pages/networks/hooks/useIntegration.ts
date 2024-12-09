@@ -15,7 +15,7 @@ const DEFAULT_INTEGRATION = {
   showBreadcrumb: true,
   showSelect: true,
   showHeader: true,
-  graphHeight: "700px",
+  graphHeight: "600px",
 }
 
 export default function useIntegration() {

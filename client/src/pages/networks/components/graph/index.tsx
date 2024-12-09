@@ -1,7 +1,6 @@
 import { Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
-import Default from "./default"
 import useTab from "../../hooks/useTab"
 import useSearchData from "../../hooks/useSearchData"
 import Error204 from "../errors/error204"
@@ -19,8 +18,6 @@ export default function NetworkGraph() {
 
   if (searchClusters.isFetching) parameters.clusters = false
   const vosviewer = parameters.clusters ? searchClusters?.data : search?.data
-
-  if (!currentQuery) return <Default />
 
   if (search.isFetching) return <Spinner />
 

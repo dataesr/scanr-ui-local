@@ -19,7 +19,7 @@ export default function NetworkTitle() {
     (integrationId ? `${intl.formatMessage({ id: "networks.header.title.perimeter" })} ${integrationId}` : "")
 
   return (
-    <Container fluid className="fr-mb-2w">
+    <Container fluid className="fr-mb-1w">
       {showTitle && (
         <Title as="h4" className="fr-mb-1w">
           {intl.formatMessage(
