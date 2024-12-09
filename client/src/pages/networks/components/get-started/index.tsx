@@ -7,7 +7,6 @@ import NetworksHeader from "../header"
 import { RawIntlProvider, createIntl } from "react-intl"
 import { messages } from "../../config/messages"
 import { useParams } from "react-router-dom"
-import NetworksOptionsBar from "../options-bar"
 
 function NetworkGetStartedButton() {
   return (

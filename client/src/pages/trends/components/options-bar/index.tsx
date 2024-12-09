@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from "@dataesr/dsfr-plus"
+import { Badge, Button, Col, Container, Row } from "@dataesr/dsfr-plus"
 import useUrl from "../../../search/hooks/useUrl"
 import { useIntl } from "react-intl"
 import useScreenSize from "../../../../hooks/useScreenSize"
@@ -8,7 +8,7 @@ export default function TrendsOptionsBar() {
   const intl = useIntl()
   const { model, source } = useTrendsContext()
   const { screen } = useScreenSize()
-  const { currentQuery } = useUrl()
+  const { currentQuery, currentFilters } = useUrl()
 
   const isEmptyQuery = !currentQuery || currentQuery === "*"
   const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
@@ -58,17 +58,20 @@ export default function TrendsOptionsBar() {
             <Button
               className="fr-mr-1w"
               icon="more-line"
-              iconPosition="right"
+              iconPosition="left"
               as="button"
               aria-controls="trends-filters"
               data-fr-opened="false"
               variant={"tertiary"}
             >
               {["xs", "sm", "md"].includes(screen) ? "" : "Filtres"}
+              <Badge className="fr-ml-1w" size="md" color="blue-ecume">
+                {`${Object.keys(currentFilters)?.length}`}
+              </Badge>
             </Button>
             <Button
               icon="equalizer-line"
-              iconPosition="right"
+              iconPosition="left"
               as="button"
               aria-controls="trends-options-parameters-modal"
               data-fr-opened="false"

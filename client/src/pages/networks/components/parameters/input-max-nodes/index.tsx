@@ -11,7 +11,7 @@ export default function InputMaxNodes() {
       label={intl.formatMessage({ id: "networks.parameters.input-max-nodes.label" })}
       hint={intl.formatMessage({ id: "networks.parameters.input-max-nodes.hint" })}
       type="number"
-      min={1}
+      min={10}
       max={1000}
       value={parameters.maxNodes}
       onChange={(event) => handleParametersChange("maxNodes", Number(event.target.value))}

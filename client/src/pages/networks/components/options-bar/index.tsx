@@ -1,7 +1,6 @@
-import { Button, Col, Container, Row } from "@dataesr/dsfr-plus"
+import { Badge, Button, Col, Container, Row } from "@dataesr/dsfr-plus"
 import useUrl from "../../../search/hooks/useUrl"
 import useTab from "../../hooks/useTab"
-import { networkTabFindIcon } from "../../config/tabs"
 import { useIntl } from "react-intl"
 import useScreenSize from "../../../../hooks/useScreenSize"
 import NetworkExportsButton from "../exports/button"
@@ -9,9 +8,8 @@ import NetworkExportsButton from "../exports/button"
 export default function NetworksOptionsBar() {
   const intl = useIntl()
   const { screen } = useScreenSize()
-  const { currentQuery } = useUrl()
+  const { currentQuery, currentFilters } = useUrl()
   const { currentTab } = useTab()
-  const currentTabIcon = networkTabFindIcon(currentTab)
 
   const isEmptyQuery = !currentQuery || currentQuery === "*"
   const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
@@ -19,7 +17,7 @@ export default function NetworksOptionsBar() {
   return (
     <Container className="fr-mb-2w">
       <Row>
-        <Col lg={8}>
+        <Col lg={7}>
           <Row horizontalAlign="left">
             <Button
               icon="search-line"
@@ -55,23 +53,26 @@ export default function NetworksOptionsBar() {
             </Button>
           </Row>
         </Col>
-        <Col lg={4}>
+        <Col lg={5}>
           <Row horizontalAlign="right">
             <Button
               className="fr-mr-1w"
               icon="more-line"
-              iconPosition="right"
+              iconPosition="left"
               as="button"
               aria-controls="networks-filters"
               data-fr-opened="false"
               variant={"tertiary"}
             >
               {["xs", "sm", "md"].includes(screen) ? "" : "Filtres"}
+              <Badge className="fr-ml-1w" size="md" color="blue-ecume">
+                {`${Object.keys(currentFilters)?.length}`}
+              </Badge>
             </Button>
             <Button
               className="fr-mr-1w"
               icon="equalizer-line"
-              iconPosition="right"
+              iconPosition="left"
               as="button"
               aria-controls="networks-options-parameters-modal"
               data-fr-opened="false"
