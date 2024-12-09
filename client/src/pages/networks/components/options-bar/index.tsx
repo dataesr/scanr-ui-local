@@ -1,85 +1,30 @@
-import { Badge, Button, Col, Container, Row } from "@dataesr/dsfr-plus"
-import useUrl from "../../../search/hooks/useUrl"
-import useTab from "../../hooks/useTab"
-import { useIntl } from "react-intl"
-import useScreenSize from "../../../../hooks/useScreenSize"
+import { Col, Container, Row } from "@dataesr/dsfr-plus"
 import NetworkExportsButton from "../exports/button"
+import NetworkSearchBarButton from "../search-bar/button"
+import NetworkSelectModelButton from "../select-model/button"
+import NetworkSelectSourceButton from "../select-source/button"
+import NetworkFiltersButton from "../filters/button"
+import NetworkParametersButton from "../parameters/button"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function NetworksOptionsBar() {
-  const intl = useIntl()
   const { screen } = useScreenSize()
-  const { currentQuery, currentFilters } = useUrl()
-  const { currentTab } = useTab()
-
-  const isEmptyQuery = !currentQuery || currentQuery === "*"
-  const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
+  console.log("screen", screen)
 
   return (
     <Container className="fr-mb-2w">
       <Row>
-        <Col lg={7}>
+        <Col xs={12} sm={12} md={9} lg={7} xl={7}>
           <Row horizontalAlign="left">
-            <Button
-              icon="search-line"
-              iconPosition="left"
-              as="button"
-              aria-controls="networks-options-search-bar-modal"
-              data-fr-opened="false"
-              variant={isEmptyQuery ? "tertiary" : "secondary"}
-            >
-              {isEmptyQuery ? "Tout" : shortQuery}
-            </Button>
-            <Button
-              className="fr-ml-1w"
-              icon="git-branch-line"
-              iconPosition="left"
-              as="button"
-              aria-controls="networks-options-select-tab-modal"
-              data-fr-opened="false"
-              variant="secondary"
-            >
-              {intl.formatMessage({ id: `networks.tab.${currentTab}` })}
-            </Button>
-            <Button
-              className="fr-ml-1w"
-              icon="article-line"
-              iconPosition="left"
-              as="button"
-              aria-controls="networks-options-select-source-modal"
-              data-fr-opened="false"
-              variant="secondary"
-            >
-              {"Publications"}
-            </Button>
+            <NetworkSearchBarButton />
+            <NetworkSelectModelButton />
+            <NetworkSelectSourceButton />
           </Row>
         </Col>
-        <Col lg={5}>
-          <Row horizontalAlign="right">
-            <Button
-              className="fr-mr-1w"
-              icon="more-line"
-              iconPosition="left"
-              as="button"
-              aria-controls="networks-filters"
-              data-fr-opened="false"
-              variant={"tertiary"}
-            >
-              {["xs", "sm", "md"].includes(screen) ? "" : "Filtres"}
-              <Badge className="fr-ml-1w" size="md" color="blue-ecume">
-                {`${Object.keys(currentFilters)?.length}`}
-              </Badge>
-            </Button>
-            <Button
-              className="fr-mr-1w"
-              icon="equalizer-line"
-              iconPosition="left"
-              as="button"
-              aria-controls="networks-options-parameters-modal"
-              data-fr-opened="false"
-              variant={"tertiary"}
-            >
-              {["xs", "sm", "md"].includes(screen) ? "" : "Paramètres"}
-            </Button>
+        <Col xs={12} sm={12} md={3} lg={5} xl={5}>
+          <Row horizontalAlign={["xs", "sm"].includes(screen) ? "left" : "right"}>
+            <NetworkFiltersButton />
+            <NetworkParametersButton />
             <NetworkExportsButton />
           </Row>
         </Col>

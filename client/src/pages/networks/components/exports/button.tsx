@@ -27,12 +27,13 @@ export default function NetworkExportsButton() {
         isExporting || search.isFetching || Boolean(search.error) || !currentQuery ? ["export>json", "export>xlsx"] : []
       }
       label={
-        ["xs", "sm", "md"].includes(screen)
+        ["xs", "sm", "mg", "lg"].includes(screen)
           ? ""
           : isExporting
           ? intl.formatMessage({ id: "networks.exports.is-exporting" })
           : intl.formatMessage({ id: "networks.exports.title" })
       }
+      className="fr-mt-1w"
       size="md"
       placement="end"
       aria-label="Options"
