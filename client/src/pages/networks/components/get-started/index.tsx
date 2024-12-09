@@ -22,12 +22,12 @@ function NetworkGetStartedHome() {
             <Row className="fr-mt-5w" horizontalAlign="center">
               <Text>
                 {
-                  "Notre outil d'exploration scientométrique permet d'analyser un corpus de documents bibliographiques issus de la recherche et de l'innovation."
+                  "Bienvenue sur notre outil scientométrique d'exploration et d'analyser de documents bibliographiques issus de la recherche et de l'innovation."
                 }
               </Text>
               <Text>
                 {
-                  "Il permet de construire et de visualiser des cartographies sous forme de réseaux, mettant en évidence les co-occurrences et les communautés présentes dans un corpus de documents."
+                  "Il prends la forme d'une visualisation sous forme de réseaux, mettant en évidence les co-occurrences et les communautés présentes dans un corpus de documents."
                 }
               </Text>
             </Row>
