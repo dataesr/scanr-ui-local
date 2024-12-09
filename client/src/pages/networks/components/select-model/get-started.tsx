@@ -1,23 +1,30 @@
-import { Listbox, ListboxItem } from "@dataesr/dsfr-plus"
+import { Listbox, ListboxItem, Text } from "@dataesr/dsfr-plus"
 import { networkTabs } from "../../config/tabs"
 import { useIntl } from "react-intl"
 import useTab from "../../hooks/useTab"
 import NetworkGetStartedPage from "../get-started/template"
-import { useNetworkContext } from "../../context"
+import useGetStarted from "../../hooks/useGetStarted"
 
 export default function NetworkSelectModelGetStarted() {
   const intl = useIntl()
-  const { setGetStartedPage } = useNetworkContext()
-  const { currentTab, handleTabChange } = useTab()
+  const { navigateToNetwork } = useGetStarted()
+  const { currentTab } = useTab()
 
   return (
-    <NetworkGetStartedPage title={"Which network do you want to build ?"}>
+    <NetworkGetStartedPage title={"Quelles communautés souhaitez vous visualiser ?"}>
+      <Text size="sm">
+        {
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna \
+          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        }
+      </Text>
       <Listbox
         selectedKeys={[currentTab]}
         selectionMode="single"
+        selectionBehavior="replace"
         onSelectionChange={(value) => {
-          handleTabChange(Object.values(value)[0])
-          setGetStartedPage(3)
+          const selected = Object.values(value)[0] || currentTab
+          navigateToNetwork({ tab: selected })
         }}
       >
         {networkTabs.map(({ label, icon }) => (

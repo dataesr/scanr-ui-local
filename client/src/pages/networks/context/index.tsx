@@ -7,12 +7,7 @@ export function useNetworkContext() {
 }
 
 export function NetworkContext({ children }) {
-  const [getStartedPage, setGetStartedPage] = useState(0)
   const [focusItem, setFocusItem] = useState("")
   const [openFilters, setOpenFilters] = useState(false)
-  return (
-    <Context.Provider value={{ focusItem, setFocusItem, openFilters, setOpenFilters, getStartedPage, setGetStartedPage }}>
-      {children}
-    </Context.Provider>
-  )
+  return <Context.Provider value={{ focusItem, setFocusItem, openFilters, setOpenFilters }}>{children}</Context.Provider>
 }

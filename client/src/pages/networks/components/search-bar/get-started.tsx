@@ -1,32 +1,45 @@
-import { SearchBar, Text } from "@dataesr/dsfr-plus"
+import { Link, SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import useUrl from "../../../search/hooks/useUrl"
 import { networkQuery } from "../../config/query"
-import { useNetworkContext } from "../../context"
 import NetworkGetStartedPage from "../get-started/template"
+import useGetStarted from "../../hooks/useGetStarted"
 
 export default function NetworkSearchBarGetStarted() {
   const intl = useIntl()
-  const { setGetStartedPage } = useNetworkContext()
-  const { handleQueryChange } = useUrl()
+  const { navigateToNextPage } = useGetStarted()
+  const { currentQuery, handleQueryChange } = useUrl()
 
   return (
-    <NetworkGetStartedPage title={"What are you looking for ?"}>
-      <label className="fr-label fr-mb-1w">{"Rechercher"}</label>
+    <NetworkGetStartedPage title={"Que recherchez vous ?"}>
       <SearchBar
         isLarge
         buttonLabel={intl.formatMessage({ id: "networks.search-bar.button-label" })}
         placeholder={intl.formatMessage({ id: "networks.search-bar.placeholder" })}
+        defaultValue={currentQuery}
         onSearch={(value) => {
-          handleQueryChange(networkQuery(value))
-          setGetStartedPage(2)
+          navigateToNextPage({ q: networkQuery(value) })
         }}
       />
-      <Text size="sm" className="fr-mt-5w">
-        Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
-        cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor
-        repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et
-        voluptates repudiandae sint et molestiae non recusandae.
+      <TagGroup className="fr-mt-2w">
+        <Tag as="button" onClick={() => handleQueryChange('"Exemple 1"')}>
+          {"Exemple 1"}
+        </Tag>
+        <Tag as="button" onClick={() => handleQueryChange('"Exemple 2" AND "Example 3"')}>
+          {'"Exemple 2" AND "Example 3"'}
+        </Tag>
+        <Tag as="button" onClick={() => handleQueryChange('("Exemple 4" AND "Exemple 5") OR ("Example 6")')}>
+          {'("Exemple 4" AND "Exemple 5") OR ("Example 6")'}
+        </Tag>
+      </TagGroup>
+      <Text size="sm" className="fr-mt-3w">
+        {"La fonction recherche utilise le moteur Elasticsearch : "}
+        <Link
+          target="_blank"
+          href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"
+        >
+          {"https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"}
+        </Link>
       </Text>
     </NetworkGetStartedPage>
   )

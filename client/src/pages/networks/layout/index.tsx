@@ -5,20 +5,14 @@ import ClustersButton from "../components/clusters/button"
 import NetworkClusters from "../components/clusters"
 import NetworkAnalytics from "../components/clusters/analytics"
 import useIntegration from "../hooks/useIntegration"
-import { useIntl } from "react-intl"
 import useScreenSize from "../../../hooks/useScreenSize"
 import NetworksOptionsBar from "../components/options-bar"
 import NetworksOptionsModals from "../components/options-bar/modals"
-import { useNetworkContext } from "../context"
-import NetworkGetStarted from "../components/get-started"
 
 export default function NetworksLayout() {
-  const intl = useIntl()
-  const { getStartedPage } = useNetworkContext()
   const { integrationOptions } = useIntegration()
   const { showGraphOnly } = integrationOptions
   const { screen } = useScreenSize()
-  const isMobile = ["xs", "sm"].includes(screen)
 
   if (showGraphOnly === true) return <NetworkCard />
 
@@ -29,7 +23,6 @@ export default function NetworksLayout() {
       <NetworksHeader />
       <NetworksOptionsBar />
       <NetworksOptionsModals />
-      {getStartedPage === 4 ? 
       <Container>
         <NetworkCard />
         <Row horizontalAlign="center">
@@ -43,9 +36,7 @@ export default function NetworksLayout() {
             <NetworkAnalytics />
           </Col>
         </Row>
-      </Container> : <Container>
-          <NetworkGetStarted />
-        </Container>}
+      </Container>
     </Container>
   )
 }

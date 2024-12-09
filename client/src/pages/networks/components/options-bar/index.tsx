@@ -33,7 +33,7 @@ export default function NetworksOptionsBar() {
             </Button>
             <Button
               className="fr-ml-1w"
-              icon={currentTabIcon}
+              icon="git-branch-line"
               iconPosition="left"
               as="button"
               aria-controls="networks-options-select-tab-modal"
