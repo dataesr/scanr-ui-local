@@ -26,7 +26,7 @@ function TrendsTitle() {
 
 export default function TrendsHeader() {
   return (
-    <Container className="bg-trends fr-mb-2w" fluid>
+    <Container className="bg-trends fr-mb-1w" fluid>
       <Container className="fr-pt-4w fr-pb-1v">
         <TrendsBreadcrum />
         <TrendsTitle />
