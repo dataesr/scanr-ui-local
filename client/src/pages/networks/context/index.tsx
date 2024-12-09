@@ -7,7 +7,7 @@ export function useNetworkContext() {
 }
 
 export function NetworkContext({ children }) {
-  const [getStartedPage, setGetStartedPage] = useState(1)
+  const [getStartedPage, setGetStartedPage] = useState(0)
   const [focusItem, setFocusItem] = useState("")
   const [openFilters, setOpenFilters] = useState(false)
   return (

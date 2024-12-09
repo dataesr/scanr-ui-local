@@ -13,10 +13,11 @@ export default function TrendsOptionsBar() {
   const isEmptyQuery = !currentQuery || currentQuery === "*"
   const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
 
+  console.log("screen", screen)
   return (
     <Container className="fr-mb-2w">
       <Row>
-        <Col lg={8}>
+        <Col xs={12} sm={10} md={8} lg={8} xl={8}>
           <Row horizontalAlign="left">
             <Button
               icon="search-line"
@@ -52,8 +53,8 @@ export default function TrendsOptionsBar() {
             </Button>
           </Row>
         </Col>
-        <Col lg={4}>
-          <Row horizontalAlign="right">
+        <Col xs={12} sm={2} md={4} lg={4} xl={4}>
+          <Row className={screen === "xs" ? "fr-mt-1w" : ""} horizontalAlign={screen === "xs" ? "left" : "right"}>
             <Button
               className="fr-mr-1w"
               icon="more-line"
