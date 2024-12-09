@@ -239,7 +239,7 @@ function NetworksBanner() {
                 icon="arrow-right-line"
                 as="a"
                 variant="secondary"
-                href="/networks"
+                href="/networks/get-started"
               >
                 {intl.formatMessage({ id: "home.networks.link" })}
               </Button>

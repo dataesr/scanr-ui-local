@@ -115,7 +115,7 @@ export default function Header() {
           current={pathname.split("/").includes("networks") || pathname.split("/").includes("trends")}
           title={intl.formatMessage({ id: "layout.header.nav.analyze" })}
         >
-          <Link current={pathname.split("/").includes("networks")} href="/networks">
+          <Link current={pathname.split("/").includes("networks")} href="/networks/get-started">
             {intl.formatMessage({ id: "layout.header.nav.analyze.networks" })}
           </Link>
           <Link current={pathname.split("/").includes("trends")} href="/trends">
