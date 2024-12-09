@@ -12,6 +12,7 @@ export default function NetworkSearchBarGetStarted() {
 
   return (
     <NetworkGetStartedPage title={"Que recherchez vous ?"}>
+      <Text>{"Définissez le périmètre du corpus à analyser grâce à une recherche dans nos bases de données."}</Text>
       <SearchBar
         isLarge
         buttonLabel={intl.formatMessage({ id: "networks.search-bar.button-label" })}
@@ -33,12 +34,12 @@ export default function NetworkSearchBarGetStarted() {
         </Tag>
       </TagGroup>
       <Text size="sm" className="fr-mt-3w">
-        {"La fonction recherche utilise le moteur Elasticsearch : "}
+        {"La fonction de recherche utilise le moteur Elasticsearch : "}
         <Link
           target="_blank"
           href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"
         >
-          {"https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"}
+          {"voir la documentation"}
         </Link>
       </Text>
     </NetworkGetStartedPage>

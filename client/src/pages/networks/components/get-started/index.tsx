@@ -22,13 +22,18 @@ function NetworkGetStartedHome() {
             <Row className="fr-mt-5w" horizontalAlign="center">
               <Text>
                 {
-                  "Bienvenue sur la page réseau nanani nanan lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+                  "Notre outil d'exploration scientométrique permet d'analyser un corpus de documents bibliographiques issus de la recherche et de l'innovation."
+                }
+              </Text>
+              <Text>
+                {
+                  "Il permet de construire et de visualiser des cartographies sous forme de réseaux, mettant en évidence les co-occurrences et les communautés présentes dans un corpus de documents."
                 }
               </Text>
             </Row>
             <Row className="fr-mb-5w" horizontalAlign="center">
               <Button as="a" icon="arrow-right-line" iconPosition="right" variant="secondary" href="/networks">
-                {"Accéder directement au réseau"}
+                {"Accéder directement à l'outil"}
               </Button>
               <Button
                 className="fr-ml-2w"
@@ -38,7 +43,7 @@ function NetworkGetStartedHome() {
                 variant="primary"
                 href="/networks/get-started/1"
               >
-                {"Créer un réseau"}
+                {"Construire un réseau"}
               </Button>
             </Row>
           </Container>

@@ -18,7 +18,7 @@ export default function NetworkGetStartedPage({ title, children }) {
         <Container className="fr-mt-4w fr-mb-2w">
           <Row horizontalAlign="center" verticalAlign="bottom">
             <Button iconPosition="right" onClick={() => navigateToNetwork()} icon="arrow-right-line" variant="secondary">
-              {"Accéder directement au réseau"}
+              {"Accéder directement à l'outil"}
             </Button>
           </Row>
         </Container>

@@ -35,12 +35,12 @@ export default function NetworkSearchBarModal() {
           </Tag>
         </TagGroup>
         <Text size="sm" className="fr-mt-3w">
-          {"La fonction recherche utilise le moteur Elasticsearch : "}
+          {"La fonction de recherche utilise le moteur Elasticsearch : "}
           <Link
             target="_blank"
             href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"
           >
-            {"https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"}
+            {"voir la documentation"}
           </Link>
         </Text>
       </Container>
