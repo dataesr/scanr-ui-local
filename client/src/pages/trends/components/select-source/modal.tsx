@@ -9,7 +9,7 @@ export default function TrendsSelectSourceModal() {
   const id = "trends-options-select-source-modal"
 
   return (
-    <Modal id={id} size="lg" title={"Source"}>
+    <Modal id={id} size="lg" title={intl.formatMessage({ id: "trends.select-source.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <Listbox
           selectedKeys={[source]}

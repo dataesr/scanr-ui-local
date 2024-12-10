@@ -5,11 +5,11 @@ import { useTrendsContext } from "../../context"
 
 export default function TrendsSelectModelModal() {
   const intl = useIntl()
-  const { model, setModel } = useTrendsContext()
+  const { setModel } = useTrendsContext()
   const id = "trends-options-select-model-modal"
 
   return (
-    <Modal id={id} size="lg" title={"Thématiques"}>
+    <Modal id={id} size="lg" title={intl.formatMessage({ id: "trends.select-model.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <Listbox
           selectedKeys={["entity-fishing"]}
