@@ -12,7 +12,7 @@ export default function NetworkFiltersButton() {
       icon="more-line"
       iconPosition="left"
       as="button"
-      aria-controls="networks-filters"
+      aria-controls="networks-options-filters-modal"
       data-fr-opened="false"
       variant={"tertiary"}
     >

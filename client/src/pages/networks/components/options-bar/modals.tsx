@@ -3,7 +3,7 @@ import NetworkSearchBarModal from "../search-bar/modal"
 import NetworkSelectModelModal from "../select-model/modal"
 import NetworkSelectSourceModal from "../select-source/modal"
 import NetworkParametersModal from "../parameters/modal"
-import PublicationFilters from "../../../search/components/publications/filters"
+import NetworkFiltersModal from "../filters/modal"
 
 export default function NetworksOptionsModals() {
   return (
@@ -11,7 +11,7 @@ export default function NetworksOptionsModals() {
       <NetworkSearchBarModal />
       <NetworkSelectModelModal />
       <NetworkSelectSourceModal />
-      <PublicationFilters />
+      <NetworkFiltersModal />
       <NetworkParametersModal />
     </Container>
   )
