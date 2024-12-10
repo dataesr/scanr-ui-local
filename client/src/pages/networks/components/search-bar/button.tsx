@@ -1,7 +1,9 @@
 import { Button } from "@dataesr/dsfr-plus"
 import useUrl from "../../../search/hooks/useUrl"
+import { useIntl } from "react-intl"
 
 export default function NetworkSearchBarButton() {
+  const intl = useIntl()
   const { currentQuery } = useUrl()
   const isEmptyQuery = !currentQuery || currentQuery === "*"
   const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
@@ -16,7 +18,7 @@ export default function NetworkSearchBarButton() {
       data-fr-opened="false"
       variant={isEmptyQuery ? "tertiary" : "secondary"}
     >
-      {isEmptyQuery ? "Tout" : shortQuery}
+      {isEmptyQuery ? intl.formatMessage({ id: "networks.options-bar.search-bar.button.label.anything" }) : shortQuery}
     </Button>
   )
 }

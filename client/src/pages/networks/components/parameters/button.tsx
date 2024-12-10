@@ -1,7 +1,9 @@
 import { Button } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../../../hooks/useScreenSize"
+import { useIntl } from "react-intl"
 
 export default function NetworkParametersButton() {
+  const intl = useIntl()
   const { screen } = useScreenSize()
 
   return (
@@ -14,7 +16,7 @@ export default function NetworkParametersButton() {
       data-fr-opened="false"
       variant={"tertiary"}
     >
-      {["xs", "sm", "mg"].includes(screen) ? "" : "Paramètres"}
+      {["xs", "sm", "mg"].includes(screen) ? "" : intl.formatMessage({ id: "networks.options-bar.parameters.button.label" })}
     </Button>
   )
 }

@@ -4,11 +4,12 @@ import NetworkSearchBarGetStarted from "../search-bar/get-started"
 import NetworkSelectModelGetStarted from "../select-model/get-started"
 import NetworkSelectSourceGetStarted from "../select-source/get-started"
 import NetworksHeader from "../header"
-import { RawIntlProvider, createIntl } from "react-intl"
+import { RawIntlProvider, createIntl, useIntl } from "react-intl"
 import { messages } from "../../config/messages"
 import useGetStarted from "../../hooks/useGetStarted"
 
 function NetworkGetStartedHome() {
+  const intl = useIntl()
   const { handlePageChange, navigateToNetwork } = useGetStarted()
   const theme = document.documentElement.getAttribute("data-fr-theme")
 
@@ -21,16 +22,8 @@ function NetworkGetStartedHome() {
         >
           <Container className={`graph-title-${theme}`} style={{ maxWidth: "80%", alignSelf: "center" }}>
             <Row className="fr-mt-5w" horizontalAlign="center">
-              <Text>
-                {
-                  "Bienvenue sur notre outil scientométrique d'exploration et d'analyser de documents bibliographiques issus de la recherche et de l'innovation."
-                }
-              </Text>
-              <Text>
-                {
-                  "Il prends la forme d'une visualisation sous forme de réseaux, mettant en évidence les co-occurrences et les communautés présentes dans un corpus de documents."
-                }
-              </Text>
+              <Text>{intl.formatMessage({ id: "networks.get-started.home.text-1" })}</Text>
+              <Text>{intl.formatMessage({ id: "networks.get-started.home.text-2" })}</Text>
             </Row>
             <Row className="fr-mb-5w" horizontalAlign="center">
               <Button icon="arrow-right-line" iconPosition="right" variant="secondary" onClick={() => navigateToNetwork()}>

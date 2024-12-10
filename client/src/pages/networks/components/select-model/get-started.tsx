@@ -11,13 +11,8 @@ export default function NetworkSelectModelGetStarted() {
   const { currentTab } = useTab()
 
   return (
-    <NetworkGetStartedPage title={"Quelles communautés souhaitez-vous visualiser ?"}>
-      <Text size="sm">
-        {
-          "Les différentes communautés sont obtenues par co-occurence au sein du corpus de documents correspondant à la recherche effectuée. \
-          Les réseaux sont composés de noeuds representant les différents élements reliés entre eux en fonction de leur nombre de co-occurence."
-        }
-      </Text>
+    <NetworkGetStartedPage title={intl.formatMessage({ id: "networks.get-started.select-model.title" })}>
+      <Text size="sm">{intl.formatMessage({ id: "networks.get-started.select-model.description" })}</Text>
       <Text size="sm"></Text>
       <Listbox
         selectedKeys={[currentTab]}

@@ -8,8 +8,8 @@ export default function NetworkSelectSourceGetStarted() {
   const { handlePageChange } = useGetStarted()
 
   return (
-    <NetworkGetStartedPage title={"Quelle source voulez-vous utiliser ?"}>
-      <Text>{"Choississez la source de documents à analyser."}</Text>
+    <NetworkGetStartedPage title={intl.formatMessage({ id: "networks.get-started.select-source.title" })}>
+      <Text>{intl.formatMessage({ id: "networks.get-started.select-source.description" })}</Text>
       <Listbox selectedKeys={["publications"]} selectionMode="single" onSelectionChange={() => handlePageChange()}>
         <ListboxItem
           key={"publications"}

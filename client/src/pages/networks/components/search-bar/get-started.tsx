@@ -1,4 +1,4 @@
-import { Link, SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
+import { SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import useUrl from "../../../search/hooks/useUrl"
 import { networkQuery } from "../../config/query"
@@ -11,8 +11,8 @@ export default function NetworkSearchBarGetStarted() {
   const { currentQuery, handleQueryChange } = useUrl()
 
   return (
-    <NetworkGetStartedPage title={"Que recherchez vous ?"}>
-      <Text>{"Définissez le périmètre du corpus à analyser grâce à une recherche dans nos bases de données."}</Text>
+    <NetworkGetStartedPage title={intl.formatMessage({ id: "networks.get-started.search-bar.title" })}>
+      <Text>{intl.formatMessage({ id: "networks.get-started.search-bar.description" })}</Text>
       <SearchBar
         isLarge
         buttonLabel={intl.formatMessage({ id: "networks.search-bar.button-label" })}
@@ -33,7 +33,7 @@ export default function NetworkSearchBarGetStarted() {
           {'("Exemple 4" AND "Exemple 5") OR ("Example 6")'}
         </Tag>
       </TagGroup>
-      <Text size="sm" className="fr-mt-3w">
+      {/* <Text size="sm" className="fr-mt-3w">
         {"La fonction de recherche utilise le moteur Elasticsearch : "}
         <Link
           target="_blank"
@@ -41,7 +41,7 @@ export default function NetworkSearchBarGetStarted() {
         >
           {"voir la documentation"}
         </Link>
-      </Text>
+      </Text> */}
     </NetworkGetStartedPage>
   )
 }

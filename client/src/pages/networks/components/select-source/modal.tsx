@@ -7,7 +7,7 @@ export default function NetworkSelectSourceModal() {
   const id = "networks-options-select-source-modal"
 
   return (
-    <Modal id={id} size="lg" title={"Source"}>
+    <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.options-bar.select-source.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <Listbox
           selectedKeys={["publications"]}

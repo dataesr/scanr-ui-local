@@ -1,4 +1,4 @@
-import { Container, Link, SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
+import { Container, SearchBar, Tag, TagGroup } from "@dataesr/dsfr-plus"
 import Modal from "../../../../components/modal"
 import useUrl from "../../../search/hooks/useUrl"
 import { useIntl } from "react-intl"
@@ -10,7 +10,7 @@ export default function NetworkSearchBarModal() {
   const id = "networks-options-search-bar-modal"
 
   return (
-    <Modal id={id} size="lg" title={"Rechercher"}>
+    <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.options-bar.search-bar.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <SearchBar
           key={currentQuery}
@@ -34,7 +34,7 @@ export default function NetworkSearchBarModal() {
             {'("Exemple 4" AND "Exemple 5") OR ("Example 6")'}
           </Tag>
         </TagGroup>
-        <Text size="sm" className="fr-mt-3w">
+        {/* <Text size="sm" className="fr-mt-3w">
           {"La fonction de recherche utilise le moteur Elasticsearch : "}
           <Link
             target="_blank"
@@ -42,7 +42,7 @@ export default function NetworkSearchBarModal() {
           >
             {"voir la documentation"}
           </Link>
-        </Text>
+        </Text> */}
       </Container>
     </Modal>
   )

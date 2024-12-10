@@ -10,8 +10,8 @@ export default function NetworksHeader() {
   if (showHeader === false) return null
 
   return (
-    <Container className="bg-network" fluid>
-      <Container className="fr-pt-4w">
+    <Container className="bg-network fr-mb-1w" fluid>
+      <Container className="fr-pt-4w fr-pb-1v">
         <NetworksBreadcrumb />
         <NetworkTitle />
       </Container>
