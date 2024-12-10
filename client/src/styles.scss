@@ -142,7 +142,7 @@ $icons: (
   ) ("check-double", "/icons/check-double.svg"
   ) ("hal", "/icons/hal.svg"
   ) ('wikipedia', '/icons/wikipedia.svg'
-) ('shapes-line', '/icons/shapes-line.svg');
+) ('shapes-line', '/icons/shapes-line.svg') ("mistral-ai", "/icons/mistral-ai.svg");
 
 @each $name, $mask in $icons {
 
