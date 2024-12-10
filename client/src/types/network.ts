@@ -130,6 +130,5 @@ export type NetworkParameters = {
   maxNodes: number
   maxComponents: number
   clusters: boolean
-  layout: string
   filterNode: string
 }

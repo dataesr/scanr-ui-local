@@ -38,7 +38,7 @@ export default async function networkCreate(
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
 
-  const { maxNodes, maxComponents, layout, filterNode, clusters } = getParameters(parameters)
+  const { maxNodes, maxComponents, filterNode, clusters } = getParameters(parameters)
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -97,13 +97,14 @@ export default async function networkCreate(
   const network: NetworkData = {
     items: graph.mapNodes((key, attr) => ({
       id: key,
-      ...(layout === "forceatlas" && { x: attr.x, y: attr.y }),
+      x: attr.x,
+      y: attr.y,
       label: attr.label,
-      cluster: attr?.community + 1,
+      cluster: attr.community + 1,
       weights: {
         Weight: attr.weight,
         Degree: graph.degree(key),
-        ...(clusters && { Citations: attr.citationsCount || 0 }),
+        ...(clusters && { Citations: attr?.citationsCount || 0 }),
       },
       scores: { ...(attr?.maxYear && { "Last publication": attr.maxYear }) },
       page: configGetItemUrl(model, key, attr.label),

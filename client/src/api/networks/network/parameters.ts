@@ -19,9 +19,6 @@ export const NETWORK_PARAMETERS: Record<string, PARAMETER> = {
   clusters: {
     default: false,
   },
-  layout: {
-    default: "forceatlas",
-  },
   filterNode: {
     default: "",
   },

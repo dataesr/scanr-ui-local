@@ -28,7 +28,7 @@ export default function NetworkGraph() {
   const vosparams = {
     largest_component: false,
     dark_ui: theme === "dark",
-    simple_ui: true,
+    simple_ui: false,
     show_item: focusItem,
   }
 

@@ -16,6 +16,8 @@
     "networks.parameters.input-max-components.hint": "Nombre entre 1 et 10 (default=5)",
     "networks.parameters.select-layout.label": "Spatialisation",
     "networks.parameters.select-layout.hint": "Algorithme de spatialisation du réseau",
+    "networks.parameters.select-clustering.label": "Clusterisation",
+    "networks.parameters.select-clustering.hint": "Algorithme de clusterisation",
     "networks.home.title": "Au travers des publications scientifiques, explorez les réseaux {tab} de la recherche et de l'innovation",
     "networks.header.title": "Explorez les communautés scientifiques via une analyse des publications",
     "networks.header.title.perimeter": "du périmètre",

@@ -1,6 +1,6 @@
 import { useIntl } from "react-intl"
 import useIntegration from "../../hooks/useIntegration"
-import getBsoLocals from "../../integration/config"
+import { getBsoLocals } from "../../integration/config"
 import { Container, Title } from "@dataesr/dsfr-plus"
 
 export default function NetworkTitle() {
