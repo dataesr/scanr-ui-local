@@ -11,7 +11,7 @@ export default function NetworkExportsButton() {
   const { screen } = useScreenSize()
   const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
-  const { search, currentQuery } = useSearchData(currentTab)
+  const { search } = useSearchData(currentTab)
   const { isExporting, exportFile } = useExportData()
 
   if (integrationOptions?.showExports === false) return null
@@ -23,9 +23,7 @@ export default function NetworkExportsButton() {
 
   return (
     <MenuButton
-      disabledKeys={
-        isExporting || search.isFetching || Boolean(search.error) || !currentQuery ? ["export>json", "export>xlsx"] : []
-      }
+      disabledKeys={isExporting || search.isFetching || Boolean(search.error) ? ["export>json", "export>xlsx"] : []}
       label={
         ["xs", "sm", "mg", "lg"].includes(screen)
           ? ""
