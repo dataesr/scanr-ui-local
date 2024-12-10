@@ -14,7 +14,7 @@ export default function TrendsFiltersButton() {
       icon="more-line"
       iconPosition="left"
       as="button"
-      aria-controls="trends-filters"
+      aria-controls="trends-options-filters-modal"
       data-fr-opened="false"
       variant={"tertiary"}
     >

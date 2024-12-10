@@ -12,6 +12,8 @@
   "trends.filters.button.label": "Filtres",
   "trends.parameters.button.label": "Paramètres",
   "trends.parameters.modal.title": "Paramètres",
+  "trends.parameters.modal.display": "Afficher les tendances",
+  "trends.parameters.modal.reset": "Réinitialiser les paramètres",
   "trends.search-bar.button-label": "Rechercher",
   "trends.search-bar.label": "Recherche",
   "trends.search-bar.label-graph": "Commencez à explorer les réseaux de la recherche et de l'innovation",
@@ -52,7 +54,9 @@
   "trends.filters.title": "Filtres",
   "trends.filters.active-filter-title": "Filtres actifs",
   "trends.filters.active-filter-empty": "Aucun filtre actif",
-  "search.top.filters.publications.title": "Filtrer les publications",
+  "trends.filters.modal.publications.title": "Filtrer les publications",
+  "trends.filters.modal.display": "Afficher les tendances",
+  "trends.filters.modal.clear": "Réinitialiser les filtres",
   "search.filters.selected": "Sélectionnés",
   "search.filters.publications.by-year": "Filtrer par année",
   "search.filters.publications.by-year-description": "Période sélectionnée {min} - {max}",
@@ -71,8 +75,5 @@
   "search.filters.publications.by-country": "Filtrer par pays",
   "search.filters.publications.by-country-description": "Sélectionnez un ou plusieurs pays",
   "search.filters.publications.by-tag": "Filter par tag",
-  "search.filters.publications.by-tag-description": "Sélectionnez un ou plusieurs tag",
-  "search.top.publications.filters.result-count": "{count, plural, =0 {# publication} one {# publication} other {# publications}}",
-  "search.top.filters.display": "Afficher les résultats",
-  "search.top.result-more-than": "Plus de "
+  "search.filters.publications.by-tag-description": "Sélectionnez un ou plusieurs tag"
 }
