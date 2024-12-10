@@ -10,7 +10,7 @@ export default function NetworkSearchBarModal() {
   const id = "networks-options-search-bar-modal"
 
   return (
-    <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.options-bar.search-bar.modal.title" })}>
+    <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.search-bar.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <SearchBar
           key={currentQuery}

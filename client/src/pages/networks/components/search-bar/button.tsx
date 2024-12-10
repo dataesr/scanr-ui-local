@@ -18,7 +18,7 @@ export default function NetworkSearchBarButton() {
       data-fr-opened="false"
       variant={isEmptyQuery ? "tertiary" : "secondary"}
     >
-      {isEmptyQuery ? intl.formatMessage({ id: "networks.options-bar.search-bar.button.label.anything" }) : shortQuery}
+      {isEmptyQuery ? intl.formatMessage({ id: "networks.search-bar.button.label.anything" }) : shortQuery}
     </Button>
   )
 }

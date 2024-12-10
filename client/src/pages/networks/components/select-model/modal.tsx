@@ -10,7 +10,7 @@ export default function NetworkSelectModelModal() {
   const id = "networks-options-select-tab-modal"
 
   return (
-    <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.options-bar.select-model.modal.title" })}>
+    <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.select-model.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <Listbox
           selectedKeys={[currentTab]}
