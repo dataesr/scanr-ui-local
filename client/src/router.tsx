@@ -92,8 +92,7 @@ export default function Router() {
             <Route path="patents" element={<Search />} />
           </Route>
           <Route path="/networks" element={<Networks />} />
-          <Route path="/networks/get-started/:page" element={<NetworksGetStarted />} />
-          <Route path="/networks/get-started" element={<Navigate to="/networks/get-started/0" replace />} />
+          <Route path="/networks/get-started" element={<NetworksGetStarted />} />
           <Route path="/trends" element={<Trends />} />
           <Route path="/trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
           <Route path="*" element={<Error404 error={null} />} />

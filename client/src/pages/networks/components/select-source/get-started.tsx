@@ -5,12 +5,12 @@ import useGetStarted from "../../hooks/useGetStarted"
 
 export default function NetworkSelectSourceGetStarted() {
   const intl = useIntl()
-  const { navigateToNextPage } = useGetStarted()
+  const { handlePageChange } = useGetStarted()
 
   return (
     <NetworkGetStartedPage title={"Quelle source voulez-vous utiliser ?"}>
       <Text>{"Choississez la source de documents à analyser."}</Text>
-      <Listbox selectedKeys={["publications"]} selectionMode="single" onSelectionChange={() => navigateToNextPage()}>
+      <Listbox selectedKeys={["publications"]} selectionMode="single" onSelectionChange={() => handlePageChange()}>
         <ListboxItem
           key={"publications"}
           startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-article-line`} />}

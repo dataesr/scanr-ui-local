@@ -7,7 +7,7 @@ import useGetStarted from "../../hooks/useGetStarted"
 
 export default function NetworkSearchBarGetStarted() {
   const intl = useIntl()
-  const { navigateToNextPage } = useGetStarted()
+  const { handlePageChange } = useGetStarted()
   const { currentQuery, handleQueryChange } = useUrl()
 
   return (
@@ -19,7 +19,7 @@ export default function NetworkSearchBarGetStarted() {
         placeholder={intl.formatMessage({ id: "networks.search-bar.placeholder" })}
         defaultValue={currentQuery}
         onSearch={(value) => {
-          navigateToNextPage({ q: networkQuery(value) })
+          handlePageChange({ q: networkQuery(value) })
         }}
       />
       <TagGroup className="fr-mt-2w">

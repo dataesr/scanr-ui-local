@@ -6,9 +6,10 @@ import NetworkSelectSourceGetStarted from "../select-source/get-started"
 import NetworksHeader from "../header"
 import { RawIntlProvider, createIntl } from "react-intl"
 import { messages } from "../../config/messages"
-import { useParams } from "react-router-dom"
+import useGetStarted from "../../hooks/useGetStarted"
 
 function NetworkGetStartedHome() {
+  const { handlePageChange, navigateToNetwork } = useGetStarted()
   const theme = document.documentElement.getAttribute("data-fr-theme")
 
   return (
@@ -32,16 +33,15 @@ function NetworkGetStartedHome() {
               </Text>
             </Row>
             <Row className="fr-mb-5w" horizontalAlign="center">
-              <Button as="a" icon="arrow-right-line" iconPosition="right" variant="secondary" href="/networks">
+              <Button icon="arrow-right-line" iconPosition="right" variant="secondary" onClick={() => navigateToNetwork()}>
                 {"Accéder directement à l'outil"}
               </Button>
               <Button
                 className="fr-ml-2w"
-                as="a"
                 icon="arrow-right-line"
                 iconPosition="right"
                 variant="primary"
-                href="/networks/get-started/1"
+                onClick={() => handlePageChange()}
               >
                 {"Construire un réseau"}
               </Button>
@@ -54,9 +54,9 @@ function NetworkGetStartedHome() {
 }
 
 function NetworkGetStartedPages() {
-  const { page } = useParams()
+  const { currentPage } = useGetStarted()
 
-  switch (page) {
+  switch (currentPage) {
     case "0":
       return <NetworkGetStartedHome />
     case "1":
