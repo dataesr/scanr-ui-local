@@ -44,6 +44,7 @@
     "networks.get-started.home.text-2": "It takes the form of a network visualization, highlighting co-occurrences and communities present in a corpus of documents.",
     "networks.get-started.search-bar.title": "What are you looking for?",
     "networks.get-started.search-bar.description": "Define the scope of the corpus to be analyzed by searching our databases.",
+    "networks.get-started.search-bar.examples": "Examples :",
     "networks.get-started.select-source.title": "Which source do you want to use?",
     "networks.get-started.select-source.description": "Choose the source of documents to be analyzed.",
     "networks.get-started.select-model.title": "Which communities do you want to visualize?",

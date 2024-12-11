@@ -1,4 +1,4 @@
-import { Container, SearchBar, Tag, TagGroup } from "@dataesr/dsfr-plus"
+import { Container, SearchBar } from "@dataesr/dsfr-plus"
 import Modal from "../../../../components/modal"
 import useUrl from "../../../search/hooks/useUrl"
 import { useIntl } from "react-intl"
@@ -23,26 +23,6 @@ export default function NetworkSearchBarModal() {
             window.dsfr(document.getElementById(id)).modal.conceal()
           }}
         />
-        <TagGroup className="fr-mt-2w">
-          <Tag as="button" onClick={() => handleQueryChange('"Exemple 1"')}>
-            {"Exemple 1"}
-          </Tag>
-          <Tag as="button" onClick={() => handleQueryChange('"Exemple 2" AND "Example 3"')}>
-            {'"Exemple 2" AND "Example 3"'}
-          </Tag>
-          <Tag as="button" onClick={() => handleQueryChange('("Exemple 4" AND "Exemple 5") OR ("Example 6")')}>
-            {'("Exemple 4" AND "Exemple 5") OR ("Example 6")'}
-          </Tag>
-        </TagGroup>
-        {/* <Text size="sm" className="fr-mt-3w">
-          {"La fonction de recherche utilise le moteur Elasticsearch : "}
-          <Link
-            target="_blank"
-            href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"
-          >
-            {"voir la documentation"}
-          </Link>
-        </Text> */}
       </Container>
     </Modal>
   )
