@@ -24,14 +24,14 @@ export default function TrendsSelectModelModal() {
           <ListboxItem
             key={"entity-fishing"}
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-book-2-line`} />}
-            description="Thématiques détectées par entity-fishing"
+            description={intl.formatMessage({ id: "trends.select-model.entity-fishing.description" })}
           >
             {intl.formatMessage({ id: "trends.select-model.entity-fishing" })}
           </ListboxItem>
           <ListboxItem
             key={"open-alex"}
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-book-2-line`} />}
-            description="Thématiques détectées par OpenAlex"
+            description={intl.formatMessage({ id: "trends.select-model.open-alex.description" })}
           >
             {intl.formatMessage({ id: "trends.select-model.open-alex" })}
           </ListboxItem>
