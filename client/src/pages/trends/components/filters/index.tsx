@@ -6,8 +6,7 @@ import useTrends from "../../hooks/useTrends"
 
 export default function TrendsFilters() {
   const intl = useIntl()
-  const { currentQuery, currentFilters, handleFilterChange, handleDeleteFilter, clearFilters, handleRangeFilterChange } =
-    useUrl()
+  const { currentFilters, handleFilterChange, handleDeleteFilter, clearFilters, handleRangeFilterChange } = useUrl()
   const { isLoading, isError } = useAggregateData("filters")
   const { isFetching: trendsIsFetching, error: trendsError } = useTrends()
 
