@@ -10,7 +10,7 @@ export default function ClustersButton() {
   const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
   const { parameters, handleParametersChange } = useParameters()
-  const { search, currentQuery } = useSearchData(currentTab)
+  const { search } = useSearchData(currentTab)
 
   if (integrationOptions.showClustersButton === false) return null
 
@@ -22,7 +22,7 @@ export default function ClustersButton() {
             iconPosition="right"
             icon={parameters.clusters ? "arrow-up-line" : "arrow-down-line"}
             onClick={() => handleParametersChange("clusters", !parameters.clusters)}
-            disabled={search.isFetching || Boolean(search.error) || !currentQuery}
+            disabled={search.isFetching || Boolean(search.error)}
           >
             {intl.formatMessage({
               id: parameters.clusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
