@@ -14,6 +14,7 @@ export default function NetworkSearchBarGetStarted() {
     <NetworkGetStartedPage title={intl.formatMessage({ id: "networks.get-started.search-bar.title" })}>
       <Text>{intl.formatMessage({ id: "networks.get-started.search-bar.description" })}</Text>
       <SearchBar
+        className="fr-mb-4w"
         isLarge
         buttonLabel={intl.formatMessage({ id: "networks.search-bar.button-label" })}
         placeholder={intl.formatMessage({ id: "networks.search-bar.placeholder" })}
@@ -22,26 +23,26 @@ export default function NetworkSearchBarGetStarted() {
           handlePageChange({ q: networkQuery(value) })
         }}
       />
-      <TagGroup className="fr-mt-2w">
-        <Tag as="button" onClick={() => handleQueryChange('"Exemple 1"')}>
-          {"Exemple 1"}
+      <Text size="sm" className="fr-mb-1w">
+        {intl.formatMessage({ id: "networks.get-started.search-bar.examples" })}
+      </Text>
+      <TagGroup>
+        <Tag as="button" onClick={() => handleQueryChange("*")}>
+          {"Tout rechercher"}
         </Tag>
-        <Tag as="button" onClick={() => handleQueryChange('"Exemple 2" AND "Example 3"')}>
-          {'"Exemple 2" AND "Example 3"'}
+        <Tag as="button" onClick={() => handleQueryChange('"quantum mechanics" AND dna')}>
+          {'"quantum mechanics" AND dna'}
         </Tag>
-        <Tag as="button" onClick={() => handleQueryChange('("Exemple 4" AND "Exemple 5") OR ("Example 6")')}>
-          {'("Exemple 4" AND "Exemple 5") OR ("Example 6")'}
+        <Tag as="button" onClick={() => handleQueryChange("forest NOT (cosmology OR random)")}>
+          {"forest NOT (cosmology OR random)"}
+        </Tag>
+        <Tag
+          as="button"
+          onClick={() => handleQueryChange('("climate model"  OR "climate models") AND NOT (mars  OR saturne)')}
+        >
+          {'("climate model"  OR "climate models") AND NOT (mars  OR saturn)'}
         </Tag>
       </TagGroup>
-      {/* <Text size="sm" className="fr-mt-3w">
-        {"La fonction de recherche utilise le moteur Elasticsearch : "}
-        <Link
-          target="_blank"
-          href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html"
-        >
-          {"voir la documentation"}
-        </Link>
-      </Text> */}
     </NetworkGetStartedPage>
   )
 }
