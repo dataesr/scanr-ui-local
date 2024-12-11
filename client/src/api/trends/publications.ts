@@ -1,8 +1,9 @@
-import { postHeaders, publicationsIndex } from "../../../config/api"
-import { ElasticAggregation, ElasticBucket, ElasticBuckets } from "../../../types/commons"
-import { TrendsArgs } from "../../../types/trends"
-import { publicationsTrends, citationsTrends } from "../../trends"
-import { FIELDS } from "../_utils/constants"
+import { postHeaders, publicationsIndex } from "../../config/api"
+import { ElasticAggregation, ElasticBucket, ElasticBuckets } from "../../types/commons"
+import { TrendsArgs } from "../../types/trends"
+import { FIELDS } from "../publications/_utils/constants"
+import { CONFIG } from "./config"
+import { citationsTrends, publicationsTrends } from "./trends"
 
 type TrendsAggregation = Array<ElasticBucket & { model: ElasticAggregation }>
 
@@ -26,7 +27,7 @@ export async function getPublicationsTrends({ model, query, years, filters, norm
       years: {
         terms: { field: "year", size: years.length },
         aggs: {
-          model: { terms: { field: `${model}.id_name.keyword`, size: 60000 / years.length } },
+          model: { terms: { field: CONFIG[model].field, size: 60000 / years.length } },
         },
       },
     },
@@ -75,7 +76,7 @@ export async function getCitationsTrends({ model, query, years, filters, normali
     },
     aggs: {
       model: {
-        terms: { field: `${model}.id_name.keyword`, size: 10000 },
+        terms: { field: CONFIG[model].field, size: 10000 },
         aggs: {
           ...years.reduce(
             (acc, year) => (acc = { ...acc, [`citationsIn${year}`]: { sum: { field: `cited_by_counts_by_year.${year}` } } }),
@@ -110,4 +111,3 @@ export async function getCitationsTrends({ model, query, years, filters, normali
   const trends = citationsTrends(aggregation, years, normalized)
   return trends
 }
-

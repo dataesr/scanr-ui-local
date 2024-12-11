@@ -11,7 +11,8 @@ export function citationsTrends(aggregation: ElasticBuckets, years: Array<number
   // Items citations count by year
   const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, item) => {
     years.forEach((year) => {
-      const [id, label] = item.key.split("###")
+      const id = item.key.split("###")[0]
+      const label = item.key.split("###")?.[1] || id
       const citationsCount = item?.[`citationsIn${year}`]?.value
       acc[id] = {
         ...acc?.[id],
@@ -33,7 +34,8 @@ export function publicationsTrends(aggregation: TrendsAggregation, years: Array<
   // Items count by year
   const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
     bucket?.model?.buckets.forEach((item) => {
-      const [id, label] = item.key.split("###")
+      const id = item.key.split("###")[0]
+      const label = item.key.split("###")?.[1] || id
       acc[id] = {
         ...acc?.[id],
         id: id,

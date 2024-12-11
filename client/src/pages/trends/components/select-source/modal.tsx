@@ -24,14 +24,14 @@ export default function TrendsSelectSourceModal() {
           <ListboxItem
             key={"publications"}
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-article-line`} />}
-            description="Nombre de publications"
+            description={intl.formatMessage({ id: "trends.select-source.publications.description" })}
           >
             {intl.formatMessage({ id: "trends.select-source.publications" })}
           </ListboxItem>
           <ListboxItem
             key={"citations"}
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-chat-3-line`} />}
-            description="Nombre de citations"
+            description={intl.formatMessage({ id: "trends.select-source.citations.description" })}
           >
             {intl.formatMessage({ id: "trends.select-source.citations" })}
           </ListboxItem>
