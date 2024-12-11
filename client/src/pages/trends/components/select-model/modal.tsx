@@ -5,18 +5,18 @@ import { useTrendsContext } from "../../context"
 
 export default function TrendsSelectModelModal() {
   const intl = useIntl()
-  const { setModel } = useTrendsContext()
+  const { model, setModel } = useTrendsContext()
   const id = "trends-options-select-model-modal"
 
   return (
     <Modal id={id} size="lg" title={intl.formatMessage({ id: "trends.select-model.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <Listbox
-          selectedKeys={["entity-fishing"]}
+          selectedKeys={[model]}
           selectionMode="single"
           onSelectionChange={(value) => {
             const selected = Object.values(value)[0]
-            selected && setModel("entity-fishing")
+            selected && setModel(selected)
             // @ts-expect-error dsfr does not have types
             window.dsfr(document.getElementById(id)).modal.conceal()
           }}
