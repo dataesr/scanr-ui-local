@@ -8,5 +8,6 @@ export function useNetworkContext() {
 
 export function NetworkContext({ children }) {
   const [focusItem, setFocusItem] = useState("")
-  return <Context.Provider value={{ focusItem, setFocusItem }}>{children}</Context.Provider>
+  const [openFilters, setOpenFilters] = useState(false)
+  return <Context.Provider value={{ focusItem, setFocusItem, openFilters, setOpenFilters }}>{children}</Context.Provider>
 }

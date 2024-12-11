@@ -1,16 +1,10 @@
 import { postHeaders } from "../../../config/api"
-import {
-  Network,
-  NetworkSearchBody,
-  NetworkSearchArgs,
-  ElasticHits,
-  NetworkSearchHitsArgs,
-  ElasticAggregations,
-} from "../../../types/network"
+import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits, NetworkSearchHitsArgs } from "../../../types/network"
 import { CONFIG } from "../network/config"
 import networkCreate from "../network/network"
 import configCreate from "../network/config"
 import infoCreate from "../network/info"
+import { ElasticAggregations } from "../../../types/commons"
 
 const CURRENT_YEAR = new Date().getFullYear()
 const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_, i) => CURRENT_YEAR + i * -1)

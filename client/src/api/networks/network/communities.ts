@@ -3,13 +3,14 @@ import louvain from "graphology-communities-louvain"
 import seedrandom from "seedrandom"
 import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits, networkSearchAggs } from "../search/search"
-import { ElasticAggregations, ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
+import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
 import { openAiLabeledClusters } from "./mistralai"
 import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 import { configGetItemUrl } from "./config"
 import { CONFIG } from "./config"
 import { nodeGetId } from "./network"
+import { ElasticAggregations } from "../../../types/commons"
 
 const CURRENT_YEAR = new Date().getFullYear()
 const RECENT_YEARS = [CURRENT_YEAR - 1, CURRENT_YEAR]
@@ -75,7 +76,7 @@ const communityGetCitationsScore = (aggs: ElasticAggregations): number =>
   communityGetCitationsRecent(aggs) / communityGetPublicationsCount(aggs)
 
 const communityGetDomains = (aggs: ElasticAggregations): Record<string, number> =>
-  aggs?.domains?.buckets.reduce((acc, bucket) => ({ ...acc, [labelClean(bucket.key)]: bucket.doc_count }), {})
+  aggs?.domains?.buckets.reduce((acc, bucket) => ({ ...acc, [labelClean(String(bucket.key))]: bucket.doc_count }), {})
 
 const communityGetOaPercent = (aggs: ElasticAggregations): number => {
   const isOa = aggs?.isOa?.buckets.find((bucket) => bucket.key_as_string === "true")?.doc_count || 0

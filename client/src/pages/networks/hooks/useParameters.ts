@@ -40,7 +40,6 @@ export default function useParameters() {
     maxNodes: Number(searchParams.get("maxNodes") || Number(NETWORK_PARAMETERS.maxNodes.default)),
     maxComponents: Number(searchParams.get("maxComponents") || Number(NETWORK_PARAMETERS.maxComponents.default)),
     clusters: getBooleanParam(searchParams.get("clusters"), Boolean(NETWORK_PARAMETERS.clusters.default)),
-    layout: searchParams.get("layout") || String(NETWORK_PARAMETERS.layout.default),
     filterNode: searchParams.get("filterNode") || String(NETWORK_PARAMETERS.filterNode.default),
   }
 

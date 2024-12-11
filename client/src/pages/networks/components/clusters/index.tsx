@@ -122,9 +122,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
         <ModalContent>
           {community?.publications?.map((publication) => (
             <li className="fr-mt-1w">
-              <Link
-                href={window?.location?.href?.split("/networks")[0] + "/publications/" + encode(publication.id as string)}
-              >
+              <Link href={window.location.origin + "/publications/" + encode(publication.id as string)}>
                 {publication.title}
               </Link>
             </li>

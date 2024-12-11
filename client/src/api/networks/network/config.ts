@@ -176,8 +176,7 @@ const configGetLinkDescription = (model: string) =>
 
 export function configGetItemUrl(model: string, key: string, label: string): string {
   const targetUrl = CONFIG?.[model]?.url(key, label) ?? ""
-  const baseUrl = window?.location?.href?.split("/networks")[0] ?? ""
-  return baseUrl + targetUrl
+  return window.location.origin + targetUrl
 }
 
 export default function configCreate(model: string): NetworkConfig {

@@ -62,7 +62,7 @@ export default function AuthorPage({ data }: { data: Author }) {
       values: [{ value: data?.id, label: data?.fullName }],
     },
   });
-  const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`;
+  const networkUrl = `/networks?q=*&tab=authors&filters=${networkFilter}`
 
   const alternativeNameForm =
     data?.firstName &&

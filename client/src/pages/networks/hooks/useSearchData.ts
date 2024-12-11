@@ -27,7 +27,7 @@ export default function useSearchData(networkTab: string, forceClusters?: boolea
         parameters: parameters,
         filters,
       }),
-    enabled: Boolean(currentQuery && networkTab === currentTab),
+    enabled: Boolean(networkTab === currentTab),
   })
 
   const values = useMemo(() => {

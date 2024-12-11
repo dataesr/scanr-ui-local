@@ -1,26 +1,13 @@
-import { useSearchParams } from "react-router-dom"
+import { useLocation, useSearchParams } from "react-router-dom"
 import { useMemo } from "react"
 import { NetworksIntegrationOptions } from "../../../types/network"
 import { getBooleanParam } from "../utils"
-
-const DEFAULT_INTEGRATION = {
-  showGraphOnly: false,
-  showTitle: true,
-  showSubtitle: true,
-  showClustersAnalytics: true,
-  showClustersButton: true,
-  showSearchBar: true,
-  showFilters: true,
-  showExports: true,
-  showBreadcrumb: true,
-  showSelect: true,
-  showHeader: true,
-  graphHeight: "500px",
-}
+import { DEFAULT_INTEGRATION } from "../integration/config"
 
 export default function useIntegration() {
   const [searchParams] = useSearchParams()
-  const isIntegration = window.location.href.includes("integration")
+  const { pathname } = useLocation()
+  const isIntegration = pathname.split("/").includes("integration")
   const integrationId = isIntegration ? searchParams.get("local") : undefined
   const integrationLang = searchParams.get("lang") || "fr"
 
@@ -37,7 +24,7 @@ export default function useIntegration() {
         showBreadcrumb: false,
         showSelect: getBooleanParam(searchParams.get("showSelect")),
         showHeader: getBooleanParam(searchParams.get("showHeader")),
-        graphHeight: searchParams.get("graphHeight") || "500px",
+        graphHeight: searchParams.get("graphHeight") || DEFAULT_INTEGRATION.graphHeight,
       }
     : DEFAULT_INTEGRATION
 

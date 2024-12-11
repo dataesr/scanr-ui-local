@@ -1,7 +1,6 @@
 import { Accordion } from "@dataesr/dsfr-plus"
 import InputMaxNodes from "./input-max-nodes"
 import InputMaxComponents from "./input-max-components"
-import SelectLayout from "./select-layout"
 import { useIntl } from "react-intl"
 
 export default function NetworkOptions() {
@@ -12,7 +11,8 @@ export default function NetworkOptions() {
       <InputMaxNodes />
       <InputMaxComponents />
       {/* <AutocompleteFilterNode /> */}
-      <SelectLayout />
+      {/* <SelectLayout /> */}
+      {/* <SelectClustering /> */}
     </Accordion>
   )
 }
