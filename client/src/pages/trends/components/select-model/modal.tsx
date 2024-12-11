@@ -15,7 +15,8 @@ export default function TrendsSelectModelModal() {
           selectedKeys={["entity-fishing"]}
           selectionMode="single"
           onSelectionChange={(value) => {
-            setModel(Object.values(value)[0])
+            const selected = Object.values(value)[0]
+            selected && setModel("entity-fishing")
             // @ts-expect-error dsfr does not have types
             window.dsfr(document.getElementById(id)).modal.conceal()
           }}

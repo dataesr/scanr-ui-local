@@ -15,7 +15,8 @@ export default function TrendsSelectSourceModal() {
           selectedKeys={[source]}
           selectionMode="single"
           onSelectionChange={(value) => {
-            setSource(Object.values(value)[0])
+            const selected = Object.values(value)[0]
+            selected && setSource(selected)
             // @ts-expect-error dsfr does not have types
             window.dsfr(document.getElementById(id)).modal.conceal()
           }}
