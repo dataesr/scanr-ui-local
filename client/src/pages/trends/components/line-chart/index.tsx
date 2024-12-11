@@ -1,12 +1,17 @@
 import { useIntl } from "react-intl"
 import AnalyticsGraph from "../../../../components/analytics-graph"
-import { MAX_YEAR, MIN_YEAR, YEARS } from "../../config/years"
+import { rangeArray } from "../../../../utils/helpers"
+import useTrends from "../../hooks/useTrends"
 
 export default function LineChart({ data, source }) {
   const intl = useIntl()
+  const {
+    trendsYears: { min, max },
+  } = useTrends()
+  const range = rangeArray(min, max)
 
-  const _data = YEARS.map((year) => data?.count?.[year] || 0)
-  const _reg = YEARS.map((year) => Number(year) * data.slope + data.intercept)
+  const _data = range.map((year) => data?.count?.[year] || 0)
+  const _reg = range.map((_, index) => index * data.slope + data.intercept)
 
   if (!_data) return null
 
@@ -17,11 +22,9 @@ export default function LineChart({ data, source }) {
     },
     xAxis: {
       accessibility: {
-        description: intl.formatMessage(
-          { id: "trends.line-chart.xAxis.accessibility.description" },
-          { min: MIN_YEAR, max: MAX_YEAR }
-        ),
+        description: intl.formatMessage({ id: "trends.line-chart.xAxis.accessibility.description" }, { min: min, max: max }),
       },
+      tickInterval: 1, // one year
     },
     yAxis: {
       accessibility: {
@@ -43,7 +46,7 @@ export default function LineChart({ data, source }) {
     },
     plotOptions: {
       series: {
-        pointStart: MIN_YEAR,
+        pointStart: min,
         pointInterval: 1, // one year
       },
     },
@@ -61,7 +64,7 @@ export default function LineChart({ data, source }) {
         marker: { enabled: false },
         dashStyle: "dash",
         color: "grey",
-        events: null,
+        enableMouseTracking: false,
       },
     ],
   }

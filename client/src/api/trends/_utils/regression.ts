@@ -1,9 +1,8 @@
 import { SimpleLinearRegression } from "ml-regression-simple-linear"
-import { YEARS } from "../config/years"
 
-export const linearRegressionSlope = (values) => {
-  const X = YEARS
-  const y = YEARS?.map((year) => values?.[year] || 0.0)
+export const linearRegressionSlope = (values, years) => {
+  const X = years?.map((year) => year - years[0])
+  const y = years?.map((year) => values?.[year] || 0.0)
   const regression = new SimpleLinearRegression(X, y)
   const scores = regression.score(X, y)
 

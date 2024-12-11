@@ -2,18 +2,17 @@ import { postHeaders, publicationsIndex } from "../../../config/api"
 import { ElasticAggregation, ElasticBucket, ElasticBuckets } from "../../../types/commons"
 import { TrendsArgs } from "../../../types/trends"
 import { publicationsTrends, citationsTrends } from "../../trends"
-import { YEARS, CURRENT_YEAR, MAX_YEAR, MIN_YEAR } from "../../trends/config/years"
 import { FIELDS } from "../_utils/constants"
 
 type TrendsAggregation = Array<ElasticBucket & { model: ElasticAggregation }>
 
-export async function getPublicationsTrends({ model, query, filters, normalized }: TrendsArgs) {
+export async function getPublicationsTrends({ model, query, years, filters, normalized }: TrendsArgs) {
   const body: any = {
     size: 0,
     query: {
       bool: {
         must: [
-          { range: { year: { gte: MIN_YEAR } } },
+          { range: { year: { gte: years[0] } } },
           {
             query_string: {
               query: query || "*",
@@ -25,9 +24,9 @@ export async function getPublicationsTrends({ model, query, filters, normalized 
     },
     aggs: {
       years: {
-        terms: { field: "year", size: CURRENT_YEAR - MIN_YEAR },
+        terms: { field: "year", size: years.length },
         aggs: {
-          model: { terms: { field: `${model}.id_name.keyword`, size: 10000 } },
+          model: { terms: { field: `${model}.id_name.keyword`, size: 60000 / years.length } },
         },
       },
     },
@@ -50,15 +49,15 @@ export async function getPublicationsTrends({ model, query, filters, normalized 
   const aggregation: TrendsAggregation = json?.aggregations?.["years"]?.buckets
 
   if (!aggregation?.length) {
-    console.error(`Elasticsearch error: no aggregation found for years ${MIN_YEAR}-${MAX_YEAR}`)
+    console.error(`Elasticsearch error: no aggregation found for years ${years[0]}-${years[years.length - 1]}`)
     return null
   }
 
-  const trends = publicationsTrends(aggregation, normalized)
+  const trends = publicationsTrends(aggregation, years, normalized)
   return trends
 }
 
-export async function getCitationsTrends({ model, query, filters, normalized }: TrendsArgs) {
+export async function getCitationsTrends({ model, query, years, filters, normalized }: TrendsArgs) {
   const body: any = {
     size: 0,
     query: {
@@ -78,7 +77,7 @@ export async function getCitationsTrends({ model, query, filters, normalized }: 
       model: {
         terms: { field: `${model}.id_name.keyword`, size: 10000 },
         aggs: {
-          ...YEARS.reduce(
+          ...years.reduce(
             (acc, year) => (acc = { ...acc, [`citationsIn${year}`]: { sum: { field: `cited_by_counts_by_year.${year}` } } }),
             {}
           ),
@@ -104,11 +103,11 @@ export async function getCitationsTrends({ model, query, filters, normalized }: 
   const aggregation: ElasticBuckets = json?.aggregations?.model?.buckets
 
   if (!aggregation?.length) {
-    console.error(`Elasticsearch error: no aggregation found for years ${MIN_YEAR}-${MAX_YEAR}`)
+    console.error(`Elasticsearch error: no aggregation found for years ${years[0]}-${years[years.length - 1]}`)
     return null
   }
 
-  const trends = citationsTrends(aggregation, normalized)
+  const trends = citationsTrends(aggregation, years, normalized)
   return trends
 }
 

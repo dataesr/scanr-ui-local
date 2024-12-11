@@ -1,13 +1,14 @@
 import { Badge, Col, Container, Row } from "@dataesr/dsfr-plus"
 import { useTrendsContext } from "../../../context"
-import { MAX_YEAR } from "../../../config/years"
-import { itemGetColor, itemGetTrendState } from "../_utils"
-import TrendsFocus from "../focus"
+import useTrends from "../../../hooks/useTrends"
 import useScreenSize from "../../../../../hooks/useScreenSize"
+import { itemGetColor, itemGetTrendState } from "../_utils"
 import { trendsViewGetConfig } from "../../../config/views"
+import TrendsFocus from "../focus"
 
 export default function TrendsViewItem({ item }) {
   const { view, focus, setFocus, normalized } = useTrendsContext()
+  const { trendsYears } = useTrends()
   const { screen } = useScreenSize()
   const isMobile = ["xs", "sm"].includes(screen)
   const viewLabel = trendsViewGetConfig(view).label
@@ -18,6 +19,8 @@ export default function TrendsViewItem({ item }) {
 
   const isFocused = Boolean(focus === item.id)
   const focusKey = `focus-${view}-${item.id}`
+
+  isFocused && console.log("item", item)
 
   return (
     <Container key={view} fluid className="fr-accordion">
@@ -36,7 +39,7 @@ export default function TrendsViewItem({ item }) {
           {(!isMobile || viewLabel == "count") && (
             <Col sm="4" md="2" lg="2">
               <Row horizontalAlign="right">
-                <div>{item?.count?.[MAX_YEAR] || 0}</div>
+                <div>{item?.count?.[trendsYears.max] || 0}</div>
               </Row>
             </Col>
           )}

@@ -3,6 +3,7 @@ import { useIntl } from "react-intl"
 import { useTrendsContext } from "../../../context"
 import { trendsViewFromLabel, trendsViewGetConfig } from "../../../config/views"
 import useScreenSize from "../../../../../hooks/useScreenSize"
+import useTrends from "../../../hooks/useTrends"
 
 function TrendsViewMobileButton() {
   const intl = useIntl()
@@ -31,6 +32,9 @@ function TrendsViewMobileButton() {
 
 function TrendsViewButton({ label }) {
   const intl = useIntl()
+  const {
+    trendsYears: { min, max },
+  } = useTrends()
   const { view, setView, setFocus } = useTrendsContext()
   const viewConfig = trendsViewGetConfig(view)
   const defaultView = trendsViewFromLabel(label)
@@ -49,7 +53,7 @@ function TrendsViewButton({ label }) {
       variant={isSelected ? "tertiary" : "text"}
       onClick={onButtonClick}
     >
-      {intl.formatMessage({ id: `trends.views.header.${label}` })}
+      {intl.formatMessage({ id: `trends.views.header.${label}` }, { min: min, max: max, count: max - min + 1 })}
     </Button>
   )
 }

@@ -1,8 +1,6 @@
-import { MAX_YEAR } from "../config/years"
-
-export default function variation(count) {
-  const startValue = count?.[MAX_YEAR - 1] || 0
-  const endValue = count?.[MAX_YEAR] || 0
+export default function variation(count, max_year) {
+  const startValue = count?.[max_year - 1] || 0
+  const endValue = count?.[max_year] || 0
 
   if (!startValue && !endValue) return 0
   if (!startValue) return Infinity

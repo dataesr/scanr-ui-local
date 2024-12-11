@@ -1,7 +1,6 @@
 import { useIntl } from "react-intl"
 import Modal from "../../../../components/modal"
 import { Button, Container } from "@dataesr/dsfr-plus"
-import PublicationYearFilter from "../../../search/components/publications/filters/years"
 import PublicationTypeFilter from "../../../search/components/publications/filters/types"
 import PublicationAuthorFilter from "../../../search/components/publications/filters/authors"
 import PublicationOrganizationsFilter from "../../../search/components/publications/filters/organizations"
@@ -9,6 +8,7 @@ import PublicationCountriesFilter from "../../../search/components/publications/
 import PublicationAccessFilter from "../../../search/components/publications/filters/access"
 import PublicationFunderFilter from "../../../search/components/publications/filters/funders"
 import PublicationTagsFilter from "../../../search/components/publications/filters/tags"
+import PublicationYearFilter from "./years"
 import useUrl from "../../../search/hooks/useUrl"
 import useTrends from "../../hooks/useTrends"
 
