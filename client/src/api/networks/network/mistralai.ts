@@ -92,3 +92,28 @@ export async function openAiLabeledClusters(clusters: NetworkCommunities): Promi
 
   return clusters
 }
+
+
+export async function mistralAgentCompletion({ query, agentId }: { query: string; agentId: string }): Promise<unknown> {
+  const chatBody = {
+    messages: [
+      {
+        role: "user",
+        content: query,
+      },
+    ],
+    agent_id: agentId,
+  }
+
+  const response = await fetch(`${MISTRAL_URL}/agents/completions`, {
+    method: "POST",
+    headers: postHeaders,
+    body: JSON.stringify(chatBody),
+  })
+  const completion = await response.json()
+  const answer: string = completion?.choices?.[0]?.message?.content || null
+
+  const json = answer ? JSON.parse(answer) : undefined
+
+  return json
+}

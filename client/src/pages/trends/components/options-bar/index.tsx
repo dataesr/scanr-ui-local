@@ -8,7 +8,6 @@ import TrendsParametersButton from "../parameters/button"
 
 export default function TrendsOptionsBar() {
   const { screen } = useScreenSize()
-  console.log("screen", screen)
 
   return (
     <Container className="fr-mb-2w">

@@ -19,8 +19,6 @@ export default function PublicationYearFilter() {
     Math.min(MAX_YEAR, Number(byYear[byYear.length - 1].value)),
   ]
 
-  console.log("currentFilters", currentFilters)
-
   const min = Number(currentFilters?.year?.values?.[0]?.value || defaultValues[0])
   const max = Number(currentFilters?.year?.values?.[1]?.value || defaultValues[1])
 

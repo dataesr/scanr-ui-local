@@ -50,6 +50,7 @@
     "networks.get-started.search-bar.title": "Que recherchez vous ?",
     "networks.get-started.search-bar.description": "Définissez le périmètre du corpus à analyser grâce à une recherche dans nos bases de données.",
     "networks.get-started.search-bar.examples": "Exemples :",
+    "networks.get-started.search-bar.suggestions": "Suggestions :",
     "networks.get-started.select-source.title": "Quelle source voulez-vous utiliser ?",
     "networks.get-started.select-source.description": "Choississez la source de documents à analyser.",
     "networks.get-started.select-model.title": "Quelles communautés souhaitez-vous visualiser ?",

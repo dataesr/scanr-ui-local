@@ -9,7 +9,6 @@ import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function NetworksOptionsBar() {
   const { screen } = useScreenSize()
-  console.log("screen", screen)
 
   return (
     <Container className="fr-mb-2w">
