@@ -17,3 +17,16 @@ export type TrendsArgs = {
   filters?: TrendsFilters
 }
 
+export type TrendsIntegrationOptions = {
+  showTrendsOnly: boolean
+  showHeader: boolean
+  showTitle: boolean
+  showBreadcrumb: boolean
+  showOptionsBar: boolean
+  showSearchBar: boolean
+  showSelectModel: boolean
+  showSelectSource: boolean
+  showFilters: boolean
+  showParameters: boolean
+  showExports: boolean
+}

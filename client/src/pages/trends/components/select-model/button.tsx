@@ -1,10 +1,14 @@
 import { Button } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import { useTrendsContext } from "../../context"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function TrendsSelectModelButton() {
   const intl = useIntl()
+  const { integrationOptions } = useIntegration()
   const { model } = useTrendsContext()
+
+  if (integrationOptions.showSelectModel === false) return null
 
   return (
     <Button
