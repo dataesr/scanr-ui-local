@@ -9,7 +9,7 @@ export default function NetworkSelectModel() {
   const { currentTab, handleTabChange } = useTab()
   const { integrationOptions } = useIntegration()
 
-  if (integrationOptions?.showSelect === false) return null
+  if (integrationOptions?.showSelectModel === false) return null
 
   return (
     <Select

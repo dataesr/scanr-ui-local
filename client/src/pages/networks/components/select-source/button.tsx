@@ -1,6 +1,11 @@
 import { Button } from "@dataesr/dsfr-plus"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkSelectSourceButton() {
+  const { integrationOptions } = useIntegration()
+
+  if (integrationOptions.showSelectSource === false) return null
+
   return (
     <Button
       className="fr-mt-1w fr-mr-1w"

@@ -14,16 +14,18 @@ export default function useIntegration() {
   const integrationOptions: NetworksIntegrationOptions = isIntegration
     ? {
         showGraphOnly: getBooleanParam(searchParams.get("showGraphOnly"), false),
-        showTitle: getBooleanParam(searchParams.get("showTitle")),
-        showSubtitle: getBooleanParam(searchParams.get("showSubtitle")),
-        showClustersAnalytics: getBooleanParam(searchParams.get("showClustersAnalytics")),
-        showClustersButton: getBooleanParam(searchParams.get("showClustersButton")),
-        showSearchBar: getBooleanParam(searchParams.get("useSearch")),
-        showFilters: getBooleanParam(searchParams.get("showFilters")),
-        showExports: getBooleanParam(searchParams.get("showExports")),
-        showBreadcrumb: false,
-        showSelect: getBooleanParam(searchParams.get("showSelect")),
         showHeader: getBooleanParam(searchParams.get("showHeader")),
+        showBreadcrumb: false,
+        showTitle: getBooleanParam(searchParams.get("showTitle")),
+        showOptionsBar: getBooleanParam(searchParams.get("showOptionsBar")),
+        showSearchBar: getBooleanParam(searchParams.get("showSearchBar")),
+        showSelectModel: getBooleanParam(searchParams.get("showSelectModel")),
+        showSelectSource: getBooleanParam(searchParams.get("showSelectSource")),
+        showFilters: getBooleanParam(searchParams.get("showFilters")),
+        showParameters: getBooleanParam(searchParams.get("showParameters")),
+        showExports: getBooleanParam(searchParams.get("showExports")),
+        showClustersButton: getBooleanParam(searchParams.get("showClustersButton")),
+        showClustersAnalytics: getBooleanParam(searchParams.get("showClustersAnalytics")),
         graphHeight: searchParams.get("graphHeight") || DEFAULT_INTEGRATION.graphHeight,
       }
     : DEFAULT_INTEGRATION

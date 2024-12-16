@@ -1,10 +1,14 @@
 import { Button } from "@dataesr/dsfr-plus"
 import useTab from "../../hooks/useTab"
 import { useIntl } from "react-intl"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkSelectModelButton() {
   const intl = useIntl()
+  const { integrationOptions } = useIntegration()
   const { currentTab } = useTab()
+
+  if (integrationOptions.showSelectModel === false) return null
 
   return (
     <Button
