@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { Container, SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
 import Modal from "../../../../components/modal"
 import useUrl from "../../../search/hooks/useUrl"
@@ -8,7 +9,19 @@ import { networkQuery } from "../../config/query"
 export default function NetworkSearchBarModal() {
   const intl = useIntl()
   const { currentQuery, handleQueryChange } = useUrl()
-  const { expansions } = useSearchExpansion()
+  const [query, setQuery] = useState(currentQuery)
+  const [debouncedQuery, setDebouncedQuery] = useState(query)
+  const { expansions } = useSearchExpansion(debouncedQuery)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [query])
 
   const id = "networks-options-search-bar-modal"
 
@@ -20,6 +33,7 @@ export default function NetworkSearchBarModal() {
           buttonLabel={intl.formatMessage({ id: "networks.search-bar.button-label" })}
           defaultValue={currentQuery || ""}
           placeholder={intl.formatMessage({ id: "networks.search-bar.placeholder" })}
+          onChange={(event) => setQuery((event.target as HTMLInputElement).value)}
           onSearch={(value) => {
             handleQueryChange(networkQuery(value))
             // @ts-expect-error dsfr does not have types

@@ -112,16 +112,18 @@ export type ElasticHit = {
 
 export type NetworksIntegrationOptions = {
   showGraphOnly?: boolean
-  showTitle?: boolean
-  showSubtitle?: boolean
-  showClustersAnalytics?: boolean
-  showClustersButton?: boolean
-  showSearchBar?: boolean
-  showFilters?: boolean
-  showExports?: boolean
-  showBreadcrumb?: boolean
-  showSelect?: boolean
   showHeader?: boolean
+  showBreadcrumb?: boolean
+  showTitle?: boolean
+  showOptionsBar?: boolean
+  showSearchBar?: boolean
+  showSelectModel?: boolean
+  showSelectSource?: boolean
+  showFilters?: boolean
+  showParameters?: boolean
+  showExports?: boolean
+  showClustersButton?: boolean
+  showClustersAnalytics?: boolean
   graphHeight?: string
 }
 

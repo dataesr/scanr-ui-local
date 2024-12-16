@@ -7,6 +7,9 @@ import useTrends from "../../../hooks/useTrends"
 
 function TrendsViewMobileButton() {
   const intl = useIntl()
+  const {
+    trendsYears: { min, max },
+  } = useTrends()
   const { view, setView, setFocus } = useTrendsContext()
   const viewConfig = trendsViewGetConfig(view)
 
@@ -17,15 +20,15 @@ function TrendsViewMobileButton() {
 
   return (
     <MenuButton
-      label={intl.formatMessage({ id: `trends.views.header.${viewConfig.label}` })}
+      label={intl.formatMessage({ id: `trends.views.header.${viewConfig.label}` }, { max: max, count: max - min + 1 })}
       variant="tertiary"
       icon="more-fill"
       onAction={onMenuAction}
       iconPosition="right"
     >
-      <MenuItem key="count">{intl.formatMessage({ id: `trends.views.header.count` })}</MenuItem>
+      <MenuItem key="count">{intl.formatMessage({ id: `trends.views.header.count` }, { max: max })}</MenuItem>
       <MenuItem key="diff">{intl.formatMessage({ id: `trends.views.header.diff` })}</MenuItem>
-      <MenuItem key="trend">{intl.formatMessage({ id: `trends.views.header.trend` })}</MenuItem>
+      <MenuItem key="trend">{intl.formatMessage({ id: `trends.views.header.trend` }, { count: max - min + 1 })}</MenuItem>
     </MenuButton>
   )
 }
@@ -53,7 +56,7 @@ function TrendsViewButton({ label }) {
       variant={isSelected ? "tertiary" : "text"}
       onClick={onButtonClick}
     >
-      {intl.formatMessage({ id: `trends.views.header.${label}` }, { min: min, max: max, count: max - min + 1 })}
+      {intl.formatMessage({ id: `trends.views.header.${label}` }, { max: max, count: max - min + 1 })}
     </Button>
   )
 }

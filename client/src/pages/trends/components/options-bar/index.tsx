@@ -5,9 +5,13 @@ import TrendsSelectModelButton from "../select-model/button"
 import TrendsSelectSourceButton from "../select-source/button"
 import TrendsFiltersButton from "../filters/button"
 import TrendsParametersButton from "../parameters/button"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function TrendsOptionsBar() {
   const { screen } = useScreenSize()
+  const { integrationOptions } = useIntegration()
+
+  if (integrationOptions.showOptionsBar === false) return null
 
   return (
     <Container className="fr-mb-2w">

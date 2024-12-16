@@ -1,10 +1,14 @@
 import { Badge, Button } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../../../hooks/useScreenSize"
 import useUrl from "../../../search/hooks/useUrl"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkFiltersButton() {
   const { screen } = useScreenSize()
+  const { integrationOptions } = useIntegration()
   const { currentFilters } = useUrl()
+
+  if (integrationOptions.showFilters === false) return null
 
   return (
     <Button

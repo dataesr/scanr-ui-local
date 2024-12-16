@@ -2,11 +2,15 @@ import { Badge, Button } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../../../hooks/useScreenSize"
 import useUrl from "../../../search/hooks/useUrl"
 import { useIntl } from "react-intl"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function TrendsFiltersButton() {
   const intl = useIntl()
+  const { integrationOptions } = useIntegration()
   const { screen } = useScreenSize()
   const { currentFilters } = useUrl()
+
+  if (integrationOptions.showFilters === false) return null
 
   return (
     <Button
