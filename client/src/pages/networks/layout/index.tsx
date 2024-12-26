@@ -5,18 +5,14 @@ import ClustersButton from "../components/clusters/button"
 import NetworkClusters from "../components/clusters"
 import NetworkAnalytics from "../components/clusters/analytics"
 import useIntegration from "../hooks/useIntegration"
-import useScreenSize from "../../../hooks/useScreenSize"
 import NetworksOptionsBar from "../components/options-bar"
 import NetworksOptionsModals from "../components/options-bar/modals"
 
 export default function NetworksLayout() {
   const { integrationOptions } = useIntegration()
   const { showGraphOnly } = integrationOptions
-  const { screen } = useScreenSize()
 
   if (showGraphOnly === true) return <NetworkCard />
-
-  console.log("screen", screen)
 
   return (
     <Container fluid>

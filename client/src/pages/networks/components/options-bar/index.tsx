@@ -6,10 +6,13 @@ import NetworkSelectSourceButton from "../select-source/button"
 import NetworkFiltersButton from "../filters/button"
 import NetworkParametersButton from "../parameters/button"
 import useScreenSize from "../../../../hooks/useScreenSize"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworksOptionsBar() {
   const { screen } = useScreenSize()
-  console.log("screen", screen)
+  const { integrationOptions } = useIntegration()
+
+  if (integrationOptions.showOptionsBar === false) return null
 
   return (
     <Container className="fr-mb-2w">

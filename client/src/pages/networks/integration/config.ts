@@ -1,19 +1,21 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
+import { NetworksIntegrationOptions } from "../../../types/network"
 
-
-export const DEFAULT_INTEGRATION = {
+export const DEFAULT_INTEGRATION: NetworksIntegrationOptions = {
   showGraphOnly: false,
-  showTitle: true,
-  showSubtitle: true,
-  showClustersAnalytics: true,
-  showClustersButton: true,
-  showSearchBar: true,
-  showFilters: true,
-  showExports: true,
-  showBreadcrumb: true,
-  showSelect: true,
   showHeader: true,
+  showBreadcrumb: true,
+  showTitle: true,
+  showOptionsBar: true,
+  showSearchBar: true,
+  showSelectModel: true,
+  showSelectSource: true,
+  showFilters: true,
+  showParameters: true,
+  showExports: true,
+  showClustersButton: true,
+  showClustersAnalytics: true,
   graphHeight: "600px",
 }
 

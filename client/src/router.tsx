@@ -33,6 +33,7 @@ import Overview from "./pages/docs/objects/overview"
 import NetworksIntegration from "./pages/networks/integration"
 import Trends from "./pages/trends"
 import NetworksGetStarted from "./pages/networks/components/get-started"
+import TrendsIntegration from "./pages/trends/integration"
 
 function ScrollToTopOnLocationChange() {
   const { pathname } = useLocation()
@@ -98,6 +99,7 @@ export default function Router() {
           <Route path="*" element={<Error404 error={null} />} />
         </Route>
         <Route path="/networks/integration" element={<NetworksIntegration />} />
+        <Route path="/trends/integration" element={<TrendsIntegration />} />
         {/* <Route path="/trends/integration" element={<TrendsIntegration />} /> */}
       </Routes>
     </>

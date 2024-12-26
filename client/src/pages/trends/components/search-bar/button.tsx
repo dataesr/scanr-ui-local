@@ -1,10 +1,14 @@
 import { Button } from "@dataesr/dsfr-plus"
 import useUrl from "../../../search/hooks/useUrl"
 import { useIntl } from "react-intl"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function TrendsSearchBarButton() {
   const intl = useIntl()
+  const { integrationOptions } = useIntegration()
   const { currentQuery } = useUrl()
+
+  if (integrationOptions.showSearchBar === false) return null
 
   const isEmptyQuery = !currentQuery || currentQuery === "*"
   const shortQuery = (currentQuery?.length || 0) > 20 ? currentQuery.slice(0, 17) + "..." : currentQuery
