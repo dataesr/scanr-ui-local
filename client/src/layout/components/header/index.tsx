@@ -56,7 +56,7 @@ export default function Header() {
 
   return (
     <HeaderWrapper>
-      <Logo splitCharacter='|' text="Ministère|de l'enseignement|supérieur|et de la recherche" />
+      <Logo splitCharacter="|" text="Ministère|chargé|de l'enseignement|supérieur|et de la recherche" />
       <Service name="scanR" tagline={intl.formatMessage({ id: "layout.header.tagline" })} />
       <FastAccess>
         <Button className="fr-btn fr-icon-theme-fill" aria-controls="fr-theme-modal" data-fr-opened="false">
