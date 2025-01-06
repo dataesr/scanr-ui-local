@@ -95,6 +95,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
                     label={intl.formatMessage({ id: `studio.options.${page}.${key}` })}
                     checked={value as boolean}
                     onChange={(event) => setOption(key, event.target.checked)}
+                    disabled={integration?.[noOptions]}
                   />
                 </Container>
               ))}
