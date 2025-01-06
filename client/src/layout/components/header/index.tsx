@@ -121,6 +121,9 @@ export default function Header() {
           <Link current={pathname.split("/").includes("trends")} href="/trends">
             {intl.formatMessage({ id: "layout.header.nav.analyze.trends" })}
           </Link>
+          <Link current={pathname.split("/").includes("studio")} href="/studio">
+            {intl.formatMessage({ id: "layout.header.nav.analyze.studio" })}
+          </Link>
         </NavItem>
       </Nav>
     </HeaderWrapper>
