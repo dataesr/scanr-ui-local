@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useIntl } from "react-intl"
-import { Button, Col, Container, Row, Select, SelectOption, TextInput } from "@dataesr/dsfr-plus"
+import { Button, Container, Row, Select, SelectOption, TextInput } from "@dataesr/dsfr-plus"
 import StudioCreateOptions from "./options"
 
 export default function StudioCreate() {
@@ -54,17 +54,13 @@ export default function StudioCreate() {
       </Select>
       <StudioCreateOptions key={page} page={page} setOptions={setOptions} />
       <Container className="fr-my-2w fr-card studio">{integrationIframe}</Container>
-      <Row gutters>
-        <Col md={6}>
-          <Button icon={"clipboard-fill"} iconPosition="right" onClick={copyIframe}>
-            {intl.formatMessage({ id: "studio.create.copy-iframe.label" })}
-          </Button>
-        </Col>
-        <Col md={6}>
-          <Button icon={"clipboard-fill"} iconPosition="right" onClick={copyUrl}>
-            {intl.formatMessage({ id: "studio.create.copy-url.label" })}
-          </Button>
-        </Col>
+      <Row horizontalAlign="center">
+        <Button icon={"clipboard-fill"} iconPosition="right" onClick={copyIframe}>
+          {intl.formatMessage({ id: "studio.create.copy-iframe.label" })}
+        </Button>
+        <Button className="fr-ml-2w" icon={"clipboard-fill"} iconPosition="right" onClick={copyUrl}>
+          {intl.formatMessage({ id: "studio.create.copy-url.label" })}
+        </Button>
       </Row>
     </section>
   )
