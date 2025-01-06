@@ -137,14 +137,14 @@ export default function NetworkClusters() {
   const intl = useIntl()
   const { currentTab } = useTab()
   const { parameters } = useParameters()
-  const { search, currentQuery } = useSearchData(currentTab)
+  const { search } = useSearchData(currentTab)
   const [seeMore, setSeeMore] = useState(false)
 
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
   const sectionTitle = `networks.section.clusters.${currentTab}`
 
-  if (!currentQuery || !parameters.clusters) return null
+  if (!parameters.clusters) return null
 
   if (search.isFetching)
     return (
