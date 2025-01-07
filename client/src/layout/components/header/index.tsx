@@ -17,32 +17,32 @@ import {
 } from '@dataesr/dsfr-plus';
 import { createIntl } from 'react-intl';
 import SwitchLanguage from '../../../components/switch-language';
+import { isInProduction } from "../../../utils/helpers"
 // import { autocompleteOrganizations } from '../api/organizations/autocomplete';
 // import { LightOrganization } from '../types/organization';
 // import getLangFieldValue from '../utils/lang';
 
-const modules = import.meta.glob('./locales/*.json', { eager: true, import: 'default' })
+const modules = import.meta.glob("./locales/*.json", { eager: true, import: "default" })
 const messages = Object.keys(modules).reduce((acc, key) => {
-  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1]
   if (locale) {
     return { ...acc, [locale]: modules[key] }
   }
-  return acc;
-}, {});
-
+  return acc
+}, {})
 
 const languages = [
-  { shortName: 'FR', fullName: 'Français', key: 'fr' },
-  { shortName: 'EN', fullName: 'English', key: 'en' },
+  { shortName: "FR", fullName: "Français", key: "fr" },
+  { shortName: "EN", fullName: "English", key: "en" },
   // TODO: Uncomment when translations are available
   // { shortName: 'DE', fullName: 'Deutsch', key: 'de' },
   // { shortName: 'ES', fullName: 'Español', key: 'es' },
-];
+]
 
 export default function Header() {
-  const { locale } = useDSFRConfig();
-  const intl = createIntl({ locale, messages: messages[locale] });
-  const { pathname } = useLocation();
+  const { locale } = useDSFRConfig()
+  const intl = createIntl({ locale, messages: messages[locale] })
+  const { pathname } = useLocation()
 
   // const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
   //   async load({ filterText }) {
@@ -118,9 +118,11 @@ export default function Header() {
           <Link current={pathname.split("/").includes("networks")} href="/networks/get-started">
             {intl.formatMessage({ id: "layout.header.nav.analyze.networks" })}
           </Link>
-          <Link current={pathname.split("/").includes("trends")} href="/trends">
-            {intl.formatMessage({ id: "layout.header.nav.analyze.trends" })}
-          </Link>
+          {!isInProduction() && (
+            <Link current={pathname.split("/").includes("trends")} href="/trends">
+              {intl.formatMessage({ id: "layout.header.nav.analyze.trends" })}
+            </Link>
+          )}
           <Link current={pathname.split("/").includes("studio")} href="/studio">
             {intl.formatMessage({ id: "layout.header.nav.analyze.studio" })}
           </Link>

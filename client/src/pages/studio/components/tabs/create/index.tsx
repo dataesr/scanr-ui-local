@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useIntl } from "react-intl"
 import { Button, Container, Row, Select, SelectOption, TextInput } from "@dataesr/dsfr-plus"
 import StudioCreateOptions from "./options"
+import { isInProduction } from "../../../../../utils/helpers"
 
 export default function StudioCreate() {
   const intl = useIntl()
@@ -50,7 +51,9 @@ export default function StudioCreate() {
         onSelectionChange={(key) => setPage(String(key))}
       >
         <SelectOption key="networks">{intl.formatMessage({ id: "studio.create.page.networks" })}</SelectOption>
-        <SelectOption key="trends">{intl.formatMessage({ id: "studio.create.page.trends" })}</SelectOption>
+        {!isInProduction() && (
+          <SelectOption key="trends">{intl.formatMessage({ id: "studio.create.page.trends" })}</SelectOption>
+        )}
       </Select>
       <StudioCreateOptions key={page} page={page} setOptions={setOptions} />
       <Container className="fr-my-2w fr-card studio">{integrationIframe}</Container>
