@@ -4,6 +4,9 @@
   "studio.header.title": "Local variations of scanR",
   "studio.tabs.label.define": "1. Define your scope",
   "studio.tabs.label.create": "2. Integrate your variation",
+  "studio.define.text": "Local variations of scanR use the variation system of the French Open Science Monitor.",
+  "studio.define.link.bso-local": "View the local variations of the French Open Science Monitor",
+  "studio.define.link.bso-studio": "Submit a request for a local variation",
   "studio.create.identifier.label": "Establishment identifier",
   "studio.create.identifier.hint": "If ad-hoc scope, identifier provided by the BSO or RoR team. In all cases, HAL structure identifier, or HAL collection code",
   "studio.create.identifier.message": "Please enter an identifier",
@@ -16,7 +19,7 @@
   "studio.create.options.label": "Display options",
   "studio.create.copy-iframe.label": "Copy iframe code",
   "studio.create.copy-url.label": "Copy URL",
-  "studio.options.networks.showGraphOnly": "Show only the network",
+  "studio.options.networks.showGraphOnly": "Show network only",
   "studio.options.networks.showHeader": "Show title",
   "studio.options.networks.showOptionsBar": "Show options bar",
   "studio.options.networks.showSearchBar": "Show search bar",
@@ -24,10 +27,10 @@
   "studio.options.networks.showSelectSource": "Show source selection",
   "studio.options.networks.showFilters": "Show filters",
   "studio.options.networks.showParameters": "Show parameters",
-  "studio.options.networks.showExports": "Show export",
+  "studio.options.networks.showExports": "Show exports",
   "studio.options.networks.showClustersButton": "Show community calculation button",
   "studio.options.networks.showClustersAnalytics": "Show community charts",
-  "studio.options.trends.showTrendsOnly": "Show only the table",
+  "studio.options.trends.showTrendsOnly": "Show table only",
   "studio.options.trends.showHeader": "Show title",
   "studio.options.trends.showOptionsBar": "Show options bar",
   "studio.options.trends.showSearchBar": "Show search bar",
@@ -35,5 +38,5 @@
   "studio.options.trends.showSelectSource": "Show source selection",
   "studio.options.trends.showFilters": "Show filters",
   "studio.options.trends.showParameters": "Show parameters",
-  "studio.options.trends.showExports": "Show export"
+  "studio.options.trends.showExports": "Show exports"
 }

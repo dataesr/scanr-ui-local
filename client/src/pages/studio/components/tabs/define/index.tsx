@@ -1,18 +1,19 @@
 import { Container, Link, Text } from "@dataesr/dsfr-plus"
+import { useIntl } from "react-intl"
 
 export default function StudioDefine() {
+  const intl = useIntl()
+
   return (
     <Container>
-      <Text>
-        {"Les déclinaisons locales de scanR utilisent le système de déclinaison du Baromètre de la Science Ouverte."}
-      </Text>
+      <Text>{intl.formatMessage({ id: "studio.define.text" })}</Text>
       <Link href="https://barometredelascienceouverte.esr.gouv.fr/declinaisons/bso-locaux" target="_blank">
-        {"Voir les déclinaisons locales du Baromètre de la Science Ouverte"}
+        {intl.formatMessage({ id: "studio.define.link.bso-local" })}
       </Link>
       <br />
       <br />
       <Link href="https://barometredelascienceouverte.esr.gouv.fr/declinaisons/comment-realiser-bso-local" target="_blank">
-        {"Pour soumettre une demande de déclinaison locale"}
+        {intl.formatMessage({ id: "studio.define.link.bso-studio" })}
       </Link>
     </Container>
   )
