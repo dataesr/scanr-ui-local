@@ -46,7 +46,7 @@ export default async function networkCreate(
     const maxYear = item.max_year?.value
     const nodes = key.split("---")
 
-    if (ignore_ids[model].includes(nodeGetId(nodes[0])) || ignore_ids[model].includes(nodeGetId(nodes[1]))) return
+    if (ignore_ids?.[model]?.includes(nodeGetId(nodes[0])) || ignore_ids?.[model]?.includes(nodeGetId(nodes[1]))) return
 
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
