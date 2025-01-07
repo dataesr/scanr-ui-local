@@ -9,6 +9,7 @@ import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
 import { getParameters } from "./parameters"
 import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
+import { ignore_ids } from "./ignore"
 
 type NetworkBucket = ElasticBucket & { max_year: ElasticAggregation }
 
@@ -44,6 +45,8 @@ export default async function networkCreate(
     const { key, doc_count: count } = item
     const maxYear = item.max_year?.value
     const nodes = key.split("---")
+
+    if (ignore_ids[model].includes(nodeGetId(nodes[0])) || ignore_ids[model].includes(nodeGetId(nodes[1]))) return
 
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
