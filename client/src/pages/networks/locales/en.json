@@ -21,7 +21,7 @@
     "networks.parameters.modal.reset": "Reset Parameters",
     "networks.parameters.modal.display": "Display Network",
     "networks.home.title": "Explore research and innovation networks {tab} through scientific publications",
-    "networks.header.title": "Explore scientific communities through publication analysis.",
+    "networks.header.title": "Explore scientific communities through publication analysis",
     "networks.header.title.perimeter": "of the perimeter",
     "networks.header.subtitle": "Estimated on the basis of co-signatures / co-appearances in the corpus of publications corresponding to the research carried out",
     "networks.header.subtitle-hover": "Learn more",

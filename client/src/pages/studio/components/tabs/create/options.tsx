@@ -10,15 +10,15 @@ const integrationMapping = {
 }
 
 type StudioCreateOptionsArgs = {
-  page: string
+  tool: string
   setOptions: React.Dispatch<React.SetStateAction<string>>
 }
-export default function StudioCreateOptions({ page, setOptions }: StudioCreateOptionsArgs) {
+export default function StudioCreateOptions({ tool, setOptions }: StudioCreateOptionsArgs) {
   const intl = useIntl()
-  const integrationOptions = integrationMapping[page]()?.integrationOptions
+  const integrationOptions = integrationMapping[tool]()?.integrationOptions
   const [integration, setIntegration] = useState(integrationOptions)
 
-  const noOptions = page === "networks" ? "showGraphOnly" : "showTrendsOnly"
+  const noOptions = tool === "networks" ? "showGraphOnly" : "showTrendsOnly"
 
   useEffect(() =>
     setOptions(
@@ -35,7 +35,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
     <Accordion className="fr-mb-2w" title={intl.formatMessage({ id: "studio.create.options.label" })}>
       <Toggle
         label={intl.formatMessage({
-          id: `studio.options.${page}.${noOptions}`,
+          id: `studio.options.${tool}.${noOptions}`,
         })}
         checked={integration?.[noOptions]}
         onChange={(event) => setOption(noOptions, event.target.checked)}
@@ -43,7 +43,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
       <hr />
       <Toggle
         label={intl.formatMessage({
-          id: `studio.options.${page}.showHeader`,
+          id: `studio.options.${tool}.showHeader`,
         })}
         checked={integration?.showHeader}
         onChange={(event) => setOption("showHeader", event.target.checked)}
@@ -52,7 +52,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
       <hr />
       <Toggle
         label={intl.formatMessage({
-          id: `studio.options.${page}.showOptionsBar`,
+          id: `studio.options.${tool}.showOptionsBar`,
         })}
         checked={integration?.showOptionsBar}
         onChange={(event) => setOption("showOptionsBar", event.target.checked)}
@@ -74,7 +74,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
             <Container fluid key={key} style={{ width: "300px" }}>
               <Toggle
                 key={key}
-                label={intl.formatMessage({ id: `studio.options.${page}.${key}` })}
+                label={intl.formatMessage({ id: `studio.options.${tool}.${key}` })}
                 checked={value as boolean}
                 onChange={(event) => setOption(key, event.target.checked)}
                 disabled={integration?.[noOptions] || !integration?.showOptionsBar}
@@ -82,7 +82,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
             </Container>
           ))}
       </Row>
-      {page === "networks" && (
+      {tool === "networks" && (
         <Container fluid>
           <hr />
           <Row horizontalAlign="left">
@@ -92,7 +92,7 @@ export default function StudioCreateOptions({ page, setOptions }: StudioCreateOp
                 <Container fluid key={key} style={{ width: "300px" }}>
                   <Toggle
                     key={key}
-                    label={intl.formatMessage({ id: `studio.options.${page}.${key}` })}
+                    label={intl.formatMessage({ id: `studio.options.${tool}.${key}` })}
                     checked={value as boolean}
                     onChange={(event) => setOption(key, event.target.checked)}
                     disabled={integration?.[noOptions]}

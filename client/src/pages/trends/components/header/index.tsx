@@ -26,7 +26,7 @@ function TrendsTitle() {
   const locals = integrationId ? getBsoLocals() : {}
   const comment: string =
     (intl.locale === "en" ? locals?.[integrationId]?.commentsNameEN : locals?.[integrationId]?.commentsName) ||
-    (integrationId ? `${intl.formatMessage({ id: "networks.header.title.perimeter" })} ${integrationId}` : "")
+    (integrationId ? `${intl.formatMessage({ id: "trends.header.title.perimeter" })} ${integrationId}` : "")
 
   return (
     <Container fluid className="fr-mb-2w">
