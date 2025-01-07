@@ -25,8 +25,13 @@ export const institutionsAcronyms = {
 }
 
 const institutionsShort = {
-  "communauté d'universités et établissements": "COMU",
-  "communauté d'universités et d'établissements": "COMU",
+  "communauté d'universités et établissements": "COMUE",
+  "communauté d'universités et d'établissements": "COMUE",
+  "centre hospitalier régional universitaire": "CHRU",
+  "centre hospitalier et universitaire": "CHU",
+  "centre hospitalier universitaire": "CHU",
+  "centre hospitalier régional": "CHR",
+  "centre hospitalier": "CH",
   université: "Univ.",
   universite: "Univ.",
   university: "Univ.",
@@ -34,7 +39,7 @@ const institutionsShort = {
   institut: "Inst.",
 }
 
-function adjustCase(match, replacement) {
+function adjustCase(match: string, replacement: string) {
   if (match === match.toUpperCase()) {
     return replacement.toUpperCase()
   } else if (match === match.toLowerCase()) {
