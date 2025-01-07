@@ -9,7 +9,7 @@ import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
 import { getParameters } from "./parameters"
 import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
-import { ignore_ids } from "./ignore"
+import { ignoreIds, institutionsAcronyms, institutionsReplaceLabel } from "./ignore"
 
 type NetworkBucket = ElasticBucket & { max_year: ElasticAggregation }
 
@@ -46,7 +46,8 @@ export default async function networkCreate(
     const maxYear = item.max_year?.value
     const nodes = key.split("---")
 
-    if (ignore_ids?.[model]?.includes(nodeGetId(nodes[0])) || ignore_ids?.[model]?.includes(nodeGetId(nodes[1]))) return
+    // Remove ignored ids
+    if (ignoreIds?.[model]?.includes(nodeGetId(nodes[0])) || ignoreIds?.[model]?.includes(nodeGetId(nodes[1]))) return
 
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
@@ -64,6 +65,14 @@ export default async function networkCreate(
       label: `${attr?.weight || 1} links`,
     }))
   })
+
+  // Replace institutions labels
+  if (["institutions", "structures"].includes(model)) {
+    graph.updateEachNodeAttributes((node, attr) => ({
+      ...attr,
+      label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),
+    }))
+  }
 
   // Filter nodes
   if (filterNode) {
