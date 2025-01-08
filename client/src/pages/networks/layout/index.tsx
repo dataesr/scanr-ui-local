@@ -7,12 +7,15 @@ import NetworkAnalytics from "../components/clusters/analytics"
 import useIntegration from "../hooks/useIntegration"
 import NetworksOptionsBar from "../components/options-bar"
 import NetworksOptionsModals from "../components/options-bar/modals"
+import ContributeButton from "../components/contribute/button"
 
 export default function NetworksLayout() {
   const { integrationOptions } = useIntegration()
   const { showGraphOnly } = integrationOptions
 
   if (showGraphOnly === true) return <NetworkCard />
+
+  console.log(window.location)
 
   return (
     <Container fluid>
@@ -21,9 +24,10 @@ export default function NetworksLayout() {
       <NetworksOptionsModals />
       <Container>
         <NetworkCard />
-        <Row horizontalAlign="center">
+        <Container fluid style={{ display: "flex", justifyContent: "space-between" }}>
           <ClustersButton />
-        </Row>
+          <ContributeButton />
+        </Container>
         <Row gutters>
           <Col xs={12} sm={12} md={8} lg={8} xl={8}>
             <NetworkClusters />

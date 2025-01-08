@@ -2,9 +2,11 @@ import { Button } from "@dataesr/dsfr-plus"
 import useTab from "../../hooks/useTab"
 import { useIntl } from "react-intl"
 import useIntegration from "../../hooks/useIntegration"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function NetworkSelectModelButton() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
   const { currentTab } = useTab()
 
@@ -20,7 +22,7 @@ export default function NetworkSelectModelButton() {
       data-fr-opened="false"
       variant="secondary"
     >
-      {intl.formatMessage({ id: `networks.tab.${currentTab}` })}
+      {["xs", "sm"].includes(screen) ? null : intl.formatMessage({ id: `networks.tab.${currentTab}` })}
     </Button>
   )
 }

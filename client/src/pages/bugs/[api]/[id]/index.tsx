@@ -37,7 +37,8 @@ const API_MAPPING = {
   publications: "publications",
   authors: "persons",
   patents: "productions",
-};
+  networks: "network",
+}
 
 const API_LABEL_KEY = {
   organizations: ["label", true],
@@ -45,7 +46,8 @@ const API_LABEL_KEY = {
   publications: ["title", true],
   authors: ["fullName", false],
   patents: ["title", true],
-};
+  networks: ["title", true],
+}
 
 const API_GETTERS = {
   organizations: getOrganizationById,
@@ -53,44 +55,39 @@ const API_GETTERS = {
   publications: getPublicationById,
   authors: getAuthorById,
   patents: getPatentById,
-};
+  networks: (id: string) => ({ id: id.replace(/"/g, '\\"'), title: { fr: "Réseau", default: "Network" } }),
+}
 
 export default function BugsReport() {
-  const { locale } = useDSFRConfig();
-  const { api, id } = useParams();
-  const intl = createIntl({ locale, messages: messages[locale] });
-  const queryFn = API_GETTERS?.[api];
+  const { locale } = useDSFRConfig()
+  const { api, id } = useParams()
+  const intl = createIntl({ locale, messages: messages[locale] })
+  const queryFn = API_GETTERS?.[api]
   const { data } = useQuery({
     queryKey: [api.slice(0, -1), id],
     queryFn: () => queryFn(id),
     throwOnError: true,
-  });
-  const [displayNameKey, isLangField] = API_LABEL_KEY[api];
-  if (!messages) return null;
+  })
+  const [displayNameKey, isLangField] = API_LABEL_KEY[api]
+  if (!messages) return null
+
+  console.log("api", api.slice(0, -1), id, data)
 
   return (
     <RawIntlProvider value={intl}>
       <Container>
         <Breadcrumb>
-          <Link href="/">
-            {intl.formatMessage({ id: "contribute.breadcrumb.home" })}
-          </Link>
-          <Link>
-            {intl.formatMessage({ id: "contribute.breadcrumb.page" })}
-          </Link>
+          <Link href="/">{intl.formatMessage({ id: "contribute.breadcrumb.home" })}</Link>
+          <Link>{intl.formatMessage({ id: "contribute.breadcrumb.page" })}</Link>
         </Breadcrumb>
         <Title as="h1" look="h3">
           {intl.formatMessage({ id: "contribute.title" })}
         </Title>
         <Text>
-          <span className="fr-text--sm">
-            {intl.formatMessage({ id: "contribute.description" })}
-          </span>
+          <span className="fr-text--sm">{intl.formatMessage({ id: "contribute.description" })}</span>
           <br />
           <em className="fr-text--bold">
-            {isLangField
-              ? getLangFieldValue(locale)(data?.[displayNameKey])
-              : data?.[displayNameKey]}
+            {isLangField ? getLangFieldValue(locale)(data?.[displayNameKey]) : data?.[displayNameKey]}
           </em>
           <br />
           <em className="fr-text-mention--grey">{data?.id}</em>
@@ -102,5 +99,5 @@ export default function BugsReport() {
         </Row>
       </Container>
     </RawIntlProvider>
-  );
+  )
 }

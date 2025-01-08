@@ -1,9 +1,11 @@
+import { useIntl } from "react-intl"
 import { Badge, Button } from "@dataesr/dsfr-plus"
 import useScreenSize from "../../../../hooks/useScreenSize"
 import useUrl from "../../../search/hooks/useUrl"
 import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkFiltersButton() {
+  const intl = useIntl()
   const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
   const { currentFilters } = useUrl()
@@ -20,7 +22,7 @@ export default function NetworkFiltersButton() {
       data-fr-opened="false"
       variant={"tertiary"}
     >
-      {["xs", "sm", "mg"].includes(screen) ? "" : "Filtres"}
+      {["xs", "sm", "mg"].includes(screen) ? null : intl.formatMessage({ id: "networks.filters.button.label" })}
       <Badge className="fr-ml-1w" size="md" color="blue-ecume">
         {`${Object.keys(currentFilters)?.length}`}
       </Badge>

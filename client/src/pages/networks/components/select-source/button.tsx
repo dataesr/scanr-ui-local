@@ -1,8 +1,10 @@
 import { Button } from "@dataesr/dsfr-plus"
 import useIntegration from "../../hooks/useIntegration"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function NetworkSelectSourceButton() {
   const { integrationOptions } = useIntegration()
+  const { screen } = useScreenSize()
 
   if (integrationOptions.showSelectSource === false) return null
 
@@ -16,7 +18,7 @@ export default function NetworkSelectSourceButton() {
       data-fr-opened="false"
       variant="secondary"
     >
-      {"Publications"}
+      {["xs", "sm"].includes(screen) ? null : "Publications"}
     </Button>
   )
 }

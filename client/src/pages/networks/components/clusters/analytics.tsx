@@ -52,7 +52,7 @@ export default function NetworkAnalytics() {
   })
 
   const AnalyticsGraphs = () => (
-    <Row className="fr-mt-2w">
+    <Row className="fr-mt-8w">
       <Col xs="12">
         <AnalyticsGraph
           title={intl.formatMessage(

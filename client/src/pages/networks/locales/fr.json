@@ -138,5 +138,6 @@
     "networks.section.clusters.open-access": "Accès ouvert",
     "networks.section.clusters.badge-publications": "Publications",
     "networks.section.clusters.see-more": "En voir plus ({count})",
-    "networks.section.clusters.see-less": "Réduire"
+    "networks.section.clusters.see-less": "Réduire",
+    "networks.contribute.button": "Signaler une erreur"
 }

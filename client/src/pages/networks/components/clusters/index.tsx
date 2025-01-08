@@ -22,7 +22,7 @@ import useTab from "../../hooks/useTab"
 import useParameters from "../../hooks/useParameters"
 import { useNetworkContext } from "../../context"
 
-const SEE_MORE_AFTER = 5
+const SEE_MORE_AFTER = 10
 
 type ClusterItemArgs = {
   currentTab: string

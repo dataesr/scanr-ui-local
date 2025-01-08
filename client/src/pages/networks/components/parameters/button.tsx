@@ -20,7 +20,7 @@ export default function NetworkParametersButton() {
       data-fr-opened="false"
       variant={"tertiary"}
     >
-      {["xs", "sm", "mg"].includes(screen) ? "" : intl.formatMessage({ id: "networks.parameters.button.label" })}
+      {["xs", "sm", "mg"].includes(screen) ? null : intl.formatMessage({ id: "networks.parameters.button.label" })}
     </Button>
   )
 }
