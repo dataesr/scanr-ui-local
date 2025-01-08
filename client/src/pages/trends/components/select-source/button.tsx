@@ -2,9 +2,11 @@ import { Button } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import { useTrendsContext } from "../../context"
 import useIntegration from "../../hooks/useIntegration"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function TrendsSelectSourceButton() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
   const { source } = useTrendsContext()
 
@@ -20,7 +22,7 @@ export default function TrendsSelectSourceButton() {
       data-fr-opened="false"
       variant="secondary"
     >
-      {intl.formatMessage({ id: `trends.select-source.${source}` })}
+      {["xs", "sm"].includes(screen) ? null : intl.formatMessage({ id: `trends.select-source.${source}` })}
     </Button>
   )
 }

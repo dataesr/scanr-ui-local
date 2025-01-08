@@ -2,9 +2,11 @@ import { Button } from "@dataesr/dsfr-plus"
 import useUrl from "../../../search/hooks/useUrl"
 import { useIntl } from "react-intl"
 import useIntegration from "../../hooks/useIntegration"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function TrendsSearchBarButton() {
   const intl = useIntl()
+  const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
   const { currentQuery } = useUrl()
 
@@ -23,7 +25,11 @@ export default function TrendsSearchBarButton() {
       data-fr-opened="false"
       variant={isEmptyQuery ? "tertiary" : "secondary"}
     >
-      {isEmptyQuery ? intl.formatMessage({ id: "trends.search-bar.button.label.anything" }) : shortQuery}
+      {screen === "xs"
+        ? null
+        : isEmptyQuery
+        ? intl.formatMessage({ id: "trends.search-bar.button.label.anything" })
+        : shortQuery}
     </Button>
   )
 }

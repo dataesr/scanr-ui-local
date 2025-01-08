@@ -1,5 +1,4 @@
-import { Col, Container, Row } from "@dataesr/dsfr-plus"
-import useScreenSize from "../../../../hooks/useScreenSize"
+import { Container, Row } from "@dataesr/dsfr-plus"
 import TrendsSearchBarButton from "../search-bar/button"
 import TrendsSelectModelButton from "../select-model/button"
 import TrendsSelectSourceButton from "../select-source/button"
@@ -8,27 +7,22 @@ import TrendsParametersButton from "../parameters/button"
 import useIntegration from "../../hooks/useIntegration"
 
 export default function TrendsOptionsBar() {
-  const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
 
   if (integrationOptions.showOptionsBar === false) return null
 
   return (
     <Container className="fr-mb-2w">
-      <Row>
-        <Col xs={12} sm={9} md={8} lg={8} xl={8}>
-          <Row horizontalAlign="left">
-            <TrendsSearchBarButton />
-            <TrendsSelectModelButton />
-            <TrendsSelectSourceButton />
-          </Row>
-        </Col>
-        <Col xs={12} sm={3} md={4} lg={4} xl={4}>
-          <Row horizontalAlign={screen === "xs" ? "left" : "right"}>
-            <TrendsFiltersButton />
-            <TrendsParametersButton />
-          </Row>
-        </Col>
+      <Row style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <Container fluid style={{ display: "flex", flexWrap: "wrap" }}>
+          <TrendsSearchBarButton />
+          <TrendsSelectModelButton />
+          <TrendsSelectSourceButton />
+        </Container>
+        <Container fluid style={{ display: "flex", flexWrap: "wrap" }}>
+          <TrendsFiltersButton />
+          <TrendsParametersButton />
+        </Container>
       </Row>
     </Container>
   )
