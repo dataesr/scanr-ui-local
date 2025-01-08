@@ -10,12 +10,10 @@ import NetworksOptionsModals from "../components/options-bar/modals"
 import ContributeButton from "../components/contribute/button"
 
 export default function NetworksLayout() {
-  const { integrationOptions } = useIntegration()
+  const { integrationId, integrationOptions } = useIntegration()
   const { showGraphOnly } = integrationOptions
 
   if (showGraphOnly === true) return <NetworkCard />
-
-  console.log(window.location)
 
   return (
     <Container fluid>
@@ -26,7 +24,7 @@ export default function NetworksLayout() {
         <NetworkCard />
         <Container fluid style={{ display: "flex", justifyContent: "space-between" }}>
           <ClustersButton />
-          <ContributeButton />
+          {!integrationId && <ContributeButton />}
         </Container>
         <Row gutters>
           <Col xs={12} sm={12} md={8} lg={8} xl={8}>

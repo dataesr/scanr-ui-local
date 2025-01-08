@@ -6,11 +6,14 @@ import NetworksHeader from "../header"
 import { RawIntlProvider, createIntl, useIntl } from "react-intl"
 import { messages } from "../../config/messages"
 import useGetStarted from "../../hooks/useGetStarted"
+import useSearchDataPrefetch from "../../hooks/useSearchDataPrefetch"
 
 function NetworkGetStartedHome() {
   const intl = useIntl()
   const { handlePageChange, navigateToNetwork } = useGetStarted()
   const theme = document.documentElement.getAttribute("data-fr-theme")
+
+  useSearchDataPrefetch()
 
   return (
     <Container>
