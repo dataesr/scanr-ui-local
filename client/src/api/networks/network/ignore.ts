@@ -3,6 +3,10 @@ export const ignoreIds = {
     "Q3526257", // Thèse d'exercice
     "Q913404", // Thèse d'exercice de médecine
     "Q669220", // Not available
+    "Q37033", // w3.org
+    "Q466", // www
+    "Q823982", // MathML
+    "Q142", // française
   ],
 }
 
