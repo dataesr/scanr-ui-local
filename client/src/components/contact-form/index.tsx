@@ -88,14 +88,14 @@ export default function ContactForm({ objectId, objectType }: Props) {
         payload = { ...payload, objectId, objectType };
       }
 
-      const resp = await fetch(`https://ticket-office.staging.dataesr.ovh/api/${api}`, {
+      const resp = await fetch(`/ticket/api/${api}`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
           ...postHeadersTicketOffice,
         },
-      })
+      });
 
       if (resp.status !== 200) throw new Error("error");
       return resp.json();
