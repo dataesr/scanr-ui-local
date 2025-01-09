@@ -22,6 +22,16 @@ export const institutionsAcronyms = {
   "331596270": "CIRAD",
   "202224326A": "INED",
   "385290309": "ADEME",
+  "130012024": "ANSES",
+  "130026149": "Univ. PSL",
+  "196901920": "INSA Lyon",
+  "196727671": "INSA Strasbourg",
+  "193500972": "INSA Rennes",
+  "193101524": "INSA Toulouse",
+  "130025752": "INSA HDF",
+  "267500452": "APHP",
+  "261300081": "APHM",
+  "197534712": "CNAM",
 }
 
 const institutionsShort = {
@@ -37,6 +47,10 @@ const institutionsShort = {
   university: "Univ.",
   institute: "Inst.",
   institut: "Inst.",
+  laboratoire: "Lab.",
+  laboratory: "Lab.",
+  "école normale supérieure de": "ENS",
+  "ecole normale superieure de": "ENS",
 }
 
 function adjustCase(match: string, replacement: string) {
