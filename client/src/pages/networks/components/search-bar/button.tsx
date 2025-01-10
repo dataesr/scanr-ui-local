@@ -23,6 +23,7 @@ export default function NetworkSearchBarButton() {
       aria-controls="networks-options-search-bar-modal"
       data-fr-opened="false"
       variant={isEmptyQuery ? "tertiary" : "secondary"}
+      title={intl.formatMessage({ id: "networks.search-bar.modal.title" })}
     >
       {["xs"].includes(screen)
         ? null
