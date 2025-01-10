@@ -15,7 +15,10 @@ type StudioCreateOptionsArgs = {
 }
 export default function StudioCreateOptions({ tool, setOptions }: StudioCreateOptionsArgs) {
   const intl = useIntl()
-  const integrationOptions = integrationMapping[tool]()?.integrationOptions
+  const integrationOptions = {
+    ...integrationMapping[tool]()?.integrationOptions,
+    ...(tool === "networks" && { clusters: false }),
+  }
   const [integration, setIntegration] = useState(integrationOptions)
 
   const noOptions = tool === "networks" ? "showGraphOnly" : "showTrendsOnly"
@@ -86,13 +89,21 @@ export default function StudioCreateOptions({ tool, setOptions }: StudioCreateOp
         <Container fluid>
           <hr />
           <Row horizontalAlign="left">
+            <Container fluid style={{ width: "300px" }}>
+              <Toggle
+                label={intl.formatMessage({ id: `studio.options.networks.forceClusters` })}
+                checked={integration?.clusters}
+                onChange={(event) => setOption("clusters", event.target.checked)}
+                disabled={integration?.[noOptions]}
+              />
+            </Container>
             {Object.entries(integration)
               .filter(([key]) => ["showClustersButton", "showClustersAnalytics"].includes(key))
               .map(([key, value]) => (
                 <Container fluid key={key} style={{ width: "300px" }}>
                   <Toggle
                     key={key}
-                    label={intl.formatMessage({ id: `studio.options.${tool}.${key}` })}
+                    label={intl.formatMessage({ id: `studio.options.networks.${key}` })}
                     checked={value as boolean}
                     onChange={(event) => setOption(key, event.target.checked)}
                     disabled={integration?.[noOptions]}
