@@ -21,6 +21,7 @@ export default function NetworkSelectModelButton() {
       aria-controls="networks-options-select-tab-modal"
       data-fr-opened="false"
       variant="secondary"
+      title={intl.formatMessage({ id: "networks.select-model.modal.title" })}
     >
       {["xs", "sm"].includes(screen) ? null : intl.formatMessage({ id: `networks.tab.${currentTab}` })}
     </Button>
