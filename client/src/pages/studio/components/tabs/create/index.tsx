@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { useIntl } from "react-intl"
-import { Button, Container, Row, Select, SelectOption, TextInput, useDSFRConfig } from "@dataesr/dsfr-plus"
+import { Container, Row, Select, SelectOption, TextInput, useDSFRConfig } from "@dataesr/dsfr-plus"
 import StudioCreateOptions from "./options"
 import { isInProduction } from "../../../../../utils/helpers"
+import CopyButton from "../../../../../components/copy/copy-button"
 
 export default function StudioCreate() {
   const intl = useIntl()
@@ -16,15 +17,15 @@ export default function StudioCreate() {
   const integrationIframeId = `${tool}_iframe`
   const integrationIframe = <iframe height="900px" width="100%" id={integrationIframeId} src={pageUrl} />
 
-  const copyIframe = () => {
-    const src = (document.getElementById(integrationIframeId) as HTMLIFrameElement).contentWindow.location.href
+  const iframeText = (): string => {
+    const src = (document.getElementById(integrationIframeId) as HTMLIFrameElement)?.contentWindow.location.href
     const text = `<iframe height="900" width="900" id="${integrationIframeId}" src="${src}" </iframe>`
-    navigator.clipboard.writeText(text)
+    return text
   }
 
-  const copyUrl = () => {
-    const text = (document.getElementById(integrationIframeId) as HTMLIFrameElement).contentWindow.location.href
-    navigator.clipboard.writeText(text)
+  const urlText = (): string => {
+    const text = (document.getElementById(integrationIframeId) as HTMLIFrameElement)?.contentWindow.location.href
+    return text
   }
 
   return (
@@ -59,12 +60,17 @@ export default function StudioCreate() {
       <StudioCreateOptions key={tool} tool={tool} setOptions={setOptions} />
       <Container className="fr-my-2w fr-card studio">{integrationIframe}</Container>
       <Row horizontalAlign="center">
-        <Button icon={"clipboard-fill"} iconPosition="right" onClick={copyIframe}>
+        <CopyButton className="fr-mb-2w" icon="clipboard-fill" iconPosition="right" copyTextOnClick={() => iframeText()}>
           {intl.formatMessage({ id: "studio.create.copy-iframe.label" })}
-        </Button>
-        <Button className="fr-ml-2w" icon={"clipboard-fill"} iconPosition="right" onClick={copyUrl}>
+        </CopyButton>
+        <CopyButton
+          className="fr-mb-2w fr-ml-2w"
+          icon="clipboard-fill"
+          iconPosition="right"
+          copyTextOnClick={() => urlText()}
+        >
           {intl.formatMessage({ id: "studio.create.copy-url.label" })}
-        </Button>
+        </CopyButton>
       </Row>
     </section>
   )
