@@ -7,7 +7,7 @@
   "studio.define.text": "Les déclinaisons locales de scanR utilisent le même système de déclinaison que le Baromètre de la Science Ouverte. Ainsi, pour un périmètre donné, à la fois un baromètre local et un scanR local sont automatiquement générés sur le même corpus.",
   "studio.define.link.bso-local": "Voir les déclinaisons locales du Baromètre de la Science Ouverte",
   "studio.define.link.bso-studio": "Soumettre une demande de déclinaison locale (Baromètre et scanR)",
-  "studio.create.identifier.label": "Identifiant de l'établissement",
+  "studio.create.identifier.label": "Identifiant de l'établissement (ou de structure ou collection HAL)",
   "studio.create.identifier.hint": "Si périmètre ad-hoc, identifiant communiqué par l'équipe BSO ou RoR. Dans tous les cas, identifiant de structure HAL, ou code collection HAL",
   "studio.create.identifier.message": "Merci de saisir un identifiant",
   "studio.create.select-lang.label": "Langue",
