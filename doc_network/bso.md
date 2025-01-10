@@ -60,7 +60,48 @@ Thus, from a given corpus, however large, we seek to extract the pairs of entiti
 
 ## 2.2 Elasticsearch implementation
 
+To identify the strongest links, it would be too costly to go through the entire corpus. We have pre-calculated the links at the level of each publication. So, if a publication is linked to 3 themes, T1, T2 and T3, a pre-calculated field, at publication level, contains all T1-T2, T1-T3 and T2-T3 pairs. This co_topics field represents the co-appearance links within the publication. We then use elasticsearch's aggregation functionality to list the most present links, very efficiently. 
+
+In practice, a PID is also stored (the wikidata for topics, for example) to disambiguate entities. In practice, for a given query, elasticsearch returns a response containing the strongest links, for example:
+
+```json
+                {
+                    "key": "Q15305550###carbon sequestration---Q7942###climate change",
+                    "doc_count": 17,
+                },
+                {
+                    "key": "Q15305550###carbon sequestration---Q623###carbon",
+                    "doc_count": 14,
+                },
+                {
+                    "key": "Q15305550###Carbon sequestration---Q7942###Climate change",
+                    "doc_count": 13,
+                },
+                {
+                    "key": "Q15305550###Carbon sequestration---Q898653###Climate change mitigation",
+                    "doc_count": 10,
+                },
+                {
+                    "key": "Q397350###agroforestry---Q8486###coffee",
+                    "doc_count": 10,
+                },
+                {
+                    "key": "Q15305550###Carbon sequestration---Q1997###CO2",
+                    "doc_count": 9,
+                },
+                {
+                    "key": "Q623###carbon---Q627###nitrogen",
+                    "doc_count": 9,
+                },
+                {
+                    "key": "Q15305550###Carbon sequestration---Q623###carbon",
+                    "doc_count": 7,
+                },
+```
+
 ## 2.3 VOSviewer implementation
+
+We use the open source VOSviewer online tool for network visualization [https://github.com/neesjanvaneck/VOSviewer-Online](https://github.com/neesjanvaneck/VOSviewer-Online). It is based on the VOSviewer tool which is very popular for network analysis in bibliometric studies [@DBLP:journals/corr/abs-1006-1032]. 
 
 ## 2.4 LLM trick
 
@@ -68,6 +109,14 @@ Thus, from a given corpus, however large, we seek to extract the pairs of entiti
 
 ## 3.1 Citation / hot topics
 
-## 3.2 User interaction
+We use citations data from OpenAlex, which is as of today one of the best open source datasource. However, citations metadata from OpenAlex remains incomplete and must therefore be interpreted with caution [@alperin2024analysissuitabilityopenalexbibliometric].
+
+## 3.2 Custom perimeter
+
+scanR offers this mapping tool for the entire indexed corpus, but it is also possible to adapt the tool to a restricted perimeter, at the user's discretion. For example, an institution or laboratory can define its own corpus (based on a list of publications) and a mapping tool dedicated to this perimeter is automatically created. Technically, elasticsearch queries are the same, with just an additional filter to query only the publications within the perimeter. The tool can be embedded in any website using an iframe. It's the same principle as the local barometer. This approach eliminates the need for automatic alignment of affiliations, which remains a highly complex task. Automation is possible to a certain extent [@lhote_using_2021], but human curation remains necessary in the majority of cases [@jeangirard:hal-04598201]. In this way, users retain control over the definition of their perimeter, and can, if they wish, have several distinct perimeters.
+
+# 4. Code availibility
+
+The code developed for the scanR web application is open source and available online on GitHub [https://github.com/dataesr/scanr-ui](https://github.com/dataesr/scanr-ui)
 
 # References
