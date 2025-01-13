@@ -340,19 +340,61 @@ We use the open source VOSviewer online tool for network visualization
 the VOSviewer tool which is very popular for network analysis in
 bibliometric studies (Waltman, Eck, and Noyons 2010).
 
-\hypertarget{llm-trick}{%
-\subsection{2.4 LLM trick}\label{llm-trick}}
+In graph theory, a community corresponds to a set of nodes in a graph
+that are strongly interconnected with each other, while being less
+connected with nodes outside this community. Communities can be
+identified in order to understand the underlying structure and patterns
+of the graph, as well as to analyze the relationships and interactions
+between the entities that make it up. To identify communities, we use
+the Louvain method. This algorithm works by optimizing a modularity
+measure that evaluates the strength of communities in a graph. More
+precisely, Louvain seeks to maximize modularity by progressively moving
+the nodes of a graph into different communities, in an iterative
+fashion. At each stage, he merges neighboring communities if this leads
+to an improvement in the overall modularity of the graph. This iterative
+process continues until no further moves can increase modularity.
+Clusters are computed with the Louvain algorithm, from the open source
+javascript library graphology-communities-louvain.
 
 \hypertarget{making-insightful-maps}{%
 \section{3. Making insightful maps}\label{making-insightful-maps}}
 
+This scanR feature is designed to help users gain a better understanding
+of the underlying structures via thematic or co-publication maps. To
+help the user, it's important to be able to characterize each of the
+communities automatically identified. It is therefore important to label
+each community before describing them.
+
+\hypertarget{llm-trick}{%
+\subsection{3.1 LLM trick}\label{llm-trick}}
+
+To name the communities we use generative AI from Mistral AI
+(`open-mistral-nemo' model). The names are obtained from the main themes
+of the publications collected for each community. For the time being, we
+limit ourselves to the 2000 most relevant publications (in relation to
+the user's search) for each community. The following prompt is used:
+
+\begin{quote}
+You have been tasked with naming distinct fields of study for several
+communities of research publications. Below are lists of topics and
+their weights representing each community. Your goal is to provide a
+unique and descriptive name for each field of study that best
+encapsulates the essence of the topics within that community. Each
+should be unique and as short as possible. If the list of topic is
+empty, output a empty string. Output as JSON object with the list number
+and the single unique generated name. ```
+\end{quote}
+
 \hypertarget{citation-hot-topics}{%
 \subsection{3.1 Citation / hot topics}\label{citation-hot-topics}}
 
-We use citations data from OpenAlex, which is as of today one of the
-best open source datasource. However, citations metadata from OpenAlex
-remains incomplete and must therefore be interpreted with caution
-(Alperin et al. 2024).
+A citation score is estimated for each cluster. This score relates the
+number of recent citations (over the last two years) to the number of
+total publications in the cluster. This score is intended to help detect
+hotspots in the communities identified in the corpus. We use citations
+data from OpenAlex, which is as of today one of the best open source
+datasource. However, citations metadata from OpenAlex remains incomplete
+and must therefore be interpreted with caution (Alperin et al. 2024).
 
 \hypertarget{custom-perimeter}{%
 \subsection{3.2 Custom perimeter}\label{custom-perimeter}}
