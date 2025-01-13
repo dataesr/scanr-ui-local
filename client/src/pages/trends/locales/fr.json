@@ -78,6 +78,6 @@
   "search.filters.publications.by-organization-description": "Sélectionnez une ou plusieurs affiliations",
   "search.filters.publications.by-country": "Filtrer par pays",
   "search.filters.publications.by-country-description": "Sélectionnez un ou plusieurs pays",
-  "search.filters.publications.by-tag": "Filter par tag",
+  "search.filters.publications.by-tag": "Filtrer par tag",
   "search.filters.publications.by-tag-description": "Sélectionnez un ou plusieurs tag"
 }
