@@ -5,6 +5,7 @@
   "studio.tabs.label.define": "1. Définissez votre périmètre",
   "studio.tabs.label.create": "2. Intégrez votre scanR local",
   "studio.define.text": "Les déclinaisons locales de scanR utilisent le même système de déclinaison que le Baromètre de la Science Ouverte. Ainsi, pour un périmètre donné, à la fois un baromètre local et un scanR local sont automatiquement générés sur le même corpus.",
+  "studio.define.text2": "Vous serez en copie du mail de soumission. Quand votre scanR local sera prêt, vous recevrez un mail vous précisant l'identifiant de votre établissement. Le délai habituel de traitement est d'une semaine.",
   "studio.define.link.bso-local": "Voir les déclinaisons locales du Baromètre de la Science Ouverte",
   "studio.define.link.bso-studio": "Soumettre une demande de déclinaison locale (Baromètre et scanR)",
   "studio.create.identifier.label": "Identifiant de l'établissement (ou de structure ou collection HAL)",

@@ -5,6 +5,7 @@
   "studio.tabs.label.define": "1. Define your scope",
   "studio.tabs.label.create": "2. Integrate your variation",
   "studio.define.text": "Local variations of scanR use the variation system of the French Open Science Monitor.",
+  "studio.define.text2": "You will be copied on the submission email. Once your local scanR is ready, you will receive an email specifying your institution's identifier. The usual processing time is one week.",
   "studio.define.link.bso-local": "View the local variations of the French Open Science Monitor",
   "studio.define.link.bso-studio": "Submit a request for a local variation (monitor and scanR)",
   "studio.create.identifier.label": "Establishment identifier (or HAL structure or collection)",
