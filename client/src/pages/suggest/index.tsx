@@ -212,8 +212,8 @@ export default function Suggest() {
                         disabled={items.some((item) => item.id === data.id)}
                         isIdentified={
                           !!data?.authors
-                            .map((a) => a.person)
-                            .includes(author.id)
+                            ?.map((a) => a.person)
+                            ?.includes(author.id)
                         }
                       />
                     ))
