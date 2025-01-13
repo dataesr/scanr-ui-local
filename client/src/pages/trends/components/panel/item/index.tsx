@@ -14,6 +14,12 @@ export default function TrendsViewItem({ item }) {
   const viewLabel = trendsViewGetConfig(view).label
 
   const diffColor = itemGetColor(item, "diff", normalized)
+  const diffLabel =
+    item.diff === Infinity
+      ? Object.keys(item.count).length === 1
+        ? "NEW"
+        : "RESURGENT"
+      : `${Number(item.diff * 100).toFixed(0.1)} %`
   const slopeColor = itemGetColor(item, normalized ? "norm_slope" : "slope", normalized)
   const trendState = itemGetTrendState(item, normalized)
 
@@ -47,7 +53,7 @@ export default function TrendsViewItem({ item }) {
             <Col sm="4" md="3" lg="3">
               <Row horizontalAlign="right">
                 <Badge noIcon color={diffColor}>
-                  {`${Number(item.diff * 100).toFixed(0.1)} %`}
+                  {diffLabel}
                 </Badge>
               </Row>
             </Col>

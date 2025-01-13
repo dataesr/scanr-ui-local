@@ -8,6 +8,10 @@ const SLOPE_THRESHOLD = (normalized: boolean): number => {
 }
 
 export function itemGetColor(item: any, field: "diff" | "slope" | "norm_slope", normalized: boolean): DSFRColors {
+
+  if (field === "diff" && item.diff === Infinity)
+    return Object.keys(item.count).length === 1 ? "green-bourgeon" : "green-emeraude"
+
   const threshold = field === "diff" ? DIFF_THRESHOLD : SLOPE_THRESHOLD(normalized)
   const value = item?.[field] || 0
 
