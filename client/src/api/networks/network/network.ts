@@ -4,10 +4,14 @@ import { connectedComponents } from "graphology-components"
 import circular from "graphology-layout/circular"
 import forceAtlas2 from "graphology-layout-forceatlas2"
 import betweenessCentrality from "graphology-metrics/centrality/betweenness"
-import { ElasticBuckets, NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
+import { NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
 import { getParameters } from "./parameters"
+import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
+import { ignoreIds, institutionsAcronyms, institutionsReplaceLabel } from "./ignore"
+
+type NetworkBucket = ElasticBucket & { max_year: ElasticAggregation }
 
 const nodeConcatMaxYear = (nodeMaxYear: number, maxYear: number) => (nodeMaxYear ? Math.max(nodeMaxYear, maxYear) : maxYear)
 export const nodeGetId = (id: string) => {
@@ -25,8 +29,7 @@ export default async function networkCreate(
   query: string,
   model: string,
   filters: NetworkFilters,
-  aggregation: ElasticBuckets,
-  computeClusters: boolean,
+  aggregation: Array<NetworkBucket>,
   parameters: NetworkParameters,
   lang: string
 ): Promise<NetworkData> {
@@ -36,12 +39,15 @@ export default async function networkCreate(
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
 
-  const { maxNodes, maxComponents, layout, filterNode, clusters } = getParameters(parameters)
+  const { maxNodes, maxComponents, filterNode, clusters } = getParameters(parameters)
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
     const maxYear = item.max_year?.value
     const nodes = key.split("---")
+
+    // Remove ignored ids
+    if (ignoreIds?.[model]?.includes(nodeGetId(nodes[0])) || ignoreIds?.[model]?.includes(nodeGetId(nodes[1]))) return
 
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
@@ -59,6 +65,14 @@ export default async function networkCreate(
       label: `${attr?.weight || 1} links`,
     }))
   })
+
+  // Replace institutions labels
+  if (["institutions", "structures"].includes(model)) {
+    graph.updateEachNodeAttributes((node, attr) => ({
+      ...attr,
+      label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),
+    }))
+  }
 
   // Filter nodes
   if (filterNode) {
@@ -89,19 +103,20 @@ export default async function networkCreate(
   forceAtlas2.assign(graph, { iterations: 100, settings: sensibleSettings })
 
   // Add communities
-  const communities = await communitiesCreate(graph, computeClusters)
+  const communities = await communitiesCreate(graph, clusters)
 
   // Create network
   const network: NetworkData = {
     items: graph.mapNodes((key, attr) => ({
       id: key,
-      ...(layout === "forceatlas" && { x: attr.x, y: attr.y }),
+      x: attr.x,
+      y: attr.y,
       label: attr.label,
-      cluster: attr?.community + 1,
+      cluster: attr.community + 1,
       weights: {
         Weight: attr.weight,
         Degree: graph.degree(key),
-        ...(clusters && { Citations: attr.citationsCount || 0 }),
+        ...(clusters && { Citations: attr?.citationsCount || 0 }),
       },
       scores: { ...(attr?.maxYear && { "Last publication": attr.maxYear }) },
       page: configGetItemUrl(model, key, attr.label),

@@ -6,7 +6,7 @@ export default function NetworkSelectSource() {
   const intl = useIntl()
   const { integrationOptions } = useIntegration()
 
-  if (integrationOptions?.showSelect === false) return null
+  if (integrationOptions?.showSelectSource === false) return null
 
   return (
     <Select

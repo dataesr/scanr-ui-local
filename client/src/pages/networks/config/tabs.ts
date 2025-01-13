@@ -39,3 +39,4 @@ const NETWORK_TABS_MAPPING = {
 export const networkTabs = Object.values(NETWORK_TABS_MAPPING).sort((a, b) => a.index - b.index)
 export const networkTabFindIndex = (label: string) => networkTabs.findIndex((tab) => tab.label === label)
 export const networkTabFindLabel = (index: number) => networkTabs[index].label
+export const networkTabFindIcon = (label: string) => NETWORK_TABS_MAPPING[label].icon

@@ -80,10 +80,7 @@ export type NetworkSearchArgs = {
   model: string
   query?: string
   filters?: NetworkFilters
-  options?: {
-    computeClusters?: boolean
-    lang?: string
-  }
+  lang?: string
   parameters?: NetworkParameters
 }
 export type NetworkSearchHitsArgs = {
@@ -106,40 +103,27 @@ export type NetworkHit = {
 export type NetworkFilters = Array<NetworkFilter>
 export type NetworkFilter = Record<string, unknown>
 
-export type ElasticBuckets = Array<ElasticBucket>
-export type ElasticBucket = {
-  key: string
-  doc_count: number
-  key_as_string?: string
-  max_year?: {
-    value: number
-  }
-}
 export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
   title?: LangField
   cited_by_counts_by_year?: Record<string, number>
 }
-export type ElasticAggregation = {
-  buckets?: ElasticBuckets
-  sum_other_doc_count?: number
-  value?: number
-}
-export type ElasticAggregations = Record<string, ElasticAggregation>
 
 export type NetworksIntegrationOptions = {
   showGraphOnly?: boolean
-  showTitle?: boolean
-  showSubtitle?: boolean
-  showClustersAnalytics?: boolean
-  showClustersButton?: boolean
-  showSearchBar?: boolean
-  showFilters?: boolean
-  showExports?: boolean
-  showBreadcrumb?: boolean
-  showSelect?: boolean
   showHeader?: boolean
+  showBreadcrumb?: boolean
+  showTitle?: boolean
+  showOptionsBar?: boolean
+  showSearchBar?: boolean
+  showSelectModel?: boolean
+  showSelectSource?: boolean
+  showFilters?: boolean
+  showParameters?: boolean
+  showExports?: boolean
+  showClustersButton?: boolean
+  showClustersAnalytics?: boolean
   graphHeight?: string
 }
 
@@ -148,6 +132,5 @@ export type NetworkParameters = {
   maxNodes: number
   maxComponents: number
   clusters: boolean
-  layout: string
   filterNode: string
 }

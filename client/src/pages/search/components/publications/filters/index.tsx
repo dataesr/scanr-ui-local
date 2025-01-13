@@ -11,11 +11,14 @@ import PublicationFunderFilter from "./funders";
 import PublicationTypeFilter from "./types";
 import PublicationYearFilter from "./years";
 import PublicationCountriesFilter from "./countries"
-
+import PublicationTagsFilter from "./tags"
 
 export default function PublicationFilters() {
   const intl = useIntl()
-  const { total, search: { isFetching } } = useSearchData();
+  const {
+    total,
+    search: { isFetching },
+  } = useSearchData()
   const { api } = useUrl()
   const id = `${api}-filters`
 
@@ -36,6 +39,8 @@ export default function PublicationFilters() {
           <PublicationAccessFilter />
           <hr className="fr-mt-3w" />
           <PublicationFunderFilter />
+          <hr className="fr-mt-3w" />
+          <PublicationTagsFilter />
           <hr className="fr-mt-3w" />
         </Container>
         <div className="fr-modal__footer fr-px-0" style={{ display: "flex", width: "100%", alignItems: "center" }}>

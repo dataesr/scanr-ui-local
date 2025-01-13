@@ -7,7 +7,7 @@ import { networkSearch } from "../../../api/networks/search/search"
 import useIntegration from "./useIntegration"
 import useParameters from "./useParameters"
 
-export default function useSearchData(networkTab: string, computeClusters: boolean) {
+export default function useSearchData(networkTab: string, forceClusters?: boolean) {
   const { currentQuery, filters } = useUrl()
   const { integrationId, integrationLang } = useIntegration()
   const { parameters } = useParameters()
@@ -15,17 +15,19 @@ export default function useSearchData(networkTab: string, computeClusters: boole
   const { locale } = useDSFRConfig()
   const lang = integrationId ? integrationLang : locale
 
+  if (forceClusters !== undefined) parameters.clusters = forceClusters
+
   const { data, error, isFetching } = useQuery({
-    queryKey: ["network", networkTab, currentQuery, filters, computeClusters, lang, parameters],
+    queryKey: ["network", networkTab, currentQuery, filters, lang, parameters],
     queryFn: () =>
       networkSearch({
         model: networkTab,
         query: currentQuery,
-        options: { computeClusters: computeClusters, lang: lang },
+        lang: lang,
         parameters: parameters,
         filters,
       }),
-    enabled: Boolean(currentQuery && networkTab === currentTab),
+    enabled: Boolean(networkTab === currentTab),
   })
 
   const values = useMemo(() => {

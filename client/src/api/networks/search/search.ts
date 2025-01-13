@@ -1,16 +1,10 @@
 import { postHeaders } from "../../../config/api"
-import {
-  Network,
-  NetworkSearchBody,
-  NetworkSearchArgs,
-  ElasticHits,
-  NetworkSearchHitsArgs,
-  ElasticAggregations,
-} from "../../../types/network"
+import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits, NetworkSearchHitsArgs } from "../../../types/network"
 import { CONFIG } from "../network/config"
 import networkCreate from "../network/network"
 import configCreate from "../network/config"
 import infoCreate from "../network/info"
+import { ElasticAggregations } from "../../../types/commons"
 
 const CURRENT_YEAR = new Date().getFullYear()
 const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_, i) => CURRENT_YEAR + i * -1)
@@ -39,7 +33,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
 })
 
-export async function networkSearch({ model, query, options, parameters, filters }: NetworkSearchArgs): Promise<Network> {
+export async function networkSearch({ model, query, lang, parameters, filters }: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
@@ -64,9 +58,7 @@ export async function networkSearch({ model, query, options, parameters, filters
     return null
   }
 
-  const computeClusters = options?.computeClusters ?? false
-  const lang = options?.lang ?? "fr"
-  const network = await networkCreate(query, model, filters, aggregation, computeClusters, parameters, lang)
+  const network = await networkCreate(query, model, filters, aggregation, parameters, lang)
   const config = configCreate(model)
   const info = infoCreate(query, model)
 

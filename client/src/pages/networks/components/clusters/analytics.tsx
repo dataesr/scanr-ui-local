@@ -8,16 +8,18 @@ import getHorizontalBarChartOptions from "../charts/hbar"
 import getYearsChartOptions from "../charts/years"
 import useScreenSize from "../../../../hooks/useScreenSize"
 import useParameters from "../../hooks/useParameters"
+import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkAnalytics() {
   const intl = useIntl()
   const { screen } = useScreenSize()
+  const { integrationOptions } = useIntegration()
   const { currentTab } = useTab()
   const { parameters } = useParameters()
-  const { search, currentQuery } = useSearchData(currentTab, parameters.clusters)
+  const { search } = useSearchData(currentTab)
   const clusters = search.data?.network?.clusters
 
-  if (Boolean(search.error) || !currentQuery || !parameters.clusters) return null
+  if (Boolean(search.error) || !parameters.clusters || integrationOptions.showClustersAnalytics === false) return null
 
   if (parameters.clusters && search.isFetching)
     return (
@@ -52,7 +54,7 @@ export default function NetworkAnalytics() {
   })
 
   const AnalyticsGraphs = () => (
-    <Row className="fr-mt-2w">
+    <Row className="fr-mt-8w">
       <Col xs="12">
         <AnalyticsGraph
           title={intl.formatMessage(

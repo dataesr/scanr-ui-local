@@ -3,7 +3,7 @@ import { networkSearch } from "./search"
 
 export async function getStructureNetworkById(id: string, model: string): Promise<Network> {
   const organizationFilter = { terms: { "affiliations.id.keyword": [id] } }
-  const data = networkSearch({ model: model, filters: [organizationFilter] })
+  const data = networkSearch({ model: model, filters: [organizationFilter], lang: "fr" })
 
   return data
 }

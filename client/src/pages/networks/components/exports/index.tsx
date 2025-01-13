@@ -9,7 +9,7 @@ export default function NetworkExports() {
   const intl = useIntl()
   const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
-  const { search, currentQuery } = useSearchData(currentTab, false)
+  const { search, currentQuery } = useSearchData(currentTab)
   const { isExporting, exportFile } = useExportData()
 
   if (integrationOptions?.showExports === false) return null

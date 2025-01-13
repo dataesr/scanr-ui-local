@@ -9,7 +9,7 @@ import {
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
 import { RawIntlProvider, createIntl, useIntl } from "react-intl";
-import "./styles.scss";
+import "./styles.scss"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
@@ -239,7 +239,7 @@ function NetworksBanner() {
                 icon="arrow-right-line"
                 as="a"
                 variant="secondary"
-                href="/networks"
+                href="/networks/get-started"
               >
                 {intl.formatMessage({ id: "home.networks.link" })}
               </Button>
@@ -479,5 +479,5 @@ export default function Home() {
       <ServicesBanner />
       <OpendataBanner />
     </RawIntlProvider>
-  );
+  )
 }
