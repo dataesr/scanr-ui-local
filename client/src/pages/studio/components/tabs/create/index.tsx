@@ -14,7 +14,7 @@ export default function StudioCreate() {
   const [options, setOptions] = useState("")
 
   const pageUrl = `${window.location.origin}/${tool}/integration?lang=${lang}&local=${local}${options}`
-  const integrationIframeId = `${tool}_iframe`
+  const integrationIframeId = `iframe_${tool}_${local}`
   const integrationIframe = <iframe height="900px" width="100%" id={integrationIframeId} src={pageUrl} />
 
   const iframeText = (): string => {
