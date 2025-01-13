@@ -66,14 +66,6 @@ export default async function networkCreate(
     }))
   })
 
-  // Replace institutions labels
-  if (["institutions", "structures"].includes(model)) {
-    graph.updateEachNodeAttributes((node, attr) => ({
-      ...attr,
-      label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),
-    }))
-  }
-
   // Filter nodes
   if (filterNode) {
     graph = subgraph(graph, [...graph.neighbors(filterNode), filterNode])
@@ -95,6 +87,14 @@ export default async function networkCreate(
       .sort((a, b) => b.centrality - a.centrality)
       .map((node) => node.node)
     graph = subgraph(graph, sortedNodes.slice(0, maxNodes))
+  }
+
+  // Replace institutions labels
+  if (["institutions", "structures"].includes(model)) {
+    graph.updateEachNodeAttributes((node, attr) => ({
+      ...attr,
+      label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),
+    }))
   }
 
   // Add forceAtlas layout
