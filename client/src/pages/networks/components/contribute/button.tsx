@@ -7,8 +7,6 @@ export default function ContributeButton() {
   const { screen } = useScreenSize()
   const search = window.location.search?.slice(1) || "q=*"
 
-  console.log(screen)
-
   return (
     <Container fluid>
       <Button
