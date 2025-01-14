@@ -36,7 +36,7 @@ Analysing and mapping scientific communities provides an insight into the struct
 These maps are generally deduced from data in bibliographic databases (open or proprietary), based on co-publication or citation information. In the case of co-publications, two entities (authors, for example) will be linked if they have collaborated (co-published) on a piece of research. These links are then symmetrical. In the case of citation links, two authors will be linked if one cites the research work of another, in the list of references. This is a directed link, as one author may cite another without this being reciprocal. A lot of recent work uses this second approach, for example by trying to calculate composite indicators of novelty (or innovation) based on citation links. 
 
 The quality and completeness of the bibliographic metadata used are, of course, essential if we are to produce a relevant map. Today, the quality of open citation data still needs to be improved, cf [@alperin2024analysissuitabilityopenalexbibliometric].
-On the other hand, it is possible to obtain quality metadata on publications (and therefore links to co-publications). For example, the French Open Science Monitor (BSO) has compiled a corpus of French publications with good coverage cf [@10.1162/qss_a_00179]. This corpus is exposed in the French research portal scanR [@jeangirard:hal-04813230]. This is a corpus containing about 4 millions publications in all disciplines. These publications have been enriched with disambuation persistent identifier (PID) on authors, affiliations and topics. For authors and affiliations, French-specific PID have been used (idref for authors and RNSR for laboratories) because they have the best coverage, even if not perfect. For topics, wikidata identifiers has been used cf [@foppiano2020entity]. Other enrichments, like software detection are also present, and thus usable as entities to map.
+On the other hand, it is possible to obtain quality metadata on publications (and therefore links to co-publications). For example, the French Open Science Monitor (BSO) has compiled a corpus of French publications with good coverage cf [@10.1162/qss_a_00179]. This corpus is exposed in the French research portal scanR [@jeangirard:hal-04813230]. This is a corpus containing about 4 millions publications in all disciplines. These publications have been enriched with disambuation persistent identifier (PID) on authors, affiliations and topics. 
 
 ## 1.1 Previous limits of the scanR application
 
@@ -58,7 +58,19 @@ One of the added values of mapping with a network view is to show the interactio
 
 Thus, from a given corpus, however large, we seek to extract the pairs of entities with the strongest interactions, for example the most co-signatures per pair of authors. From this list of pairs, we can naturally find the nodes of the graph and deduce a new graph. If the graph has several independent components, i.e. several unconnected sub-graphs, we can decide to keep only the main component(s). 
 
-## 2.2 Elasticsearch implementation
+## 2.2 Publication metadata enrichment to produce different mapping
+
+Each publication in the scanR corpus goes through a systematic enrichment pipeline, including author and affiliation disambiguation, full-text parsing, topic detection.
+
+For authors, the French-specific persistent identifier (PID) [https://www.idref.fr](https://www.idref.fr) is used. Its coverage, even if not perfect, for French affiliated authors is strong thanks to the deep linking between idref and the PhD thesis registration in France. Specific heuristics have been implemented to disambiguate names and link them to idref.
+
+For affiliations, again French specific PID are used, especially SIRENE and RNSR. A specific module based on Elasticsearch [https://github.com/dataesr/affiliation-matcher](https://github.com/dataesr/affiliation-matcher) has been implemented to automatically link pblications to those PIDs [@lhote_using_2021].
+
+For topics, wikidata identifiers has been used using the entity-fishing module [https://github.com/kermitt2/entity-fishing](https://github.com/kermitt2/entity-fishing) cf [@foppiano2020entity].
+
+Other enrichments, like software detection are also present. These are based on software mentions detections using GROBID and Softcite at scale on the French corpus [@bassinet:hal-04121339].
+
+## 2.3 Elasticsearch implementation
 
 To identify the strongest links, it would be too costly to go through the entire corpus. We have pre-calculated the links at the level of each publication. So, if a publication is linked to 3 themes, T1, T2 and T3, a pre-calculated field, at publication level, contains all T1-T2, T1-T3 and T2-T3 pairs. This co_topics field represents the co-appearance links within the publication. We then use elasticsearch's aggregation functionality to list the most present links, very efficiently. 
 
@@ -99,7 +111,7 @@ In practice, a PID is also stored (the wikidata for topics, for example) to disa
                 },
 ```
 
-## 2.3 Network creation
+## 2.4 Network creation
 
 The network creation process involves several key steps: transforming Elasticsearch results into a graph using Graphology, filtering the network to focus on the most interesting nodes, applying spatialization algorithms for visualization, and detecting communities within the network. Below, we detail each of these steps.
 
@@ -122,7 +134,9 @@ slowDown: 1 + Math.log(order)
 In graph theory, a community corresponds to a set of nodes in a graph that are strongly interconnected with each other, while being less connected with nodes outside this community. Communities can be identified in order to understand the underlying structure and patterns of the graph, as well as to analyze the relationships and interactions between the entities that make it up. To identify and visualize communities within the network, we apply the Louvain algorithm using Graphology. This algorithm works by optimizing a modularity measure that evaluates the strength of communities in a graph [@Blondel_2008]. More precisely, Louvain seeks to maximize modularity by progressively moving the nodes of a graph into different communities, in an iterative fashion. At each stage, he merges neighboring communities if this leads to an improvement in the overall modularity of the graph. This iterative process continues until no further moves can increase modularity.  
 This step helps in revealing the underlying structure and communities within the scientific network, providing valuable insights into the interactions and collaborations within the bibliometric data.
 
-## 2.4 VOSviewer implementation
+The `graphology-communities-louvain` node module is being used. This way, each step (like spatizalization, community-detection) are implemented modularly. A benchmark, in our use case, of the Louvain and the Leiden algorithms would be desirable. The graphology library started a while ago working on an implementation of the leiden algorithm (see [https://github.com/graphology/graphology/tree/master/src/communities-leiden](https://github.com/graphology/graphology/tree/master/src/communities-leiden)) but that remains to be implemented.
+
+## 2.5 VOSviewer implementation
 
 To display the network within our application, we use the open source VOSviewer online tool for network visualization [https://github.com/neesjanvaneck/VOSviewer-Online](https://github.com/neesjanvaneck/VOSviewer-Online). It is based on the VOSviewer software which is very popular for network analysis in bibliometric studies [@DBLP:journals/corr/abs-1006-1032].
 

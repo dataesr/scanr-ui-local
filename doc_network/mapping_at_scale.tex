@@ -203,12 +203,7 @@ publications with good coverage cf (Chaignon and Egret 2022). This
 corpus is exposed in the French research portal scanR (Jeangirard 2024).
 This is a corpus containing about 4 millions publications in all
 disciplines. These publications have been enriched with disambuation
-persistent identifier (PID) on authors, affiliations and topics. For
-authors and affiliations, French-specific PID have been used (idref for
-authors and RNSR for laboratories) because they have the best coverage,
-even if not perfect. For topics, wikidata identifiers has been used cf
-(Foppiano and Romary 2020). Other enrichments, like software detection
-are also present, and thus usable as entities to map.
+persistent identifier (PID) on authors, affiliations and topics.
 
 \hypertarget{previous-limits-of-the-scanr-application}{%
 \subsection{1.1 Previous limits of the scanR
@@ -291,8 +286,37 @@ naturally find the nodes of the graph and deduce a new graph. If the
 graph has several independent components, i.e.~several unconnected
 sub-graphs, we can decide to keep only the main component(s).
 
+\hypertarget{publication-metadata-enrichment-to-produce-different-mapping}{%
+\subsection{2.2 Publication metadata enrichment to produce different
+mapping}\label{publication-metadata-enrichment-to-produce-different-mapping}}
+
+Each publication in the scanR corpus goes through a systematic
+enrichment pipeline, including author and affiliation disambiguation,
+full-text parsing, topic detection.
+
+For authors, the French-specific persistent identifier (PID)
+\url{https://www.idref.fr} is used. Its coverage, even if not perfect,
+for French affiliated authors is strong thanks to the deep linking
+between idref and the PhD thesis registration in France. Specific
+heuristics have been implemented to disambiguate names and link them to
+idref.
+
+For affiliations, again French specific PID are used, especially SIRENE
+and RNSR. A specific module based on Elasticsearch
+\url{https://github.com/dataesr/affiliation-matcher} has been
+implemented to automatically link pblications to those PIDs (L'Hôte and
+Jeangirard 2021).
+
+For topics, wikidata identifiers has been used using the entity-fishing
+module \url{https://github.com/kermitt2/entity-fishing} cf (Foppiano and
+Romary 2020).
+
+Other enrichments, like software detection are also present. These are
+based on software mentions detections using GROBID and Softcite at scale
+on the French corpus (Bassinet et al. 2023).
+
 \hypertarget{elasticsearch-implementation}{%
-\subsection{2.2 Elasticsearch
+\subsection{2.3 Elasticsearch
 implementation}\label{elasticsearch-implementation}}
 
 To identify the strongest links, it would be too costly to go through
@@ -345,7 +369,7 @@ returns a response containing the strongest links, for example:
 \end{Shaded}
 
 \hypertarget{network-creation}{%
-\subsection{2.3 Network creation}\label{network-creation}}
+\subsection{2.4 Network creation}\label{network-creation}}
 
 The network creation process involves several key steps: transforming
 Elasticsearch results into a graph using Graphology, filtering the
@@ -416,8 +440,16 @@ This step helps in revealing the underlying structure and communities
 within the scientific network, providing valuable insights into the
 interactions and collaborations within the bibliometric data.
 
+The \texttt{graphology-communities-louvain} node module is being used.
+This way, each step (like spatizalization, community-detection) are
+implemented modularly. A benchmark, in our use case, of the Louvain and
+the Leiden algorithms would be desirable. The graphology library started
+a while ago working on an implementation of the leiden algorithm (see
+\url{https://github.com/graphology/graphology/tree/master/src/communities-leiden})
+but that remains to be implemented.
+
 \hypertarget{vosviewer-implementation}{%
-\subsection{2.4 VOSviewer
+\subsection{2.5 VOSviewer
 implementation}\label{vosviewer-implementation}}
 
 To display the network within our application, we use the open source
@@ -531,6 +563,13 @@ available online on GitHub \url{https://github.com/dataesr/scanr-ui}
 Alperin, Juan Pablo, Jason Portenoy, Kyle Demes, Vincent Larivière, and
 Stefanie Haustein. 2024. ``An Analysis of the Suitability of Openalex
 for Bibliometric Analyses.'' \url{https://arxiv.org/abs/2404.17663}.
+
+\leavevmode\hypertarget{ref-bassinet:hal-04121339}{}%
+Bassinet, Aricia, Laetitia Bracco, Anne L'Hôte, Eric Jeangirard, Patrice
+Lopez, and Laurent Romary. 2023. ``Large-scale Machine-Learning analysis
+of scientific PDF for monitoring the production and the openness of
+research data and software in France.''
+\url{https://hal.science/hal-04121339}.
 
 \leavevmode\hypertarget{ref-Blondel_2008}{}%
 Blondel, Vincent D, Jean-Loup Guillaume, Renaud Lambiotte, and Etienne
