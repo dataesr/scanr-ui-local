@@ -71,7 +71,6 @@ export default function BugsReport() {
   const [displayNameKey, isLangField] = API_LABEL_KEY[api]
   if (!messages) return null
 
-  console.log("api", api.slice(0, -1), id, data)
 
   return (
     <RawIntlProvider value={intl}>
