@@ -81,6 +81,19 @@ portal, Elasticsearch, network analysis},
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -331,30 +344,117 @@ returns a response containing the strongest links, for example:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{vosviewer-implementation}{%
-\subsection{2.3 VOSviewer
-implementation}\label{vosviewer-implementation}}
+\hypertarget{network-creation}{%
+\subsection{2.3 Network creation}\label{network-creation}}
 
-We use the open source VOSviewer online tool for network visualization
-\url{https://github.com/neesjanvaneck/VOSviewer-Online}. It is based on
-the VOSviewer tool which is very popular for network analysis in
-bibliometric studies (Waltman, Eck, and Noyons 2010).
+The network creation process involves several key steps: transforming
+Elasticsearch results into a graph using Graphology, filtering the
+network to focus on the most interesting nodes, applying spatialization
+algorithms for visualization, and detecting communities within the
+network. Below, we detail each of these steps.
+
+The network creation process begins with the results obtained from
+Elasticsearch, utilizing the open-source JavaScript library Graphology
+\url{https://github.com/graphology/graphology} to construct and
+manipulate the network. Each link result from Elasticsearch is
+transformed into nodes and edges, with the edge strength corresponding
+to the interaction intensity derived from the Elasticsearch
+aggregations.
+
+To ensure that the network remains manageable and focuses on the most
+interesting nodes, we employ a strategy that prioritizes the
+best-connected nodes rather than the largest nodes. By default, the
+maximum number of nodes is set to 300. This threshold helps in
+maintaining the computational efficiency and interpretability of the
+network.
+
+In graph theory, a component refers to a subgraph in which any two nodes
+are connected to each other by paths, and which is connected to no
+additional nodes in the larger graph. Using Graphology, we filter the
+network components by iteratively removing the smallest components until
+the number of nodes falls below the threshold or only one component
+remains. This largest component is then subjected to further filtering
+if it still exceeds the node threshold. In this second filtering step,
+we utilize the betweenness centrality metric to retain the
+best-connected nodes. Betweenness centrality measures the extent to
+which a node lies on the shortest path between other nodes, thereby
+identifying nodes that act as bridges within the network.
+
+Once the filtering process is complete, we apply a spatialization
+algorithm to position the nodes in a 2D space. For this purpose, we use
+the ForceAtlas2 algorithm, which is designed to produce aesthetically
+pleasing and informative layouts by simulating a physical system where
+nodes repel each other and edges act as springs pulling connected nodes
+together. This results in a clear and intuitive visual representation of
+the network (Jacomy 2014).\\
+Thanks to Graphology the settings of the ForceAtlas2 algorithm are
+automatically infered from our network order (number of nodes) as below:
+
+\begin{verbatim}
+barnesHutOptimize: order > 2000,
+strongGravityMode: true,
+gravity: 0.05,
+scalingRatio: 10,
+slowDown: 1 + Math.log(order)
+\end{verbatim}
 
 In graph theory, a community corresponds to a set of nodes in a graph
 that are strongly interconnected with each other, while being less
 connected with nodes outside this community. Communities can be
 identified in order to understand the underlying structure and patterns
 of the graph, as well as to analyze the relationships and interactions
-between the entities that make it up. To identify communities, we use
-the Louvain method. This algorithm works by optimizing a modularity
-measure that evaluates the strength of communities in a graph. More
-precisely, Louvain seeks to maximize modularity by progressively moving
-the nodes of a graph into different communities, in an iterative
+between the entities that make it up. To identify and visualize
+communities within the network, we apply the Louvain algorithm using
+Graphology. This algorithm works by optimizing a modularity measure that
+evaluates the strength of communities in a graph (Blondel et al. 2008).
+More precisely, Louvain seeks to maximize modularity by progressively
+moving the nodes of a graph into different communities, in an iterative
 fashion. At each stage, he merges neighboring communities if this leads
 to an improvement in the overall modularity of the graph. This iterative
-process continues until no further moves can increase modularity.
-Clusters are computed with the Louvain algorithm, from the open source
-javascript library graphology-communities-louvain.
+process continues until no further moves can increase modularity.\\
+This step helps in revealing the underlying structure and communities
+within the scientific network, providing valuable insights into the
+interactions and collaborations within the bibliometric data.
+
+\hypertarget{vosviewer-implementation}{%
+\subsection{2.4 VOSviewer
+implementation}\label{vosviewer-implementation}}
+
+To display the network within our application, we use the open source
+VOSviewer online tool for network visualization
+\url{https://github.com/neesjanvaneck/VOSviewer-Online}. It is based on
+the VOSviewer software which is very popular for network analysis in
+bibliometric studies (Waltman, Eck, and Noyons 2010).
+
+VOSviewer accepts JSON files formatted according to a specific template
+\url{https://app.vosviewer.com/docs/file-types/json-file-type}. This
+template includes essential attributes for nodes and edges, such as the
+node ID, name, position, and additional metadata. To ensure
+compatibility, we transform our Graphology object into a JSON file that
+adheres to VOSviewer's required format.
+
+Once the JSON file is generated, VOSviewer renders the network,
+displaying nodes and edges in an interactive and visually appealing
+manner. The nodes are colorized based on the communities identified
+through the clustering process performed using the Louvain algorithm.
+This colorization helps in visually distinguishing different communities
+within the network, making it easier to analyze and interpret the
+underlying structure and interactions.
+
+VOSviewer includes its own spatialization algorithm and parameters for
+layout customization. However, after testing these options, we found
+them to be visually less intuitive and informative. Consequently, we
+chose to use the ForceAtlas2 algorithm for spatialization, as described
+in the previous section, which offers a more aesthetically pleasing and
+informative layout by being automatically set for our network.
+
+\begin{figure}
+\centering
+\includegraphics{https://raw.githubusercontent.com/dataesr/scanr-ui/refs/heads/staging/doc_network/images/vosviewer-spatialization-comparison.jpg}
+\caption{Visualization of a network with VOSviewer.\\
+\emph{(a) Using ForceAltlas2 spatialization\\
+(b) Using VOSviewer default spatialization}}
+\end{figure}
 
 \hypertarget{making-insightful-maps}{%
 \section{3. Making insightful maps}\label{making-insightful-maps}}
@@ -432,6 +532,12 @@ Alperin, Juan Pablo, Jason Portenoy, Kyle Demes, Vincent Larivière, and
 Stefanie Haustein. 2024. ``An Analysis of the Suitability of Openalex
 for Bibliometric Analyses.'' \url{https://arxiv.org/abs/2404.17663}.
 
+\leavevmode\hypertarget{ref-Blondel_2008}{}%
+Blondel, Vincent D, Jean-Loup Guillaume, Renaud Lambiotte, and Etienne
+Lefebvre. 2008. ``Fast Unfolding of Communities in Large Networks.''
+\emph{Journal of Statistical Mechanics: Theory and Experiment} 2008
+(10): P10008. \url{https://doi.org/10.1088/1742-5468/2008/10/P10008}.
+
 \leavevmode\hypertarget{ref-10.1162ux2fqss_a_00179}{}%
 Chaignon, Lauranne, and Daniel Egret. 2022. ``Identifying Scientific
 Publications Countrywide and Measuring Their Open Access: The Case of
@@ -442,6 +548,12 @@ Studies} 3 (1): 18--36. \url{https://doi.org/10.1162/qss_a_00179}.
 Foppiano, Luca, and Laurent Romary. 2020. ``Entity-Fishing: A Dariah
 Entity Recognition and Disambiguation Service.'' \emph{Journal of the
 Japanese Association for Digital Humanities} 5 (1): 22--60.
+
+\leavevmode\hypertarget{ref-10.1371ux2fjournal.pone.0098679}{}%
+Jacomy, Tommaso AND Heymann, Mathieu AND Venturini. 2014. ``ForceAtlas2,
+a Continuous Graph Layout Algorithm for Handy Network Visualization
+Designed for the Gephi Software.'' \emph{PLOS ONE} 9 (6): 1--12.
+\url{https://doi.org/10.1371/journal.pone.0098679}.
 
 \leavevmode\hypertarget{ref-jeangirard:hal-04813230}{}%
 Jeangirard, Eric. 2024. ``scanR - Explore public data on French research

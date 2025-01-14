@@ -99,15 +99,42 @@ In practice, a PID is also stored (the wikidata for topics, for example) to disa
                 },
 ```
 
-## 2.3 VOSviewer implementation
+## 2.3 Network creation
 
-We use the open source VOSviewer online tool for network visualization [https://github.com/neesjanvaneck/VOSviewer-Online](https://github.com/neesjanvaneck/VOSviewer-Online). It is based on the VOSviewer tool which is very popular for network analysis in bibliometric studies [@DBLP:journals/corr/abs-1006-1032].
+The network creation process involves several key steps: transforming Elasticsearch results into a graph using Graphology, filtering the network to focus on the most interesting nodes, applying spatialization algorithms for visualization, and detecting communities within the network. Below, we detail each of these steps.
 
-In graph theory, a community corresponds to a set of nodes in a graph that are strongly interconnected with each other, while being less connected with nodes outside this community. Communities can be identified in order to understand the underlying structure and patterns of the graph, as well as to analyze the relationships and interactions between the entities that make it up.
-To identify communities, we use the Louvain method. This algorithm works by optimizing a modularity measure that evaluates the strength of communities in a graph. More precisely, Louvain seeks to maximize modularity by progressively moving the nodes of a graph into different communities, in an iterative fashion.
-At each stage, he merges neighboring communities if this leads to an improvement in the overall modularity of the graph. This iterative process continues until no further moves can increase modularity.
-Clusters are computed with the Louvain algorithm, from the open source javascript library graphology-communities-louvain. 
+The network creation process begins with the results obtained from Elasticsearch, utilizing the open-source JavaScript library Graphology [https://github.com/graphology/graphology](https://github.com/graphology/graphology) to construct and manipulate the network. Each link result from Elasticsearch is transformed into nodes and edges, with the edge strength corresponding to the interaction intensity derived from the Elasticsearch aggregations.
 
+To ensure that the network remains manageable and focuses on the most interesting nodes, we employ a strategy that prioritizes the best-connected nodes rather than the largest nodes. By default, the maximum number of nodes is set to 300. This threshold helps in maintaining the computational efficiency and interpretability of the network.
+
+In graph theory, a component refers to a subgraph in which any two nodes are connected to each other by paths, and which is connected to no additional nodes in the larger graph. Using Graphology, we filter the network components by iteratively removing the smallest components until the number of nodes falls below the threshold or only one component remains. This largest component is then subjected to further filtering if it still exceeds the node threshold. In this second filtering step, we utilize the betweenness centrality metric to retain the best-connected nodes. Betweenness centrality measures the extent to which a node lies on the shortest path between other nodes, thereby identifying nodes that act as bridges within the network.
+
+Once the filtering process is complete, we apply a spatialization algorithm to position the nodes in a 2D space. For this purpose, we use the ForceAtlas2 algorithm, which is designed to produce aesthetically pleasing and informative layouts by simulating a physical system where nodes repel each other and edges act as springs pulling connected nodes together. This results in a clear and intuitive visual representation of the network [@10.1371/journal.pone.0098679].  
+Thanks to Graphology the settings of the ForceAtlas2 algorithm are automatically infered from our network order (number of nodes) as below:
+```
+barnesHutOptimize: order > 2000,
+strongGravityMode: true,
+gravity: 0.05,
+scalingRatio: 10,
+slowDown: 1 + Math.log(order)
+```
+
+In graph theory, a community corresponds to a set of nodes in a graph that are strongly interconnected with each other, while being less connected with nodes outside this community. Communities can be identified in order to understand the underlying structure and patterns of the graph, as well as to analyze the relationships and interactions between the entities that make it up. To identify and visualize communities within the network, we apply the Louvain algorithm using Graphology. This algorithm works by optimizing a modularity measure that evaluates the strength of communities in a graph [@Blondel_2008]. More precisely, Louvain seeks to maximize modularity by progressively moving the nodes of a graph into different communities, in an iterative fashion. At each stage, he merges neighboring communities if this leads to an improvement in the overall modularity of the graph. This iterative process continues until no further moves can increase modularity.  
+This step helps in revealing the underlying structure and communities within the scientific network, providing valuable insights into the interactions and collaborations within the bibliometric data.
+
+## 2.4 VOSviewer implementation
+
+To display the network within our application, we use the open source VOSviewer online tool for network visualization [https://github.com/neesjanvaneck/VOSviewer-Online](https://github.com/neesjanvaneck/VOSviewer-Online). It is based on the VOSviewer software which is very popular for network analysis in bibliometric studies [@DBLP:journals/corr/abs-1006-1032].
+
+VOSviewer accepts JSON files formatted according to a specific template [https://app.vosviewer.com/docs/file-types/json-file-type](https://app.vosviewer.com/docs/file-types/json-file-type). This template includes essential attributes for nodes and edges, such as the node ID, name, position, and additional metadata. To ensure compatibility, we transform our Graphology object into a JSON file that adheres to VOSviewer's required format.
+
+Once the JSON file is generated, VOSviewer renders the network, displaying nodes and edges in an interactive and visually appealing manner. The nodes are colorized based on the communities identified through the clustering process performed using the Louvain algorithm. This colorization helps in visually distinguishing different communities within the network, making it easier to analyze and interpret the underlying structure and interactions.
+
+VOSviewer includes its own spatialization algorithm and parameters for layout customization. However, after testing these options, we found them to be visually less intuitive and informative. Consequently, we chose to use the ForceAtlas2 algorithm for spatialization, as described in the previous section, which offers a more aesthetically pleasing and informative layout by being automatically set for our network.
+
+![Visualization of a network with VOSviewer.  
+*(a) Using ForceAltlas2 spatialization  
+(b) Using VOSviewer default spatialization*](https://raw.githubusercontent.com/dataesr/scanr-ui/refs/heads/staging/doc_network/images/vosviewer-spatialization-comparison.jpg)
 
 # 3. Making insightful maps
 
