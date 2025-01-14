@@ -48,7 +48,16 @@ export default function NetworkSearchBarModal() {
           </Text>
           <TagGroup>
             {expansions.map((expansion, index) => (
-              <Tag key={index} as="button" color="green-emeraude">
+              <Tag
+                key={index}
+                as="button"
+                color="green-emeraude"
+                icon="add-line"
+                onClick={() => {
+                  handleQueryChange(debouncedQuery + ` OR "${expansion}"`)
+                  setDebouncedQuery(debouncedQuery + ` OR "${expansion}"`)
+                }}
+              >
                 {expansion}
               </Tag>
             ))}
