@@ -9,7 +9,7 @@ attribution is appreciated. Thanks, broccolini! -->
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <meta name="keywords" content="scanR, VOSviewer, scientific ccommunity, research portal, Elasticsearch, network analysis" />
+  <meta name="keywords" content="scanR, VOSviewer, graphology, scientific ccommunity, community detection, research portal, Elasticsearch, network analysis" />
   <title>Mapping scientific communities at scale</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -503,12 +503,12 @@ color:#444;
 </div>
 <div class="author-info">
         </div>
-
+<p class="abstract" property="description"><p>This study introduces a novel methodology for mapping scientific communities at scale, addressing challenges associated with network analysis in large bibliometric datasets. By leveraging enriched publication metadata from the French research portal scanR and applying advanced filtering techniques to prioritize the strongest interactions between entities, we construct detailed, scalable network maps. These maps are enhanced through systematic disambiguation of authors, affiliations, and topics using persistent identifiers and specialized algorithms. The proposed framework integrates Elasticsearch for efficient data aggregation, Graphology for network spatialization (Force Atltas2) and community detection (Louvain algorithm) and VOSviewer for network vizualization. A Large Language Model (Mistral Nemo) is used to label the communities detected and OpenAlex data helps to enrich the results with citation counts estimation to detect hot topics. This scalable approach enables insightful exploration of research collaborations and thematic structures, with potential applications for strategic decision-making in science policy and funding. These web tools are effective at the global (national) scale but are also available (and can be integrated via iframes) on the perimeter of any French research institution (from large research organisms to any laboratory). All tools and methodologies are open-source on the repo <a href="https://github.com/dataesr/scanr-ui">https://github.com/dataesr/scanr-ui</a>.</p></p>
 
 
 
 <div property="articleBody" class="article-body">
-<p><strong>Keywords</strong>: open access, open science, open data, open source</p>
+<p><strong>Keywords</strong>: scanR, VOSviewer, graphology, scientific community, community detection, research portal, Elasticsearch, network analysis</p>
 <h1 id="motivation">1. Motivation</h1>
 <p>Analysing and mapping scientific communities provides an insight into the structure and evolution of academic disciplines. This involves providing an analytical and visual representation of the relationships between entities (e.g. researchers, research laboratories, research themes), with the aim, in particular, of understanding the networks and dynamics of scientific collaboration, and identifying collaborative groups and their influences. From the point of view of decision-makers, this type of tool is useful for strategic decision-making with a view to public policy and funding.</p>
 <p>These maps are generally deduced from data in bibliographic databases (open or proprietary), based on co-publication or citation information. In the case of co-publications, two entities (authors, for example) will be linked if they have collaborated (co-published) on a piece of research. These links are then symmetrical. In the case of citation links, two authors will be linked if one cites the research work of another, in the list of references. This is a directed link, as one author may cite another without this being reciprocal. A lot of recent work uses this second approach, for example by trying to calculate composite indicators of novelty (or innovation) based on citation links.</p>
