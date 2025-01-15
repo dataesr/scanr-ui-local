@@ -1,10 +1,10 @@
 import { useMemo } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getCitationsTrends, getPublicationsTrends } from "../../../api/trends/publications"
-import { useTrendsContext } from "../context"
 import useUrl from "../../search/hooks/useUrl"
 import { MAX_YEAR, MIN_YEAR } from "../config/years"
 import { rangeArray } from "../../../utils/helpers"
+import useOptions from "./useOptions"
 
 const API_MAPPING = {
   publications: getPublicationsTrends,
@@ -13,7 +13,7 @@ const API_MAPPING = {
 
 export default function useTrends() {
   const { currentQuery, currentFilters, filters } = useUrl()
-  const { model, source, normalized } = useTrendsContext()
+  const { currentModel, currentSource, normalized } = useOptions()
 
   const trendsYears = {
     min: Number(currentFilters?.year?.values?.[0]?.value || MIN_YEAR),
@@ -21,10 +21,10 @@ export default function useTrends() {
   }
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["trends", source, model, currentQuery, model, filters, normalized],
+    queryKey: ["trends", currentSource, currentModel, currentQuery, currentModel, filters, normalized],
     queryFn: () =>
-      API_MAPPING[source]({
-        model: model,
+      API_MAPPING[currentSource]({
+        model: currentModel,
         query: currentQuery,
         years: rangeArray(trendsYears.min, trendsYears.max),
         filters: filters,

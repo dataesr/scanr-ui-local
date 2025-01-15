@@ -1,14 +1,14 @@
 import { Button } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import { useTrendsContext } from "../../context"
 import useIntegration from "../../hooks/useIntegration"
 import useScreenSize from "../../../../hooks/useScreenSize"
+import useOptions from "../../hooks/useOptions"
 
 export default function TrendsSelectModelButton() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
-  const { model } = useTrendsContext()
+  const { currentModel } = useOptions()
 
   if (integrationOptions.showSelectModel === false) return null
 
@@ -22,7 +22,7 @@ export default function TrendsSelectModelButton() {
       data-fr-opened="false"
       variant="secondary"
     >
-      {["xs", "sm"].includes(screen) ? null : intl.formatMessage({ id: `trends.select-model.${model}` })}
+      {["xs", "sm"].includes(screen) ? null : intl.formatMessage({ id: `trends.select-model.${currentModel}` })}
     </Button>
   )
 }

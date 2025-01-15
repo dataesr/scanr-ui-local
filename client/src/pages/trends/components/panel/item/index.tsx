@@ -38,7 +38,7 @@ export default function TrendsViewItem({ item }) {
       >
         <Row style={{ width: "100%" }} verticalAlign="middle">
           <Col sm="8" md="4" lg="4">
-            <Row horizontalAlign="center">
+            <Row horizontalAlign="left">
               <div>{item.label}</div>
             </Row>
           </Col>
