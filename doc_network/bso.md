@@ -147,8 +147,10 @@ Once the JSON file is generated, VOSviewer renders the network, displaying nodes
 VOSviewer includes its own spatialization algorithm and parameters for layout customization. However, after testing these options, we found them to be visually less intuitive and informative. Consequently, we chose to use the ForceAtlas2 algorithm for spatialization, as described in the previous section, which offers a more aesthetically pleasing and informative layout by being automatically set for our network.
 
 ![Visualization of a network with VOSviewer.  
-*(a) Using ForceAltlas2 spatialization  
-(b) Using VOSviewer default spatialization*](https://raw.githubusercontent.com/dataesr/scanr-ui/refs/heads/staging/doc_network/images/vosviewer-spatialization-comparison.jpg)
+*(a) Using ForceAltlas2 spatialization with infered settings  
+(b) Using VOSviewer spatialization (attraction=2, repulsion=1)  
+(c) Using VOSviewer spatialization (attraction=3, repulsion=1)  
+(d) Using VOSviewer spatialization (attraction=1, repulsion=0)*](https://raw.githubusercontent.com/dataesr/scanr-ui/refs/heads/staging/doc_network/images/vosviewer-spatialization-comparison.jpg)
 
 # 3. Making insightful maps
 

@@ -484,8 +484,10 @@ informative layout by being automatically set for our network.
 \centering
 \includegraphics{https://raw.githubusercontent.com/dataesr/scanr-ui/refs/heads/staging/doc_network/images/vosviewer-spatialization-comparison.jpg}
 \caption{Visualization of a network with VOSviewer.\\
-\emph{(a) Using ForceAltlas2 spatialization\\
-(b) Using VOSviewer default spatialization}}
+\emph{(a) Using ForceAltlas2 spatialization with infered settings\\
+(b) Using VOSviewer spatialization (attraction=2, repulsion=1)\\
+(c) Using VOSviewer spatialization (attraction=3, repulsion=1)\\
+(d) Using VOSviewer spatialization (attraction=1, repulsion=0)}}
 \end{figure}
 
 \hypertarget{making-insightful-maps}{%
