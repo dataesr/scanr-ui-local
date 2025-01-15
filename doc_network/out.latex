@@ -187,8 +187,10 @@ collaborations and thematic structures, with potential applications for
 strategic decision-making in science policy and funding. These web tools
 are effective at the global (national) scale but are also available (and
 can be integrated via iframes) on the perimeter of any French research
-institution (from large research organisms to any laboratory). All tools
-and methodologies are open-source on the repo
+institution (from large research organisms to any laboratory). The scanR
+community analysis tool is available online
+\url{https://scanr.enseignementsup-recherche.gouv.fr/networks/get-started}.
+All tools and methodologies are open-source on the repo
 \url{https://github.com/dataesr/scanr-ui}.
 \end{abstract}
 
