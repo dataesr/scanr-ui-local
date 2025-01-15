@@ -112,7 +112,7 @@ export async function getCitationsTrends({ model, query, years, filters, normali
   return trends
 }
 
-export async function getPublicationsEvolution({ model, query, years, filters, normalized }: TrendsArgs) {
+export async function getPublicationsEvolution({ model, query, years, filters }: TrendsArgs) {
   const body: any = {
     size: 0,
     query: {
@@ -177,10 +177,6 @@ export async function getPublicationsEvolution({ model, query, years, filters, n
     })
     return acc
   }, {})
-
-  console.log("years", years)
-  console.log("aggregation", aggregation)
-  console.log("items", evolution)
 
   return evolution
 }
