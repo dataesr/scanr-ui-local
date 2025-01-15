@@ -238,13 +238,13 @@ relationships between entities in a corpus. In general, the size of this
 corpus is limited because the calculations to determine the nodes, links
 and their positions for very large networks require too many resources,
 in addition to being very difficult to interpret. As a result, tools
-such as VOSViewer offer options for limiting the size of networks. The
+such as VOSviewer offer options for limiting the size of networks. The
 first option is to filter publications with too many authors. This is
 particularly true of publications in particle physics, which can list
 several thousand authors. As well as generating very large networks,
 this hyperauthorship can also be seen as reducing the relevance of the
 information conveyed by the co-authorship links. The second option
-offered by VOSViewer is to set thresholds to limit the number of nodes
+offered by VOSviewer is to set thresholds to limit the number of nodes
 directly (minimum number of publications or minimum number of citations
 for a node). However, this approach of retaining only the largest nodes
 in the network can be an obstacle to scaling up to very large corpora of
@@ -325,7 +325,9 @@ publication. So, if a publication is linked to 3 themes, T1, T2 and T3,
 a pre-calculated field, at publication level, contains all T1-T2, T1-T3
 and T2-T3 pairs. This co\_topics field represents the co-appearance
 links within the publication. We then use elasticsearch's aggregation
-functionality to list the most present links, very efficiently.
+functionality to list the most present links, very efficiently. By
+default, we limit ourselves to the top 2000 links to ensure optimal
+performance.
 
 In practice, a PID is also stored (the wikidata for topics, for example)
 to disambiguate entities. In practice, for a given query, elasticsearch
@@ -372,18 +374,17 @@ returns a response containing the strongest links, for example:
 \subsection{2.4 Network creation}\label{network-creation}}
 
 The network creation process involves several key steps: transforming
-Elasticsearch results into a graph using Graphology, filtering the
-network to focus on the most interesting nodes, applying spatialization
-algorithms for visualization, and detecting communities within the
-network. Below, we detail each of these steps.
+Elasticsearch results into a graph, filtering the network to focus on
+the most interesting nodes, applying spatialization algorithms for
+visualization, and detecting communities within the network. Below, we
+detail each of these steps.
 
 The network creation process begins with the results obtained from
 Elasticsearch, utilizing the open-source JavaScript library Graphology
 \url{https://github.com/graphology/graphology} to construct and
 manipulate the network. Each link result from Elasticsearch is
-transformed into nodes and edges, with the edge strength corresponding
-to the interaction intensity derived from the Elasticsearch
-aggregations.
+transformed into nodes and edges, with edge strength corresponding to
+the number of aggregated documents.
 
 To ensure that the network remains manageable and focuses on the most
 interesting nodes, we employ a strategy that prioritizes the
@@ -411,7 +412,7 @@ pleasing and informative layouts by simulating a physical system where
 nodes repel each other and edges act as springs pulling connected nodes
 together. This results in a clear and intuitive visual representation of
 the network (Jacomy 2014).\\
-Thanks to Graphology the settings of the ForceAtlas2 algorithm are
+Thanks to Graphology, the settings of the ForceAtlas2 algorithm are
 automatically infered from our network order (number of nodes) as below:
 
 \begin{verbatim}
@@ -435,10 +436,7 @@ More precisely, Louvain seeks to maximize modularity by progressively
 moving the nodes of a graph into different communities, in an iterative
 fashion. At each stage, he merges neighboring communities if this leads
 to an improvement in the overall modularity of the graph. This iterative
-process continues until no further moves can increase modularity.\\
-This step helps in revealing the underlying structure and communities
-within the scientific network, providing valuable insights into the
-interactions and collaborations within the bibliometric data.
+process continues until no further moves can increase modularity.
 
 The \texttt{graphology-communities-louvain} node module is being used.
 This way, each step (like spatizalization, community-detection) are
@@ -509,15 +507,39 @@ limit ourselves to the 2000 most relevant publications (in relation to
 the user's search) for each community. The following prompt is used:
 
 \begin{quote}
-You have been tasked with naming distinct fields of study for several
+`` You have been tasked with naming distinct fields of study for several
 communities of research publications. Below are lists of topics and
 their weights representing each community. Your goal is to provide a
 unique and descriptive name for each field of study that best
 encapsulates the essence of the topics within that community. Each
 should be unique and as short as possible. If the list of topic is
 empty, output a empty string. Output as JSON object with the list number
-and the single unique generated name. ```
+and the single unique generated name. ''
 \end{quote}
+
+To illustrate its functionality, consider the following example:
+
+\begin{verbatim}
+// Input with each list corresponding to a community
+"list1 = [Soil (8), Carbon Sequestration (5), Soil Organic Matter (5), Carbon (5),  
+Ecosystem Services (5), Priming Effect (4), Sequestration (4), Amazonian (3), Andosol (3)],  
+list2 = [Soil Organic Carbon (11), Carbon (10), Climate Change (7), Soil (7),  
+Carbon Sequestration (6), Carbon Cycle (5), Soil Carbon (4)],  
+list3 = [Acl (7), Carbon (3), Carbon Sequestration (3), South Pacific Ocean (3),  
+Trichodesmium (3), Crocosphaera (2), Crocosphaera-watsonii (2), Dinitrogen-fixation (2)]"
+
+// Mistral output
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{\{}
+  \DataTypeTok{"list1"}\FunctionTok{:} \StringTok{"Amazon Andosol Carbon Dynamics"}\FunctionTok{,}
+  \DataTypeTok{"list2"}\FunctionTok{:} \StringTok{"Soil Carbon and Climate Change"}\FunctionTok{,}
+  \DataTypeTok{"list3"}\FunctionTok{:} \StringTok{"South Pacific Ocean Carbon Cycling"}
+\FunctionTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{citation-hot-topics}{%
 \subsection{3.1 Citation / hot topics}\label{citation-hot-topics}}

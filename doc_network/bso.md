@@ -46,7 +46,7 @@ However, these functions only gave a flat view of the different dimensions, with
 
 ## 1.2 Network analysis limits
 
-Network analysis tools for bibliographic studies are used to study the relationships between entities in a corpus. In general, the size of this corpus is limited because the calculations to determine the nodes, links and their positions for very large networks require too many resources, in addition to being very difficult to interpret. As a result, tools such as VOSViewer offer options for limiting the size of networks. The first option is to filter publications with too many authors. This is particularly true of publications in particle physics, which can list several thousand authors. As well as generating very large networks, this hyperauthorship can also be seen as reducing the relevance of the information conveyed by the co-authorship links. The second option offered by VOSViewer is to set thresholds to limit the number of nodes directly (minimum number of publications or minimum number of citations for a node). However, this approach of retaining only the largest nodes in the network can be an obstacle to scaling up to very large corpora of several million documents. Indeed, if we wish to concentrate on a few hundred nodes, the threshold will be very high and the resulting network risks being just a constellation of single nodes with no links between them, the other nodes with which they are linked being in fact made insignificant by the threshold set in terms of the number of publications (or citations) per node. In addition, the processing time for a very large corpus of publications can be very long, making such a tool unusable in a web application where the user expects rapid interaction with the application. 
+Network analysis tools for bibliographic studies are used to study the relationships between entities in a corpus. In general, the size of this corpus is limited because the calculations to determine the nodes, links and their positions for very large networks require too many resources, in addition to being very difficult to interpret. As a result, tools such as VOSviewer offer options for limiting the size of networks. The first option is to filter publications with too many authors. This is particularly true of publications in particle physics, which can list several thousand authors. As well as generating very large networks, this hyperauthorship can also be seen as reducing the relevance of the information conveyed by the co-authorship links. The second option offered by VOSviewer is to set thresholds to limit the number of nodes directly (minimum number of publications or minimum number of citations for a node). However, this approach of retaining only the largest nodes in the network can be an obstacle to scaling up to very large corpora of several million documents. Indeed, if we wish to concentrate on a few hundred nodes, the threshold will be very high and the resulting network risks being just a constellation of single nodes with no links between them, the other nodes with which they are linked being in fact made insignificant by the threshold set in terms of the number of publications (or citations) per node. In addition, the processing time for a very large corpus of publications can be very long, making such a tool unusable in a web application where the user expects rapid interaction with the application. 
 
 # 2. Network analysis at scale
 
@@ -72,7 +72,7 @@ Other enrichments, like software detection are also present. These are based on 
 
 ## 2.3 Elasticsearch implementation
 
-To identify the strongest links, it would be too costly to go through the entire corpus. We have pre-calculated the links at the level of each publication. So, if a publication is linked to 3 themes, T1, T2 and T3, a pre-calculated field, at publication level, contains all T1-T2, T1-T3 and T2-T3 pairs. This co_topics field represents the co-appearance links within the publication. We then use elasticsearch's aggregation functionality to list the most present links, very efficiently. 
+To identify the strongest links, it would be too costly to go through the entire corpus. We have pre-calculated the links at the level of each publication. So, if a publication is linked to 3 themes, T1, T2 and T3, a pre-calculated field, at publication level, contains all T1-T2, T1-T3 and T2-T3 pairs. This co_topics field represents the co-appearance links within the publication. We then use elasticsearch's aggregation functionality to list the most present links, very efficiently. By default, we limit ourselves to the top 2000 links to ensure optimal performance.
 
 In practice, a PID is also stored (the wikidata for topics, for example) to disambiguate entities. In practice, for a given query, elasticsearch returns a response containing the strongest links, for example:
 
@@ -113,16 +113,16 @@ In practice, a PID is also stored (the wikidata for topics, for example) to disa
 
 ## 2.4 Network creation
 
-The network creation process involves several key steps: transforming Elasticsearch results into a graph using Graphology, filtering the network to focus on the most interesting nodes, applying spatialization algorithms for visualization, and detecting communities within the network. Below, we detail each of these steps.
+The network creation process involves several key steps: transforming Elasticsearch results into a graph, filtering the network to focus on the most interesting nodes, applying spatialization algorithms for visualization, and detecting communities within the network. Below, we detail each of these steps.
 
-The network creation process begins with the results obtained from Elasticsearch, utilizing the open-source JavaScript library Graphology [https://github.com/graphology/graphology](https://github.com/graphology/graphology) to construct and manipulate the network. Each link result from Elasticsearch is transformed into nodes and edges, with the edge strength corresponding to the interaction intensity derived from the Elasticsearch aggregations.
+The network creation process begins with the results obtained from Elasticsearch, utilizing the open-source JavaScript library Graphology [https://github.com/graphology/graphology](https://github.com/graphology/graphology) to construct and manipulate the network. Each link result from Elasticsearch is transformed into nodes and edges, with edge strength corresponding to the number of aggregated documents.
 
 To ensure that the network remains manageable and focuses on the most interesting nodes, we employ a strategy that prioritizes the best-connected nodes rather than the largest nodes. By default, the maximum number of nodes is set to 300. This threshold helps in maintaining the computational efficiency and interpretability of the network.
 
 In graph theory, a component refers to a subgraph in which any two nodes are connected to each other by paths, and which is connected to no additional nodes in the larger graph. Using Graphology, we filter the network components by iteratively removing the smallest components until the number of nodes falls below the threshold or only one component remains. This largest component is then subjected to further filtering if it still exceeds the node threshold. In this second filtering step, we utilize the betweenness centrality metric to retain the best-connected nodes. Betweenness centrality measures the extent to which a node lies on the shortest path between other nodes, thereby identifying nodes that act as bridges within the network.
 
 Once the filtering process is complete, we apply a spatialization algorithm to position the nodes in a 2D space. For this purpose, we use the ForceAtlas2 algorithm, which is designed to produce aesthetically pleasing and informative layouts by simulating a physical system where nodes repel each other and edges act as springs pulling connected nodes together. This results in a clear and intuitive visual representation of the network [@10.1371/journal.pone.0098679].  
-Thanks to Graphology the settings of the ForceAtlas2 algorithm are automatically infered from our network order (number of nodes) as below:
+Thanks to Graphology, the settings of the ForceAtlas2 algorithm are automatically infered from our network order (number of nodes) as below:
 ```
 barnesHutOptimize: order > 2000,
 strongGravityMode: true,
@@ -131,8 +131,7 @@ scalingRatio: 10,
 slowDown: 1 + Math.log(order)
 ```
 
-In graph theory, a community corresponds to a set of nodes in a graph that are strongly interconnected with each other, while being less connected with nodes outside this community. Communities can be identified in order to understand the underlying structure and patterns of the graph, as well as to analyze the relationships and interactions between the entities that make it up. To identify and visualize communities within the network, we apply the Louvain algorithm using Graphology. This algorithm works by optimizing a modularity measure that evaluates the strength of communities in a graph [@Blondel_2008]. More precisely, Louvain seeks to maximize modularity by progressively moving the nodes of a graph into different communities, in an iterative fashion. At each stage, he merges neighboring communities if this leads to an improvement in the overall modularity of the graph. This iterative process continues until no further moves can increase modularity.  
-This step helps in revealing the underlying structure and communities within the scientific network, providing valuable insights into the interactions and collaborations within the bibliometric data.
+In graph theory, a community corresponds to a set of nodes in a graph that are strongly interconnected with each other, while being less connected with nodes outside this community. Communities can be identified in order to understand the underlying structure and patterns of the graph, as well as to analyze the relationships and interactions between the entities that make it up. To identify and visualize communities within the network, we apply the Louvain algorithm using Graphology. This algorithm works by optimizing a modularity measure that evaluates the strength of communities in a graph [@Blondel_2008]. More precisely, Louvain seeks to maximize modularity by progressively moving the nodes of a graph into different communities, in an iterative fashion. At each stage, he merges neighboring communities if this leads to an improvement in the overall modularity of the graph. This iterative process continues until no further moves can increase modularity.
 
 The `graphology-communities-louvain` node module is being used. This way, each step (like spatizalization, community-detection) are implemented modularly. A benchmark, in our use case, of the Louvain and the Leiden algorithms would be desirable. The graphology library started a while ago working on an implementation of the leiden algorithm (see [https://github.com/graphology/graphology/tree/master/src/communities-leiden](https://github.com/graphology/graphology/tree/master/src/communities-leiden)) but that remains to be implemented.
 
@@ -162,12 +161,33 @@ To name the communities we use generative AI from Mistral AI ('open-mistral-nemo
 The names are obtained from the main themes of the publications collected for each community.
 For the time being, we limit ourselves to the 2000 most relevant publications (in relation to the user's search) for each community. The following prompt is used:
 
-> You have been tasked with naming distinct fields of study for several communities of research publications.
+> “ You have been tasked with naming distinct fields of study for several communities of research publications.
 > Below are lists of topics and their weights representing each community.
 > Your goal is to provide a unique and descriptive name for each field of study that best encapsulates the essence of the topics within that community.
 > Each should be unique and as short as possible.
 > If the list of topic is empty, output a empty string.
-> Output as JSON object with the list number and the single unique generated name. ```
+> Output as JSON object with the list number and the single unique generated name. ”
+
+
+To illustrate its functionality, consider the following example:
+```
+// Input with each list corresponding to a community
+"list1 = [Soil (8), Carbon Sequestration (5), Soil Organic Matter (5), Carbon (5),  
+Ecosystem Services (5), Priming Effect (4), Sequestration (4), Amazonian (3), Andosol (3)],  
+list2 = [Soil Organic Carbon (11), Carbon (10), Climate Change (7), Soil (7),  
+Carbon Sequestration (6), Carbon Cycle (5), Soil Carbon (4)],  
+list3 = [Acl (7), Carbon (3), Carbon Sequestration (3), South Pacific Ocean (3),  
+Trichodesmium (3), Crocosphaera (2), Crocosphaera-watsonii (2), Dinitrogen-fixation (2)]"
+
+// Mistral output
+```
+```json
+{
+  "list1": "Amazon Andosol Carbon Dynamics",
+  "list2": "Soil Carbon and Climate Change",
+  "list3": "South Pacific Ocean Carbon Cycling"
+}
+```
 
 ## 3.1 Citation / hot topics
 
