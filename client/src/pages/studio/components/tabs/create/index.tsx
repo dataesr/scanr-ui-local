@@ -19,7 +19,7 @@ export default function StudioCreate() {
 
   const iframeText = (): string => {
     const src = (document.getElementById(integrationIframeId) as HTMLIFrameElement)?.contentWindow.location.href
-    const text = `<iframe height="900" width="900" id="${integrationIframeId}" src="${src}" </iframe>`
+    const text = `<iframe height="900" width="900" id="${integrationIframeId}" src="${src}"></iframe>`
     return text
   }
 
