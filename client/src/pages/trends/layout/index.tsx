@@ -4,6 +4,7 @@ import TrendsView from "../components/panel"
 import TrendsOptionsBar from "../components/options-bar"
 import TrendsOptionsModals from "../components/options-bar/modals"
 import useIntegration from "../hooks/useIntegration"
+import TrendsEvolutionChart from "../components/evolution-chart"
 
 export default function TrendsLayout() {
   const { integrationOptions } = useIntegration()
@@ -18,6 +19,7 @@ export default function TrendsLayout() {
       <Container>
         <TrendsView />
       </Container>
+      <TrendsEvolutionChart />
     </Container>
   )
 }

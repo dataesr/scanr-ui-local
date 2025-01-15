@@ -6,7 +6,7 @@ export type TrendsView = {
   nextView?: string
 }
 
-export type TrendsFilters = Array<TrendsFilters>
+export type TrendsFilters = Array<TrendsFilter>
 export type TrendsFilter = Record<string, unknown>
 
 export type TrendsArgs = {

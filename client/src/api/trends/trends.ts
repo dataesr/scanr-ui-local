@@ -7,52 +7,7 @@ const MAX_ITEMS = 15
 
 type TrendsAggregation = Array<ElasticBucket & { [x: string]: ElasticAggregation }>
 
-export function citationsTrends(aggregation: ElasticBuckets, years: Array<number>, normalized: boolean) {
-  // Items citations count by year
-  const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, item) => {
-    years.forEach((year) => {
-      const id = item.key.split("###")[0]
-      const label = item.key.split("###")?.[1] || id
-      const citationsCount = item?.[`citationsIn${year}`]?.value
-      acc[id] = {
-        ...acc?.[id],
-        id: id,
-        label: acc?.[id]?.label || label,
-        count: { ...acc?.[id]?.count, ...(citationsCount && { [year]: (acc?.[id]?.count?.[year] || 0) + citationsCount }) },
-        sum: (acc?.[id]?.sum || 0) + citationsCount,
-      }
-    })
-    return acc
-  }, {})
-  const items = Object.values(_items)
-
-  const trends = computeTrends(items, years, normalized)
-  return trends
-}
-
-export function publicationsTrends(aggregation: TrendsAggregation, years: Array<number>, normalized: boolean) {
-  // Items count by year
-  const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
-    bucket?.model?.buckets.forEach((item) => {
-      const id = item.key.split("###")[0]
-      const label = item.key.split("###")?.[1] || id
-      acc[id] = {
-        ...acc?.[id],
-        id: id,
-        label: acc?.[id]?.label || label,
-        count: { ...acc?.[id]?.count, [bucket.key]: (acc?.[id]?.count?.[bucket.key] || 0) + item.doc_count },
-        sum: (acc?.[id]?.sum || 0) + item.doc_count,
-      }
-    })
-    return acc
-  }, {})
-  const items = Object.values(_items)
-
-  const trends = computeTrends(items, years, normalized)
-  return trends
-}
-
-export function computeTrends(data: Array<any>, years: Array<number>, normalized: boolean) {
+function computeTrends(data: Array<any>, years: Array<number>, normalized: boolean) {
   const min_year = years[0]
   const max_year = years[years.length - 1]
 
@@ -100,5 +55,50 @@ export function computeTrends(data: Array<any>, years: Array<number>, normalized
     "trend-bot": botSlope,
   }
 
+  return trends
+}
+
+export function publicationsTrends(aggregation: TrendsAggregation, years: Array<number>, normalized: boolean) {
+  // Items count by year
+  const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
+    bucket?.model?.buckets.forEach((item) => {
+      const id = item.key.split("###")[0]
+      const label = item.key.split("###")?.[1] || id
+      acc[id] = {
+        ...acc?.[id],
+        id: id,
+        label: acc?.[id]?.label || label,
+        count: { ...acc?.[id]?.count, [bucket.key]: (acc?.[id]?.count?.[bucket.key] || 0) + item.doc_count },
+        sum: (acc?.[id]?.sum || 0) + item.doc_count,
+      }
+    })
+    return acc
+  }, {})
+  const items = Object.values(_items)
+
+  const trends = computeTrends(items, years, normalized)
+  return trends
+}
+
+export function citationsTrends(aggregation: ElasticBuckets, years: Array<number>, normalized: boolean) {
+  // Items citations count by year
+  const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, item) => {
+    years.forEach((year) => {
+      const id = item.key.split("###")[0]
+      const label = item.key.split("###")?.[1] || id
+      const citationsCount = item?.[`citationsIn${year}`]?.value
+      acc[id] = {
+        ...acc?.[id],
+        id: id,
+        label: acc?.[id]?.label || label,
+        count: { ...acc?.[id]?.count, ...(citationsCount && { [year]: (acc?.[id]?.count?.[year] || 0) + citationsCount }) },
+        sum: (acc?.[id]?.sum || 0) + citationsCount,
+      }
+    })
+    return acc
+  }, {})
+  const items = Object.values(_items)
+
+  const trends = computeTrends(items, years, normalized)
   return trends
 }
