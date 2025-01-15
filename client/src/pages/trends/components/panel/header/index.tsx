@@ -27,7 +27,7 @@ function TrendsViewMobileButton() {
       iconPosition="right"
     >
       <MenuItem key="count">{intl.formatMessage({ id: `trends.views.header.count` }, { max: max })}</MenuItem>
-      <MenuItem key="diff">{intl.formatMessage({ id: `trends.views.header.diff` })}</MenuItem>
+      {/* <MenuItem key="diff">{intl.formatMessage({ id: `trends.views.header.diff` })}</MenuItem> */}
       <MenuItem key="trend">{intl.formatMessage({ id: `trends.views.header.trend` }, { count: max - min + 1 })}</MenuItem>
     </MenuButton>
   )
@@ -75,13 +75,13 @@ export default function TrendsViewHeader() {
       </Col>
       {!isMobile && (
         <>
-          <Col md="2" lg="2">
+          <Col md="4" lg="4">
             <TrendsViewButton label="count" />
           </Col>
-          <Col md="3" lg="3">
+          {/* <Col md="3" lg="3">
             <TrendsViewButton label="diff" />
-          </Col>
-          <Col md="3" lg="3">
+          </Col> */}
+          <Col md="4" lg="4">
             <TrendsViewButton label="trend" />
           </Col>
         </>

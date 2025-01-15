@@ -10,10 +10,11 @@ export type TrendsFilters = Array<TrendsFilter>
 export type TrendsFilter = Record<string, unknown>
 
 export type TrendsArgs = {
+  cursor: number
   model: string
   query: string
   years: Array<number>
-  normalized: boolean
+  normalized?: boolean
   filters?: TrendsFilters
 }
 

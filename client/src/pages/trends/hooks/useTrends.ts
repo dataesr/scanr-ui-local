@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { getCitationsTrends, getPublicationsTrends } from "../../../api/trends/publications"
 import useUrl from "../../search/hooks/useUrl"
 import { MAX_YEAR, MIN_YEAR } from "../config/years"
@@ -20,26 +20,32 @@ export default function useTrends() {
     max: Number(currentFilters?.year?.values?.[1]?.value || MAX_YEAR),
   }
 
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isFetchingNextPage, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["trends", currentSource, currentModel, currentQuery, currentModel, filters, normalized],
-    queryFn: () =>
+    queryFn: ({ pageParam }) =>
       API_MAPPING[currentSource]({
+        cursor: pageParam,
         model: currentModel,
         query: currentQuery,
         years: rangeArray(trendsYears.min, trendsYears.max),
         filters: filters,
         normalized: normalized,
       }),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: 0,
   })
 
   const values = useMemo(() => {
     return {
       trends: data,
       trendsYears: trendsYears,
-      isFetching: isFetching,
       error: error,
+      hasNextPage: hasNextPage,
+      fetchNextPage: fetchNextPage,
+      isFetching: isFetching,
+      isFetchingNextPage: isFetchingNextPage,
     }
-  }, [data, trendsYears, isFetching, error])
+  }, [data, trendsYears, error, hasNextPage, fetchNextPage, isFetching, isFetchingNextPage, error])
 
   return values
 }
