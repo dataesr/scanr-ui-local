@@ -17,6 +17,7 @@ import { PageSection } from "../../../../components/page-content"
 import { NetworkCommunity, NetworkData } from "../../../../types/network"
 import useSearchData from "../../hooks/useSearchData"
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton"
+import Separator from "../../../../components/separator"
 import { encode } from "../../../../utils/string"
 import useTab from "../../hooks/useTab"
 import useParameters from "../../hooks/useParameters"
@@ -168,8 +169,12 @@ export default function NetworkClustersItems() {
             ))}
           </div>
           {communities?.length > SEE_MORE_AFTER ? (
-            <Row horizontalAlign="right">
-              <Button variant="secondary" size="sm" onClick={() => setSeeMore((prev: boolean) => !prev)}>
+            <Separator className="fr-my-2w">
+              <Button
+                icon={seeMore ? "arrow-up-s-line" : "arrow-down-s-line"}
+                variant="text"
+                onClick={() => setSeeMore((prev: boolean) => !prev)}
+              >
                 {seeMore
                   ? intl.formatMessage({ id: "networks.section.clusters.see-less" })
                   : intl.formatMessage(
@@ -177,7 +182,7 @@ export default function NetworkClustersItems() {
                       { count: communities?.length - SEE_MORE_AFTER }
                     )}
               </Button>
-            </Row>
+            </Separator>
           ) : null}
         </>
       </PageSection>
