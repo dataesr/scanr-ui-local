@@ -9,6 +9,8 @@ import TrendsViewItem from "./item"
 import TrendsViewHeader from "./header"
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton"
 
+const itemsPerScroll = 10
+const scrollPerPage = 3
 const scrollYTop = 200
 
 function TrendsViewItems() {
@@ -27,7 +29,10 @@ function TrendsViewItems() {
   if (isFetching && !isFetchingNextPage) return <BaseSkeleton height="500px" />
   if (!trends?.pages || error) return <div>no data</div>
 
-  const shouldChangePage = trends.pageParams.length === 3
+  const shouldChangePage = trends.pageParams.length >= scrollPerPage
+  const totalPages = Math.ceil((trends?.pages?.[0]?.total || 0) / (itemsPerScroll * scrollPerPage))
+
+  console.log(totalPages)
 
   return (
     <>
@@ -42,6 +47,27 @@ function TrendsViewItems() {
             <Button variant="tertiary" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
               {intl.formatMessage({ id: "trends.views.page-previous" })}
             </Button>
+            {currentPage > 1 && (
+              <Button variant="tertiary" onClick={() => handlePageChange(1)}>
+                {1}
+              </Button>
+            )}
+            {currentPage > 2 && (
+              <Button variant="tertiary" onClick={() => handlePageChange(currentPage - 1)}>
+                {currentPage - 1}
+              </Button>
+            )}
+            <Button variant="secondary">{currentPage}</Button>
+            {currentPage < totalPages - 1 && (
+              <Button variant="tertiary" onClick={() => handlePageChange(currentPage + 1)}>
+                {currentPage + 1}
+              </Button>
+            )}
+            {currentPage < totalPages && (
+              <Button variant="tertiary" onClick={() => handlePageChange(totalPages)}>
+                {totalPages}
+              </Button>
+            )}
             <Button
               variant="tertiary"
               onClick={() => {
