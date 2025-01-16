@@ -131,7 +131,7 @@ analysis},
 \title{Mapping scientific communities at scale}
 \usepackage{authblk}
 \author[%
-  1%
+  2%
   ]{%
   Victor Barbier%
   %
@@ -146,6 +146,8 @@ analysis},
 }
 \affil[1]{French Ministry of Higher Education and Research, Paris,
 France}
+\affil[2]{National Institute for Research in Digital Science and
+Technology, INRIA, Paris, France}
 \date{January 2025}
 
 \makeatletter
@@ -223,14 +225,14 @@ composite indicators of novelty (or innovation) based on citation links.
 
 The quality and completeness of the bibliographic metadata used are, of
 course, essential if we are to produce a relevant map. Today, the
-quality of open citation data still needs to be improved, cf (Alperin et
-al. 2024). On the other hand, it is possible to obtain quality metadata
-on publications (and therefore links to co-publications). For example,
-the French Open Science Monitor (BSO) has compiled a corpus of French
+quality of open citation data still needs to be improved (Alperin et al.
+2024). On the other hand, it is possible to obtain quality metadata on
+publications (and therefore links to co-publications). For example, the
+French Open Science Monitor (BSO) has compiled a corpus of French
 publications with good coverage cf (Chaignon and Egret 2022). This
 corpus is exposed in the French research portal scanR (Jeangirard 2024).
 This is a corpus containing about 4 millions publications in all
-disciplines. These publications have been enriched with disambuation
+disciplines. These publications have been enriched with disambiguation
 persistent identifier (PID) on authors, affiliations and topics.
 
 \hypertarget{previous-limits-of-the-scanr-application}{%
@@ -301,11 +303,17 @@ interactions}\label{focusing-on-strongest-interactions}}
 One of the added values of mapping with a network view is to show the
 interactions between entities, i.e.~the links between the nodes in the
 graph. These links provide crucial information that can be used to
-structure communities. If the size of the network needs to be reduced
-(for reasons of computation, speed, legibility and interpretability), it
-is vital to preserve the links that carry the most information, i.e.~the
-strongest interactions. With this reasoning, it seems logical to reduce
-the size of the network by only affecting the strongest links.
+structure communities. Here If the size of the network needs to be
+reduced (for reasons of computation, speed, legibility and
+interpretability), it is vital to preserve the links that carry the most
+information, i.e.~the strongest interactions. With this reasoning, it
+seems logical to reduce the size of the network by only affecting the
+strongest links.
+
+Here, we assume that there are no large isolated nodes (with no
+connection). An entity with no connection will not appear in the
+mapping. This assumption can sometimes prove to be false, particularly
+in the case of authors in literature, for example.
 
 Thus, from a given corpus, however large, we seek to extract the pairs
 of entities with the strongest interactions, for example the most
@@ -329,11 +337,13 @@ between idref and the PhD thesis registration in France. Specific
 heuristics have been implemented to disambiguate names and link them to
 idref.
 
-For affiliations, again French specific PID are used, especially SIRENE
-and RNSR. A specific module based on Elasticsearch
-\url{https://github.com/dataesr/affiliation-matcher} has been
-implemented to automatically link pblications to those PIDs (L'Hôte and
-Jeangirard 2021).
+For affiliations, again French specific PID are used, especially
+\url{https://sirene.fr} and \url{http://rnsr.fr}. SIRENE is a national
+(French) PID for public and private institutions. RNSR is a French PID
+for the research structures like laboratories. A specific module based
+on Elasticsearch \url{https://github.com/dataesr/affiliation-matcher}
+has been implemented to automatically link pblications to those PIDs
+(L'Hôte and Jeangirard 2021).
 
 For topics, wikidata identifiers has been used using the entity-fishing
 module \url{https://github.com/kermitt2/entity-fishing} cf (Foppiano and
@@ -435,8 +445,8 @@ identifying nodes that act as bridges within the network.
 
 Once the filtering process is complete, we apply a spatialization
 algorithm to position the nodes in a 2D space. For this purpose, we use
-the ForceAtlas2 algorithm, which is designed to produce aesthetically
-pleasing and informative layouts by simulating a physical system where
+the ForceAtlas2 algorithm, which is designed to produce informative and
+aesthetically pleasing layouts by simulating a physical system where
 nodes repel each other and edges act as springs pulling connected nodes
 together. This results in a clear and intuitive visual representation of
 the network (Jacomy 2014).\\
@@ -590,14 +600,16 @@ corpus (based on a list of publications) and a mapping tool dedicated to
 this perimeter is automatically created. Technically, elasticsearch
 queries are the same, with just an additional filter to query only the
 publications within the perimeter. The tool can be embedded in any
-website using an iframe. It's the same principle as the local barometer.
-This approach eliminates the need for automatic alignment of
-affiliations, which remains a highly complex task. Automation is
-possible to a certain extent (L'Hôte and Jeangirard 2021), but human
-curation remains necessary in the majority of cases (Jeangirard, Bracco,
-and L'Hôte 2024). In this way, users retain control over the definition
-of their perimeter, and can, if they wish, have several distinct
-perimeters.
+website using an iframe. It's the same principle as the local Open
+Science Monitor: any French institution can benefit from the whole
+infrastructure already inplace and get a custom tool based on the same
+data, treatments and technologic stack as the national tool. This
+approach eliminates the need for automatic alignment of affiliations,
+which remains a highly complex task. Automation is possible to a certain
+extent (L'Hôte and Jeangirard 2021), but human curation remains
+necessary in the majority of cases (Jeangirard, Bracco, and L'Hôte
+2024). In this way, users retain control over the definition of their
+perimeter, and can, if they wish, have several distinct perimeters.
 
 \hypertarget{code-availibility}{%
 \section{4. Code availibility}\label{code-availibility}}
