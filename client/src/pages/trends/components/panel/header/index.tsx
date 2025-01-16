@@ -4,6 +4,7 @@ import { useTrendsContext } from "../../../context"
 import { trendsViewFromLabel, trendsViewGetConfig } from "../../../config/views"
 import useScreenSize from "../../../../../hooks/useScreenSize"
 import useTrends from "../../../hooks/useTrends"
+import useOptions from "../../../hooks/useOptions"
 
 function TrendsViewMobileButton() {
   const intl = useIntl()
@@ -39,13 +40,15 @@ function TrendsViewButton({ label }) {
     trendsYears: { min, max },
   } = useTrends()
   const { view, setView, setFocus } = useTrendsContext()
+  const { handlePageChange } = useOptions()
   const viewConfig = trendsViewGetConfig(view)
   const defaultView = trendsViewFromLabel(label)
 
   const isSelected = Boolean(label === viewConfig.label)
   const onButtonClick = () => {
-    isSelected ? viewConfig?.nextView && setView(viewConfig.nextView) : setView(defaultView)
-    setFocus("")
+    isSelected ? viewConfig?.nextView && setView(viewConfig.nextView) : setView(defaultView) // change view
+    handlePageChange(1) // reset page
+    setFocus("") // reset focus
   }
 
   return (
