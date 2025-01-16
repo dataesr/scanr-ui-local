@@ -39,7 +39,7 @@
   pdftitle={Mapping scientific communities at scale},
   pdfkeywords={scanR, VOSviewer, graphology, scientific
 ccommunity, community detection, research portal, Elasticsearch, network
-analysis},
+analysis, network vizualization},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -197,7 +197,8 @@ All tools and methodologies are open-source on the repo
 \end{abstract}
 
 \textbf{Keywords}: scanR, VOSviewer, graphology, scientific community,
-community detection, research portal, Elasticsearch, network analysis
+community detection, research portal, Elasticsearch, network analysis,
+network vizualization
 
 \hypertarget{motivation}{%
 \section{1. Motivation}\label{motivation}}
@@ -216,24 +217,25 @@ These maps are generally deduced from data in bibliographic databases
 (open or proprietary), based on co-publication or citation information.
 In the case of co-publications, two entities (authors, for example) will
 be linked if they have collaborated (co-published) on a piece of
-research. These links are then symmetrical. In the case of citation
-links, two authors will be linked if one cites the research work of
-another, in the list of references. This is a directed link, as one
-author may cite another without this being reciprocal. A lot of recent
-work uses this second approach, for example by trying to calculate
-composite indicators of novelty (or innovation) based on citation links.
+research. These links are then symmetrical (bi-directional). In the case
+of citation links, two authors will be linked if one cites the research
+work of another, in the list of references. This is a directed link, as
+one author may cite another without this being reciprocal. Many recent
+works use this second approach, for example by trying to calculate
+composite indicators of novelty (or innovation) based on citation links
+(Wang and Barabási 2021).
 
-The quality and completeness of the bibliographic metadata used are, of
-course, essential if we are to produce a relevant map. Today, the
-quality of open citation data still needs to be improved (Alperin et al.
-2024). On the other hand, it is possible to obtain quality metadata on
+The quality and completeness of the bibliographic metadata used are
+essential if we are to produce a relevant map. Today, the quality of
+open citation data still needs to be improved (Alperin et al. 2024). On
+the other hand, it is possible to obtain quality metadata on
 publications (and therefore links to co-publications). For example, the
 French Open Science Monitor (BSO) has compiled a corpus of French
-publications with good coverage cf (Chaignon and Egret 2022). This
-corpus is exposed in the French research portal scanR (Jeangirard 2024).
-This is a corpus containing about 4 millions publications in all
-disciplines. These publications have been enriched with disambiguation
-persistent identifier (PID) on authors, affiliations and topics.
+publications with good coverage (Chaignon and Egret 2022). This corpus
+is exposed in the French research portal scanR (Jeangirard 2024). This
+is a corpus containing about 4 millions publications in all disciplines.
+These publications have been enriched with disambiguated persistent
+identifier (PID) on authors, affiliations and topics.
 
 \hypertarget{previous-limits-of-the-scanr-application}{%
 \subsection{1.1 Previous limits of the scanR
@@ -246,19 +248,20 @@ publications, patents and authors. Two main use cases were covered.
 Firstly, the ability to generate a list of search results corresponding
 to a user query. A list of laboratories, authors, funding or
 publications could be generated. Secondly, for each institution (or
-laboratory), a unified view of all the data concerning it was grouped
-together on a dedicated page in scanR (administrative information, list
-of publications, list of funding, main partners, etc.).
+laboratory), a unified view of all is data was grouped together on a
+dedicated page in scanR (administrative information, list of
+publications, list of fundings, main partners, etc.).
 
 However, these functions only gave a flat view of the different
 dimensions, without providing any insights into the interactions between
-laboratories or authors. For a user interested in a research theme, for
-example, the list of the main contributors (those who have co-authored
-the most publications) does not give a clear idea of which research
-communities are at work and how they interact with each other. A network
-analysis tool to describe these interactions and attempt to detect
-research communities could therefore enable us to go further in creating
-tools to help explore fields of research and innovation.
+institutions, laboratories or authors. For a user interested in a
+research theme, for example, the list of the main contributors (those
+who have co-authored the most publications) does not give a clear idea
+of which research communities are at work and how they interact with
+each other. A network analysis tool to describe these interactions and
+attempt to detect research communities could therefore enable us to go
+further in creating tools to help explore fields of research and
+innovation.
 
 \hypertarget{network-analysis-limits}{%
 \subsection{1.2 Network analysis limits}\label{network-analysis-limits}}
@@ -303,7 +306,7 @@ interactions}\label{focusing-on-strongest-interactions}}
 One of the added values of mapping with a network view is to show the
 interactions between entities, i.e.~the links between the nodes in the
 graph. These links provide crucial information that can be used to
-structure communities. Here If the size of the network needs to be
+structure communities. Here if the size of the network needs to be
 reduced (for reasons of computation, speed, legibility and
 interpretability), it is vital to preserve the links that carry the most
 information, i.e.~the strongest interactions. With this reasoning, it
@@ -328,7 +331,7 @@ mapping}\label{publication-metadata-enrichment-to-produce-different-mapping}}
 
 Each publication in the scanR corpus goes through a systematic
 enrichment pipeline, including author and affiliation disambiguation,
-full-text parsing, topic detection.
+full-text parsing and topic detection.
 
 For authors, the French-specific persistent identifier (PID)
 \url{https://www.idref.fr} is used. Its coverage, even if not perfect,
@@ -342,16 +345,16 @@ For affiliations, again French specific PID are used, especially
 (French) PID for public and private institutions. RNSR is a French PID
 for the research structures like laboratories. A specific module based
 on Elasticsearch \url{https://github.com/dataesr/affiliation-matcher}
-has been implemented to automatically link pblications to those PIDs
+has been implemented to automatically link publications to those PIDs
 (L'Hôte and Jeangirard 2021).
 
-For topics, wikidata identifiers has been used using the entity-fishing
-module \url{https://github.com/kermitt2/entity-fishing} cf (Foppiano and
-Romary 2020).
+For topics, wikidata identifiers have been linked using the
+entity-fishing module \url{https://github.com/kermitt2/entity-fishing}
+(Foppiano and Romary 2020).
 
 Other enrichments, like software detection are also present. These are
 based on software mentions detections using GROBID and Softcite at scale
-on the French corpus (Bassinet et al. 2023).
+on the French publications corpus (Bassinet et al. 2023).
 
 \hypertarget{elasticsearch-implementation}{%
 \subsection{2.3 Elasticsearch
@@ -366,6 +369,9 @@ links within the publication. We then use elasticsearch's aggregation
 functionality to list the most present links, very efficiently. By
 default, we limit ourselves to the top 2000 links to ensure optimal
 performance.
+
+At the publication level, the pairs are calculated for authors,
+institutions, laboratories, software, fundings and countries too.
 
 In practice, a PID is also stored (the wikidata for topics, for example)
 to disambiguate entities. In practice, for a given query, elasticsearch
@@ -449,9 +455,9 @@ the ForceAtlas2 algorithm, which is designed to produce informative and
 aesthetically pleasing layouts by simulating a physical system where
 nodes repel each other and edges act as springs pulling connected nodes
 together. This results in a clear and intuitive visual representation of
-the network (Jacomy 2014).\\
-Thanks to Graphology, the settings of the ForceAtlas2 algorithm are
-automatically infered from our network order (number of nodes) as below:
+the network (Jacomy 2014). Thanks to Graphology, the settings of the
+ForceAtlas2 algorithm are automatically infered from our network order
+(number of nodes) as below:
 
 \begin{verbatim}
 barnesHutOptimize: order > 2000,
@@ -480,7 +486,7 @@ The \texttt{graphology-communities-louvain} node module is being used.
 This way, each step (like spatizalization, community-detection) are
 implemented modularly. A benchmark, in our use case, of the Louvain and
 the Leiden algorithms would be desirable. The graphology library started
-a while ago working on an implementation of the leiden algorithm (see
+a while ago working on an implementation of the Leiden algorithm (see
 \url{https://github.com/graphology/graphology/tree/master/src/communities-leiden})
 but that remains to be implemented.
 
@@ -497,9 +503,9 @@ bibliometric studies (Waltman, Eck, and Noyons 2010).
 VOSviewer accepts JSON files formatted according to a specific template
 \url{https://app.vosviewer.com/docs/file-types/json-file-type}. This
 template includes essential attributes for nodes and edges, such as the
-node ID, name, position, and additional metadata. To ensure
+node ID, label, position (x, y), and additional metadata. To ensure
 compatibility, we transform our Graphology object into a JSON file that
-adheres to VOSviewer's required format.
+complies to VOSviewer's required format.
 
 Once the JSON file is generated, VOSviewer renders the network,
 displaying nodes and edges in an interactive and visually appealing
@@ -520,10 +526,10 @@ informative layout by being automatically set for our network.
 \centering
 \includegraphics{vosviewer-spatialization-comparison.jpg}
 \caption{Visualization of a network with VOSviewer.\\
-\emph{(a) Using ForceAltlas2 spatialization with infered settings\\
-(b) Using VOSviewer spatialization (attraction=2, repulsion=1)\\
-(c) Using VOSviewer spatialization (attraction=3, repulsion=1)\\
-(d) Using VOSviewer spatialization (attraction=1, repulsion=0)}}
+\emph{(a) Using ForceAltlas2 spatialization with infered settings (b)
+Using VOSviewer spatialization (attraction=2, repulsion=1) (c) Using
+VOSviewer spatialization (attraction=3, repulsion=1) (d) Using VOSviewer
+spatialization (attraction=1, repulsion=0)}}
 \end{figure}
 
 \hypertarget{making-insightful-maps}{%
@@ -586,9 +592,10 @@ A citation score is estimated for each cluster. This score relates the
 number of recent citations (over the last two years) to the number of
 total publications in the cluster. This score is intended to help detect
 hotspots in the communities identified in the corpus. We use citations
-data from OpenAlex, which is as of today one of the best open source
-datasource. However, citations metadata from OpenAlex remains incomplete
-and must therefore be interpreted with caution (Alperin et al. 2024).
+data from OpenAlex \url{https://openalex.org/}, which is as of today one
+of the best open source bibliometric datasource. However, citations
+metadata from OpenAlex remains incomplete and must therefore be
+interpreted with caution (Alperin et al. 2024).
 
 \hypertarget{custom-perimeter}{%
 \subsection{3.2 Custom perimeter}\label{custom-perimeter}}
@@ -616,6 +623,7 @@ perimeter, and can, if they wish, have several distinct perimeters.
 
 The code developed for the scanR web application is open source and
 available online on GitHub \url{https://github.com/dataesr/scanr-ui}
+under MIT license.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -678,6 +686,11 @@ Entity Recognition in Affiliation Disambiguation.''
 Waltman, Ludo, Nees Jan van Eck, and Ed C. M. Noyons. 2010. ``A Unified
 Approach to Mapping and Clustering of Bibliometric Networks.''
 \emph{CoRR} abs/1006.1032. \url{http://arxiv.org/abs/1006.1032}.
+
+\leavevmode\hypertarget{ref-DBLP:booksux2fcuux2fWB2021}{}%
+Wang, Dashun, and Albert-László Barabási. 2021. \emph{The Science of
+Science}. Cambridge University Press.
+\url{https://doi.org/10.1017/9781108610834}.
 \end{cslreferences}
 
 
