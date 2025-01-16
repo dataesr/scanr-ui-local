@@ -1,31 +1,60 @@
-import { Button, Container } from "@dataesr/dsfr-plus"
+import { useEffect } from "react"
+import { useIntl } from "react-intl"
+import { useInView } from "react-intersection-observer"
+import { Button, ButtonGroup, Container } from "@dataesr/dsfr-plus"
 import useTrends from "../../hooks/useTrends"
 import { useTrendsContext } from "../../context"
+import useOptions from "../../hooks/useOptions"
 import TrendsViewItem from "./item"
 import TrendsViewHeader from "./header"
-import Separator from "../../../../components/separator"
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton"
 
+const scrollYTop = 200
+
 function TrendsViewItems() {
+  const intl = useIntl()
+  const [ref, inView] = useInView()
   const { view } = useTrendsContext()
-  const { trends, fetchNextPage, isFetching, error } = useTrends()
+  const { currentPage, handlePageChange } = useOptions()
+  const { trends, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage, error } = useTrends()
 
-  console.log(trends?.pages, trends?.pageParams, isFetching, error)
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage()
+    }
+  }, [inView, fetchNextPage])
 
-  if (isFetching) return <BaseSkeleton height="500px" />
-
+  if (isFetching && !isFetchingNextPage) return <BaseSkeleton height="500px" />
   if (!trends?.pages || error) return <div>no data</div>
+
+  const shouldChangePage = trends.pageParams.length === 3
 
   return (
     <>
       <div className="fr-accordions-group">
-        {trends.pages.map((page) => page?.[view].map((item, index) => <TrendsViewItem key={index} item={item} />))}
+        {trends.pages.map((page) => page.views?.[view].map((item, index) => <TrendsViewItem key={index} item={item} />))}
       </div>
-      <Separator className="fr-my-2w">
-        <Button icon="arrow-down-s-line" variant="text" onClick={() => fetchNextPage()}>
-          See more
-        </Button>
-      </Separator>
+      {isFetchingNextPage && <BaseSkeleton height="300px" />}
+      {!isFetchingNextPage && !shouldChangePage && hasNextPage && <div ref={ref} />}
+      {!isFetchingNextPage && shouldChangePage && (
+        <Container fluid className="fr-mt-2w">
+          <ButtonGroup isInlineFrom="xs" align="center">
+            <Button variant="tertiary" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+              {intl.formatMessage({ id: "trends.page-previous" })}
+            </Button>
+            <Button
+              variant="tertiary"
+              onClick={() => {
+                handlePageChange(currentPage + 1)
+                window.scrollTo(0, scrollYTop)
+              }}
+              disabled={!hasNextPage}
+            >
+              {intl.formatMessage({ id: "trends.page-next" })}
+            </Button>
+          </ButtonGroup>
+        </Container>
+      )}
     </>
   )
 }

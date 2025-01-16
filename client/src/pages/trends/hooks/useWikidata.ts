@@ -10,7 +10,7 @@ export default function useWikidata() {
   const { locale } = useDSFRConfig()
   const { view } = useTrendsContext()
   const { trends } = useTrends()
-  const codes = trends?.[view].map((item) => ({ code: item.id }))
+  const codes = trends?.pages?.flatMap((page) => page?.views?.[view].map((item) => ({ code: item.id })))
 
   const {
     data: wikis,

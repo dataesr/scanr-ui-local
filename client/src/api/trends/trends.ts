@@ -3,14 +3,14 @@ import { linearRegressionSlope } from "./_utils/regression"
 import variation from "./_utils/variation"
 
 const EXCLUDE_WORDS = [""]
-const CURSOR_ITEMS = 20
+const PAGE_ITEMS = 10
 
 type TrendsAggregation = Array<ElasticBucket & { [x: string]: ElasticAggregation }>
 
 function computeTrends(data: Array<any>, cursor: number, years: Array<number>, normalized: boolean) {
   const maxYear = years[years.length - 1]
-  const minItems = (cursor || 0) * CURSOR_ITEMS
-  const maxItems = ((cursor || 0) + 1) * CURSOR_ITEMS
+  const minItems = (cursor || 0) * PAGE_ITEMS
+  const maxItems = ((cursor || 0) + 1) * PAGE_ITEMS
 
   // Filter items
   const items = data.filter(({ label }) => !EXCLUDE_WORDS.includes(label))
@@ -27,9 +27,6 @@ function computeTrends(data: Array<any>, cursor: number, years: Array<number>, n
 
   // Sort items by volume max year
   const sortedItems = items.sort((a, b) => (b?.count?.[maxYear] || 0) - (a?.count?.[maxYear] || 0))
-
-  console.log("n items", sortedItems.length)
-  console.log("cursor", cursor)
 
   // Compute top items
   const topCount = sortedItems.slice(minItems, maxItems)
@@ -52,15 +49,16 @@ function computeTrends(data: Array<any>, cursor: number, years: Array<number>, n
     .slice(minItems, maxItems)
 
   const trends = {
-    "count-top": topCount,
-    // "diff-top": topDiff,
-    // "diff-bot": botDiff,
-    "trend-top": topSlope,
-    "trend-bot": botSlope,
-    nextCursor: maxItems < sortedItems.length ? cursor + 1 : 0,
+    views: {
+      "count-top": topCount,
+      // "diff-top": topDiff,
+      // "diff-bot": botDiff,
+      "trend-top": topSlope,
+      "trend-bot": botSlope,
+    },
+    nextCursor: maxItems < sortedItems.length ? cursor + 1 : undefined,
+    total: sortedItems.length,
   }
-
-  console.log("api_trends", trends)
 
   return trends
 }

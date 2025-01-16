@@ -13,7 +13,7 @@ const API_MAPPING = {
 
 export default function useTrends() {
   const { currentQuery, currentFilters, filters } = useUrl()
-  const { currentModel, currentSource, normalized } = useOptions()
+  const { currentModel, currentSource, normalized, currentPage } = useOptions()
 
   const trendsYears = {
     min: Number(currentFilters?.year?.values?.[0]?.value || MIN_YEAR),
@@ -21,10 +21,10 @@ export default function useTrends() {
   }
 
   const { data, error, isFetchingNextPage, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["trends", currentSource, currentModel, currentQuery, currentModel, filters, normalized],
+    queryKey: ["trends", currentSource, currentModel, currentQuery, currentPage, filters, normalized],
     queryFn: ({ pageParam }) =>
       API_MAPPING[currentSource]({
-        cursor: pageParam,
+        cursor: pageParam + (currentPage - 1) * 3,
         model: currentModel,
         query: currentQuery,
         years: rangeArray(trendsYears.min, trendsYears.max),
