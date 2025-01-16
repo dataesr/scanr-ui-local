@@ -2,15 +2,16 @@
 title: 'Mapping scientific communities at scale'
 author:
   - Victor Barbier:
-      institute: mesr
+      institute: inria
   - Eric Jeangirard:
       institute: mesr
       orcid: 0000-0002-3767-7125
       idref: 242241344
-
 institute:
   - mesr:
       name: 'French Ministry of Higher Education and Research, Paris, France'
+  - inria:
+      name: 'National Institute for Research in Digital Science and Technology, INRIA, Paris, France'
 bibliography: bso.bib
 date: January 2025
 keywords:
@@ -38,8 +39,8 @@ Analysing and mapping scientific communities provides an insight into the struct
 
 These maps are generally deduced from data in bibliographic databases (open or proprietary), based on co-publication or citation information. In the case of co-publications, two entities (authors, for example) will be linked if they have collaborated (co-published) on a piece of research. These links are then symmetrical. In the case of citation links, two authors will be linked if one cites the research work of another, in the list of references. This is a directed link, as one author may cite another without this being reciprocal. A lot of recent work uses this second approach, for example by trying to calculate composite indicators of novelty (or innovation) based on citation links. 
 
-The quality and completeness of the bibliographic metadata used are, of course, essential if we are to produce a relevant map. Today, the quality of open citation data still needs to be improved, cf [@alperin2024analysissuitabilityopenalexbibliometric].
-On the other hand, it is possible to obtain quality metadata on publications (and therefore links to co-publications). For example, the French Open Science Monitor (BSO) has compiled a corpus of French publications with good coverage cf [@10.1162/qss_a_00179]. This corpus is exposed in the French research portal scanR [@jeangirard:hal-04813230]. This is a corpus containing about 4 millions publications in all disciplines. These publications have been enriched with disambuation persistent identifier (PID) on authors, affiliations and topics. 
+The quality and completeness of the bibliographic metadata used are, of course, essential if we are to produce a relevant map. Today, the quality of open citation data still needs to be improved [@alperin2024analysissuitabilityopenalexbibliometric].
+On the other hand, it is possible to obtain quality metadata on publications (and therefore links to co-publications). For example, the French Open Science Monitor (BSO) has compiled a corpus of French publications with good coverage cf [@10.1162/qss_a_00179]. This corpus is exposed in the French research portal scanR [@jeangirard:hal-04813230]. This is a corpus containing about 4 millions publications in all disciplines. These publications have been enriched with disambiguation persistent identifier (PID) on authors, affiliations and topics. 
 
 ## 1.1 Previous limits of the scanR application
 
@@ -57,7 +58,9 @@ We propose a method for overcoming the limitations set out above. We also use a 
 
 ## 2.1 Focusing on strongest interactions
 
-One of the added values of mapping with a network view is to show the interactions between entities, i.e. the links between the nodes in the graph. These links provide crucial information that can be used to structure communities. If the size of the network needs to be reduced (for reasons of computation, speed, legibility and interpretability), it is vital to preserve the links that carry the most information, i.e. the strongest interactions. With this reasoning, it seems logical to reduce the size of the network by only affecting the strongest links.
+One of the added values of mapping with a network view is to show the interactions between entities, i.e. the links between the nodes in the graph. These links provide crucial information that can be used to structure communities. Here  If the size of the network needs to be reduced (for reasons of computation, speed, legibility and interpretability), it is vital to preserve the links that carry the most information, i.e. the strongest interactions. With this reasoning, it seems logical to reduce the size of the network by only affecting the strongest links.
+
+Here, we assume that there are no large isolated nodes (with no connection). An entity with no connection will not appear in the mapping. This assumption can sometimes prove to be false, particularly in the case of authors in literature, for example. 
 
 Thus, from a given corpus, however large, we seek to extract the pairs of entities with the strongest interactions, for example the most co-signatures per pair of authors. From this list of pairs, we can naturally find the nodes of the graph and deduce a new graph. If the graph has several independent components, i.e. several unconnected sub-graphs, we can decide to keep only the main component(s). 
 
@@ -67,7 +70,7 @@ Each publication in the scanR corpus goes through a systematic enrichment pipeli
 
 For authors, the French-specific persistent identifier (PID) [https://www.idref.fr](https://www.idref.fr) is used. Its coverage, even if not perfect, for French affiliated authors is strong thanks to the deep linking between idref and the PhD thesis registration in France. Specific heuristics have been implemented to disambiguate names and link them to idref.
 
-For affiliations, again French specific PID are used, especially SIRENE and RNSR. A specific module based on Elasticsearch [https://github.com/dataesr/affiliation-matcher](https://github.com/dataesr/affiliation-matcher) has been implemented to automatically link pblications to those PIDs [@lhote_using_2021].
+For affiliations, again French specific PID are used, especially [https://sirene.fr](https://sirene.fr) and [http://rnsr.fr](http://rnsr.fr). SIRENE is a national (French) PID for public and private institutions. RNSR is a French PID for the research structures like laboratories.  A specific module based on Elasticsearch [https://github.com/dataesr/affiliation-matcher](https://github.com/dataesr/affiliation-matcher) has been implemented to automatically link pblications to those PIDs [@lhote_using_2021].
 
 For topics, wikidata identifiers has been used using the entity-fishing module [https://github.com/kermitt2/entity-fishing](https://github.com/kermitt2/entity-fishing) cf [@foppiano2020entity].
 
@@ -124,7 +127,7 @@ To ensure that the network remains manageable and focuses on the most interestin
 
 In graph theory, a component refers to a subgraph in which any two nodes are connected to each other by paths, and which is connected to no additional nodes in the larger graph. Using Graphology, we filter the network components by iteratively removing the smallest components until the number of nodes falls below the threshold or only one component remains. This largest component is then subjected to further filtering if it still exceeds the node threshold. In this second filtering step, we utilize the betweenness centrality metric to retain the best-connected nodes. Betweenness centrality measures the extent to which a node lies on the shortest path between other nodes, thereby identifying nodes that act as bridges within the network.
 
-Once the filtering process is complete, we apply a spatialization algorithm to position the nodes in a 2D space. For this purpose, we use the ForceAtlas2 algorithm, which is designed to produce aesthetically pleasing and informative layouts by simulating a physical system where nodes repel each other and edges act as springs pulling connected nodes together. This results in a clear and intuitive visual representation of the network [@10.1371/journal.pone.0098679].  
+Once the filtering process is complete, we apply a spatialization algorithm to position the nodes in a 2D space. For this purpose, we use the ForceAtlas2 algorithm, which is designed to produce informative and aesthetically pleasing layouts by simulating a physical system where nodes repel each other and edges act as springs pulling connected nodes together. This results in a clear and intuitive visual representation of the network [@10.1371/journal.pone.0098679].  
 Thanks to Graphology, the settings of the ForceAtlas2 algorithm are automatically infered from our network order (number of nodes) as below:
 ```
 barnesHutOptimize: order > 2000,
@@ -199,7 +202,7 @@ We use citations data from OpenAlex, which is as of today one of the best open s
 
 ## 3.2 Custom perimeter
 
-scanR offers this mapping tool for the entire indexed corpus, but it is also possible to adapt the tool to a restricted perimeter, at the user's discretion. For example, an institution or laboratory can define its own corpus (based on a list of publications) and a mapping tool dedicated to this perimeter is automatically created. Technically, elasticsearch queries are the same, with just an additional filter to query only the publications within the perimeter. The tool can be embedded in any website using an iframe. It's the same principle as the local barometer. This approach eliminates the need for automatic alignment of affiliations, which remains a highly complex task. Automation is possible to a certain extent [@lhote_using_2021], but human curation remains necessary in the majority of cases [@jeangirard:hal-04598201]. In this way, users retain control over the definition of their perimeter, and can, if they wish, have several distinct perimeters.
+scanR offers this mapping tool for the entire indexed corpus, but it is also possible to adapt the tool to a restricted perimeter, at the user's discretion. For example, an institution or laboratory can define its own corpus (based on a list of publications) and a mapping tool dedicated to this perimeter is automatically created. Technically, elasticsearch queries are the same, with just an additional filter to query only the publications within the perimeter. The tool can be embedded in any website using an iframe. It's the same principle as the local Open Science Monitor: any French institution can benefit from the whole infrastructure already inplace and get a custom tool based on the same data, treatments and technologic stack as the national tool. This approach eliminates the need for automatic alignment of affiliations, which remains a highly complex task. Automation is possible to a certain extent [@lhote_using_2021], but human curation remains necessary in the majority of cases [@jeangirard:hal-04598201]. In this way, users retain control over the definition of their perimeter, and can, if they wish, have several distinct perimeters.
 
 # 4. Code availibility
 
