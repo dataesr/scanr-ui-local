@@ -54,7 +54,7 @@
     "networks.get-started.select-source.title": "Quelle source voulez-vous utiliser ?",
     "networks.get-started.select-source.description": "Choississez la source de documents à analyser.",
     "networks.get-started.select-model.title": "Quelles communautés souhaitez-vous visualiser ?",
-    "networks.get-started.select-model.description": "Les différentes communautés sont obtenues par co-occurence au sein du corpus de documents correspondant à la recherche effectuée. La visualisation prends la forme d'un réseau composés de noeuds representant les différents élements reliés entre eux en fonction de leur nombre de co-occurence.",
+    "networks.get-started.select-model.description": "Les différentes communautés sont obtenues par co-occurence au sein du corpus de documents correspondant à la recherche effectuée. La visualisation prend la forme d'un réseau composé de noeuds representant les différents élements reliés entre eux en fonction de leur nombre de co-occurences.",
     "networks.search-bar.button.label.anything": "Tout",
     "networks.search-bar.modal.title": "Rechercher",
     "networks.select-model.modal.title": "Réseau",
