@@ -40,7 +40,7 @@ function TrendsViewItems() {
         <Container fluid className="fr-mt-2w">
           <ButtonGroup isInlineFrom="xs" align="center">
             <Button variant="tertiary" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              {intl.formatMessage({ id: "trends.page-previous" })}
+              {intl.formatMessage({ id: "trends.views.page-previous" })}
             </Button>
             <Button
               variant="tertiary"
@@ -50,7 +50,7 @@ function TrendsViewItems() {
               }}
               disabled={!hasNextPage}
             >
-              {intl.formatMessage({ id: "trends.page-next" })}
+              {intl.formatMessage({ id: "trends.views.page-next" })}
             </Button>
           </ButtonGroup>
         </Container>
