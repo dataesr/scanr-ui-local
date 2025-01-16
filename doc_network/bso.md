@@ -23,10 +23,11 @@ keywords:
   - research portal
   - Elasticsearch
   - network analysis
+  - network vizualization 
 geometry: "left=3cm, right=3cm, top=3cm, bottom=3cm"
 ---
 
-**Keywords**: scanR, VOSviewer, graphology, scientific community, community detection, research portal, Elasticsearch, network analysis
+**Keywords**: scanR, VOSviewer, graphology, scientific community, community detection, research portal, Elasticsearch, network analysis, network vizualization
 
 # Abstract
 
@@ -37,16 +38,16 @@ This study introduces a novel methodology for mapping scientific communities at 
 
 Analysing and mapping scientific communities provides an insight into the structure and evolution of academic disciplines. This involves providing an analytical and visual representation of the relationships between entities (e.g. researchers, research laboratories, research themes), with the aim, in particular, of understanding the networks and dynamics of scientific collaboration, and identifying collaborative groups and their influences. From the point of view of decision-makers, this type of tool is useful for strategic decision-making with a view to public policy and funding.
 
-These maps are generally deduced from data in bibliographic databases (open or proprietary), based on co-publication or citation information. In the case of co-publications, two entities (authors, for example) will be linked if they have collaborated (co-published) on a piece of research. These links are then symmetrical. In the case of citation links, two authors will be linked if one cites the research work of another, in the list of references. This is a directed link, as one author may cite another without this being reciprocal. A lot of recent work uses this second approach, for example by trying to calculate composite indicators of novelty (or innovation) based on citation links. 
+These maps are generally deduced from data in bibliographic databases (open or proprietary), based on co-publication or citation information. In the case of co-publications, two entities (authors, for example) will be linked if they have collaborated (co-published) on a piece of research. These links are then symmetrical (bi-directional). In the case of citation links, two authors will be linked if one cites the research work of another, in the list of references. This is a directed link, as one author may cite another without this being reciprocal. Many recent works use this second approach, for example by trying to calculate composite indicators of novelty (or innovation) based on citation links [@DBLP:books/cu/WB2021]. 
 
-The quality and completeness of the bibliographic metadata used are, of course, essential if we are to produce a relevant map. Today, the quality of open citation data still needs to be improved [@alperin2024analysissuitabilityopenalexbibliometric].
-On the other hand, it is possible to obtain quality metadata on publications (and therefore links to co-publications). For example, the French Open Science Monitor (BSO) has compiled a corpus of French publications with good coverage cf [@10.1162/qss_a_00179]. This corpus is exposed in the French research portal scanR [@jeangirard:hal-04813230]. This is a corpus containing about 4 millions publications in all disciplines. These publications have been enriched with disambiguation persistent identifier (PID) on authors, affiliations and topics. 
+The quality and completeness of the bibliographic metadata used are essential if we are to produce a relevant map. Today, the quality of open citation data still needs to be improved [@alperin2024analysissuitabilityopenalexbibliometric].
+On the other hand, it is possible to obtain quality metadata on publications (and therefore links to co-publications). For example, the French Open Science Monitor (BSO) has compiled a corpus of French publications with good coverage [@10.1162/qss_a_00179]. This corpus is exposed in the French research portal scanR [@jeangirard:hal-04813230]. This is a corpus containing about 4 millions publications in all disciplines. These publications have been enriched with disambiguated persistent identifier (PID) on authors, affiliations and topics. 
 
 ## 1.1 Previous limits of the scanR application
 
-Launched in 2016, the scanR portal used to be a search engine. Its scope first focused on research entities (institutions, laboratories and private companies) and was extended in 2020 to cover fundings, publications, patents and authors. Two main use cases were covered. Firstly, the ability to generate a list of search results corresponding to a user query. A list of laboratories, authors, funding or publications could be generated. Secondly, for each institution (or laboratory), a unified view of all the data concerning it was grouped together on a dedicated page in scanR (administrative information, list of publications, list of funding, main partners, etc.).
+Launched in 2016, the scanR portal used to be a search engine. Its scope first focused on research entities (institutions, laboratories and private companies) and was extended in 2020 to cover fundings, publications, patents and authors. Two main use cases were covered. Firstly, the ability to generate a list of search results corresponding to a user query. A list of laboratories, authors, funding or publications could be generated. Secondly, for each institution (or laboratory), a unified view of all is data was grouped together on a dedicated page in scanR (administrative information, list of publications, list of fundings, main partners, etc.).
 
-However, these functions only gave a flat view of the different dimensions, without providing any insights into the interactions between laboratories or authors. For a user interested in a research theme, for example, the list of the main contributors (those who have co-authored the most publications) does not give a clear idea of which research communities are at work and how they interact with each other. A network analysis tool to describe these interactions and attempt to detect research communities could therefore enable us to go further in creating tools to help explore fields of research and innovation.
+However, these functions only gave a flat view of the different dimensions, without providing any insights into the interactions between institutions, laboratories or authors. For a user interested in a research theme, for example, the list of the main contributors (those who have co-authored the most publications) does not give a clear idea of which research communities are at work and how they interact with each other. A network analysis tool to describe these interactions and attempt to detect research communities could therefore enable us to go further in creating tools to help explore fields of research and innovation.
 
 ## 1.2 Network analysis limits
 
@@ -58,7 +59,7 @@ We propose a method for overcoming the limitations set out above. We also use a 
 
 ## 2.1 Focusing on strongest interactions
 
-One of the added values of mapping with a network view is to show the interactions between entities, i.e. the links between the nodes in the graph. These links provide crucial information that can be used to structure communities. Here  If the size of the network needs to be reduced (for reasons of computation, speed, legibility and interpretability), it is vital to preserve the links that carry the most information, i.e. the strongest interactions. With this reasoning, it seems logical to reduce the size of the network by only affecting the strongest links.
+One of the added values of mapping with a network view is to show the interactions between entities, i.e. the links between the nodes in the graph. These links provide crucial information that can be used to structure communities. Here if the size of the network needs to be reduced (for reasons of computation, speed, legibility and interpretability), it is vital to preserve the links that carry the most information, i.e. the strongest interactions. With this reasoning, it seems logical to reduce the size of the network by only affecting the strongest links.
 
 Here, we assume that there are no large isolated nodes (with no connection). An entity with no connection will not appear in the mapping. This assumption can sometimes prove to be false, particularly in the case of authors in literature, for example. 
 
@@ -66,19 +67,21 @@ Thus, from a given corpus, however large, we seek to extract the pairs of entiti
 
 ## 2.2 Publication metadata enrichment to produce different mapping
 
-Each publication in the scanR corpus goes through a systematic enrichment pipeline, including author and affiliation disambiguation, full-text parsing, topic detection.
+Each publication in the scanR corpus goes through a systematic enrichment pipeline, including author and affiliation disambiguation, full-text parsing and topic detection.
 
 For authors, the French-specific persistent identifier (PID) [https://www.idref.fr](https://www.idref.fr) is used. Its coverage, even if not perfect, for French affiliated authors is strong thanks to the deep linking between idref and the PhD thesis registration in France. Specific heuristics have been implemented to disambiguate names and link them to idref.
 
-For affiliations, again French specific PID are used, especially [https://sirene.fr](https://sirene.fr) and [http://rnsr.fr](http://rnsr.fr). SIRENE is a national (French) PID for public and private institutions. RNSR is a French PID for the research structures like laboratories.  A specific module based on Elasticsearch [https://github.com/dataesr/affiliation-matcher](https://github.com/dataesr/affiliation-matcher) has been implemented to automatically link pblications to those PIDs [@lhote_using_2021].
+For affiliations, again French specific PID are used, especially [https://sirene.fr](https://sirene.fr) and [http://rnsr.fr](http://rnsr.fr). SIRENE is a national (French) PID for public and private institutions. RNSR is a French PID for the research structures like laboratories.  A specific module based on Elasticsearch [https://github.com/dataesr/affiliation-matcher](https://github.com/dataesr/affiliation-matcher) has been implemented to automatically link publications to those PIDs [@lhote_using_2021].
 
-For topics, wikidata identifiers has been used using the entity-fishing module [https://github.com/kermitt2/entity-fishing](https://github.com/kermitt2/entity-fishing) cf [@foppiano2020entity].
+For topics, wikidata identifiers have been linked using the entity-fishing module [https://github.com/kermitt2/entity-fishing](https://github.com/kermitt2/entity-fishing) [@foppiano2020entity].
 
-Other enrichments, like software detection are also present. These are based on software mentions detections using GROBID and Softcite at scale on the French corpus [@bassinet:hal-04121339].
+Other enrichments, like software detection are also present. These are based on software mentions detections using GROBID and Softcite at scale on the French publications corpus [@bassinet:hal-04121339].
 
 ## 2.3 Elasticsearch implementation
 
 To identify the strongest links, it would be too costly to go through the entire corpus. We have pre-calculated the links at the level of each publication. So, if a publication is linked to 3 themes, T1, T2 and T3, a pre-calculated field, at publication level, contains all T1-T2, T1-T3 and T2-T3 pairs. This co_topics field represents the co-appearance links within the publication. We then use elasticsearch's aggregation functionality to list the most present links, very efficiently. By default, we limit ourselves to the top 2000 links to ensure optimal performance.
+
+At the publication level, the pairs are calculated for authors, institutions, laboratories, software, fundings and countries too.
 
 In practice, a PID is also stored (the wikidata for topics, for example) to disambiguate entities. In practice, for a given query, elasticsearch returns a response containing the strongest links, for example:
 
@@ -127,7 +130,7 @@ To ensure that the network remains manageable and focuses on the most interestin
 
 In graph theory, a component refers to a subgraph in which any two nodes are connected to each other by paths, and which is connected to no additional nodes in the larger graph. Using Graphology, we filter the network components by iteratively removing the smallest components until the number of nodes falls below the threshold or only one component remains. This largest component is then subjected to further filtering if it still exceeds the node threshold. In this second filtering step, we utilize the betweenness centrality metric to retain the best-connected nodes. Betweenness centrality measures the extent to which a node lies on the shortest path between other nodes, thereby identifying nodes that act as bridges within the network.
 
-Once the filtering process is complete, we apply a spatialization algorithm to position the nodes in a 2D space. For this purpose, we use the ForceAtlas2 algorithm, which is designed to produce informative and aesthetically pleasing layouts by simulating a physical system where nodes repel each other and edges act as springs pulling connected nodes together. This results in a clear and intuitive visual representation of the network [@10.1371/journal.pone.0098679].  
+Once the filtering process is complete, we apply a spatialization algorithm to position the nodes in a 2D space. For this purpose, we use the ForceAtlas2 algorithm, which is designed to produce informative and aesthetically pleasing layouts by simulating a physical system where nodes repel each other and edges act as springs pulling connected nodes together. This results in a clear and intuitive visual representation of the network [@10.1371/journal.pone.0098679]. 
 Thanks to Graphology, the settings of the ForceAtlas2 algorithm are automatically infered from our network order (number of nodes) as below:
 ```
 barnesHutOptimize: order > 2000,
@@ -139,22 +142,22 @@ slowDown: 1 + Math.log(order)
 
 In graph theory, a community corresponds to a set of nodes in a graph that are strongly interconnected with each other, while being less connected with nodes outside this community. Communities can be identified in order to understand the underlying structure and patterns of the graph, as well as to analyze the relationships and interactions between the entities that make it up. To identify and visualize communities within the network, we apply the Louvain algorithm using Graphology. This algorithm works by optimizing a modularity measure that evaluates the strength of communities in a graph [@Blondel_2008]. More precisely, Louvain seeks to maximize modularity by progressively moving the nodes of a graph into different communities, in an iterative fashion. At each stage, he merges neighboring communities if this leads to an improvement in the overall modularity of the graph. This iterative process continues until no further moves can increase modularity.
 
-The `graphology-communities-louvain` node module is being used. This way, each step (like spatizalization, community-detection) are implemented modularly. A benchmark, in our use case, of the Louvain and the Leiden algorithms would be desirable. The graphology library started a while ago working on an implementation of the leiden algorithm (see [https://github.com/graphology/graphology/tree/master/src/communities-leiden](https://github.com/graphology/graphology/tree/master/src/communities-leiden)) but that remains to be implemented.
+The `graphology-communities-louvain` node module is being used. This way, each step (like spatizalization, community-detection) are implemented modularly. A benchmark, in our use case, of the Louvain and the Leiden algorithms would be desirable. The graphology library started a while ago working on an implementation of the Leiden algorithm (see [https://github.com/graphology/graphology/tree/master/src/communities-leiden](https://github.com/graphology/graphology/tree/master/src/communities-leiden)) but that remains to be implemented.
 
 ## 2.5 VOSviewer implementation
 
 To display the network within our application, we use the open source VOSviewer online tool for network visualization [https://github.com/neesjanvaneck/VOSviewer-Online](https://github.com/neesjanvaneck/VOSviewer-Online). It is based on the VOSviewer software which is very popular for network analysis in bibliometric studies [@DBLP:journals/corr/abs-1006-1032].
 
-VOSviewer accepts JSON files formatted according to a specific template [https://app.vosviewer.com/docs/file-types/json-file-type](https://app.vosviewer.com/docs/file-types/json-file-type). This template includes essential attributes for nodes and edges, such as the node ID, name, position, and additional metadata. To ensure compatibility, we transform our Graphology object into a JSON file that adheres to VOSviewer's required format.
+VOSviewer accepts JSON files formatted according to a specific template [https://app.vosviewer.com/docs/file-types/json-file-type](https://app.vosviewer.com/docs/file-types/json-file-type). This template includes essential attributes for nodes and edges, such as the node ID, label, position (x, y), and additional metadata. To ensure compatibility, we transform our Graphology object into a JSON file that complies to VOSviewer's required format.
 
 Once the JSON file is generated, VOSviewer renders the network, displaying nodes and edges in an interactive and visually appealing manner. The nodes are colorized based on the communities identified through the clustering process performed using the Louvain algorithm. This colorization helps in visually distinguishing different communities within the network, making it easier to analyze and interpret the underlying structure and interactions.
 
 VOSviewer includes its own spatialization algorithm and parameters for layout customization. However, after testing these options, we found them to be visually less intuitive and informative. Consequently, we chose to use the ForceAtlas2 algorithm for spatialization, as described in the previous section, which offers a more aesthetically pleasing and informative layout by being automatically set for our network.
 
 ![Visualization of a network with VOSviewer.  
-*(a) Using ForceAltlas2 spatialization with infered settings  
-(b) Using VOSviewer spatialization (attraction=2, repulsion=1)  
-(c) Using VOSviewer spatialization (attraction=3, repulsion=1)  
+*(a) Using ForceAltlas2 spatialization with infered settings 
+(b) Using VOSviewer spatialization (attraction=2, repulsion=1)
+(c) Using VOSviewer spatialization (attraction=3, repulsion=1)
 (d) Using VOSviewer spatialization (attraction=1, repulsion=0)*](https://raw.githubusercontent.com/dataesr/scanr-ui/refs/heads/staging/doc_network/images/vosviewer-spatialization-comparison.jpg)
 
 # 3. Making insightful maps
@@ -198,7 +201,7 @@ Trichodesmium (3), Crocosphaera (2), Crocosphaera-watsonii (2), Dinitrogen-fixat
 ## 3.1 Citation / hot topics
 
 A citation score is estimated for each cluster. This score relates the number of recent citations (over the last two years) to the number of total publications in the cluster. This score is intended to help detect hotspots in the communities identified in the corpus. 
-We use citations data from OpenAlex, which is as of today one of the best open source datasource. However, citations metadata from OpenAlex remains incomplete and must therefore be interpreted with caution [@alperin2024analysissuitabilityopenalexbibliometric].
+We use citations data from OpenAlex [https://openalex.org/](https://openalex.org/), which is as of today one of the best open source bibliometric datasource. However, citations metadata from OpenAlex remains incomplete and must therefore be interpreted with caution [@alperin2024analysissuitabilityopenalexbibliometric].
 
 ## 3.2 Custom perimeter
 
@@ -206,6 +209,6 @@ scanR offers this mapping tool for the entire indexed corpus, but it is also pos
 
 # 4. Code availibility
 
-The code developed for the scanR web application is open source and available online on GitHub [https://github.com/dataesr/scanr-ui](https://github.com/dataesr/scanr-ui)
+The code developed for the scanR web application is open source and available online on GitHub [https://github.com/dataesr/scanr-ui](https://github.com/dataesr/scanr-ui) under MIT license.
 
 # References
