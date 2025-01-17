@@ -26,13 +26,16 @@ function TrendsViewItems() {
     }
   }, [inView, fetchNextPage])
 
+  const navigateToPage = (page: number) => {
+    handlePageChange(page)
+    window.scrollTo(0, scrollYTop)
+  }
+
   if (isFetching && !isFetchingNextPage) return <BaseSkeleton height="500px" />
   if (!trends?.pages || error) return <div>no data</div>
 
   const shouldChangePage = trends.pageParams.length >= scrollPerPage
   const totalPages = Math.ceil((trends?.pages?.[0]?.total || 0) / (itemsPerScroll * scrollPerPage))
-
-  console.log(totalPages)
 
   return (
     <>
@@ -44,36 +47,43 @@ function TrendsViewItems() {
       {!isFetchingNextPage && shouldChangePage && (
         <Container fluid className="fr-mt-2w">
           <ButtonGroup isInlineFrom="xs" align="center">
-            <Button variant="tertiary" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+            <Button
+              variant="tertiary"
+              icon="arrow-left-s-line"
+              iconPosition="left"
+              onClick={() => navigateToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
               {intl.formatMessage({ id: "trends.views.page-previous" })}
             </Button>
             {currentPage > 1 && (
-              <Button variant="tertiary" onClick={() => handlePageChange(1)}>
+              <Button variant="tertiary" onClick={() => navigateToPage(1)}>
                 {1}
               </Button>
             )}
+            {currentPage > 3 && <Button variant="tertiary">{"..."}</Button>}
             {currentPage > 2 && (
-              <Button variant="tertiary" onClick={() => handlePageChange(currentPage - 1)}>
+              <Button variant="tertiary" onClick={() => navigateToPage(currentPage - 1)}>
                 {currentPage - 1}
               </Button>
             )}
             <Button variant="secondary">{currentPage}</Button>
             {currentPage < totalPages - 1 && (
-              <Button variant="tertiary" onClick={() => handlePageChange(currentPage + 1)}>
+              <Button variant="tertiary" onClick={() => navigateToPage(currentPage + 1)}>
                 {currentPage + 1}
               </Button>
             )}
+            {currentPage < totalPages - 2 && <Button variant="tertiary">{"..."}</Button>}
             {currentPage < totalPages && (
-              <Button variant="tertiary" onClick={() => handlePageChange(totalPages)}>
+              <Button variant="tertiary" onClick={() => navigateToPage(totalPages)}>
                 {totalPages}
               </Button>
             )}
             <Button
               variant="tertiary"
-              onClick={() => {
-                handlePageChange(currentPage + 1)
-                window.scrollTo(0, scrollYTop)
-              }}
+              icon="arrow-right-s-line"
+              iconPosition="right"
+              onClick={() => navigateToPage(currentPage + 1)}
               disabled={!hasNextPage}
             >
               {intl.formatMessage({ id: "trends.views.page-next" })}
