@@ -21,7 +21,7 @@ function TrendsRankingItems() {
     <Container fluid>
       <div className="fr-accordions-group">
         {items.map((item, index) => (
-          <TrendsRankingItem key={index} item={item} />
+          <TrendsRankingItem key={`${index}-${includes}`} item={item} />
         ))}
       </div>
       {isFetching && <BaseSkeleton height="500px" />}
