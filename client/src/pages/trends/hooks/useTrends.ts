@@ -1,10 +1,12 @@
 import { useMemo } from "react"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { getCitationsTrends, getPublicationsTrends } from "../../../api/trends/publications"
 import useUrl from "../../search/hooks/useUrl"
 import { MAX_YEAR, MIN_YEAR } from "../config/years"
 import { rangeArray } from "../../../utils/helpers"
 import useOptions from "./useOptions"
+import { TrendsRanking } from "../../../types/trends"
+import { useTrendsContext } from "../context"
 
 const API_MAPPING = {
   publications: getPublicationsTrends,
@@ -14,25 +16,26 @@ const API_MAPPING = {
 export default function useTrends() {
   const { currentQuery, currentFilters, filters } = useUrl()
   const { currentModel, currentSource, normalized, currentPage } = useOptions()
+  const { includes } = useTrendsContext()
 
   const trendsYears = {
     min: Number(currentFilters?.year?.values?.[0]?.value || MIN_YEAR),
     max: Number(currentFilters?.year?.values?.[1]?.value || MAX_YEAR),
   }
 
-  const { data, error, isFetchingNextPage, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["trends", currentSource, currentModel, currentQuery, currentPage, filters, normalized],
-    queryFn: ({ pageParam }) =>
+  const { data, error, isFetching } = useQuery<TrendsRanking>({
+    queryKey: ["trends", currentSource, currentModel, currentQuery, currentPage, filters, normalized, includes],
+    queryFn: () =>
       API_MAPPING[currentSource]({
-        cursor: pageParam + (currentPage - 1) * 3,
         model: currentModel,
         query: currentQuery,
+        page: currentPage,
         years: rangeArray(trendsYears.min, trendsYears.max),
         filters: filters,
         normalized: normalized,
+        includes: includes,
       }),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    initialPageParam: 0,
+    placeholderData: (prev) => prev,
   })
 
   const values = useMemo(() => {
@@ -40,12 +43,9 @@ export default function useTrends() {
       trends: data,
       trendsYears: trendsYears,
       error: error,
-      hasNextPage: hasNextPage,
-      fetchNextPage: fetchNextPage,
       isFetching: isFetching,
-      isFetchingNextPage: isFetchingNextPage,
     }
-  }, [data, trendsYears, error, hasNextPage, fetchNextPage, isFetching, isFetchingNextPage, error])
+  }, [data, trendsYears, error, isFetching, error])
 
   return values
 }

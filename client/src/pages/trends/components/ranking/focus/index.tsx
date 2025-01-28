@@ -1,13 +1,12 @@
 import { Container } from "@dataesr/dsfr-plus"
-import { useTrendsContext } from "../../../context"
 import LineChart from "../../line-chart"
 import Wikidata from "../../wiki"
 
-export default function TrendsFocus({ item }) {
-  const { source } = useTrendsContext()
+export default function TrendsRankingFocus({ item }) {
+  const source = "publications"
 
   return (
-    <Container fluid className="fr-mt-3w">
+    <Container>
       <Wikidata item={item} />
       <LineChart data={item} source={source} />
     </Container>
