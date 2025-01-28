@@ -3,12 +3,12 @@ import { useSearchParams } from "react-router-dom"
 import { getBooleanParam } from "../utils"
 import { NetworkParameter, NetworkParameters } from "../../../types/network"
 import { NETWORK_PARAMETERS } from "../config/parameters"
-import { NETWORKS_MODELS } from "../config/models"
+import { NETWORK_MODELS } from "../config/models"
 
 export default function useOptions() {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentSource = searchParams.get("source") || "publications"
-  const currentModel = searchParams.get("model") || NETWORKS_MODELS[currentSource][0].label
+  const currentModel = searchParams.get("model") || NETWORK_MODELS[currentSource][0].label
 
   const parameters: NetworkParameters = {
     maxNodes: Number(searchParams.get("maxNodes") || Number(NETWORK_PARAMETERS.maxNodes.default)),
@@ -27,6 +27,7 @@ export default function useOptions() {
 
   const handleSourceChange = useCallback(
     (source: string) => {
+      searchParams.delete("model")
       searchParams.set("source", source)
       setSearchParams(searchParams)
     },

@@ -1,5 +1,5 @@
 import { Listbox, ListboxItem, Text } from "@dataesr/dsfr-plus"
-import { NETWORKS_MODELS } from "../../config/models"
+import { NETWORK_MODELS } from "../../config/models"
 import { useIntl } from "react-intl"
 import NetworkGetStartedPage from "../get-started/template"
 import useGetStarted from "../../hooks/useGetStarted"
@@ -23,7 +23,7 @@ export default function NetworkSelectModelGetStarted() {
           navigateToNetwork({ model: selected })
         }}
       >
-        {NETWORKS_MODELS[currentSource].map(({ label, icon }) => (
+        {NETWORK_MODELS[currentSource].map(({ label, icon }) => (
           <ListboxItem
             startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-${icon}`} />}
             key={label}

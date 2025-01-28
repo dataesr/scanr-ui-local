@@ -1,4 +1,4 @@
-const NETWORKS_MODELS_MAPPING = {
+const NETWORK_MODELS_MAPPING = {
   publications: [
     {
       label: "domains",
@@ -50,4 +50,4 @@ const NETWORKS_MODELS_MAPPING = {
   ],
 }
 
-export const NETWORKS_MODELS = NETWORKS_MODELS_MAPPING
+export const NETWORK_MODELS = NETWORK_MODELS_MAPPING

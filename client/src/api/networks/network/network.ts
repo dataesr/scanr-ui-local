@@ -7,7 +7,6 @@ import betweenessCentrality from "graphology-metrics/centrality/betweenness"
 import { NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
 import { configGetItemUrl } from "./config"
-import { getParameters } from "./parameters"
 import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
 import { ignoreIds, institutionsAcronyms, institutionsReplaceLabel } from "./ignore"
 
@@ -39,7 +38,7 @@ export default async function networkCreate(
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
 
-  const { maxNodes, maxComponents, filterNode, clusters } = getParameters(parameters)
+  const { maxNodes, maxComponents, filterNode, clusters } = parameters
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item

@@ -9,14 +9,14 @@ import useOptions from "./useOptions"
 export default function useSearchData(forceClusters?: boolean) {
   const { currentQuery, filters } = useUrl()
   const { integrationId, integrationLang } = useIntegration()
-  const { currentModel, parameters } = useOptions()
+  const { currentModel, currentSource, parameters } = useOptions()
   const { locale } = useDSFRConfig()
   const lang = integrationId ? integrationLang : locale
 
   if (forceClusters !== undefined) parameters.clusters = forceClusters
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["network", currentModel, currentQuery, filters, lang, parameters],
+    queryKey: ["network", currentModel, currentSource, currentQuery, filters, lang, parameters],
     queryFn: () =>
       networkSearch({
         model: currentModel,

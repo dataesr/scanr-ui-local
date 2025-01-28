@@ -1,4 +1,4 @@
-const NETWORKS_SOURCES_MAPPING = [
+const NETWORK_SOURCES_MAPPING = [
   {
     label: "publications",
     icon: "article-line",
@@ -9,4 +9,4 @@ const NETWORKS_SOURCES_MAPPING = [
   },
 ]
 
-export const NETWORKS_SOURCES = NETWORKS_SOURCES_MAPPING
+export const NETWORK_SOURCES = NETWORK_SOURCES_MAPPING

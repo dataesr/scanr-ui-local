@@ -1,6 +1,6 @@
 import { Container, Listbox, ListboxItem } from "@dataesr/dsfr-plus"
 import Modal from "../../../../components/modal"
-import { NETWORKS_MODELS } from "../../config/models"
+import { NETWORK_MODELS } from "../../config/models"
 import { useIntl } from "react-intl"
 import useOptions from "../../hooks/useOptions"
 
@@ -16,12 +16,13 @@ export default function NetworkSelectModelModal() {
           selectedKeys={[currentModel]}
           selectionMode="single"
           onSelectionChange={(value) => {
-            handleModelChange(Object.values(value)[0])
+            const selected = Object.values(value)[0]
+            selected && handleModelChange(selected)
             // @ts-expect-error dsfr does not have types
             window.dsfr(document.getElementById(id)).modal.conceal()
           }}
         >
-          {NETWORKS_MODELS[currentSource].map(({ label, icon }) => (
+          {NETWORK_MODELS[currentSource].map(({ label, icon }) => (
             <ListboxItem
               startContent={<span className={`fr-mr-3v fr-icon--lg fr-icon-${icon}`} />}
               key={label}

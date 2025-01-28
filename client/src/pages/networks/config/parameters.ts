@@ -1,6 +1,6 @@
 export const NETWORK_PARAMETERS = {
   maxNodes: {
-    min: 1,
+    min: 3,
     max: 1000,
     default: 300,
   },
