@@ -9,8 +9,8 @@ export default function NetworksOptionsModals() {
   return (
     <Container fluid>
       <NetworkSearchBarModal />
-      <NetworkSelectSourceModal />
       <NetworkSelectModelModal />
+      <NetworkSelectSourceModal />
       <NetworkFiltersModal />
       <NetworkParametersModal />
     </Container>
