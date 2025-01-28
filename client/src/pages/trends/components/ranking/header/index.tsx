@@ -1,7 +1,7 @@
 import { Button, Col, MenuButton, MenuItem, Row, Text } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import { useTrendsRankingContext } from "../../../context/rankingContext"
-import { trendsRankingSortFromId, trendsRankingSortFromLabel } from "../../../config/rankingSorts"
+import { useTrendsContext } from "../../../context"
+import { trendsRankingSortFromId, trendsRankingSortFromLabel } from "../../../config/sorting"
 import useScreenSize from "../../../../../hooks/useScreenSize"
 import useTrends from "../../../hooks/useTrends"
 import useOptions from "../../../hooks/useOptions"
@@ -12,7 +12,7 @@ function TrendsRankingHeaderMobileButton() {
   const {
     trendsYears: { min, max },
   } = useTrends()
-  const { sort, setSort, setFocus } = useTrendsRankingContext()
+  const { sort, setSort, setFocus } = useTrendsContext()
   const currentSort = trendsRankingSortFromId(sort)
 
   const onMenuAction = (key: string) => {
@@ -42,7 +42,7 @@ function TrendsRankingHeaderButton({ label }) {
   const {
     trendsYears: { min, max },
   } = useTrends()
-  const { sort, setSort, setFocus } = useTrendsRankingContext()
+  const { sort, setSort, setFocus } = useTrendsContext()
   const { handlePageChange } = useOptions()
   const currentSort = trendsRankingSortFromId(sort)
   const defaultSort = trendsRankingSortFromLabel(label)
@@ -70,7 +70,7 @@ function TrendsRankingHeaderButton({ label }) {
 export default function TrendsRankingHeader() {
   const intl = useIntl()
   const { screen } = useScreenSize()
-  const { setStartWith } = useTrendsRankingContext()
+  const { setIncludes } = useTrendsContext()
   const [search, setSearch] = useState(false)
   const isMobile = ["xs", "sm"].includes(screen)
 
@@ -86,7 +86,7 @@ export default function TrendsRankingHeader() {
             iconPosition="left"
             variant={"text"}
             onClick={() => {
-              if (search) setStartWith("")
+              if (search) setIncludes("")
               setSearch(!search)
             }}
           />
@@ -96,7 +96,7 @@ export default function TrendsRankingHeader() {
                 <input
                   className="fr-input"
                   placeholder={"Search topics"}
-                  onChange={(event) => setStartWith(event.target.value.toLowerCase())}
+                  onChange={(event) => setIncludes(event.target.value.toLowerCase())}
                 />
               </div>
             </>

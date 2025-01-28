@@ -8,8 +8,10 @@ export default function TrendsViewInfo() {
 
   if (isFetching) return null
 
-  const topicsCount = trends?.pages?.[0]?.total || 0
-  const publicationsCount = trends?.pages?.[0]?.count || 0
+  const topicsCount = trends?.pages?.[0]?.searchTotal || 0
+  const publicationsCount = trends?.pages?.[0]?.sourceCount || 0
+
+  console.log("trends", trends)
 
   return (
     <Container>

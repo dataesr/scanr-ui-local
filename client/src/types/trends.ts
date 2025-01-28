@@ -1,8 +1,9 @@
 export type TrendsRanking = {
   ranking: Record<string, TrendsRankingItems>
   nextCursor: number
-  total: number
-  count: number
+  sourceCount: number
+  searchTotal: number
+  includesTotal: number
 }
 
 export type TrendsRankingItems = Array<TrendsRankingItem>
@@ -36,6 +37,7 @@ export type TrendsArgs = {
   years: Array<number>
   normalized?: boolean
   filters?: TrendsFilters
+  includes?: string
 }
 
 export type TrendsIntegrationOptions = {

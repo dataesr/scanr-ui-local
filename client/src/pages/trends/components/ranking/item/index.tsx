@@ -1,14 +1,14 @@
 import { Badge, Col, Container, Row } from "@dataesr/dsfr-plus"
-import { useTrendsRankingContext } from "../../../context/rankingContext"
+import { useTrendsContext } from "../../../context"
 import useTrends from "../../../hooks/useTrends"
 import useOptions from "../../../hooks/useOptions"
 import useScreenSize from "../../../../../hooks/useScreenSize"
 import { itemGetColor, itemGetTrendState, itemGetTrendVariation } from "../_utils"
-import { trendsRankingSortFromId } from "../../../config/rankingSorts"
+import { trendsRankingSortFromId } from "../../../config/sorting"
 import TrendsRankingFocus from "../focus"
 
 export default function TrendsRankingItem({ item }) {
-  const { sort, focus, setFocus } = useTrendsRankingContext()
+  const { sort, focus, setFocus } = useTrendsContext()
   const { trendsYears } = useTrends()
   const { currentModel, normalized } = useOptions()
   const { screen } = useScreenSize()

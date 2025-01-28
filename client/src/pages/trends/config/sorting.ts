@@ -7,7 +7,7 @@ export const TRENDS_RANKING_SORTS_MAPPING: TrendsRankingSorts = [
 ]
 
 export const TRENDS_RANKING_SORTS_IDS = TRENDS_RANKING_SORTS_MAPPING.map((sort) => sort.id)
-export const TRENDS_RANKING_SORTS_NAMES = [...new Set([...TRENDS_RANKING_SORTS_MAPPING.map((sort) => sort.label)])]
+export const TRENDS_RANKING_SORTS_LABELS = [...new Set([...TRENDS_RANKING_SORTS_MAPPING.map((sort) => sort.label)])]
 
 export const trendsRankingSortFromId = (id: string): TrendsRankingSort =>
   TRENDS_RANKING_SORTS_MAPPING.find((sort) => sort.id === id)

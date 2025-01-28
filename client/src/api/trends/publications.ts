@@ -14,6 +14,7 @@ export async function getPublicationsTrends({
   years,
   filters,
   normalized,
+  includes,
 }: TrendsArgs): Promise<TrendsRanking> {
   const body: any = {
     size: 0,
@@ -63,8 +64,8 @@ export async function getPublicationsTrends({
     return null
   }
 
-  const trends = publicationsTrends(aggregation, cursor, years, normalized)
-  return { ...trends, count: count }
+  const trends = publicationsTrends(aggregation, cursor, years, normalized, includes)
+  return { ...trends, sourceCount: count }
 }
 
 export async function getCitationsTrends({
@@ -74,6 +75,7 @@ export async function getCitationsTrends({
   years,
   filters,
   normalized,
+  includes,
 }: TrendsArgs): Promise<TrendsRanking> {
   const body: any = {
     size: 0,
@@ -126,6 +128,6 @@ export async function getCitationsTrends({
     return null
   }
 
-  const trends = citationsTrends(aggregation, cursor, years, normalized)
-  return { ...trends, count: count }
+  const trends = citationsTrends(aggregation, cursor, years, normalized, includes)
+  return { ...trends, sourceCount: count }
 }

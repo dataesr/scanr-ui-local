@@ -3,13 +3,13 @@ import { useMemo } from "react"
 import { WikipediaResult } from "../../../components/wiki/types"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import { getWikidataPreviews } from "../../../components/wiki/api"
-import { useTrendsRankingContext } from "../context/rankingContext"
+import { useTrendsContext } from "../context"
 import useTrends from "./useTrends"
 import useOptions from "./useOptions"
 
 export default function useWikidata() {
   const { locale } = useDSFRConfig()
-  const { sort } = useTrendsRankingContext()
+  const { sort } = useTrendsContext()
   const { trends } = useTrends()
   const { currentModel } = useOptions()
 
