@@ -37,5 +37,5 @@ export function itemGetTrendVariation(item: TrendsRankingItem) {
   if (variation === -Infinity) return "Exctint"
 
   const prefix = variation >= 0 ? "+" : "-"
-  return `${prefix}${Math.abs(variation * 100).toFixed(0)}%`
+  return `(${prefix}${Math.abs(variation * 100).toFixed(0)}%)`
 }

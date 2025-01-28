@@ -7,11 +7,11 @@ const ITEMS_PER_PAGE = 25
 
 type TrendsAggregation = Array<ElasticBucket & { [x: string]: ElasticAggregation }>
 
-function computeTrends(data: Array<any>, cursor: number, years: Array<number>, normalized: boolean, includes: string) {
+function computeTrends(data: Array<any>, page: number, years: Array<number>, normalized: boolean, includes: string) {
   const maxYear = years[years.length - 1]
   const minYear = years[0]
-  const minItems = (cursor || 0) * ITEMS_PER_PAGE
-  const maxItems = ((cursor || 0) + 1) * ITEMS_PER_PAGE
+  const minItems = (page - 1) * ITEMS_PER_PAGE
+  const maxItems = page * ITEMS_PER_PAGE
 
   // Filter items
   const items = data.filter(({ label }) => !EXCLUDE_WORDS.includes(label))
@@ -46,14 +46,13 @@ function computeTrends(data: Array<any>, cursor: number, years: Array<number>, n
   const trends = {
     ranking: {
       "count-top": topCount,
-      // "diff-top": topDiff,
-      // "diff-bot": botDiff,
       "trend-top": topSlope,
       "trend-bot": botSlope,
     },
-    nextCursor: maxItems < filteredItems.length ? cursor + 1 : undefined,
     searchTotal: sortedItems.length,
-    includesTotal: filteredItems.length,
+    searchPages: Math.ceil(sortedItems.length / ITEMS_PER_PAGE),
+    filteredTotal: filteredItems.length,
+    filteredPages: Math.ceil(filteredItems.length / ITEMS_PER_PAGE),
   }
 
   return trends

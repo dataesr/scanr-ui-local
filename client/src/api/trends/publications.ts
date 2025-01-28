@@ -8,7 +8,7 @@ import { citationsTrends, publicationsTrends } from "./trends"
 type TrendsAggregation = Array<ElasticBucket & { model: ElasticAggregation }>
 
 export async function getPublicationsTrends({
-  cursor,
+  page,
   model,
   query,
   years,
@@ -64,12 +64,12 @@ export async function getPublicationsTrends({
     return null
   }
 
-  const trends = publicationsTrends(aggregation, cursor, years, normalized, includes)
+  const trends = publicationsTrends(aggregation, page, years, normalized, includes)
   return { ...trends, sourceCount: count }
 }
 
 export async function getCitationsTrends({
-  cursor,
+  page,
   model,
   query,
   years,
@@ -128,6 +128,6 @@ export async function getCitationsTrends({
     return null
   }
 
-  const trends = citationsTrends(aggregation, cursor, years, normalized, includes)
+  const trends = citationsTrends(aggregation, page, years, normalized, includes)
   return { ...trends, sourceCount: count }
 }

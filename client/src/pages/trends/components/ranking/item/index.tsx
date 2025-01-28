@@ -18,7 +18,7 @@ export default function TrendsRankingItem({ item }) {
 
   const trendColor = itemGetColor(item, normalized ? "norm_slope" : "slope", normalized)
   const trendState = itemGetTrendState(item, normalized)
-  const trendScore = itemGetTrendVariation(item)
+  const trendVariation = itemGetTrendVariation(item)
 
   const isFocused = Boolean(focus === item.id)
   const focusKey = `focus-${currentModel}-${sort}-${item.id}`
@@ -43,6 +43,12 @@ export default function TrendsRankingItem({ item }) {
             <Col md="3" lg="3">
               <Row horizontalAlign="left">
                 <div className="fr-ml-5w">{item?.count?.[trendsYears.max] || 0}</div>
+                <div
+                  title={`The variation between the volume in ${trendsYears.max} and the previous years average volume`}
+                  className="fr-ml-6w fr-text--sm"
+                >
+                  {trendVariation}
+                </div>
               </Row>
             </Col>
           )}
@@ -52,7 +58,6 @@ export default function TrendsRankingItem({ item }) {
                 <Badge className="fr-ml-5w" noIcon color={trendColor}>
                   {trendState}
                 </Badge>
-                <div className="fr-ml-6w">{trendScore}</div>
               </Row>
             </Col>
           )}

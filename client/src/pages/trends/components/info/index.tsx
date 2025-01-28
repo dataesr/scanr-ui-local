@@ -4,14 +4,10 @@ import { useIntl } from "react-intl"
 
 export default function TrendsViewInfo() {
   const intl = useIntl()
-  const { trends, isFetching } = useTrends()
+  const { trends } = useTrends()
 
-  if (isFetching) return null
-
-  const topicsCount = trends?.pages?.[0]?.searchTotal || 0
-  const publicationsCount = trends?.pages?.[0]?.sourceCount || 0
-
-  console.log("trends", trends)
+  const topicsCount = trends?.searchTotal || 0
+  const publicationsCount = trends?.sourceCount || 0
 
   return (
     <Container>
