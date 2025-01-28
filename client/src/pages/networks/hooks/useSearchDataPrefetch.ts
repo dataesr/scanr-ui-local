@@ -1,11 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query"
-import useParameters from "./useParameters"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import { networkSearch } from "../../../api/networks/search/search"
+import useOptions from "./useOptions"
 
 export default function useSearchDataPrefetch() {
   const queryClient = useQueryClient()
-  const { parameters } = useParameters()
+  const { parameters } = useOptions()
   const { locale } = useDSFRConfig()
 
   queryClient.prefetchQuery({

@@ -1,18 +1,16 @@
 import { Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
-import useTab from "../../hooks/useTab"
 import useSearchData from "../../hooks/useSearchData"
 import Error204 from "../errors/error204"
-import useParameters from "../../hooks/useParameters"
 import { useNetworkContext } from "../../context"
+import useOptions from "../../hooks/useOptions"
 
 export default function NetworkGraph() {
-  const { currentTab } = useTab()
-  const { parameters } = useParameters()
+  const { currentModel, parameters } = useOptions()
   const { focusItem } = useNetworkContext()
-  const { search, currentQuery, filters } = useSearchData(currentTab, false)
-  const { search: searchClusters } = useSearchData(currentTab)
+  const { search, currentQuery, filters } = useSearchData(false)
+  const { search: searchClusters } = useSearchData()
   const { locale: lang } = useDSFRConfig()
   const theme = document.documentElement.getAttribute("data-fr-theme")
 
@@ -23,7 +21,7 @@ export default function NetworkGraph() {
 
   if (!vosviewer?.network) return <Error204 />
 
-  const key = JSON.stringify({ currentTab, currentQuery, filters, ...parameters, lang, theme, focusItem })
+  const key = JSON.stringify({ currentModel, currentQuery, filters, ...parameters, lang, theme, focusItem })
 
   const vosparams = {
     largest_component: false,

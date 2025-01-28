@@ -1,15 +1,13 @@
 import { Row, Title, MenuButton, MenuItem } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import useTab from "../../hooks/useTab"
 import useSearchData from "../../hooks/useSearchData"
 import useExportData from "../../hooks/useExportData"
 import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkExports() {
   const intl = useIntl()
-  const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
-  const { search, currentQuery } = useSearchData(currentTab)
+  const { search, currentQuery } = useSearchData()
   const { isExporting, exportFile } = useExportData()
 
   if (integrationOptions?.showExports === false) return null

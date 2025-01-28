@@ -1,21 +1,39 @@
 import { useIntl } from "react-intl"
-import { TextInput } from "@dataesr/dsfr-plus"
-import useParameters from "../../../hooks/useParameters"
+import useOptions from "../../../hooks/useOptions"
+import { NETWORK_PARAMETERS } from "../../../config/parameters"
 
-export default function InputMaxComponents() {
+export default function InputMaxNodes() {
   const intl = useIntl()
-  const { parameters, handleParametersChange } = useParameters()
+  const {
+    parameters: { maxComponents },
+    handleParameterChange,
+  } = useOptions()
 
+  const defaultValues = NETWORK_PARAMETERS["maxComponents"]
   return (
-    <TextInput
-      label={intl.formatMessage({ id: "networks.parameters.input-max-components.label" })}
-      hint={intl.formatMessage({ id: "networks.parameters.input-max-components.hint" })}
-      type="number"
-      min={1}
-      max={10}
-      placeholder="Number"
-      value={parameters.maxComponents}
-      onChange={(event) => handleParametersChange("maxComponents", Number(event.target.value))}
-    />
+    <div className="fr-mb-2w fr-range-group" id="network-input-max-components-group">
+      <label className="fr-label">
+        {intl.formatMessage({ id: "networks.parameters.input-max-components.label" })}
+        <span className="fr-hint-text">{intl.formatMessage({ id: "networks.parameters.input-max-components.hint" })}</span>
+      </label>
+      <div className="fr-range fr-range--sm">
+        <span className="fr-range__output">{maxComponents}</span>
+        <input
+          id="network-input-max-components-range"
+          type="range"
+          aria-labelledby="network-input-max-components-label"
+          min={defaultValues.min}
+          max={defaultValues.max}
+          value={maxComponents}
+          onChange={(event) => handleParameterChange("maxComponents", event.target.value)}
+        />
+        <span className="fr-range__min" aria-hidden="true">
+          {defaultValues.min}
+        </span>
+        <span className="fr-range__max" aria-hidden="true">
+          {defaultValues.max}
+        </span>
+      </div>
+    </div>
   )
 }

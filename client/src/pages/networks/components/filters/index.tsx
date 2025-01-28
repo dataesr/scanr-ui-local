@@ -1,19 +1,17 @@
 import { Row, Col, Text, Button, ButtonGroup, Tag, Accordion } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import useUrl from "../../../search/hooks/useUrl"
-import useTab from "../../hooks/useTab"
 import useAggregateData from "../../../search/hooks/useAggregationData"
 import useSearchData from "../../hooks/useSearchData"
 import useIntegration from "../../hooks/useIntegration"
 
 export default function NetworkFilters() {
   const intl = useIntl()
-  const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
   const { currentQuery, currentFilters, handleFilterChange, handleDeleteFilter, clearFilters, handleRangeFilterChange } =
     useUrl()
   const { isLoading, isError } = useAggregateData("filters")
-  const { search } = useSearchData(currentTab, false)
+  const { search } = useSearchData(false)
 
   if (integrationOptions?.showFilters === false) return null
 

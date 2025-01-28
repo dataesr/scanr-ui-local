@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react"
-import useTab from "./useTab"
 import useSearchData from "./useSearchData"
 import { NetworkData } from "../../../types/network"
 import * as XLSX from "xlsx"
+import useOptions from "./useOptions"
 
 function stringToArrayBuffer(string: string) {
   const buffer = new ArrayBuffer(string.length)
@@ -85,8 +85,8 @@ const exportNetwork = (network: NetworkData) => ({
 })
 
 export default function useExportData() {
-  const { currentTab } = useTab()
-  const { search } = useSearchData(currentTab)
+  const { currentModel } = useOptions()
+  const { search } = useSearchData()
   const [isLoading, setIsLoading] = useState(false)
 
   const exportFile = useCallback(
@@ -97,13 +97,13 @@ export default function useExportData() {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
-      link.setAttribute("download", `network.${currentTab}.${format}`)
+      link.setAttribute("download", `network.${currentModel}.${format}`)
       document.body.appendChild(link)
       link.click()
       link.remove()
       setIsLoading(false)
     },
-    [currentTab, search]
+    [currentModel, search]
   )
 
   const values = useMemo(() => {

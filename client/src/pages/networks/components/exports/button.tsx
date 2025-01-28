@@ -1,6 +1,5 @@
 import { MenuButton, MenuItem } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import useTab from "../../hooks/useTab"
 import useSearchData from "../../hooks/useSearchData"
 import useExportData from "../../hooks/useExportData"
 import useIntegration from "../../hooks/useIntegration"
@@ -9,9 +8,8 @@ import useScreenSize from "../../../../hooks/useScreenSize"
 export default function NetworkExportsButton() {
   const intl = useIntl()
   const { screen } = useScreenSize()
-  const { currentTab } = useTab()
   const { integrationOptions } = useIntegration()
-  const { search } = useSearchData(currentTab)
+  const { search } = useSearchData()
   const { isExporting, exportFile } = useExportData()
 
   if (integrationOptions?.showExports === false) return null

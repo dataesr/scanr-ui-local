@@ -1,22 +1,20 @@
 import { Container, Row, Col, Accordion } from "@dataesr/dsfr-plus"
 import AnalyticsSkeleton from "../../../../components/skeleton/analytics-skeleton"
 import { useIntl } from "react-intl"
-import useTab from "../../hooks/useTab"
 import AnalyticsGraph from "../../../../components/analytics-graph"
 import useSearchData from "../../hooks/useSearchData"
 import getHorizontalBarChartOptions from "../charts/hbar"
 import getYearsChartOptions from "../charts/years"
 import useScreenSize from "../../../../hooks/useScreenSize"
-import useParameters from "../../hooks/useParameters"
 import useIntegration from "../../hooks/useIntegration"
+import useOptions from "../../hooks/useOptions"
 
 export default function NetworkAnalytics() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
-  const { currentTab } = useTab()
-  const { parameters } = useParameters()
-  const { search } = useSearchData(currentTab)
+  const { currentModel, parameters } = useOptions()
+  const { search } = useSearchData()
   const clusters = search.data?.network?.clusters
 
   if (Boolean(search.error) || !parameters.clusters || integrationOptions.showClustersAnalytics === false) return null
@@ -59,11 +57,11 @@ export default function NetworkAnalytics() {
         <AnalyticsGraph
           title={intl.formatMessage(
             { id: "networks.analytics.clusters.size.title" },
-            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+            { tab: intl.formatMessage({ id: `networks.model.of.${currentModel}` }) }
           )}
           description={intl.formatMessage(
             { id: "networks.analytics.clusters.size.description" },
-            { tab: intl.formatMessage({ id: `networks.tab.of.${currentTab}` }) }
+            { tab: intl.formatMessage({ id: `networks.model.of.${currentModel}` }) }
           )}
           options={sizeChartOptions}
         />
