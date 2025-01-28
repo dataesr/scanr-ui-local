@@ -13,10 +13,7 @@ export default function useWikidata() {
   const { trends } = useTrends()
   const { currentModel } = useOptions()
 
-  const codes =
-    currentModel === "entity-fishing"
-      ? trends?.pages?.flatMap((page) => page?.ranking?.[sort].map((item) => ({ code: item.id })))
-      : null
+  const codes = currentModel === "entity-fishing" ? trends?.ranking?.[sort].map((item) => ({ code: item.id })) : null
 
   const {
     data: wikis,
