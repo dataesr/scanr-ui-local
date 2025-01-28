@@ -1,12 +1,10 @@
 import { Autocomplete, AutocompleteItem, Container, Text, useAutocompleteList } from "@dataesr/dsfr-plus"
-import useTab from "../../../hooks/useTab"
-import useParameters from "../../../hooks/useParameters"
 import useSearchData from "../../../hooks/useSearchData"
+import useOptions from "../../../hooks/useOptions"
 
 export default function AutocompleteFilterNode() {
-  const { currentTab } = useTab()
-  const { handleParametersChange } = useParameters()
-  const { search } = useSearchData(currentTab)
+  const { handleParameterChange } = useOptions()
+  const { search } = useSearchData()
 
   const nodes = search?.data?.network?.items?.map((item) => ({ label: item.label, id: item.id }))
   const autocomplete =
@@ -32,7 +30,7 @@ export default function AutocompleteFilterNode() {
           items={autocomplete.items}
           inputValue={autocomplete.filterText}
           onInputChange={autocomplete.setFilterText}
-          onSelectionChange={(item) => handleParametersChange("filterNode", item)}
+          onSelectionChange={(item) => handleParameterChange("filterNode", item)}
           menuTrigger="input"
           size="md"
         >

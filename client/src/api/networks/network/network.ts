@@ -90,7 +90,7 @@ export default async function networkCreate(
   }
 
   // Replace institutions labels
-  if (["institutions", "structures"].includes(model)) {
+  if (["institutions", "structures", "organizations"].includes(model)) {
     graph.updateEachNodeAttributes((node, attr) => ({
       ...attr,
       label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),

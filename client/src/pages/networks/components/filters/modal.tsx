@@ -10,16 +10,14 @@ import PublicationCountriesFilter from "../../../search/components/publications/
 import PublicationAccessFilter from "../../../search/components/publications/filters/access"
 import PublicationFunderFilter from "../../../search/components/publications/filters/funders"
 import PublicationTagsFilter from "../../../search/components/publications/filters/tags"
-import useTab from "../../hooks/useTab"
 import useUrl from "../../../search/hooks/useUrl"
 
 function NetworkFiltersPublicationsModal() {
   const intl = useIntl()
   const { clearFilters } = useUrl()
-  const { currentTab } = useTab()
   const {
     search: { isFetching },
-  } = useSearchData(currentTab)
+  } = useSearchData()
   const id = "networks-options-filters-modal"
 
   return (

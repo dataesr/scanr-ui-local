@@ -1,10 +1,10 @@
 import { useIntl } from "react-intl"
 import { TextInput } from "@dataesr/dsfr-plus"
-import useParameters from "../../../hooks/useParameters"
+import useOptions from "../../../hooks/useOptions"
 
 export default function InputMaxNodes() {
   const intl = useIntl()
-  const { parameters, handleParametersChange } = useParameters()
+  const { parameters, handleParameterChange } = useOptions()
 
   return (
     <TextInput
@@ -14,7 +14,7 @@ export default function InputMaxNodes() {
       min={10}
       max={1000}
       value={parameters.maxNodes}
-      onChange={(event) => handleParametersChange("maxNodes", Number(event.target.value))}
+      onChange={(event) => handleParameterChange("maxNodes", Number(event.target.value))}
     />
   )
 }
