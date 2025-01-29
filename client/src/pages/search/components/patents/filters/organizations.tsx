@@ -14,7 +14,7 @@ import { LightOrganization } from "../../../../../types/organization"
 import OperatorButton from "../../../../../components/operator-button"
 import getLangFieldValue from "../../../../../utils/lang"
 
-export default function PatentsOrganizationsFilter() {
+export default function PatentOrganizationsFilter() {
   const { locale } = useDSFRConfig()
   const { currentFilters, handleFilterChange, setOperator } = useUrl()
 

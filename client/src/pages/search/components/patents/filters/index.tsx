@@ -6,36 +6,32 @@ import BaseSkeleton from "../../../../../components/skeleton/base-skeleton";
 import useUrl from "../../../hooks/useUrl";
 import PatentYearFilter from "./years";
 import PatentRegionFilter from "./region-switch";
+import PatentOrganizationsFilter from "./organizations"
 
 export default function PatentFilters() {
-  const intl = useIntl();
+  const intl = useIntl()
   const {
     total,
     search: { isFetching },
-  } = useSearchData();
-  const { api } = useUrl();
+  } = useSearchData()
+  const { api } = useUrl()
 
-  const id = `${api}-filters`;
+  const id = `${api}-filters`
 
   return (
     <>
-      <Modal
-        id={id}
-        size="lg"
-        title={intl.formatMessage({ id: "search.top.filters.patents.title" })}
-      >
+      <Modal id={id} size="lg" title={intl.formatMessage({ id: "search.top.filters.patents.title" })}>
         <Container fluid className="fr-my-2w">
           <PatentYearFilter />
           <hr className="fr-mt-3w" />
+          <PatentOrganizationsFilter />
         </Container>
         <Container fluid className="fr-my-2w">
+          <hr className="fr-mt-3w" />
           <PatentRegionFilter />
           <hr className="fr-mt-3w" />
         </Container>
-        <div
-          className="fr-modal__footer fr-px-0"
-          style={{ display: "flex", width: "100%", alignItems: "center" }}
-        >
+        <div className="fr-modal__footer fr-px-0" style={{ display: "flex", width: "100%", alignItems: "center" }}>
           <div style={{ flexGrow: 1 }}>
             {total && total === 10000 ? (
               <Text as="span" size="lg" bold className="fr-mb-1w">
@@ -44,10 +40,7 @@ export default function PatentFilters() {
             ) : null}
             {total && total > 0 ? (
               <Text as="span" size="lg" bold className="fr-mb-1w">
-                {intl.formatMessage(
-                  { id: "search.top.patents.filters.result-count" },
-                  { count: total }
-                )}
+                {intl.formatMessage({ id: "search.top.patents.filters.result-count" }, { count: total })}
               </Text>
             ) : (
               <BaseSkeleton height="1.25rem" width="30%" />
@@ -56,9 +49,9 @@ export default function PatentFilters() {
           <Button
             disabled={isFetching}
             onClick={() => {
-              const element = document.getElementById(id);
+              const element = document.getElementById(id)
               // @ts-expect-error dsfr does not have types
-              window.dsfr(element).modal.conceal();
+              window.dsfr(element).modal.conceal()
             }}
           >
             {intl.formatMessage({ id: "search.top.filters.display" })}
@@ -66,5 +59,5 @@ export default function PatentFilters() {
         </div>
       </Modal>
     </>
-  );
+  )
 }

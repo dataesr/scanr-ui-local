@@ -90,6 +90,8 @@
   "search.filters.patents.by-year": "Filter by filing Date",
   "search.filters.current.patents.year": "Publication years of the patent",
   "search.filters.patents.by-year-description": "Select a period",
+  "search.filters.patents.by-organization": "Filter by Affiliation",
+  "search.filters.patents.by-organization-description": "Select one or more affiliations",
   "search.filters.patents.regions": "Patent family characteristics",
   "search.filters.patents.by-year-tooltip": "Filings in {year}",
   "search.filters.patents.WO": "Show only patents filed at the World Intellectual Property Organization",
