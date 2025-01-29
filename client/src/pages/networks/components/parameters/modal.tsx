@@ -17,7 +17,7 @@ export default function NetworkParametersModal() {
 
   return (
     <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.parameters.modal.title" })}>
-      <Container fluid className="fr-mb-2w fr-pb-2w">
+      <Container fluid className="fr-mb-4w fr-pb-4w">
         <InputMaxNodes />
         <InputMaxComponents />
         {/* <SelectLayout /> */}
