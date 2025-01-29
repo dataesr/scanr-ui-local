@@ -27,7 +27,7 @@ export default function PatentYearFilter() {
         <FormattedMessage id="search.filters.patents.by-year" />
       </Text>
       <Text className="fr-card__detail fr-mb-2w" size="sm">
-        <FormattedMessage id="search.filters.patent.by-year-description" />
+        <FormattedMessage id="search.filters.patents.by-year-description" />
       </Text>
       <RangeSlider
         aria-label="Années de première publication"
@@ -46,15 +46,12 @@ export default function PatentYearFilter() {
         }
         tooltipLabel={(value, year) => (
           <>
-            {intl.formatMessage(
-              { id: "search.filters.patents.by-year-tooltip" },
-              { year }
-            )}
+            {intl.formatMessage({ id: "search.filters.patents.by-year-tooltip" }, { year })}
             <br />
             {value}
           </>
         )}
       />
     </>
-  );
+  )
 }

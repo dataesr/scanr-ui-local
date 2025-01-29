@@ -93,7 +93,7 @@
   "search.filters.projects.by-year": "Filtrer par année",
   "search.filters.patents.by-year": "Filtrer par date de dépôt",
   "search.filters.current.patents.year": "Années de publication du brevet",
-  "search.filters.patent.by-year-description": "Sélectionnez une période",
+  "search.filters.patents.by-year-description": "Sélectionnez une période",
   "search.filters.patents.regions": "Caractéristiques de la famille de brevet",
   "search.filters.patents.by-year-tooltip": "Dépôts en {year}",
   "search.filters.patents.WO": "Afficher uniquement les brevets déposés à l'Organisation mondiale de la propriété intellectuelle",

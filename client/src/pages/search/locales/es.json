@@ -92,7 +92,7 @@
     "search.filters.projects.by-year": "Filtrar por Año",
     "search.filters.patents.by-year": "Filtrar por Fecha de Presentación",
     "search.filters.current.patents.year": "Años de Publicación de la Patente",
-    "search.filters.patent.by-year-description": "Selecciona un período",
+    "search.filters.patents.by-year-description": "Selecciona un período",
     "search.filters.patents.regions": "Características de la Familia de Patentes",
     "search.filters.patents.by-year-tooltip": "Presentaciones en {year}",
     "search.filters.patents.WO": "Mostrar solo patentes presentadas en la Organización Mundial de la Propiedad Intelectual",
