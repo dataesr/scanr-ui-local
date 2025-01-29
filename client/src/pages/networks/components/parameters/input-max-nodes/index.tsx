@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react"
 import { useIntl } from "react-intl"
+import { TextInput } from "@dataesr/dsfr-plus"
 import useOptions from "../../../hooks/useOptions"
 import { NETWORK_PARAMETERS } from "../../../config/parameters"
 
@@ -8,33 +10,28 @@ export default function InputMaxNodes() {
     parameters: { maxNodes },
     handleParameterChange,
   } = useOptions()
-
+  const [input, setInput] = useState<number>(maxNodes)
   const defaultValues = NETWORK_PARAMETERS["maxNodes"]
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      input >= defaultValues.min && input <= defaultValues.max && handleParameterChange("maxNodes", input)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [input])
+
   return (
-    <div className="fr-mb-2w fr-range-group" id="network-input-max-nodes-group">
-      <label className="fr-label">
-        {intl.formatMessage({ id: "networks.parameters.input-max-nodes.label" })}
-        <span className="fr-hint-text">{intl.formatMessage({ id: "networks.parameters.input-max-nodes.hint" })}</span>
-      </label>
-      <div className="fr-range fr-range--sm">
-        <span className="fr-range__output">{maxNodes}</span>
-        <input
-          id="network-input-max-nodes-range"
-          type="range"
-          min={defaultValues.min}
-          max={defaultValues.max}
-          value={maxNodes}
-          defaultValue={maxNodes}
-          onChange={(event) => handleParameterChange("maxNodes", event.target.value)}
-        />
-        <span className="fr-range__min" aria-hidden="true">
-          {defaultValues.min}
-        </span>
-        <span className="fr-range__max" aria-hidden="true">
-          {defaultValues.max}
-        </span>
-      </div>
-    </div>
+    <TextInput
+      label={intl.formatMessage({ id: "networks.parameters.input-max-nodes.label" })}
+      hint={intl.formatMessage({ id: "networks.parameters.input-max-nodes.hint" })}
+      type="number"
+      min={defaultValues.min}
+      max={defaultValues.max}
+      value={input}
+      onChange={(event) => setInput(Number(event.target.value))}
+    />
   )
 }
