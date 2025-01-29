@@ -5,7 +5,7 @@ import useUrl from "../../../search/hooks/useUrl"
 import Modal from "../../../../components/modal"
 import PatentYearFilter from "../../../search/components/patents/filters/years"
 import PatentRegionFilter from "../../../search/components/patents/filters/region-switch"
-import PatentsOrganizationsFilter from "../../../search/components/patents/filters/organizations"
+import PatentOrganizationsFilter from "../../../search/components/patents/filters/organizations"
 
 export default function NetworkFiltersPatentsModal() {
   const intl = useIntl()
@@ -22,7 +22,7 @@ export default function NetworkFiltersPatentsModal() {
         <Container fluid className="fr-my-2w">
           <PatentYearFilter />
           <hr className="fr-mt-3w" />
-          <PatentsOrganizationsFilter />
+          <PatentOrganizationsFilter />
         </Container>
         <Container fluid className="fr-my-2w">
           <hr className="fr-mt-3w" />
