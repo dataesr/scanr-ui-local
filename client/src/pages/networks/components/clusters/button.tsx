@@ -9,7 +9,7 @@ export default function ClustersButton() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { integrationOptions } = useIntegration()
-  const { parameters, handleParameterChange } = useOptions()
+  const { currentSource, parameters, handleParameterChange } = useOptions()
   const { search } = useSearchData()
 
   if (integrationOptions.showClustersButton === false) return null
@@ -21,7 +21,7 @@ export default function ClustersButton() {
           iconPosition="right"
           icon={parameters.clusters ? "arrow-up-line" : "arrow-down-line"}
           onClick={() => handleParameterChange("clusters", !parameters.clusters)}
-          disabled={search.isFetching || Boolean(search.error)}
+          disabled={currentSource === "patents" || search.isFetching || Boolean(search.error)}
         >
           {intl.formatMessage({
             id: parameters.clusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
