@@ -20,8 +20,8 @@ function TrendsRankingItems() {
   return (
     <Container fluid>
       <div className="fr-accordions-group">
-        {items.map((item, index) => (
-          <TrendsRankingItem key={`${index}-${includes}`} item={item} />
+        {items.map((item) => (
+          <TrendsRankingItem key={item.id} item={item} />
         ))}
       </div>
       {isFetching && <BaseSkeleton height="500px" />}

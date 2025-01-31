@@ -35,7 +35,8 @@ export default function useTrends() {
         normalized: normalized,
         includes: includes,
       }),
-    placeholderData: (prev) => prev,
+    placeholderData: (previousData, previousQuery) =>
+      previousQuery?.queryKey && previousQuery.queryKey[1] === currentSource ? previousData : undefined,
   })
 
   const values = useMemo(() => {
