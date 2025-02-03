@@ -4,7 +4,7 @@ import { TextInput } from "@dataesr/dsfr-plus"
 import useOptions from "../../../hooks/useOptions"
 import { NETWORK_PARAMETERS } from "../../../config/parameters"
 
-export default function InputmaxComponents() {
+export default function InputMaxComponents() {
   const intl = useIntl()
   const {
     parameters: { maxComponents },
@@ -15,7 +15,10 @@ export default function InputmaxComponents() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      input >= defaultValues.min && input <= defaultValues.max && handleParameterChange("maxComponents", input)
+      input !== maxComponents &&
+        input >= defaultValues.min &&
+        input <= defaultValues.max &&
+        handleParameterChange("maxTest", input)
     }, 1000)
 
     return () => {

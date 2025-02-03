@@ -15,7 +15,10 @@ export default function InputMaxNodes() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      input >= defaultValues.min && input <= defaultValues.max && handleParameterChange("maxNodes", input)
+      input !== maxNodes &&
+        input >= defaultValues.min &&
+        input <= defaultValues.max &&
+        handleParameterChange("maxNodes", input)
     }, 1000)
 
     return () => {
