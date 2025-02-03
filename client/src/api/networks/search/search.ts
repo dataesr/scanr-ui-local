@@ -128,10 +128,10 @@ export async function networkSearchAggs({
       },
     },
     aggs: {
-      publicationsCount: {
+      documentsCount: {
         value_count: { field: "id.keyword" },
       },
-      publicationsByYear: {
+      documentsByYear: {
         terms: { field: "year", include: DEFAULT_YEARS, size: DEFAULT_YEARS.length },
       },
       ...DEFAULT_YEARS.reduce(
@@ -139,7 +139,7 @@ export async function networkSearchAggs({
         {}
       ),
       domains: {
-        terms: { field: "domains.label.default.keyword" },
+        terms: { field: CONFIG[model].topics },
       },
       isOa: {
         terms: { field: "isOa" },

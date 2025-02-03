@@ -18,6 +18,7 @@ export const CONFIG = {
   authors: {
     index: publicationsIndex,
     field: "authors.id_name",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "authors.id_name"],
     aggregation: "authors.id_name.keyword",
@@ -37,6 +38,7 @@ export const CONFIG = {
   institutions: {
     index: publicationsIndex,
     field: "affiliations.id_name",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
@@ -56,6 +58,7 @@ export const CONFIG = {
   structures: {
     index: publicationsIndex,
     field: "affiliations.id_name",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
@@ -75,6 +78,7 @@ export const CONFIG = {
   domains: {
     index: publicationsIndex,
     field: "domains.id_name",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "domains.id_name"],
     aggregation: "domains.id_name.keyword",
@@ -94,6 +98,7 @@ export const CONFIG = {
   software: {
     index: publicationsIndex,
     field: "software.id_name",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "software.id_name"],
     aggregation: "software.id_name.keyword",
@@ -113,6 +118,7 @@ export const CONFIG = {
   projects: {
     index: publicationsIndex,
     field: "projects.id_name",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "projects.id_name"],
     aggregation: "projects.id_name.keyword",
@@ -132,6 +138,7 @@ export const CONFIG = {
   countries: {
     index: publicationsIndex,
     field: "affiliations.country",
+    topics: "domains.label.default.keyword",
     search_fields: publicationsFields,
     source_fields: [...publicationsSourceFields, "affiliations.country"],
     aggregation: "affiliations.country.keyword",
@@ -151,6 +158,7 @@ export const CONFIG = {
   persons: {
     index: patentsIndex,
     field: "applicants.id_name",
+    topics: "cpc.groupe.label.keyword",
     search_fields: patentsFields,
     source_fields: [...patentsSourceFields, "applicants.id_name"],
     aggregation: "applicants.id_name.keyword",
@@ -170,11 +178,12 @@ export const CONFIG = {
   organizations: {
     index: patentsIndex,
     field: "applicants.id_name",
+    topics: "cpc.groupe.label.keyword",
     search_fields: patentsFields,
     source_fields: [...patentsSourceFields, "applicants.id_name"],
     aggregation: "applicants.id_name.keyword",
     co_aggregation: "co_organizations.keyword",
-    url: (_: string, label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url: (key: string) => `/organizations/${key}`,
     terminology: {
       item: "organization",
       items: "organizations",
@@ -189,6 +198,7 @@ export const CONFIG = {
   subclasses: {
     index: patentsIndex,
     field: "cpc.ss_classe.id_name",
+    topics: "cpc.groupe.label.keyword",
     search_fields: patentsFields,
     source_fields: [...patentsSourceFields, "cpc.ss_classe.id_name"],
     aggregation: "cpc.ss_classe.id_name.keyword",
@@ -208,6 +218,7 @@ export const CONFIG = {
   classes: {
     index: patentsIndex,
     field: "cpc.classe.id_name",
+    topics: "cpc.groupe.label.keyword",
     search_fields: patentsFields,
     source_fields: [...patentsSourceFields, "cpc.classe.id_name"],
     aggregation: "cpc.classe.id_name.keyword",

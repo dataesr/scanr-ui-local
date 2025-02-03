@@ -20,7 +20,7 @@ export type NetworkItem = {
   weights: Record<string, number>
   scores: Record<string, number>
   page?: string
-  publicationsCount?: number
+  documentsCount?: number
   citationsCount?: number
   citationsRecent?: number
   citationsScore?: number
@@ -44,9 +44,9 @@ export type NetworkCommunity = {
     url?: string
   }>
   maxYear?: number
-  publicationsByYear?: Record<string, number>
-  publicationsCount?: number
-  publications?: Array<Record<string, string | number>>
+  documentsByYear?: Record<string, number>
+  documentsCount?: number
+  documents?: Array<Record<string, string | number>>
   citationsByYear?: Record<string, number>
   citationsCount?: number
   citationsRecent?: number
