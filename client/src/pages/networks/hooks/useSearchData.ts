@@ -24,6 +24,7 @@ export default function useSearchData(forceClusters?: boolean) {
         query: currentQuery,
         lang: lang,
         parameters: parameters,
+        integration: integrationId,
         filters,
       }),
   })

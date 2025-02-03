@@ -84,6 +84,7 @@ export type NetworkSearchArgs = {
   filters?: NetworkFilters
   lang?: string
   parameters?: NetworkParameters
+  integration?: string
 }
 export type NetworkSearchHitsArgs = {
   model: string

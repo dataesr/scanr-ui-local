@@ -30,7 +30,8 @@ export default async function networkCreate(
   filters: NetworkFilters,
   aggregation: Array<NetworkBucket>,
   parameters: NetworkParameters,
-  lang: string
+  lang: string,
+  integration: string
 ): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
@@ -119,7 +120,7 @@ export default async function networkCreate(
       },
       scores: { ...(attr?.maxYear && { "Last document": attr.maxYear }) },
       page: configGetItemPage(model, key),
-      search: configGetItemSearch(model, attr.label),
+      search: configGetItemSearch(model, attr.label, integration),
       ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
       ...(attr?.citationsRecent !== undefined && { citationsRecent: attr?.citationsRecent }),

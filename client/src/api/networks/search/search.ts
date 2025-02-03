@@ -40,6 +40,7 @@ export async function networkSearch({
   lang,
   parameters,
   filters,
+  integration,
 }: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
@@ -65,7 +66,7 @@ export async function networkSearch({
     return null
   }
 
-  const network = await networkCreate(query, model, filters, aggregation, parameters, lang)
+  const network = await networkCreate(query, model, filters, aggregation, parameters, lang, integration)
   const config = configCreate(source, model)
   const info = infoCreate(query, model)
 

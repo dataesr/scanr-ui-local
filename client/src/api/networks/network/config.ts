@@ -23,8 +23,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "authors.id_name"],
     aggregation: "authors.id_name.keyword",
     co_aggregation: "co_authors.keyword",
-    url_page: (key: string) => `/authors/${key}`,
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_page: "/authors",
+    url_search: "/search/publications",
     terminology: {
       item: "author",
       items: "authors",
@@ -44,8 +44,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
     co_aggregation: "co_institutions.keyword",
-    url_page: (key: string) => `/organizations/${key}`,
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_page: "/organizations",
+    url_search: "/search/publications",
     terminology: {
       item: "institution",
       items: "institutions",
@@ -65,8 +65,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
     co_aggregation: "co_structures.keyword",
-    url_page: (key: string) => `/organizations/${key}`,
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_page: "/organizations",
+    url_search: "/search/publications",
     terminology: {
       item: "structure",
       items: "structures",
@@ -86,7 +86,7 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "domains.id_name"],
     aggregation: "domains.id_name.keyword",
     co_aggregation: "co_domains.keyword",
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_search: "/search/publications",
     terminology: {
       item: "topic",
       items: "topics",
@@ -106,7 +106,7 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "software.id_name"],
     aggregation: "software.id_name.keyword",
     co_aggregation: "co_software.keyword",
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_search: "/search/publications",
     terminology: {
       item: "software",
       items: "software",
@@ -126,8 +126,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "projects.id_name"],
     aggregation: "projects.id_name.keyword",
     co_aggregation: "co_projects.keyword",
-    url_page: (key: string) => `/projects/${key}`,
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_page: "/projects",
+    url_search: "/search/publications",
     terminology: {
       item: "project",
       items: "projects",
@@ -147,7 +147,7 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "affiliations.country"],
     aggregation: "affiliations.country.keyword",
     co_aggregation: "co_countries.keyword",
-    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_search: "/search/publications",
     terminology: {
       item: "country",
       items: "countries",
@@ -167,7 +167,7 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "applicants.id_name"],
     aggregation: "applicants.id_name.keyword",
     co_aggregation: "co_persons.keyword",
-    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_search: "/search/patents",
     terminology: {
       item: "person",
       items: "persons",
@@ -187,8 +187,8 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "applicants.id_name"],
     aggregation: "applicants.id_name.keyword",
     co_aggregation: "co_organizations.keyword",
-    url_page: (key: string) => `/organizations/${key}`,
-    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_page: "/organizations",
+    url_search: "/search/patents",
     terminology: {
       item: "organization",
       items: "organizations",
@@ -208,7 +208,7 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "cpc.ss_classe.id_name"],
     aggregation: "cpc.ss_classe.id_name.keyword",
     co_aggregation: "co_cpc_ss_classe.keyword",
-    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_search: "/search/patents",
     terminology: {
       item: "subclass",
       items: "subclasses",
@@ -228,7 +228,7 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "cpc.classe.id_name"],
     aggregation: "cpc.classe.id_name.keyword",
     co_aggregation: "co_cpc_classe.keyword",
-    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_search: "/search/patents",
     terminology: {
       item: "classe",
       items: "classes",
@@ -252,12 +252,13 @@ const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
 export function configGetItemPage(model: string, key: string): string {
-  const targetUrl = CONFIG?.[model]?.url_page?.(key)
-  return targetUrl ? window.location.origin + targetUrl : undefined
+  const targetUrl = CONFIG?.[model]?.url_page
+  return targetUrl ? window.location.origin + `${targetUrl}/${key}` : undefined
 }
-export function configGetItemSearch(model: string, label: string): string {
-  const targetUrl = CONFIG?.[model]?.url_search?.(label)
-  return targetUrl ? window.location.origin + targetUrl : undefined
+export function configGetItemSearch(model: string, label: string, integration): string {
+  const targetUrl = CONFIG?.[model]?.url_search
+  const integrationFilter = integration ? ` AND bso_local_affiliations.keyword:${integration}` : ""
+  return targetUrl ? window.location.origin + `${targetUrl}?q="${label.replace(/ /g, "+")}"${integrationFilter}` : undefined
 }
 
 export default function configCreate(source: string, model: string): NetworkConfig {

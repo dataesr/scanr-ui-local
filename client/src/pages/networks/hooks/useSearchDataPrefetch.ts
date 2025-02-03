@@ -18,6 +18,7 @@ export default function useSearchDataPrefetch() {
         lang: locale,
         parameters: parameters,
         filters: [],
+        integration: "",
       }),
   })
 }
