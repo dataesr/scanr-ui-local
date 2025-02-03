@@ -64,7 +64,7 @@ const exportNetwork = (network: NetworkData) => ({
     ...(network.clusters.length && {
       clusterLabel: network.clusters.find((cluster) => cluster.cluster === item.cluster).label,
     }),
-    publicationsCount: item?.publicationsCount,
+    documentsCount: item?.documentsCount,
     citationsCount: item?.citationsCount,
     citationsRecent: item?.citationsRecent,
     citationsScore: item?.citationsScore,
@@ -76,11 +76,11 @@ const exportNetwork = (network: NetworkData) => ({
     id: cluster.cluster,
     label: cluster.label,
     nodesCount: cluster.nodes.length,
-    publicationsCount: cluster?.publicationsCount,
+    documentsCount: cluster?.documentsCount,
     citationsCount: cluster?.citationsCount,
     citationsRecent: cluster?.citationsRecent,
     citationsScore: cluster?.citationsScore,
-    publications: cluster?.publications,
+    documents: cluster?.documents,
   })),
 })
 

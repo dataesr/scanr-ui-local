@@ -61,7 +61,7 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
               size="sm"
               color="pink-macaron"
             >
-              {`${community.publicationsCount} ${intl.formatMessage({
+              {`${community.documentsCount} ${intl.formatMessage({
                 id: "networks.section.clusters.badge-publications",
               })}`}
             </Badge>
@@ -120,7 +120,7 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
       <Modal isOpen={showPublicationsModal} hide={() => setShowPublicationsModal(false)}>
         <ModalTitle>{intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}</ModalTitle>
         <ModalContent>
-          {community?.publications?.map((publication) => (
+          {community?.documents?.map((publication) => (
             <li className="fr-mt-1w">
               <Link href={window.location.origin + "/publications/" + encode(publication.id as string)}>
                 {publication.title}
