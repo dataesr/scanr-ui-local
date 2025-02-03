@@ -33,7 +33,14 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
 })
 
-export async function networkSearch({ model, query, lang, parameters, filters }: NetworkSearchArgs): Promise<Network> {
+export async function networkSearch({
+  source,
+  model,
+  query,
+  lang,
+  parameters,
+  filters,
+}: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
@@ -59,7 +66,7 @@ export async function networkSearch({ model, query, lang, parameters, filters }:
   }
 
   const network = await networkCreate(query, model, filters, aggregation, parameters, lang)
-  const config = configCreate(model)
+  const config = configCreate(source, model)
   const info = infoCreate(query, model)
 
   if (network.items.length < 3) {

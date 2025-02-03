@@ -23,7 +23,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "authors.id_name"],
     aggregation: "authors.id_name.keyword",
     co_aggregation: "co_authors.keyword",
-    url: (key: string) => `/authors/${key}`,
+    url_page: (key: string) => `/authors/${key}`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "author",
       items: "authors",
@@ -43,7 +44,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
     co_aggregation: "co_institutions.keyword",
-    url: (key: string) => `/organizations/${key}`,
+    url_page: (key: string) => `/organizations/${key}`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "institution",
       items: "institutions",
@@ -63,7 +65,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "affiliations.id_name"],
     aggregation: "affiliations.id_name.keyword",
     co_aggregation: "co_structures.keyword",
-    url: (key: string) => `/organizations/${key}`,
+    url_page: (key: string) => `/organizations/${key}`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "structure",
       items: "structures",
@@ -83,7 +86,7 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "domains.id_name"],
     aggregation: "domains.id_name.keyword",
     co_aggregation: "co_domains.keyword",
-    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "topic",
       items: "topics",
@@ -103,7 +106,7 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "software.id_name"],
     aggregation: "software.id_name.keyword",
     co_aggregation: "co_software.keyword",
-    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "software",
       items: "software",
@@ -123,7 +126,8 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "projects.id_name"],
     aggregation: "projects.id_name.keyword",
     co_aggregation: "co_projects.keyword",
-    url: (key: string) => `/projects/${key}`,
+    url_page: (key: string) => `/projects/${key}`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "project",
       items: "projects",
@@ -143,7 +147,7 @@ export const CONFIG = {
     source_fields: [...publicationsSourceFields, "affiliations.country"],
     aggregation: "affiliations.country.keyword",
     co_aggregation: "co_countries.keyword",
-    url: (_: string, label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
+    url_search: (label: string) => `/search/publications?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "country",
       items: "countries",
@@ -163,7 +167,7 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "applicants.id_name"],
     aggregation: "applicants.id_name.keyword",
     co_aggregation: "co_persons.keyword",
-    url: (_: string, label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "person",
       items: "persons",
@@ -183,7 +187,8 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "applicants.id_name"],
     aggregation: "applicants.id_name.keyword",
     co_aggregation: "co_organizations.keyword",
-    url: (key: string) => `/organizations/${key}`,
+    url_page: (key: string) => `/organizations/${key}`,
+    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "organization",
       items: "organizations",
@@ -203,7 +208,7 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "cpc.ss_classe.id_name"],
     aggregation: "cpc.ss_classe.id_name.keyword",
     co_aggregation: "co_cpc_ss_classe.keyword",
-    url: (_: string, label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "subclass",
       items: "subclasses",
@@ -223,7 +228,7 @@ export const CONFIG = {
     source_fields: [...patentsSourceFields, "cpc.classe.id_name"],
     aggregation: "cpc.classe.id_name.keyword",
     co_aggregation: "co_cpc_classe.keyword",
-    url: (_: string, label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
+    url_search: (label: string) => `/search/patents?q="${label.replace(/ /g, "+")}"`,
     terminology: {
       item: "classe",
       items: "classes",
@@ -237,19 +242,27 @@ export const CONFIG = {
   },
 }
 
-const configGetItemDescription = () =>
-  `<div class='description_heading'><a class='description_url' href={page}>{label}</a></div>`
+const configGetItemDescription = (source: string, model) =>
+  `<div class='description_heading'>${
+    CONFIG?.[model]?.url_page
+      ? "<a class='description_url' href={page}>{label}</a>"
+      : "<span class='description_label'>{label}</span>"
+  }<br /><a class='description_url' href={search}>search ${source.toLowerCase()}</a></div>`
 const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
-export function configGetItemUrl(model: string, key: string, label: string): string {
-  const targetUrl = CONFIG?.[model]?.url(key, label) ?? ""
-  return window.location.origin + targetUrl
+export function configGetItemPage(model: string, key: string): string {
+  const targetUrl = CONFIG?.[model]?.url_page?.(key)
+  return targetUrl ? window.location.origin + targetUrl : undefined
+}
+export function configGetItemSearch(model: string, label: string): string {
+  const targetUrl = CONFIG?.[model]?.url_search?.(label)
+  return targetUrl ? window.location.origin + targetUrl : undefined
 }
 
-export default function configCreate(model: string): NetworkConfig {
+export default function configCreate(source: string, model: string): NetworkConfig {
   const templates = {
-    item_description: configGetItemDescription(),
+    item_description: configGetItemDescription(source, model),
     link_description: configGetLinkDescription(model),
   }
   const terminology = CONFIG?.[model]?.terminology

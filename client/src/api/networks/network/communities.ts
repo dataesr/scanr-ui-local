@@ -7,7 +7,7 @@ import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/
 import { openAiLabeledClusters } from "./mistralai"
 import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
-import { configGetItemUrl } from "./config"
+import { configGetItemPage } from "./config"
 import { CONFIG } from "./config"
 import { nodeGetId } from "./network"
 import { ElasticAggregations } from "../../../types/commons"
@@ -48,7 +48,7 @@ const communityGetNodes = (graph: Graph, community: number): Array<{ id: string;
     id: id,
     weight: graph.getNodeAttribute(id, "weight"),
     label: graph.getNodeAttribute(id, "label"),
-    url: configGetItemUrl(graph.getAttribute("model"), id, graph.getNodeAttribute(id, "label")),
+    page: configGetItemPage(graph.getAttribute("model"), id),
   }))
   return nodes.sort((a, b) => b.weight - a.weight)
 }

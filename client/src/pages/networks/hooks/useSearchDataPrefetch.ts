@@ -9,9 +9,10 @@ export default function useSearchDataPrefetch() {
   const { locale } = useDSFRConfig()
 
   queryClient.prefetchQuery({
-    queryKey: ["network", "domains", "", [], locale, parameters],
+    queryKey: ["network", "publications", "domains", "", [], locale, parameters],
     queryFn: () =>
       networkSearch({
+        source: "publications",
         model: "domains",
         query: "",
         lang: locale,

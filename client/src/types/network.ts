@@ -20,6 +20,7 @@ export type NetworkItem = {
   weights: Record<string, number>
   scores: Record<string, number>
   page?: string
+  search?: string
   documentsCount?: number
   citationsCount?: number
   citationsRecent?: number
@@ -77,6 +78,7 @@ export type NetworkSearchBody = {
   aggs?: Record<string, unknown>
 }
 export type NetworkSearchArgs = {
+  source: string
   model: string
   query?: string
   filters?: NetworkFilters
