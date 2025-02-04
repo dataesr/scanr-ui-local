@@ -7,8 +7,8 @@ import { NETWORK_MODELS } from "../config/models"
 
 export default function useOptions() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const currentSource = searchParams.get("source") || "publications"
-  const currentModel = searchParams.get("model") || NETWORK_MODELS[currentSource][0].label
+  const currentSource: string = searchParams.get("source") || "publications"
+  const currentModel: string = searchParams.get("model") || NETWORK_MODELS[currentSource][0].label
 
   const parameters: NetworkParameters = {
     maxNodes: Number(searchParams.get("maxNodes") || Number(NETWORK_PARAMETERS.maxNodes.default)),
