@@ -32,20 +32,20 @@ const NETWORK_MODELS_MAPPING = {
   ],
   patents: [
     {
-      label: "persons",
-      icon: "user-line",
-    },
-    {
-      label: "organizations",
-      icon: "building-line",
-    },
-    {
       label: "subclasses",
       icon: "folder-2-line",
     },
     {
       label: "classes",
       icon: "folder-2-line",
+    },
+    {
+      label: "persons",
+      icon: "user-line",
+    },
+    {
+      label: "organizations",
+      icon: "building-line",
     },
   ],
 }
