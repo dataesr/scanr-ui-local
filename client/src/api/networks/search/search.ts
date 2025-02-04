@@ -85,7 +85,7 @@ export async function networkSearch({
 }
 
 export async function networkSearchHits({ model, query, filters, links }: NetworkSearchHitsArgs): Promise<ElasticHits> {
-  const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
+  const linksFilter = { terms: { [CONFIG[model].co_aggregation]: links } }
   const body = {
     size: DEFAULT_SIZE,
     _source: CONFIG[model].source_fields,
@@ -119,7 +119,7 @@ export async function networkSearchAggs({
   filters,
   links,
 }: NetworkSearchHitsArgs): Promise<ElasticAggregations> {
-  const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
+  const linksFilter = { terms: { [CONFIG[model].co_aggregation]: links } }
   const body = {
     size: 0,
     query: {
