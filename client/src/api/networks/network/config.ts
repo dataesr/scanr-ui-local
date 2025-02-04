@@ -258,9 +258,12 @@ export function configGetItemPage(model: string, key: string): string {
 export function configGetItemSearch(query: string, model: string, key: string, integration: string): string {
   const itemField = CONFIG[model].field
   const targetUrl = CONFIG[model].url_search
-  const itemFilter = ` AND ${itemField}:${key}`
+  const itemFilter = `${itemField}:${key}`
   const integrationFilter = integration ? ` AND bso_local_affiliations.keyword:${integration}` : ""
-  return window.location.origin + `${targetUrl}?q=(${query})${itemFilter}${integrationFilter}`
+
+  if (!query) return window.location.origin.concat(targetUrl, `?q=${itemFilter}`, integrationFilter)
+  if (query.includes(itemFilter)) return window.location.origin.concat(targetUrl, `?q=${query}`, integrationFilter)
+  return window.location.origin.concat(targetUrl, `?q=(${query}) AND ${itemFilter}`, integrationFilter)
 }
 
 export default function configCreate(source: string, model: string): NetworkConfig {
