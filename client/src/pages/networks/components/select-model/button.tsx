@@ -15,7 +15,7 @@ export default function NetworkSelectModelButton() {
   return (
     <Button
       className="fr-mt-1w fr-mr-1w"
-      icon="git-branch-line"
+      icon="network-line"
       iconPosition="left"
       as="button"
       aria-controls="networks-options-select-model-modal"
