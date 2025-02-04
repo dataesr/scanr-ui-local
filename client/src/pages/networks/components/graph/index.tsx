@@ -15,20 +15,18 @@ export default function NetworkGraph() {
   const theme = document.documentElement.getAttribute("data-fr-theme")
 
   if (searchClusters.isFetching) parameters.clusters = false
-  const vosviewer = parameters.clusters ? searchClusters?.data : search?.data
+  const data = parameters.clusters ? searchClusters?.data : search?.data
 
   if (search.isFetching) return <Spinner />
-
-  if (!vosviewer?.network) return <Error204 />
+  if (!data?.network) return <Error204 />
 
   const key = JSON.stringify({ currentModel, currentQuery, filters, ...parameters, lang, theme, focusItem })
-
-  const vosparams = {
+  const params = {
     largest_component: false,
     dark_ui: theme === "dark",
     simple_ui: false,
     show_item: focusItem,
   }
 
-  return <VOSviewerOnline key={key} data={vosviewer} parameters={vosparams} />
+  return <VOSviewerOnline key={key} data={data} parameters={params} />
 }
