@@ -74,7 +74,7 @@
     "networks.filters.button.label": "Filters",
     "networks.clusters.button.rm": "Hide communities* information",
     "networks.clusters.button.add": "Display communities* information",
-    "networks.clusters.button.description": "* Using the Louvain method. Community labels are then calculated by generative AI from the community's corpus of publications.",
+    "networks.clusters.button.description": "* Using the Louvain method. Community labels are then calculated by generative AI from the community's corpus of documents.",
     "networks.search.error204.title": "No Result",
     "networks.search.error204.text": "This search returns no data.",
     "networks.exports.title": "Export",
@@ -162,5 +162,9 @@
     "networks.section.clusters.badge-publications": "Publications",
     "networks.section.clusters.see-more": "See more ({count})",
     "networks.section.clusters.see-less": "Show less",
-    "networks.contribute.button": "Report an error"
+    "networks.contribute.button": "Report an error",
+    "networks.navigate-to-search.publications": "Search associated publications",
+    "networks.navigate-to-search.publications.short": "Associated publications",
+    "networks.navigate-to-search.patents": "Search associated patents",
+    "networks.navigate-to-search.patents.short": "Search associated patents"
 }

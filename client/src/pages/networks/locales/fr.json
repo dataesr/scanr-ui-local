@@ -75,8 +75,10 @@
     "networks.parameters.modal.display": "Afficher le réseau",
     "networks.parameters.modal.reset": "Réinitialiser les paramètres",
     "networks.clusters.button.rm": "Masquer les informations des communautés*",
+    "networks.clusters.button.rm.short": "Masquer les communautés*",
     "networks.clusters.button.add": "Afficher les informations des communautés*",
-    "networks.clusters.button.description": "* Par la méthode de Louvain. Les labels des communautés sont ensuite calculés par IA générative à partir du corpus des publications de la communauté.",
+    "networks.clusters.button.add.short": "Afficher les communautés*",
+    "networks.clusters.button.description": "* Par la méthode de Louvain. Les labels des communautés sont ensuite calculés par IA générative à partir du corpus de documents de la communauté.",
     "networks.search.error204.title": "Pas de résultat",
     "networks.search.error204.text": "Cette recherche ne retourne aucune donnée.",
     "networks.exports.title": "Exporter",
@@ -166,5 +168,9 @@
     "networks.section.clusters.badge-publications": "Publications",
     "networks.section.clusters.see-more": "En voir plus ({count})",
     "networks.section.clusters.see-less": "Réduire",
-    "networks.contribute.button": "Signaler une erreur"
+    "networks.contribute.button": "Signaler une erreur",
+    "networks.navigate-to-search.publications": "Rechercher les publications associées",
+    "networks.navigate-to-search.publications.short": "Publications associées",
+    "networks.navigate-to-search.patents": "Rechercher les brevets associés",
+    "networks.navigate-to-search.patents.short": "Brevets associés"
 }

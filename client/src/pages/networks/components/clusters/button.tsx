@@ -1,9 +1,9 @@
 import { useIntl } from "react-intl"
-import { Button, ButtonGroup, Container } from "@dataesr/dsfr-plus"
+import { Button, ButtonGroup } from "@dataesr/dsfr-plus"
 import useSearchData from "../../hooks/useSearchData"
 import useIntegration from "../../hooks/useIntegration"
-import useScreenSize from "../../../../hooks/useScreenSize"
 import useOptions from "../../hooks/useOptions"
+import useScreenSize from "../../../../hooks/useScreenSize"
 
 export default function ClustersButton() {
   const intl = useIntl()
@@ -15,24 +15,22 @@ export default function ClustersButton() {
   if (integrationOptions.showClustersButton === false) return null
 
   return (
-    <Container fluid>
-      <ButtonGroup size="md">
-        <Button
-          iconPosition="right"
-          icon={parameters.clusters ? "arrow-up-line" : "arrow-down-line"}
-          onClick={() => handleParameterChange("clusters", !parameters.clusters)}
-          disabled={search.isFetching || Boolean(search.error)}
-        >
-          {intl.formatMessage({
-            id: parameters.clusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
-          })}
-        </Button>
-      </ButtonGroup>
-      {screen != "xs" && (
-        <p className="fr-text--xs fr-text-mention--grey">
-          {intl.formatMessage({ id: "networks.clusters.button.description" })}
-        </p>
-      )}
-    </Container>
+    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"} className="fr-ml-1w">
+      <Button
+        title={intl.formatMessage({ id: "networks.clusters.button.description" })}
+        iconPosition="right"
+        icon={parameters.clusters ? "arrow-up-line" : "arrow-down-line"}
+        onClick={() => handleParameterChange("clusters", !parameters.clusters)}
+        disabled={search.isFetching || Boolean(search.error)}
+      >
+        {screen === "xs"
+          ? intl.formatMessage({
+              id: parameters.clusters ? "networks.clusters.button.rm.short" : "networks.clusters.button.add.short",
+            })
+          : intl.formatMessage({
+              id: parameters.clusters ? "networks.clusters.button.rm" : "networks.clusters.button.add",
+            })}
+      </Button>
+    </ButtonGroup>
   )
 }
