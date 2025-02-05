@@ -32,6 +32,7 @@ type ClusterItemArgs = {
 function ClusterItem({ currentModel, community }: ClusterItemArgs) {
   const intl = useIntl()
   const currentYear = new Date().getFullYear()
+  const { currentSource } = useOptions()
   const [showNodesModal, setShowNodesModal] = useState(false)
   const [showPublicationsModal, setShowPublicationsModal] = useState(false)
   const { setFocusItem } = useNetworkContext()
@@ -71,11 +72,15 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
             <Badge size="sm" color="yellow-tournesol">
               {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community?.maxYear || "N/A"}`}
             </Badge>
-            <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
-              { id: "networks.section.clusters.citations" },
-              { count: community.citationsRecent }
-            )} (${currentYear - 1}-${currentYear})`}</Badge>
-            <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
+            {currentSource === "publications" && (
+              <>
+                <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
+                  { id: "networks.section.clusters.citations" },
+                  { count: community.citationsRecent }
+                )} (${currentYear - 1}-${currentYear})`}</Badge>
+                <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
+              </>
+            )}
           </BadgeGroup>
         </Col>
       </Row>
