@@ -1,7 +1,7 @@
 export const FIELDS = [
-  "id^10",
-  "externalIds.id^3",
-  "fullName^3",
+  "id^1000",
+  "fullName^500",
+  "externalIds.id^100",
   "publications.title.default^2",
   "publications.summary.default^2",
   "publications.publication^2",
