@@ -2,7 +2,7 @@ import { Container, Row } from "@dataesr/dsfr-plus"
 import NetworkExportsButton from "../exports/button"
 import NetworkSearchBarButton from "../search-bar/button"
 import NetworkSelectModelButton from "../select-model/button"
-// import NetworkSelectSourceButton from "../select-source/button"
+import NetworkSelectSourceButton from "../select-source/button"
 import NetworkFiltersButton from "../filters/button"
 import NetworkParametersButton from "../parameters/button"
 import useIntegration from "../../hooks/useIntegration"
@@ -18,7 +18,7 @@ export default function NetworksOptionsBar() {
         <Container fluid style={{ display: "flex", flexWrap: "wrap" }}>
           <NetworkSearchBarButton />
           <NetworkSelectModelButton />
-          {/* <NetworkSelectSourceButton /> */}
+          <NetworkSelectSourceButton />
         </Container>
         <Container fluid style={{ display: "flex", flexWrap: "wrap" }}>
           <NetworkFiltersButton />

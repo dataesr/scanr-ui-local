@@ -1,13 +1,21 @@
 import { postHeaders, publicationsIndex } from "../../config/api"
 import { ElasticAggregation, ElasticBucket, ElasticBuckets } from "../../types/commons"
-import { TrendsArgs } from "../../types/trends"
+import { TrendsArgs, TrendsRanking } from "../../types/trends"
 import { FIELDS } from "../publications/_utils/constants"
 import { CONFIG } from "./config"
 import { citationsTrends, publicationsTrends } from "./trends"
 
 type TrendsAggregation = Array<ElasticBucket & { model: ElasticAggregation }>
 
-export async function getPublicationsTrends({ cursor, model, query, years, filters, normalized }: TrendsArgs) {
+export async function getPublicationsTrends({
+  page,
+  model,
+  query,
+  years,
+  filters,
+  normalized,
+  includes,
+}: TrendsArgs): Promise<TrendsRanking> {
   const body: any = {
     size: 0,
     query: {
@@ -30,6 +38,7 @@ export async function getPublicationsTrends({ cursor, model, query, years, filte
           model: { terms: { field: CONFIG[model].field, size: 60000 / years.length } },
         },
       },
+      count: { value_count: { field: "id.keyword" } },
     },
   }
 
@@ -47,6 +56,7 @@ export async function getPublicationsTrends({ cursor, model, query, years, filte
   }
 
   const json = await res.json()
+  const count: number = json?.aggregations?.count?.value || 0
   const aggregation: TrendsAggregation = json?.aggregations?.["years"]?.buckets
 
   if (!aggregation?.length) {
@@ -54,11 +64,19 @@ export async function getPublicationsTrends({ cursor, model, query, years, filte
     return null
   }
 
-  const trends = publicationsTrends(aggregation, cursor, years, normalized)
-  return trends
+  const trends = publicationsTrends(aggregation, page, years, normalized, includes)
+  return { ...trends, sourceCount: count }
 }
 
-export async function getCitationsTrends({ cursor, model, query, years, filters, normalized }: TrendsArgs) {
+export async function getCitationsTrends({
+  page,
+  model,
+  query,
+  years,
+  filters,
+  normalized,
+  includes,
+}: TrendsArgs): Promise<TrendsRanking> {
   const body: any = {
     size: 0,
     query: {
@@ -84,6 +102,7 @@ export async function getCitationsTrends({ cursor, model, query, years, filters,
           ),
         },
       },
+      count: { value_count: { field: "id.keyword" } },
     },
   }
 
@@ -101,6 +120,7 @@ export async function getCitationsTrends({ cursor, model, query, years, filters,
   }
 
   const json = await res.json()
+  const count: number = json?.aggregations?.count?.value || 0
   const aggregation: ElasticBuckets = json?.aggregations?.model?.buckets
 
   if (!aggregation?.length) {
@@ -108,6 +128,6 @@ export async function getCitationsTrends({ cursor, model, query, years, filters,
     return null
   }
 
-  const trends = citationsTrends(aggregation, cursor, years, normalized)
-  return trends
+  const trends = citationsTrends(aggregation, page, years, normalized, includes)
+  return { ...trends, sourceCount: count }
 }

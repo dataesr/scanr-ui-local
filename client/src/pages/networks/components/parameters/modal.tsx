@@ -4,16 +4,14 @@ import InputMaxNodes from "./input-max-nodes"
 import InputMaxComponents from "./input-max-components"
 import { useIntl } from "react-intl"
 import useSearchData from "../../hooks/useSearchData"
-import useTab from "../../hooks/useTab"
-import useParameters from "../../hooks/useParameters"
+import useOptions from "../../hooks/useOptions"
 
 export default function NetworkParametersModal() {
   const intl = useIntl()
-  const { currentTab } = useTab()
   const {
     search: { isFetching },
-  } = useSearchData(currentTab)
-  const { resetParameters } = useParameters()
+  } = useSearchData()
+  const { resetParameters } = useOptions()
 
   const id = "networks-options-parameters-modal"
 

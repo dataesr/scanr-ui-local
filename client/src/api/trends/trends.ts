@@ -3,14 +3,15 @@ import { linearRegressionSlope } from "./_utils/regression"
 import variation from "./_utils/variation"
 
 const EXCLUDE_WORDS = [""]
-const PAGE_ITEMS = 10
+const ITEMS_PER_PAGE = 25
 
 type TrendsAggregation = Array<ElasticBucket & { [x: string]: ElasticAggregation }>
 
-function computeTrends(data: Array<any>, cursor: number, years: Array<number>, normalized: boolean) {
+function computeTrends(data: Array<any>, page: number, years: Array<number>, normalized: boolean, includes: string) {
   const maxYear = years[years.length - 1]
-  const minItems = (cursor || 0) * PAGE_ITEMS
-  const maxItems = ((cursor || 0) + 1) * PAGE_ITEMS
+  const minYear = years[0]
+  const minItems = (page - 1) * ITEMS_PER_PAGE
+  const maxItems = page * ITEMS_PER_PAGE
 
   // Filter items
   const items = data.filter(({ label }) => !EXCLUDE_WORDS.includes(label))
@@ -22,42 +23,36 @@ function computeTrends(data: Array<any>, cursor: number, years: Array<number>, n
     item.norm_slope = slope / item.sum
     item.intercept = intercept
     item.r2 = r2
-    item.diff = variation(item.count, maxYear)
+    item.variation = variation(item.count, item.sum, minYear, maxYear)
   })
 
   // Sort items by volume max year
   const sortedItems = items.sort((a, b) => (b?.count?.[maxYear] || 0) - (a?.count?.[maxYear] || 0))
 
+  // Filter labels
+  const filteredItems = sortedItems.filter(({ label }: { label: string }) => label.toLowerCase().includes(includes))
+
   // Compute top items
-  const topCount = sortedItems.slice(minItems, maxItems)
-  // const topDiff = sortedItems
-  //   .slice()
-  //   .sort((a, b) => b.diff - a.diff)
-  //   .slice(0, MAX_ITEMS)
-  // const botDiff = sortedItems
-  //   .slice()
-  //   .sort((a, b) => (b?.count?.[min_year - 1] || 0) - (a?.count?.[maxYear - 1] || 0))
-  //   .sort((a, b) => a.diff - b.diff)
-  //   .slice(0, MAX_ITEMS)
-  const topSlope = sortedItems
+  const topCount = filteredItems.slice(minItems, maxItems)
+  const topSlope = filteredItems
     .slice()
     .sort((a, b) => (normalized ? b.norm_slope - a.norm_slope : b.slope - a.slope))
     .slice(minItems, maxItems)
-  const botSlope = sortedItems
+  const botSlope = filteredItems
     .slice()
     .sort((a, b) => (normalized ? a.norm_slope - b.norm_slope : a.slope - b.slope))
     .slice(minItems, maxItems)
 
   const trends = {
-    views: {
+    ranking: {
       "count-top": topCount,
-      // "diff-top": topDiff,
-      // "diff-bot": botDiff,
       "trend-top": topSlope,
       "trend-bot": botSlope,
     },
-    nextCursor: maxItems < sortedItems.length ? cursor + 1 : undefined,
-    total: sortedItems.length,
+    searchTotal: sortedItems.length,
+    searchPages: Math.ceil(sortedItems.length / ITEMS_PER_PAGE),
+    filteredTotal: filteredItems.length,
+    filteredPages: Math.ceil(filteredItems.length / ITEMS_PER_PAGE),
   }
 
   return trends
@@ -67,7 +62,8 @@ export function publicationsTrends(
   aggregation: TrendsAggregation,
   cursor: number,
   years: Array<number>,
-  normalized: boolean
+  normalized: boolean,
+  includes: string
 ) {
   // Items count by year
   const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, bucket) => {
@@ -86,11 +82,17 @@ export function publicationsTrends(
   }, {})
   const items = Object.values(_items)
 
-  const trends = computeTrends(items, cursor, years, normalized)
+  const trends = computeTrends(items, cursor, years, normalized, includes)
   return trends
 }
 
-export function citationsTrends(aggregation: ElasticBuckets, cursor: number, years: Array<number>, normalized: boolean) {
+export function citationsTrends(
+  aggregation: ElasticBuckets,
+  cursor: number,
+  years: Array<number>,
+  normalized: boolean,
+  includes: string
+) {
   // Items citations count by year
   const _items: Record<string, Record<string, any>> = aggregation.reduce((acc, item) => {
     years.forEach((year) => {
@@ -109,6 +111,6 @@ export function citationsTrends(aggregation: ElasticBuckets, cursor: number, yea
   }, {})
   const items = Object.values(_items)
 
-  const trends = computeTrends(items, cursor, years, normalized)
+  const trends = computeTrends(items, cursor, years, normalized, includes)
   return trends
 }

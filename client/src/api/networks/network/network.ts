@@ -6,8 +6,7 @@ import forceAtlas2 from "graphology-layout-forceatlas2"
 import betweenessCentrality from "graphology-metrics/centrality/betweenness"
 import { NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
-import { configGetItemUrl } from "./config"
-import { getParameters } from "./parameters"
+import { configGetItemPage, configGetItemSearch } from "./config"
 import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
 import { ignoreIds, institutionsAcronyms, institutionsReplaceLabel } from "./ignore"
 
@@ -31,7 +30,8 @@ export default async function networkCreate(
   filters: NetworkFilters,
   aggregation: Array<NetworkBucket>,
   parameters: NetworkParameters,
-  lang: string
+  lang: string,
+  integration: string
 ): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
@@ -39,7 +39,7 @@ export default async function networkCreate(
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
 
-  const { maxNodes, maxComponents, filterNode, clusters } = getParameters(parameters)
+  const { maxNodes, maxComponents, filterNode, clusters } = parameters
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -90,7 +90,7 @@ export default async function networkCreate(
   }
 
   // Replace institutions labels
-  if (["institutions", "structures"].includes(model)) {
+  if (["institutions", "structures", "organizations"].includes(model)) {
     graph.updateEachNodeAttributes((node, attr) => ({
       ...attr,
       label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),
@@ -118,8 +118,9 @@ export default async function networkCreate(
         Degree: graph.degree(key),
         ...(clusters && { Citations: attr?.citationsCount || 0 }),
       },
-      scores: { ...(attr?.maxYear && { "Last publication": attr.maxYear }) },
-      page: configGetItemUrl(model, key, attr.label),
+      scores: { ...(attr?.maxYear && { "Last document": attr.maxYear }) },
+      page: configGetItemPage(model, key),
+      search: configGetItemSearch(query, model, key, integration),
       ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
       ...(attr?.citationsRecent !== undefined && { citationsRecent: attr?.citationsRecent }),

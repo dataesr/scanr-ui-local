@@ -33,7 +33,15 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
 })
 
-export async function networkSearch({ model, query, lang, parameters, filters }: NetworkSearchArgs): Promise<Network> {
+export async function networkSearch({
+  source,
+  model,
+  query,
+  lang,
+  parameters,
+  filters,
+  integration,
+}: NetworkSearchArgs): Promise<Network> {
   const body = networkSearchBody(model, query)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
@@ -58,8 +66,8 @@ export async function networkSearch({ model, query, lang, parameters, filters }:
     return null
   }
 
-  const network = await networkCreate(query, model, filters, aggregation, parameters, lang)
-  const config = configCreate(model)
+  const network = await networkCreate(query, model, filters, aggregation, parameters, lang, integration)
+  const config = configCreate(source, model)
   const info = infoCreate(query, model)
 
   if (network.items.length < 3) {
@@ -77,7 +85,7 @@ export async function networkSearch({ model, query, lang, parameters, filters }:
 }
 
 export async function networkSearchHits({ model, query, filters, links }: NetworkSearchHitsArgs): Promise<ElasticHits> {
-  const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
+  const linksFilter = { terms: { [CONFIG[model].co_aggregation]: links } }
   const body = {
     size: DEFAULT_SIZE,
     _source: CONFIG[model].source_fields,
@@ -111,7 +119,7 @@ export async function networkSearchAggs({
   filters,
   links,
 }: NetworkSearchHitsArgs): Promise<ElasticAggregations> {
-  const linksFilter = { terms: { [`co_${model}.keyword`]: links } }
+  const linksFilter = { terms: { [CONFIG[model].co_aggregation]: links } }
   const body = {
     size: 0,
     query: {
@@ -128,10 +136,10 @@ export async function networkSearchAggs({
       },
     },
     aggs: {
-      publicationsCount: {
+      documentsCount: {
         value_count: { field: "id.keyword" },
       },
-      publicationsByYear: {
+      documentsByYear: {
         terms: { field: "year", include: DEFAULT_YEARS, size: DEFAULT_YEARS.length },
       },
       ...DEFAULT_YEARS.reduce(
@@ -139,7 +147,7 @@ export async function networkSearchAggs({
         {}
       ),
       domains: {
-        terms: { field: "domains.label.default.keyword" },
+        terms: { field: CONFIG[model].topics },
       },
       isOa: {
         terms: { field: "isOa" },
