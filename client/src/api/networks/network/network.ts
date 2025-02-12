@@ -52,7 +52,7 @@ export default async function networkCreate(
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
       graph.updateNode(nodeGetId(id), (attr) => ({
-        label: nodeGetLabel(id, lang),
+        label: attr?.label || nodeGetLabel(id, lang),
         weight: (attr?.weight ?? 0) + count,
         links: attr?.links ? [...attr.links, key] : [key],
         ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),
