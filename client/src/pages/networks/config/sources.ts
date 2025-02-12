@@ -7,6 +7,10 @@ const NETWORK_SOURCES_MAPPING = [
     label: "patents",
     icon: "award-line",
   },
+  {
+    label: "projects",
+    icon: "briefcase-line",
+  },
 ]
 
 export const NETWORK_SOURCES = NETWORK_SOURCES_MAPPING

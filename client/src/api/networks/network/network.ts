@@ -25,6 +25,7 @@ const nodeGetLabel = (id: string, lang: string) => {
 }
 
 export default async function networkCreate(
+  source: string,
   query: string,
   model: string,
   filters: NetworkFilters,
@@ -35,6 +36,7 @@ export default async function networkCreate(
 ): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
+  graph.setAttribute("source", source)
   graph.setAttribute("query", query)
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
@@ -120,7 +122,7 @@ export default async function networkCreate(
       },
       scores: { ...(attr?.maxYear && { "Last document": attr.maxYear }) },
       page: configGetItemPage(model, key),
-      search: configGetItemSearch(query, model, key, integration),
+      search: configGetItemSearch(query, source, model, key, integration),
       ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
       ...(attr?.citationsRecent !== undefined && { citationsRecent: attr?.citationsRecent }),

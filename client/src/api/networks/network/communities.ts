@@ -92,12 +92,12 @@ const communityGetDocuments = (hits: ElasticHits): Array<Record<string, string |
     citationsRecent: nodeGetCitationsRecent(hit?.cited_by_counts_by_year),
   }))
 
-const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
+const communityGetNodesInfos = (hits: ElasticHits, source: string, model: string): any =>
   hits.reduce((acc, hit) => {
-    const field = CONFIG[model].field.split(".").slice(0, -1).join(".")
+    const field = CONFIG[source][model].field.split(".").slice(0, -1).join(".")
     const citationsByYear = hit?.cited_by_counts_by_year
     hit?.[field]?.forEach((node) => {
-      const key = node[CONFIG[model].field.split(".").at(-1)]
+      const key = node[CONFIG[source][model].field.split(".").at(-1)]
       if (!key) return
       const id = nodeGetId(key)
       acc[id] = {
@@ -117,6 +117,7 @@ const communityGetNodesInfos = (hits: ElasticHits, model: string): any =>
   }, {})
 
 export default async function communitiesCreate(graph: Graph, computeClusters: boolean): Promise<NetworkCommunities> {
+  const source: string = graph.getAttribute("source")
   const query: string = graph.getAttribute("query")
   const model: string = graph.getAttribute("model")
   const filters: NetworkFilters = graph.getAttribute("filters")
@@ -135,12 +136,12 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   const communities = Promise.all(
     Array.from({ length: count }, async (_, index) => {
       // Get elastic data
-      const hits = await networkSearchHits({ model, query, filters, links: communityGetLinks(graph, index) })
-      const aggs = await networkSearchAggs({ model, query, filters, links: communityGetLinks(graph, index) })
+      const hits = await networkSearchHits({ source, model, query, filters, links: communityGetLinks(graph, index) })
+      const aggs = await networkSearchAggs({ source, model, query, filters, links: communityGetLinks(graph, index) })
 
       // Add info to nodes
       if (hits) {
-        const nodesInfos = communityGetNodesInfos(hits, model)
+        const nodesInfos = communityGetNodesInfos(hits, source, model)
         communityGetIds(graph, index).forEach((key) => {
           if (!Object.keys(nodesInfos).includes(key)) return
           const nodeInfos = nodesInfos[key]

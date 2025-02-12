@@ -48,6 +48,16 @@ const NETWORK_MODELS_MAPPING = {
       icon: "building-line",
     },
   ],
+  projects: [
+    {
+      label: "institutions",
+      icon: "building-line",
+    },
+    {
+      label: "structures",
+      icon: "microscope-line",
+    },
+  ],
 }
 
 export const NETWORK_MODELS = NETWORK_MODELS_MAPPING

@@ -87,6 +87,14 @@ export type NetworkSearchArgs = {
   integration?: string
 }
 export type NetworkSearchHitsArgs = {
+  source: string
+  model: string
+  query?: string
+  filters?: NetworkFilters
+  links?: Array<string>
+}
+export type NetworkSearchAggsArgs = {
+  source: string
   model: string
   query?: string
   filters?: NetworkFilters

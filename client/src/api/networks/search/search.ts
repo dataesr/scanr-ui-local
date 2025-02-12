@@ -1,5 +1,12 @@
 import { postHeaders } from "../../../config/api"
-import { Network, NetworkSearchBody, NetworkSearchArgs, ElasticHits, NetworkSearchHitsArgs } from "../../../types/network"
+import {
+  Network,
+  NetworkSearchBody,
+  NetworkSearchArgs,
+  ElasticHits,
+  NetworkSearchHitsArgs,
+  NetworkSearchAggsArgs,
+} from "../../../types/network"
 import { CONFIG } from "../network/config"
 import networkCreate from "../network/network"
 import configCreate from "../network/config"
@@ -11,7 +18,7 @@ const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_,
 
 const DEFAULT_SIZE = 2000
 
-const networkSearchBody = (model: string, query?: string | unknown): NetworkSearchBody => ({
+const networkSearchBody = (source: string, model: string, query?: string | unknown): NetworkSearchBody => ({
   size: 0,
   query: {
     bool: {
@@ -19,7 +26,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
         {
           query_string: {
             query: query || "*",
-            fields: CONFIG[model].search_fields,
+            fields: CONFIG[source][model].search_fields,
           },
         },
       ],
@@ -27,7 +34,7 @@ const networkSearchBody = (model: string, query?: string | unknown): NetworkSear
   },
   aggs: {
     [model]: {
-      terms: { field: CONFIG[model].co_aggregation, size: DEFAULT_SIZE },
+      terms: { field: CONFIG[source][model].co_aggregation, size: DEFAULT_SIZE },
       aggs: { max_year: { max: { field: "year" } } },
     },
   },
@@ -42,12 +49,12 @@ export async function networkSearch({
   filters,
   integration,
 }: NetworkSearchArgs): Promise<Network> {
-  const body = networkSearchBody(model, query)
+  const body = networkSearchBody(source, model, query)
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
   if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
 
-  const res = await fetch(`${CONFIG[model].index}/_search`, {
+  const res = await fetch(`${CONFIG[source][model].index}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
@@ -66,7 +73,7 @@ export async function networkSearch({
     return null
   }
 
-  const network = await networkCreate(query, model, filters, aggregation, parameters, lang, integration)
+  const network = await networkCreate(source, query, model, filters, aggregation, parameters, lang, integration)
   const config = configCreate(source, model)
   const info = infoCreate(query, model)
 
@@ -84,18 +91,24 @@ export async function networkSearch({
   return data
 }
 
-export async function networkSearchHits({ model, query, filters, links }: NetworkSearchHitsArgs): Promise<ElasticHits> {
-  const linksFilter = { terms: { [CONFIG[model].co_aggregation]: links } }
+export async function networkSearchHits({
+  source,
+  model,
+  query,
+  filters,
+  links,
+}: NetworkSearchHitsArgs): Promise<ElasticHits> {
+  const linksFilter = { terms: { [CONFIG[source][model].co_aggregation]: links } }
   const body = {
     size: DEFAULT_SIZE,
-    _source: CONFIG[model].source_fields,
+    _source: CONFIG[source][model].source_fields,
     query: {
       bool: {
         must: [
           {
             query_string: {
               query: query || "*",
-              fields: CONFIG[model].search_fields,
+              fields: CONFIG[source][model].search_fields,
             },
           },
         ],
@@ -104,7 +117,7 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
     },
   }
 
-  const res = await fetch(`${CONFIG[model].index}/_search`, {
+  const res = await fetch(`${CONFIG[source][model].index}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
@@ -114,12 +127,13 @@ export async function networkSearchHits({ model, query, filters, links }: Networ
 }
 
 export async function networkSearchAggs({
+  source,
   model,
   query,
   filters,
   links,
-}: NetworkSearchHitsArgs): Promise<ElasticAggregations> {
-  const linksFilter = { terms: { [CONFIG[model].co_aggregation]: links } }
+}: NetworkSearchAggsArgs): Promise<ElasticAggregations> {
+  const linksFilter = { terms: { [CONFIG[source][model].co_aggregation]: links } }
   const body = {
     size: 0,
     query: {
@@ -128,7 +142,7 @@ export async function networkSearchAggs({
           {
             query_string: {
               query: query || "*",
-              fields: CONFIG[model].search_fields,
+              fields: CONFIG[source][model].search_fields,
             },
           },
         ],
@@ -147,7 +161,7 @@ export async function networkSearchAggs({
         {}
       ),
       domains: {
-        terms: { field: CONFIG[model].topics },
+        terms: { field: CONFIG[source][model].topics },
       },
       isOa: {
         terms: { field: "isOa" },
@@ -155,7 +169,7 @@ export async function networkSearchAggs({
     },
   }
 
-  const res = await fetch(`${CONFIG[model].index}/_search`, {
+  const res = await fetch(`${CONFIG[source][model].index}/_search`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: postHeaders,
