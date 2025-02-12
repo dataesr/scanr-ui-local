@@ -16,14 +16,7 @@ export default function NavigateToNetwork() {
 
   return (
     <ButtonGroup className="fr-mb-3w">
-      <Button
-        size="md"
-        color="blue-ecume"
-        variant="primary"
-        icon="arrow-right-line"
-        iconPosition="right"
-        onClick={navigateToNetwork}
-      >
+      <Button size="md" variant="primary" icon="network-line" iconPosition="left" onClick={navigateToNetwork}>
         {intl.formatMessage({ id: "search.navigate-to-network.label" })}
       </Button>
     </ButtonGroup>

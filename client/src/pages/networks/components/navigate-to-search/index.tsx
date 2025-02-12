@@ -3,6 +3,7 @@ import { useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import useOptions from "../../hooks/useOptions"
 import useScreenSize from "../../../../hooks/useScreenSize"
+import { NETWORK_SOURCES } from "../../config/sources"
 
 export default function NavigateToSearch() {
   const intl = useIntl()
@@ -21,9 +22,8 @@ export default function NavigateToSearch() {
     <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"} className="fr-mb-3w">
       <Button
         size="md"
-        color="blue-ecume"
         variant="primary"
-        icon="arrow-left-line"
+        icon={NETWORK_SOURCES.find(({ label }) => label === currentSource).icon}
         iconPosition="left"
         onClick={navigateToNetwork}
       >
