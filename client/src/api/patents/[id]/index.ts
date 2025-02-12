@@ -87,7 +87,6 @@ export async function getCpcAggregation(value: string): Promise<Patent> {
   }, {});
 
   const patent = buckets.map((bucket: any) => {
-    console.log(bucket);
     const sectionLabel =
       bucket.bySectionLabel?.buckets?.[0]?.key || "Label de section non trouvé";
 
