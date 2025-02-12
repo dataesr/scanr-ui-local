@@ -203,7 +203,7 @@ export default function Search() {
           <Col xs="12" lg="4" offsetLg="1">
             <Container fluid>
               {!isMobile && <CurrentFilters />}
-              {["publications", "patents"].includes(api) && (
+              {["publications", "patents", "projects"].includes(api) && (
                 <>
                   <hr />
                   <NavigateToNetwork />

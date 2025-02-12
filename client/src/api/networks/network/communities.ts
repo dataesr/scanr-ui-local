@@ -4,7 +4,7 @@ import seedrandom from "seedrandom"
 import { arrayPush, labelClean } from "../_utils/functions"
 import { networkSearchHits, networkSearchAggs } from "../search/search"
 import { ElasticHits, NetworkCommunities, NetworkFilters } from "../../../types/network"
-import { openAiLabeledClusters } from "./mistralai"
+import { mistralLabeledClusters } from "./mistralai"
 import { COLORS } from "../_utils/constants"
 import { GetColorName } from "hex-color-to-color-name"
 import { configGetItemPage } from "./config"
@@ -87,7 +87,7 @@ const communityGetOaPercent = (aggs: ElasticAggregations): number => {
 const communityGetDocuments = (hits: ElasticHits): Array<Record<string, string | number>> =>
   hits.map((hit) => ({
     id: hit.id,
-    title: hit.title.default,
+    title: hit?.title?.default || hit?.label?.en,
     citationsCount: nodeGetCitationsCount(hit?.cited_by_counts_by_year),
     citationsRecent: nodeGetCitationsRecent(hit?.cited_by_counts_by_year),
   }))
@@ -185,7 +185,7 @@ export default async function communitiesCreate(graph: Graph, computeClusters: b
   ).then((c) => c.sort((a, b) => b.size - a.size))
 
   // Add labels with IA
-  const labeledCommunities = await openAiLabeledClusters(await communities)
+  const labeledCommunities = await mistralLabeledClusters(await communities)
 
   if (labeledCommunities) return labeledCommunities
 

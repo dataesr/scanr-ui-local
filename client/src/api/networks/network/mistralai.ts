@@ -12,6 +12,7 @@ function cleanMistralLabels(mistralLabels: any): Array<string> {
 
   let counts = {}
   const deduplicateLabels = cleanLabels.reduce((acc, label: string) => {
+    if (!label) return acc
     if (!counts[label]) {
       counts[label] = 1
       acc.push(label)
@@ -59,7 +60,7 @@ async function mistralLabelsFromDomains(domains: string): Promise<string> {
   return answer
 }
 
-export async function openAiLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
+export async function mistralLabeledClusters(clusters: NetworkCommunities): Promise<NetworkCommunities> {
   const prefix = "list"
   const domains = clusters?.reduce((acc, cluster, index) => {
     if (cluster?.domains) {

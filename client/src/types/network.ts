@@ -117,6 +117,7 @@ export type NetworkFilter = Record<string, unknown>
 export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
+  label?: LangField
   title?: LangField
   cited_by_counts_by_year?: Record<string, number>
 }
