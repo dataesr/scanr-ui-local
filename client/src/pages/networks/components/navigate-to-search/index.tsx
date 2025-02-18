@@ -15,7 +15,7 @@ export default function NavigateToSearch() {
   const navigateToNetwork = () => {
     const searchQuery = searchParams.get("q") ? `q=${searchParams.get("q")}` : ""
     const searchFilters = searchParams.get("filters") ? `filters=${searchParams.get("filters")}` : ""
-    navigate(`/search/${currentSource}?${searchQuery}&${searchFilters}`)
+    navigate(`/search/${currentSource}?${searchQuery}${searchQuery && searchFilters && "&"}${searchFilters}`)
   }
 
   return (
