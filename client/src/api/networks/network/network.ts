@@ -123,7 +123,7 @@ export default async function networkCreate(
       scores: { ...(attr?.maxYear && { "Last document": attr.maxYear }) },
       page: configGetItemPage(model, key),
       search: configGetItemSearch(query, source, model, key, integration),
-      ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
+      ...(attr?.documentsCount !== undefined && { documentsCount: attr?.documentsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
       ...(attr?.citationsRecent !== undefined && { citationsRecent: attr?.citationsRecent }),
       ...(attr?.citationsScore !== undefined && { citationsScore: attr?.citationsScore }),
