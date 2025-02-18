@@ -1,3 +1,5 @@
+import { isInProduction } from "../../../utils/helpers"
+
 const NETWORK_MODELS_MAPPING = {
   publications: [
     {
@@ -39,10 +41,14 @@ const NETWORK_MODELS_MAPPING = {
       label: "classes",
       icon: "folder-2-line",
     },
-    {
-      label: "persons",
-      icon: "user-line",
-    },
+    ...(!isInProduction()
+      ? [
+          {
+            label: "persons",
+            icon: "user-line",
+          },
+        ]
+      : []),
     {
       label: "organizations",
       icon: "building-line",
