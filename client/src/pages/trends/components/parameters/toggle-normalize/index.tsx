@@ -1,10 +1,10 @@
 import { Toggle } from "@dataesr/dsfr-plus"
-import { useTrendsContext } from "../../../context"
 import { useIntl } from "react-intl"
+import useOptions from "../../../hooks/useOptions"
 
 export default function ToggleNormalize() {
   const intl = useIntl()
-  const { normalized, setNormalized } = useTrendsContext()
+  const { normalized, setNormalized } = useOptions()
 
   return (
     <Toggle

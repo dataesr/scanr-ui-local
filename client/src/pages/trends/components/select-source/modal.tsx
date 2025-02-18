@@ -1,22 +1,22 @@
 import { Container, Listbox, ListboxItem } from "@dataesr/dsfr-plus"
-import Modal from "../../../../components/modal"
 import { useIntl } from "react-intl"
-import { useTrendsContext } from "../../context"
+import Modal from "../../../../components/modal"
+import useOptions from "../../hooks/useOptions"
 
 export default function TrendsSelectSourceModal() {
   const intl = useIntl()
-  const { source, setSource } = useTrendsContext()
+  const { currentSource, handleSourceChange } = useOptions()
   const id = "trends-options-select-source-modal"
 
   return (
     <Modal id={id} size="lg" title={intl.formatMessage({ id: "trends.select-source.modal.title" })}>
       <Container fluid className="fr-mb-4w">
         <Listbox
-          selectedKeys={[source]}
+          selectedKeys={[currentSource]}
           selectionMode="single"
           onSelectionChange={(value) => {
             const selected = Object.values(value)[0]
-            selected && setSource(selected)
+            selected && handleSourceChange(selected)
             // @ts-expect-error dsfr does not have types
             window.dsfr(document.getElementById(id)).modal.conceal()
           }}

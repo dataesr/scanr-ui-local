@@ -1,20 +1,44 @@
-export type TrendsViews = Array<TrendsView>
-export type TrendsView = {
+export type TrendsRanking = {
+  ranking: Record<string, TrendsRankingItems>
+  sourceCount: number
+  searchTotal: number
+  searchPages: number
+  filteredTotal: number
+  filteredPages: number
+}
+
+export type TrendsRankingItems = Array<TrendsRankingItem>
+export type TrendsRankingItem = {
+  id: string
+  label: string
+  count: Record<string, number>
+  slope: number
+  norm_slope: number
+  intercept: number
+  r2: number
+  sum: number
+  variation: number
+}
+
+export type TrendsRankingSorts = Array<TrendsRankingSort>
+export type TrendsRankingSort = {
   id: string
   label: string
   order: string
-  nextView?: string
+  nextSort?: string
 }
 
-export type TrendsFilters = Array<TrendsFilters>
+export type TrendsFilters = Array<TrendsFilter>
 export type TrendsFilter = Record<string, unknown>
 
 export type TrendsArgs = {
+  page: number
   model: string
   query: string
   years: Array<number>
-  normalized: boolean
+  normalized?: boolean
   filters?: TrendsFilters
+  includes?: string
 }
 
 export type TrendsIntegrationOptions = {

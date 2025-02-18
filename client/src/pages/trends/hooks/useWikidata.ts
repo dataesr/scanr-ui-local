@@ -5,19 +5,22 @@ import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import { getWikidataPreviews } from "../../../components/wiki/api"
 import { useTrendsContext } from "../context"
 import useTrends from "./useTrends"
+import useOptions from "./useOptions"
 
 export default function useWikidata() {
   const { locale } = useDSFRConfig()
-  const { view } = useTrendsContext()
+  const { sort } = useTrendsContext()
   const { trends } = useTrends()
-  const codes = trends?.[view].map((item) => ({ code: item.id }))
+  const { currentModel } = useOptions()
+
+  const codes = currentModel === "entity-fishing" ? trends?.ranking?.[sort].map((item) => ({ code: item.id })) : null
 
   const {
     data: wikis,
     isFetching,
     error,
   } = useQuery<WikipediaResult[]>({
-    queryKey: ["wikidatas", codes.map((c) => c.code), locale],
+    queryKey: ["wikidatas", codes?.map((c) => c.code), locale],
     queryFn: () => getWikidataPreviews(codes, locale),
     enabled: !!codes?.length,
   })

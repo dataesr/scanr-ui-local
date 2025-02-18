@@ -40,18 +40,19 @@ import { ObjectModel } from "../../types/commons";
 import { ItemProps } from "./types";
 import PatentFilters from "./components/patents/filters";
 import PatentAnalytics from "./components/patents/patent-analytics";
+import NavigateToNetwork from "./components/commons/navigate-to-network.tsx"
 
 const modules = import.meta.glob("./locales/*.json", {
   eager: true,
   import: "default",
-});
+})
 const messages = Object.keys(modules).reduce((acc, key) => {
-  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1];
+  const locale = key.match(/\.\/locales\/(.+)\.json$/)?.[1]
   if (locale) {
-    return { ...acc, [locale]: modules[key] };
+    return { ...acc, [locale]: modules[key] }
   }
-  return acc;
-}, {});
+  return acc
+}, {})
 
 const API_MAPPING = {
   publications: {
@@ -79,42 +80,32 @@ const API_MAPPING = {
     analytics: PatentAnalytics,
     filters: PatentFilters,
   },
-};
+}
 
 export default function Search() {
-  const { locale } = useDSFRConfig();
-  const { screen } = useScreenSize();
-  const intl = createIntl({ locale, messages: messages[locale] });
-  const [ref, inView] = useInView();
-  const { api, currentQuery, handleQueryChange } = useUrl();
-  const { search, total } = useSearchData();
-  const {
-    data,
-    error,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = search;
+  const { locale } = useDSFRConfig()
+  const { screen } = useScreenSize()
+  const intl = createIntl({ locale, messages: messages[locale] })
+  const [ref, inView] = useInView()
+  const { api, currentQuery, handleQueryChange } = useUrl()
+  const { search, total } = useSearchData()
+  const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search
 
-  const isMobile = screen === "sm" || screen === "xs";
+  const isMobile = screen === "sm" || screen === "xs"
 
-  const AnalyticsComponent = API_MAPPING[api]?.analytics;
-  const FilterComponent = API_MAPPING[api]?.filters;
-  const ItemComponent: React.FC<ItemProps<ObjectModel>> =
-    API_MAPPING[api]?.item;
+  const AnalyticsComponent = API_MAPPING[api]?.analytics
+  const FilterComponent = API_MAPPING[api]?.filters
+  const ItemComponent: React.FC<ItemProps<ObjectModel>> = API_MAPPING[api]?.item
 
-  const shouldClickToLoad = data?.length
-    ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK
-    : false;
+  const shouldClickToLoad = data?.length ? data.length >= MAX_RESULTS_BEFORE_USER_CLICK : false
 
   useEffect(() => {
     if (inView) {
-      fetchNextPage();
+      fetchNextPage()
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage])
   if (error) {
-    return <Error500 error={error} />;
+    return <Error500 error={error} />
   }
   return (
     <RawIntlProvider value={intl}>
@@ -124,9 +115,7 @@ export default function Search() {
             <Link href="/">
               <FormattedMessage id="search.top.breadcrumb.home" />
             </Link>
-            <Link current>
-              {intl.formatMessage({ id: `search.top.breadcrumb.${api}` })}
-            </Link>
+            <Link current>{intl.formatMessage({ id: `search.top.breadcrumb.${api}` })}</Link>
           </Breadcrumb>
           <Row gutters className="fr-pb-4w fr-mb-2w">
             <Col xs="12" sm="8" lg="8">
@@ -165,14 +154,8 @@ export default function Search() {
                   ) : null}
                   {total && total > 0 ? (
                     <Text as="span" size="xs" className="fr-text-mention--grey">
-                      {intl.formatMessage(
-                        { id: `search.top.${api}.result` },
-                        { count: total }
-                      )}
-                      {currentQuery && intl.formatMessage(
-                        { id: "search.top.result-for-query" },
-                        { query: currentQuery }
-                      )}
+                      {intl.formatMessage({ id: `search.top.${api}.result` }, { count: total })}
+                      {currentQuery && intl.formatMessage({ id: "search.top.result-for-query" }, { query: currentQuery })}
                     </Text>
                   ) : isFetchingNextPage ? (
                     <BaseSkeleton height="1.5rem" width="40%" />
@@ -182,11 +165,7 @@ export default function Search() {
               <div className="result-list">
                 {data?.length
                   ? data.map(({ _source: data, highlight }) => (
-                      <ItemComponent
-                        data={data}
-                        highlight={highlight}
-                        key={data.id}
-                      />
+                      <ItemComponent data={data} highlight={highlight} key={data.id} />
                     ))
                   : null}
               </div>
@@ -207,11 +186,7 @@ export default function Search() {
             )}
             {hasNextPage && shouldClickToLoad && (
               <Separator className="fr-my-2w">
-                <Button
-                  icon="arrow-down-s-line"
-                  variant="text"
-                  onClick={() => fetchNextPage()}
-                >
+                <Button icon="arrow-down-s-line" variant="text" onClick={() => fetchNextPage()}>
                   <FormattedMessage id="search.results.pagination.next" />
                 </Button>
               </Separator>
@@ -220,10 +195,7 @@ export default function Search() {
               <>
                 <Separator />
                 <Text size="md" className="fr-my-4w">
-                  {intl.formatMessage(
-                    { id: "search.results.pagination.end" },
-                    { query: currentQuery }
-                  )}
+                  {intl.formatMessage({ id: "search.results.pagination.end" }, { query: currentQuery })}
                 </Text>
               </>
             ) : null}
@@ -231,6 +203,12 @@ export default function Search() {
           <Col xs="12" lg="4" offsetLg="1">
             <Container fluid>
               {!isMobile && <CurrentFilters />}
+              {["publications", "patents", "projects"].includes(api) && (
+                <>
+                  <hr />
+                  <NavigateToNetwork />
+                </>
+              )}
               <hr />
               <ResultExports />
               <hr />
@@ -240,5 +218,5 @@ export default function Search() {
         </Row>
       </Container>
     </RawIntlProvider>
-  );
+  )
 }

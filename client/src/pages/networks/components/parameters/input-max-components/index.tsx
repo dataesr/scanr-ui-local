@@ -1,21 +1,40 @@
+import { useEffect, useState } from "react"
 import { useIntl } from "react-intl"
 import { TextInput } from "@dataesr/dsfr-plus"
-import useParameters from "../../../hooks/useParameters"
+import useOptions from "../../../hooks/useOptions"
+import { NETWORK_PARAMETERS } from "../../../config/parameters"
 
 export default function InputMaxComponents() {
   const intl = useIntl()
-  const { parameters, handleParametersChange } = useParameters()
+  const {
+    parameters: { maxComponents },
+    handleParameterChange,
+  } = useOptions()
+  const [input, setInput] = useState<number>(maxComponents)
+  const defaultValues = NETWORK_PARAMETERS["maxComponents"]
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      input !== maxComponents &&
+        input >= defaultValues.min &&
+        input <= defaultValues.max &&
+        handleParameterChange("maxTest", input)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [input])
 
   return (
     <TextInput
       label={intl.formatMessage({ id: "networks.parameters.input-max-components.label" })}
       hint={intl.formatMessage({ id: "networks.parameters.input-max-components.hint" })}
       type="number"
-      min={1}
-      max={10}
-      placeholder="Number"
-      value={parameters.maxComponents}
-      onChange={(event) => handleParametersChange("maxComponents", Number(event.target.value))}
+      min={defaultValues.min}
+      max={defaultValues.max}
+      value={input}
+      onChange={(event) => setInput(Number(event.target.value))}
     />
   )
 }

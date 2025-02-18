@@ -1,6 +1,7 @@
 import { Button, Container, Row, Text, useDSFRConfig } from "@dataesr/dsfr-plus"
 import { NetworkContext } from "../../context"
 import NetworkSearchBarGetStarted from "../search-bar/get-started"
+import NetworkSelectSourceGetStarted from "../select-source/get-started"
 import NetworkSelectModelGetStarted from "../select-model/get-started"
 import NetworksHeader from "../header"
 import { RawIntlProvider, createIntl, useIntl } from "react-intl"
@@ -56,9 +57,9 @@ function NetworkGetStartedPages() {
       return <NetworkGetStartedHome />
     case "1":
       return <NetworkSearchBarGetStarted />
-    // case "2":
-    //   return <NetworkSelectSourceGetStarted />
     case "2":
+      return <NetworkSelectSourceGetStarted />
+    case "3":
       return <NetworkSelectModelGetStarted />
     default:
       return <NetworkGetStartedHome />

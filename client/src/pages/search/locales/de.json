@@ -92,7 +92,7 @@
     "search.filters.projects.by-year": "Nach Jahr filtern",
     "search.filters.patents.by-year": "Nach Einreichungsdatum filtern",
     "search.filters.current.patents.year": "Veröffentlichungsjahre des Patents",
-    "search.filters.patent.by-year-description": "Wählen Sie einen Zeitraum aus",
+    "search.filters.patents.by-year-description": "Wählen Sie einen Zeitraum aus",
     "search.filters.patents.regions": "Merkmale der Patentfamilie",
     "search.filters.patents.by-year-tooltip": "Einreichungen im Jahr {year}",
     "search.filters.patents.WO": "Nur Patente anzeigen, die bei der Weltorganisation für geistiges Eigentum eingereicht wurden",

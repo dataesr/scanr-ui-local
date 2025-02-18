@@ -144,6 +144,7 @@ export type LightOrganization = {
 	active: string;
 	publicationsCount: number;
 	projectsCount: number;
+	patentsCount: number;
 };
 
 export type ExportOrganization = {

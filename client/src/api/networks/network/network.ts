@@ -6,8 +6,7 @@ import forceAtlas2 from "graphology-layout-forceatlas2"
 import betweenessCentrality from "graphology-metrics/centrality/betweenness"
 import { NetworkFilters, NetworkData, NetworkParameters } from "../../../types/network"
 import communitiesCreate from "./communities"
-import { configGetItemUrl } from "./config"
-import { getParameters } from "./parameters"
+import { configGetItemPage, configGetItemSearch } from "./config"
 import { ElasticAggregation, ElasticBucket } from "../../../types/commons"
 import { ignoreIds, institutionsAcronyms, institutionsReplaceLabel } from "./ignore"
 
@@ -26,20 +25,23 @@ const nodeGetLabel = (id: string, lang: string) => {
 }
 
 export default async function networkCreate(
+  source: string,
   query: string,
   model: string,
   filters: NetworkFilters,
   aggregation: Array<NetworkBucket>,
   parameters: NetworkParameters,
-  lang: string
+  lang: string,
+  integration: string
 ): Promise<NetworkData> {
   // Create Graph object
   let graph = new UndirectedGraph()
+  graph.setAttribute("source", source)
   graph.setAttribute("query", query)
   graph.setAttribute("model", model)
   graph.setAttribute("filters", filters)
 
-  const { maxNodes, maxComponents, filterNode, clusters } = getParameters(parameters)
+  const { maxNodes, maxComponents, filterNode, clusters } = parameters
 
   aggregation.forEach((item) => {
     const { key, doc_count: count } = item
@@ -52,7 +54,7 @@ export default async function networkCreate(
     // Add nodes and compute weight
     nodes.forEach((id: string) =>
       graph.updateNode(nodeGetId(id), (attr) => ({
-        label: nodeGetLabel(id, lang),
+        label: attr?.label || nodeGetLabel(id, lang),
         weight: (attr?.weight ?? 0) + count,
         links: attr?.links ? [...attr.links, key] : [key],
         ...(maxYear && { maxYear: nodeConcatMaxYear(attr?.maxYear, maxYear) }),
@@ -90,7 +92,7 @@ export default async function networkCreate(
   }
 
   // Replace institutions labels
-  if (["institutions", "structures"].includes(model)) {
+  if (["institutions", "structures", "organizations"].includes(model)) {
     graph.updateEachNodeAttributes((node, attr) => ({
       ...attr,
       label: institutionsAcronyms?.[node] || institutionsReplaceLabel(attr.label),
@@ -118,9 +120,10 @@ export default async function networkCreate(
         Degree: graph.degree(key),
         ...(clusters && { Citations: attr?.citationsCount || 0 }),
       },
-      scores: { ...(attr?.maxYear && { "Last publication": attr.maxYear }) },
-      page: configGetItemUrl(model, key, attr.label),
-      ...(attr?.publicationsCount !== undefined && { publicationsCount: attr?.publicationsCount }),
+      scores: { ...(attr?.maxYear && { "Last document": attr.maxYear }) },
+      page: configGetItemPage(model, key),
+      search: configGetItemSearch(query, source, model, key, integration),
+      ...(attr?.documentsCount !== undefined && { documentsCount: attr?.documentsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),
       ...(attr?.citationsRecent !== undefined && { citationsRecent: attr?.citationsRecent }),
       ...(attr?.citationsScore !== undefined && { citationsScore: attr?.citationsScore }),

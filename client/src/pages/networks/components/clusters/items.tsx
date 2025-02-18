@@ -16,23 +16,23 @@ import {
 import { PageSection } from "../../../../components/page-content"
 import { NetworkCommunity, NetworkData } from "../../../../types/network"
 import useSearchData from "../../hooks/useSearchData"
+import useOptions from "../../hooks/useOptions"
 import BaseSkeleton from "../../../../components/skeleton/base-skeleton"
 import Separator from "../../../../components/separator"
 import { encode } from "../../../../utils/string"
-import useTab from "../../hooks/useTab"
-import useParameters from "../../hooks/useParameters"
 import { useNetworkContext } from "../../context"
 
 const SEE_MORE_AFTER = 10
 
 type ClusterItemArgs = {
-  currentTab: string
+  currentModel: string
   community: NetworkCommunity
 }
 
-function ClusterItem({ currentTab, community }: ClusterItemArgs) {
+function ClusterItem({ currentModel, community }: ClusterItemArgs) {
   const intl = useIntl()
   const currentYear = new Date().getFullYear()
+  const { currentSource } = useOptions()
   const [showNodesModal, setShowNodesModal] = useState(false)
   const [showPublicationsModal, setShowPublicationsModal] = useState(false)
   const { setFocusItem } = useNetworkContext()
@@ -52,7 +52,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
               size="sm"
               color="purple-glycine"
             >
-              {`${community.size} ${intl.formatMessage({ id: `networks.tab.${currentTab}` })}`}
+              {`${community.size} ${intl.formatMessage({ id: `networks.model.${currentModel}` })}`}
             </Badge>
             <Badge
               onClick={() => {
@@ -62,7 +62,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
               size="sm"
               color="pink-macaron"
             >
-              {`${community.publicationsCount} ${intl.formatMessage({
+              {`${community.documentsCount} ${intl.formatMessage({
                 id: "networks.section.clusters.badge-publications",
               })}`}
             </Badge>
@@ -72,11 +72,15 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
             <Badge size="sm" color="yellow-tournesol">
               {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community?.maxYear || "N/A"}`}
             </Badge>
-            <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
-              { id: "networks.section.clusters.citations" },
-              { count: community.citationsRecent }
-            )} (${currentYear - 1}-${currentYear})`}</Badge>
-            <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
+            {currentSource === "publications" && (
+              <>
+                <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
+                  { id: "networks.section.clusters.citations" },
+                  { count: community.citationsRecent }
+                )} (${currentYear - 1}-${currentYear})`}</Badge>
+                <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
+              </>
+            )}
           </BadgeGroup>
         </Col>
       </Row>
@@ -109,7 +113,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
           : null}
       </Text>
       <Modal isOpen={showNodesModal} hide={() => setShowNodesModal(false)}>
-        <ModalTitle>{intl.formatMessage({ id: `networks.tab.${currentTab}` })}</ModalTitle>
+        <ModalTitle>{intl.formatMessage({ id: `networks.model.${currentModel}` })}</ModalTitle>
         <ModalContent>
           {community?.nodes?.map((node) => (
             <li>
@@ -121,7 +125,7 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
       <Modal isOpen={showPublicationsModal} hide={() => setShowPublicationsModal(false)}>
         <ModalTitle>{intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}</ModalTitle>
         <ModalContent>
-          {community?.publications?.map((publication) => (
+          {community?.documents?.map((publication) => (
             <li className="fr-mt-1w">
               <Link href={window.location.origin + "/publications/" + encode(publication.id as string)}>
                 {publication.title}
@@ -136,14 +140,13 @@ function ClusterItem({ currentTab, community }: ClusterItemArgs) {
 
 export default function NetworkClustersItems() {
   const intl = useIntl()
-  const { currentTab } = useTab()
-  const { parameters } = useParameters()
-  const { search } = useSearchData(currentTab)
+  const { currentModel, parameters } = useOptions()
+  const { search } = useSearchData()
   const [seeMore, setSeeMore] = useState(false)
 
   const network = search?.data?.network as NetworkData
   const communities = network?.clusters
-  const sectionTitle = `networks.section.clusters.${currentTab}`
+  const sectionTitle = `networks.section.clusters.${currentModel}`
 
   if (!parameters.clusters) return null
 
@@ -165,7 +168,7 @@ export default function NetworkClustersItems() {
         <>
           <div className="cluster-list">
             {communities?.slice(0, seeMore ? communities?.length + 1 : SEE_MORE_AFTER)?.map((community, index) => (
-              <ClusterItem key={index} currentTab={currentTab} community={community} />
+              <ClusterItem key={index} currentModel={currentModel} community={community} />
             ))}
           </div>
           {communities?.length > SEE_MORE_AFTER ? (

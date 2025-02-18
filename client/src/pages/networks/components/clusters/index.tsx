@@ -1,6 +1,7 @@
 import { Col, Container, Row } from "@dataesr/dsfr-plus"
 import ClustersButton from "./button"
 import ContributeButton from "../contribute/button"
+import NavigateToSearch from "../navigate-to-search"
 import NetworkClustersItems from "./items"
 import NetworkAnalytics from "./analytics"
 import useIntegration from "../../hooks/useIntegration"
@@ -11,6 +12,7 @@ export default function NetworkClusters() {
     <Container fluid>
       {!integrationId ? (
         <Container fluid style={{ display: "flex", justifyContent: "space-between" }}>
+          <NavigateToSearch />
           <ClustersButton />
           <ContributeButton />
         </Container>

@@ -23,7 +23,7 @@ export async function getOrganizationById(id: string): Promise<Organization> {
   const publicationsQuery = getStructurePublicationsById(id)
   const projectsQuery = getStructureProjectsById(id)
   const patentsQuery = getStructurePatentsById(id)
-  const networkQuery = getStructureNetworkById(id, "domains")
+  const networkQuery = getStructureNetworkById(id, "publications", "domains")
   const [structure, publications, projects, patents, network] = await Promise.all([
     structureQuery,
     publicationsQuery,

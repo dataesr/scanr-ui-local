@@ -20,7 +20,8 @@ export type NetworkItem = {
   weights: Record<string, number>
   scores: Record<string, number>
   page?: string
-  publicationsCount?: number
+  search?: string
+  documentsCount?: number
   citationsCount?: number
   citationsRecent?: number
   citationsScore?: number
@@ -44,9 +45,9 @@ export type NetworkCommunity = {
     url?: string
   }>
   maxYear?: number
-  publicationsByYear?: Record<string, number>
-  publicationsCount?: number
-  publications?: Array<Record<string, string | number>>
+  documentsByYear?: Record<string, number>
+  documentsCount?: number
+  documents?: Array<Record<string, string | number>>
   citationsByYear?: Record<string, number>
   citationsCount?: number
   citationsRecent?: number
@@ -77,13 +78,23 @@ export type NetworkSearchBody = {
   aggs?: Record<string, unknown>
 }
 export type NetworkSearchArgs = {
+  source: string
   model: string
   query?: string
   filters?: NetworkFilters
   lang?: string
   parameters?: NetworkParameters
+  integration?: string
 }
 export type NetworkSearchHitsArgs = {
+  source: string
+  model: string
+  query?: string
+  filters?: NetworkFilters
+  links?: Array<string>
+}
+export type NetworkSearchAggsArgs = {
+  source: string
   model: string
   query?: string
   filters?: NetworkFilters
@@ -106,6 +117,7 @@ export type NetworkFilter = Record<string, unknown>
 export type ElasticHits = Array<ElasticHit>
 export type ElasticHit = {
   id: string
+  label?: LangField
   title?: LangField
   cited_by_counts_by_year?: Record<string, number>
 }

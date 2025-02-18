@@ -1,4 +1,4 @@
-import { Button, Container } from "@dataesr/dsfr-plus"
+import { Button, ButtonGroup } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import useScreenSize from "../../../../hooks/useScreenSize"
 
@@ -8,7 +8,7 @@ export default function ContributeButton() {
   const search = window.location.search?.slice(1) || "q=*"
 
   return (
-    <Container fluid>
+    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"}>
       <Button
         className="fr-ml-2w fr-pr-3w"
         as="a"
@@ -24,6 +24,6 @@ export default function ContributeButton() {
               id: "networks.contribute.button",
             })}
       </Button>
-    </Container>
+    </ButtonGroup>
   )
 }
