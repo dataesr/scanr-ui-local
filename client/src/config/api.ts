@@ -1,3 +1,5 @@
+import { isInStaging } from "../utils/helpers";
+
 const {
   VITE_API_URL: API_URL,
   VITE_API_KEY: API_KEY,
@@ -16,12 +18,16 @@ export const postHeadersTicketOffice = {
   "Content-Type": "application/json",
 };
 
+const getIndexURL = (baseURL: string, path: string) => {
+  return `${baseURL}/${path}${isInStaging() ? "-staging" : ""}`;
+};
 // Indices
-export const publicationsIndex = `${API_URL}/scanr-publications`;
-export const authorsIndex = `${API_URL}/scanr-persons`;
-export const organizationsIndex = `${API_URL}/scanr-organizations`;
-export const projectsIndex = `${API_URL}/scanr-projects`;
-export const patentsIndex = `${API_URL}/scanr-patents`;
-export const localisationIndex = `${API_URL}/scanr-localisations`;
-export const countriesIndex = `${API_URL}/scanr-countries`
+
+export const publicationsIndex = getIndexURL(API_URL, "scanr-publications");
+export const authorsIndex = getIndexURL(API_URL, "scanr-persons");
+export const organizationsIndex = getIndexURL(API_URL, "scanr-organizations");
+export const projectsIndex = getIndexURL(API_URL, "scanr-projects");
+export const patentsIndex = getIndexURL(API_URL, "scanr-patents");
+export const localisationIndex = getIndexURL(API_URL, "scanr-localisations");
+export const countriesIndex = getIndexURL(API_URL, "scanr-countries");
 export const topicsURL = TOPICS_URL ? `${TOPICS_URL}/topics` : "/topics";
