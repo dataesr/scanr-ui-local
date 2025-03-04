@@ -35,7 +35,7 @@ export async function getPublicationsTrends({
       years: {
         terms: { field: "year", size: years.length },
         aggs: {
-          model: { terms: { field: CONFIG[model].field, size: 60000 / years.length } },
+          model: { terms: { field: CONFIG[model].field, size: Math.floor(60000 / years.length) } },
         },
       },
       count: { value_count: { field: "id.keyword" } },

@@ -73,13 +73,13 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
               {`${intl.formatMessage({ id: "networks.section.clusters.last-activity" })}: ${community?.maxYear || "N/A"}`}
             </Badge>
             {currentSource === "publications" && (
-              <>
-                <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
-                  { id: "networks.section.clusters.citations" },
-                  { count: community.citationsRecent }
-                )} (${currentYear - 1}-${currentYear})`}</Badge>
-                <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
-              </>
+              <Badge size="sm" color="blue-cumulus">{`${intl.formatMessage(
+                { id: "networks.section.clusters.citations" },
+                { count: community.citationsRecent }
+              )} (${currentYear - 1}-${currentYear})`}</Badge>
+            )}
+            {currentSource === "publications" && (
+              <Badge size="sm" color="blue-ecume">{`Citation score: ${community.citationsScore.toFixed(1)}`}</Badge>
             )}
           </BadgeGroup>
         </Col>
