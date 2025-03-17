@@ -5,6 +5,7 @@ import InputMaxComponents from "./input-max-components"
 import { useIntl } from "react-intl"
 import useSearchData from "../../hooks/useSearchData"
 import useOptions from "../../hooks/useOptions"
+import ToggleSample from "./toggle-sample"
 
 export default function NetworkParametersModal() {
   const intl = useIntl()
@@ -20,6 +21,7 @@ export default function NetworkParametersModal() {
       <Container fluid className="fr-mb-4w fr-pb-4w">
         <InputMaxNodes />
         <InputMaxComponents />
+        <ToggleSample />
         {/* <SelectLayout /> */}
         {/* <SelectClustering /> */}
       </Container>

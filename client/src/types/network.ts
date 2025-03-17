@@ -145,4 +145,5 @@ export type NetworkParameters = {
   maxComponents: number
   clusters: boolean
   filterNode: string
+  sample: boolean
 }

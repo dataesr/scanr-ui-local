@@ -15,4 +15,7 @@ export const NETWORK_PARAMETERS = {
   filterNode: {
     default: "",
   },
+  sample: {
+    default: true,
+  },
 }
