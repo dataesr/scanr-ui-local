@@ -8,7 +8,7 @@ export async function getStructureNetworkById(id: string, source: string, model:
     model: model,
     filters: [organizationFilter],
     lang: "fr",
-    parameters: { maxNodes: 300, maxComponents: 5, clusters: false, filterNode: "" },
+    parameters: { maxNodes: 300, maxComponents: 5, clusters: false, filterNode: "", sample: false },
   })
 
   return data
