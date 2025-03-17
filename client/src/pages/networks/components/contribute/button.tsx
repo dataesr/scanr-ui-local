@@ -8,9 +8,9 @@ export default function ContributeButton() {
   const search = window.location.search?.slice(1) || "q=*"
 
   return (
-    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"}>
+    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"} className="fr-ml-1w">
       <Button
-        className="fr-ml-2w fr-pr-3w"
+        className="fr-pr-3w"
         as="a"
         href={`/bugs/networks/${search}`}
         color="error"
