@@ -14,6 +14,7 @@ import { OrganizationAggregations } from "../../../types/organization";
 import useUrl from "./useUrl";
 import { aggregatePatents } from "../../../api/patents/aggregate";
 import { PatentAggregations } from "../../../types/patent";
+import { useSearchParams } from "react-router-dom"
 
 const API_MAPPING = {
   publications: aggregatePublications,
@@ -22,7 +23,6 @@ const API_MAPPING = {
   organizations: aggregateOrganizations,
   he: aggregateOrganizationsForHe,
   patents: aggregatePatents,
-  networks: aggregatePublications,
   trends: aggregatePublications,
 }
 
@@ -31,26 +31,24 @@ type AggregationsModel =
   | OrganizationAggregations
   | ProjectAggregations
   | AuthorsAggregations
-  | PatentAggregations;
+  | PatentAggregations
 
 export default function useAggregateData(type: "analytics" | "filters") {
-  const { api, currentQuery, filters } = useUrl();
-  const queryFn = API_MAPPING[api];
+  const { api, currentQuery, filters } = useUrl()
+  const [searchParam] = useSearchParams()
+  const networkSource = searchParam.get("source") || "publications"
 
-  const _filters = type === "analytics" ? filters : [];
+  const queryFn = api === "networks" ? API_MAPPING[networkSource] : API_MAPPING[api]
+  const _filters = type === "analytics" ? filters : []
 
-  const { data, isLoading, isError } = useQuery<
-    AggregationsModel,
-    unknown,
-    AggregationsModel
-  >({
+  const { data, isLoading, isError } = useQuery<AggregationsModel, unknown, AggregationsModel>({
     queryKey: [api, "analytics", currentQuery, _filters],
     queryFn: () => queryFn({ query: currentQuery, filters: _filters }),
-  });
+  })
 
   const values = useMemo(() => {
-    return { data, isLoading, isError };
-  }, [data, isLoading, isError]);
+    return { data, isLoading, isError }
+  }, [data, isLoading, isError])
 
-  return values;
+  return values
 }
