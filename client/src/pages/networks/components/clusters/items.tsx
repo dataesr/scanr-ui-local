@@ -107,7 +107,9 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
               .map(([domain], k) => (
                 <Fragment key={k}>
                   {k > 0 ? ", " : ""}
-                  <Link href={`/search/publications?q="${encode(domain)}"`}>#{domain}</Link>
+                  <Link key={k} href={`/search/publications?q="${encode(domain)}"`}>
+                    #{domain}
+                  </Link>
                 </Fragment>
               ))
           : null}
@@ -116,8 +118,10 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
         <ModalTitle>{intl.formatMessage({ id: `networks.model.${currentModel}` })}</ModalTitle>
         <ModalContent>
           {community?.nodes?.map((node) => (
-            <li>
-              <Link href={node.url}>{node.label}</Link>
+            <li key={node.id}>
+              <Link key={node.id} href={node.url}>
+                {node.label}
+              </Link>
             </li>
           ))}
         </ModalContent>
@@ -126,8 +130,8 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
         <ModalTitle>{intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}</ModalTitle>
         <ModalContent>
           {community?.documents?.map((publication) => (
-            <li className="fr-mt-1w">
-              <Link href={window.location.origin + "/publications/" + encode(publication.id as string)}>
+            <li key={publication.id} className="fr-mt-1w">
+              <Link key={publication.id} href={window.location.origin + "/publications/" + encode(publication.id as string)}>
                 {publication.title}
               </Link>
             </li>
