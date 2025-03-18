@@ -72,7 +72,7 @@ export async function networkSearch({
 
   const json = await res.json()
 
-  const aggregation = json.aggregations?.sample?.[model].buckets
+  const aggregation = parameters.sample ? json.aggregations?.sample?.[model].buckets : json.aggregations?.[model].buckets
   if (!aggregation?.length) {
     throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
   }
