@@ -37,7 +37,7 @@ export async function networkSearch({
   // if filters: use standard sampler (top MAX_SIZE documents that match the query)
   // if no filters: use random_sampler (random 10% of all documents)
   const sampler =
-    filters && filters.length > 0
+    (filters && filters.length > 0) || (query && query.length > 1)
       ? { sampler: { shard_size: MAX_SIZE } }
       : { random_sampler: { probability: 0.1, seed: 42 } }
   const aggs = parameters.sample ? { sample: { ...sampler, aggs: modelAggregation } } : modelAggregation
