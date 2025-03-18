@@ -79,7 +79,7 @@ export async function networkSearch({
 
   const network = await networkCreate(source, query, model, filters, aggregation, parameters, lang, integration)
   const config = configCreate(source, model)
-  const info = infoCreate(query, model)
+  const info = infoCreate(source, query, model)
 
   if (network.items.length < 3) {
     throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)

@@ -1,11 +1,11 @@
 import { NetworkInfo } from "../../../types/network"
 
-export default function infoCreate(query: string, model: string): NetworkInfo {
+export default function infoCreate(source: string, query: string, model: string): NetworkInfo {
   const title = `Co-${model} network `
   const description =
     query === "*"
-      ? `This is a visualization of a ${model} network from all scientific publications.`
-      : `This is a visualization of a ${model} network from scientific publications related to "${query}".`
+      ? `This is a visualization of a ${model} network from all ${source}.`
+      : `This is a visualization of a ${model} network from ${source} related to "${query}".`
 
   return { title: title, description: description }
 }
