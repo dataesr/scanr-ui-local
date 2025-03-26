@@ -37,6 +37,7 @@
   "publications.section.software.title": "Software mentions",
   "publications.section.software.legend": "Software mentions found by scanR in the publication.",
   "search.publications.thesis.by": " by ",
+  "search.publication.thesis.directed": " under the supervision of ",
   "search.publications.closedAccess": "Closed access",
   "search.publications.openAccess": "Open access",
   "search.publications.thesis.and": " and "
