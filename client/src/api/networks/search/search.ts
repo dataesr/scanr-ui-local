@@ -17,28 +17,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_, i) => CURRENT_YEAR + i * -1)
 
 const DEFAULT_SIZE = 2000
-
-const networkSearchBody = (source: string, model: string, query?: string | unknown): NetworkSearchBody => ({
-  size: 0,
-  query: {
-    bool: {
-      must: [
-        {
-          query_string: {
-            query: query || "*",
-            fields: CONFIG[source][model].search_fields,
-          },
-        },
-      ],
-    },
-  },
-  aggs: {
-    [model]: {
-      terms: { field: CONFIG[source][model].co_aggregation, size: DEFAULT_SIZE },
-      aggs: { max_year: { max: { field: "year" } } },
-    },
-  },
-})
+const MAX_SIZE = 10000
 
 export async function networkSearch({
   source,
@@ -49,10 +28,37 @@ export async function networkSearch({
   filters,
   integration,
 }: NetworkSearchArgs): Promise<Network> {
-  const body = networkSearchBody(source, model, query)
+  const modelAggregation = {
+    [model]: {
+      terms: { field: CONFIG[source][model].co_aggregation, size: DEFAULT_SIZE },
+      aggs: { max_year: { max: { field: "year" } } },
+    },
+  }
+  // if filters: use standard sampler (top MAX_SIZE documents that match the query)
+  // if no filters: use random_sampler (random 10% of all documents)
+  const sampler =
+    (filters && filters.length > 0) || (query && query.length > 1)
+      ? { sampler: { shard_size: MAX_SIZE } }
+      : { random_sampler: { probability: 0.1, seed: 42 } }
+  const aggs = parameters.sample ? { sample: { ...sampler, aggs: modelAggregation } } : modelAggregation
+  const body: NetworkSearchBody = {
+    size: 0,
+    query: {
+      bool: {
+        must: [
+          {
+            query_string: {
+              query: query || "*",
+              fields: CONFIG[source][model].search_fields,
+            },
+          },
+        ],
+      },
+    },
+    aggs: aggs,
+  }
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
-  if (!query) body.query = { function_score: { query: body.query, random_score: {} } }
 
   const res = await fetch(`${CONFIG[source][model].index}/_search`, {
     method: "POST",
@@ -61,25 +67,22 @@ export async function networkSearch({
   })
 
   if (res.status !== 200) {
-    console.error(`Elasticsearch error: ${res.status}`)
-    return null
+    throw new Error(`Elasticsearch error: ${res.status}`)
   }
 
   const json = await res.json()
 
-  const aggregation = json.aggregations?.[model].buckets
+  const aggregation = parameters.sample ? json.aggregations?.sample?.[model].buckets : json.aggregations?.[model].buckets
   if (!aggregation?.length) {
-    console.error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
-    return null
+    throw new Error(`Elasticsearch error: no co-${model} aggregation found for query ${query}`)
   }
 
   const network = await networkCreate(source, query, model, filters, aggregation, parameters, lang, integration)
   const config = configCreate(source, model)
-  const info = infoCreate(query, model)
+  const info = infoCreate(source, query, model)
 
   if (network.items.length < 3) {
-    console.error(`Network error: need at least three items to display the network (items=${network.items.length})`)
-    return null
+    throw new Error(`Network error: need at least three items to display the network (items=${network.items.length})`)
   }
 
   const data = {
