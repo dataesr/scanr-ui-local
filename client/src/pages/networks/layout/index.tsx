@@ -5,6 +5,7 @@ import NetworkClusters from "../components/clusters"
 import useIntegration from "../hooks/useIntegration"
 import NetworksOptionsBar from "../components/options-bar"
 import NetworksOptionsModals from "../components/options-bar/modals"
+import NetworkNotice from "../components/notice"
 
 export default function NetworksLayout() {
   const { integrationOptions } = useIntegration()
@@ -17,6 +18,7 @@ export default function NetworksLayout() {
       <NetworksOptionsBar />
       <NetworksOptionsModals />
       <Container>
+        <NetworkNotice />
         <NetworkCard />
         <NetworkClusters />
       </Container>

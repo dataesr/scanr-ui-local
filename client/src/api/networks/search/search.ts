@@ -89,6 +89,7 @@ export async function networkSearch({
     network: network,
     config: config,
     info: info,
+    ...(parameters.sample && { count: json.aggregations?.sample?.doc_count }),
   }
 
   return data

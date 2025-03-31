@@ -4,6 +4,7 @@ export type Network = {
   network: NetworkData
   config?: NetworkConfig
   info?: NetworkInfo
+  count?: number
 }
 export type NetworkData = {
   items: NetworkItems
