@@ -95,7 +95,7 @@ export default function OrganizationPresentation({ data }: { data: Organization 
     .slice(0, 15);
 
   const participantsCounts = data.institutionOf
-    // ?.filter((institution) => !["établissement tutelle", "primary"].includes(institution.relationType))
+    ?.filter((institution) => !["établissement tutelle", "primary"].includes(institution.relationType))
     ?.flatMap(({ denormalized }) => denormalized.institutions)
     ?.filter((institution) => institution.structure !== data.id)
     ?.reduce((acc, current) => {
@@ -127,6 +127,43 @@ export default function OrganizationPresentation({ data }: { data: Organization 
     .map(item => ({
       ...item,
       normalizedCount: maxParticipantsCount > 0 ? (item.count / maxParticipantsCount) * 100 : 0
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
+
+
+  const allCounts = data.institutionOf
+    ?.flatMap(({ denormalized }) => denormalized.institutions)
+    ?.filter((institution) => institution.structure !== data.id)
+    ?.reduce((acc, current) => {
+      // Check if structure is ["établissement tutelle", "primary"]
+      if (!["établissement tutelle", "primary"].includes(current.relationType)) return acc;
+      // Check if this structure already exists in our accumulator
+      const existing = acc.find(item => item.structure === current.structure);
+
+      if (existing) {
+        // If it exists, increment the count
+        existing.count += 1;
+      } else {
+        // If it doesn't exist, add a new entry
+        acc.push({
+          structure: current.structure,
+          count: 1,
+          label: current.label,
+          relationType: current.relationType,
+          normalizedCount: null,
+        });
+      }
+
+      return acc;
+    }, [] as TutelleCountsType[])
+
+  const maxAllCount = Math.max(...participantsCounts.map(i => i.count));
+
+  const allOf = allCounts
+    .map(item => ({
+      ...item,
+      normalizedCount: maxAllCount > 0 ? (item.count / maxAllCount) * 100 : 0
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 15);
@@ -209,13 +246,13 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                         variant="text"
                         icon="arrow-right-s-line"
                         iconPosition="right"
-                        aria-controls="coParticipantsModal"
+                        aria-controls="coInstitutionsModal"
                         data-fr-opened="false"
                       >
                         Voir les principales co-tutelles
                       </Button>
                     </div>
-                    <Modal id="coParticipantsModal" size="lg" title={`Top 15 des établissement partageant le plus de tutelles avec ${data.label.fr}`}>
+                    <Modal id="coInstitutionsModal" size="lg" title={`Top 15 des établissement partageant le plus de tutelles avec ${data.label.fr}`}>
                       <Row verticalAlign="middle" gutters className="fr-mb-3w">
                         <Col xs="12">
                           {coInstitutionOf?.map((institution) => (
@@ -246,6 +283,36 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.participate-to.title"
                     icon="building-line"
                   />
+                  <>
+                    <div className="fr-mb-3w" style={{ marginTop: '-1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ flexGrow: 1 }} />
+                      <Button
+                        variant="text"
+                        icon="arrow-right-s-line"
+                        iconPosition="right"
+                        aria-controls="coParticipantsModal"
+                        data-fr-opened="false"
+                      >
+                        Voir les principales co-tutelles
+                      </Button>
+                    </div>
+                    <Modal id="coParticipantsModal" size="lg" title={`Top 15 des établissement partageant le plus de tutelles avec ${data.label.fr}`}>
+                      <Row verticalAlign="middle" gutters className="fr-mb-3w">
+                        <Col xs="12">
+                          {coParticipantsOf?.map((institution) => (
+                            <BarLink
+                              key={institution.structure}
+                              name={institution.label}
+                              count={institution.count}
+                              width={institution.normalizedCount}
+                              color="var(--artwork-minor-yellow-tournesol)"
+                              height={6}
+                            />
+                          ))}
+                        </Col>
+                      </Row>
+                    </Modal>
+                  </>
                   <OrganizationNetworks
                     data={data.parents}
                     titleKey="organizations.section.networks.groups.title"
@@ -333,7 +400,7 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                   </Text>
                   <Row verticalAlign="middle" gutters className="fr-mb-3w">
                     <Col xs="12">
-                      {coParticipantsOf?.slice(0, 5)?.map((institution) => (
+                      {allOf?.slice(0, 5)?.map((institution) => (
                         <BarLink
                           key={institution.structure}
                           name={institution.label}
