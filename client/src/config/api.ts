@@ -1,4 +1,4 @@
-import { isInStaging } from "../utils/helpers";
+import { isInDev, isInStaging } from "../utils/helpers";
 
 const {
   VITE_API_URL: API_URL,
@@ -19,7 +19,9 @@ export const postHeadersTicketOffice = {
 };
 
 const getIndexURL = (baseURL: string, path: string) => {
-  return `${baseURL}/${path}${isInStaging() ? "-staging" : ""}`;
+  const base = `${baseURL}/${path}`
+  if (isInDev() || isInStaging()) return `${base}-staging`;
+  return base;
 };
 // Indices
 
