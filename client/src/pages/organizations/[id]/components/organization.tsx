@@ -92,7 +92,7 @@ export default function OrganizationPresentation({ data }: { data: Organization 
       normalizedCount: maxInstitutionsCount > 0 ? (item.count / maxInstitutionsCount) * 100 : 0
     }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
+    .slice(0, 15);
 
   const participantsCounts = data.institutionOf
     // ?.filter((institution) => !["établissement tutelle", "primary"].includes(institution.relationType))
@@ -218,7 +218,7 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     <Modal id="coParticipantsModal" size="lg" title={`Top 15 des établissement partageant le plus de tutelles avec ${data.label.fr}`}>
                       <Row verticalAlign="middle" gutters className="fr-mb-3w">
                         <Col xs="12">
-                          {coParticipantsOf?.map((institution) => (
+                          {coInstitutionOf?.map((institution) => (
                             <BarLink
                               key={institution.structure}
                               name={institution.label}

@@ -14,6 +14,7 @@ export type BarLinkProps = {
   width: number;
   count: number;
   color?: string;
+  height?: number;
 };
 
 function HistogramBar({ width, height = 10, color = "#FF9575" }: HistogramBarProps) {
@@ -34,7 +35,7 @@ function HistogramBar({ width, height = 10, color = "#FF9575" }: HistogramBarPro
   );
 }
 
-export default function BarLink({ name, href, width, count, color = "#FF9575", height = 10 }) {
+export default function BarLink({ name, href, width, count, color = "#FF9575", height = 10 }: BarLinkProps) {
   return (
     <Row className={cs("fr-p-1v", { "fr-enlarge-link": !!href })}>
       <Text bold size="xs" className={cs(styles.ellipsis, "fr-mb-1v fr-pr-1v")}>
