@@ -8,7 +8,7 @@ import {
   Text,
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
-import { Organization } from "../../../../types/organization";
+import { Organization, RelatedOrganizationData } from "../../../../types/organization";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import OrganizationPublications from "./publications";
 import OrganizationProjects from "./projects";
@@ -50,6 +50,47 @@ type TutelleCountsType = {
   normalizedCount: number
 }
 
+type ForType = "participant" | "tutelle";
+
+const groupByIntitutions = (orgId: string, data: RelatedOrganizationData[], forWho: ForType) => {
+  const filterCallback = (element: RelatedOrganizationData) => {
+    if (forWho === "participant") return !["établissement tutelle", "primary"].includes(element.relationType);
+    if (forWho === "tutelle") return ["établissement tutelle", "primary"].includes(element.relationType);
+    return !!element;
+  };
+  const count = data
+    ?.filter((element) => filterCallback(element))
+    ?.flatMap(({ denormalized }) => denormalized.institutions)
+    ?.filter((institution) => institution.structure !== orgId)
+    ?.reduce((acc, current) => {
+      if (!["établissement tutelle", "primary"].includes(current.relationType)) return acc;
+      const existing = acc.find(item => item.structure === current.structure);
+
+      if (existing) {
+        existing.count += 1;
+      } else {
+        acc.push({
+          structure: current.structure,
+          count: 1,
+          label: current.label,
+          relationType: current.relationType,
+          normalizedCount: null,
+        });
+      }
+
+      return acc;
+    }, [] as TutelleCountsType[])
+  const maxCount = count?.length ? Math.max(...count.map(i => i.count)) : 0;
+  const res = count?.map((item) => ({
+    ...item,
+    normalizedCount: maxCount > 0 ? (item.count / maxCount) * 100 : 0
+  })).sort((a, b) => b.count - a.count);
+  return res ?? [];
+}
+
+
+
+
 export default function OrganizationPresentation({ data }: { data: Organization }) {
   const { locale } = useDSFRConfig()
   const intl = useIntl()
@@ -57,116 +98,15 @@ export default function OrganizationPresentation({ data }: { data: Organization 
   const { screen } = useScreenSize()
   const networkBadges = data.badges?.filter((b) => NETWORK_BADGES_CODES.includes(b.code.toLowerCase()))
 
-  const institutionCounts = data.institutionOf
-    ?.filter((institution) => ["établissement tutelle", "primary"].includes(institution.relationType))
-    ?.flatMap(({ denormalized }) => denormalized.institutions)
-    ?.filter((institution) => institution.structure !== data.id)
-    ?.reduce((acc, current) => {
-      // Check if structure is ["établissement tutelle", "primary"]
-      if (!["établissement tutelle", "primary"].includes(current.relationType)) return acc;
-      // Check if this structure already exists in our accumulator
-      const existing = acc.find(item => item.structure === current.structure);
+  const coInstitutionOf = groupByIntitutions(data.id, data.institutionOf, "tutelle")
+  const coParticipantsOf = groupByIntitutions(data.id, data.institutionOf, "participant")
 
-      if (existing) {
-        // If it exists, increment the count
-        existing.count += 1;
-      } else {
-        // If it doesn't exist, add a new entry
-        acc.push({
-          structure: current.structure,
-          count: 1,
-          label: current.label,
-          relationType: current.relationType,
-          normalizedCount: null,
-        });
-      }
-
-      return acc;
-    }, [] as TutelleCountsType[])
-
-  const maxInstitutionsCount = Math.max(...institutionCounts.map(i => i.count));
-
-  const coInstitutionOf = institutionCounts
-    .map(item => ({
-      ...item,
-      normalizedCount: maxInstitutionsCount > 0 ? (item.count / maxInstitutionsCount) * 100 : 0
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 15);
-
-  const participantsCounts = data.institutionOf
-    ?.filter((institution) => !["établissement tutelle", "primary"].includes(institution.relationType))
-    ?.flatMap(({ denormalized }) => denormalized.institutions)
-    ?.filter((institution) => institution.structure !== data.id)
-    ?.reduce((acc, current) => {
-      // Check if structure is ["établissement tutelle", "primary"]
-      if (!["établissement tutelle", "primary"].includes(current.relationType)) return acc;
-      // Check if this structure already exists in our accumulator
-      const existing = acc.find(item => item.structure === current.structure);
-
-      if (existing) {
-        // If it exists, increment the count
-        existing.count += 1;
-      } else {
-        // If it doesn't exist, add a new entry
-        acc.push({
-          structure: current.structure,
-          count: 1,
-          label: current.label,
-          relationType: current.relationType,
-          normalizedCount: null,
-        });
-      }
-
-      return acc;
-    }, [] as TutelleCountsType[])
-
-  const maxParticipantsCount = Math.max(...participantsCounts.map(i => i.count));
-
-  const coParticipantsOf = participantsCounts
-    .map(item => ({
-      ...item,
-      normalizedCount: maxParticipantsCount > 0 ? (item.count / maxParticipantsCount) * 100 : 0
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 15);
-
-
-  const allCounts = data.institutionOf
-    ?.flatMap(({ denormalized }) => denormalized.institutions)
-    ?.filter((institution) => institution.structure !== data.id)
-    ?.reduce((acc, current) => {
-      // Check if structure is ["établissement tutelle", "primary"]
-      if (!["établissement tutelle", "primary"].includes(current.relationType)) return acc;
-      // Check if this structure already exists in our accumulator
-      const existing = acc.find(item => item.structure === current.structure);
-
-      if (existing) {
-        // If it exists, increment the count
-        existing.count += 1;
-      } else {
-        // If it doesn't exist, add a new entry
-        acc.push({
-          structure: current.structure,
-          count: 1,
-          label: current.label,
-          relationType: current.relationType,
-          normalizedCount: null,
-        });
-      }
-
-      return acc;
-    }, [] as TutelleCountsType[])
-
-  const maxAllCount = Math.max(...participantsCounts.map(i => i.count));
-
-  const allOf = allCounts
-    .map(item => ({
-      ...item,
-      normalizedCount: maxAllCount > 0 ? (item.count / maxAllCount) * 100 : 0
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 15);
+  const propre = data?.institutionOf
+    ?.filter((element) => ["établissement tutelle", "primary"].includes(element.relationType))
+    ?.filter((element) => element.denormalized.institutions.length === 1 && element.denormalized.institutions[0].structure === data.id)
+  const notPropre = data?.institutionOf
+    ?.filter((element) => ["établissement tutelle", "primary"].includes(element.relationType))
+    ?.filter((element) => !(element.denormalized.institutions.length === 1 && element.denormalized.institutions[0].structure === data.id))
 
 
   return (
@@ -239,36 +179,80 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.supervise.title"
                     icon="building-line"
                   />
-                  <>
-                    <div className="fr-mb-3w" style={{ marginTop: '-1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <div style={{ flexGrow: 1 }} />
-                      <Button
-                        variant="text"
-                        icon="arrow-right-s-line"
-                        iconPosition="right"
-                        aria-controls="coInstitutionsModal"
-                        data-fr-opened="false"
-                      >
-                        Voir les principales co-tutelles
-                      </Button>
+                  {!!data?.institutionOf?.length && <div
+                    className="fr-ml-2w fr-pl-2w fr-mb-3w fr-pb-2w"
+                    style={{ marginTop: "-1.5rem", borderLeft: "4px solid var(--artwork-minor-yellow-tournesol)" }}
+                  >
+                    <div style={{ marginTop: "-1.5rem" }}>
+                      <OrganizationNetworks
+                        data={propre}
+                        titleKey="organizations.section.networks.supervise.propre.title"
+                        icon="building-line"
+                      />
                     </div>
-                    <Modal id="coInstitutionsModal" size="lg" title={`Top 15 des établissement partageant le plus de tutelles avec ${data.label.fr}`}>
-                      <Row verticalAlign="middle" gutters className="fr-mb-3w">
+                    <div style={{ marginTop: "-1.5rem" }}>
+                      <OrganizationNetworks
+                        data={notPropre}
+                        titleKey="organizations.section.networks.supervise.notPropre.title"
+                        icon="building-line"
+                      />
+                    </div>
+                    {!!coInstitutionOf?.length && (
+                      <div style={{ marginTop: "-1.5rem" }}>
+                        <div className="fr-mb-1w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <div style={{ flexGrow: 1 }}>
+                            <Text bold className="fr-m-0">
+                              Top 5 des cotutelles
+                              {/* {intl.formatMessage(
+                                { id: titleKey },
+                                { count: data.length }
+                              )} */}
+                            </Text>
+                          </div>
+                          <Button
+                            variant="text"
+                            icon="arrow-right-s-line"
+                            iconPosition="right"
+                            aria-controls="{top5}"
+                            data-fr-opened="false"
+                          >
+                            {/* {intl.formatMessage({ id: "organizations.section.networks.open-modal-button" })} */}
+                            Afficher plus de co-tutelles
+                          </Button>
+                        </div>
                         <Col xs="12">
-                          {coInstitutionOf?.map((institution) => (
+                          {coInstitutionOf?.slice(0, 5)?.map((institution) => (
                             <BarLink
                               key={institution.structure}
                               name={institution.label}
                               count={institution.count}
                               width={institution.normalizedCount}
                               color="var(--artwork-minor-yellow-tournesol)"
-                              height={6}
+                              height={8}
+                              href={`/organizations/${institution.structure}`}
                             />
                           ))}
                         </Col>
-                      </Row>
-                    </Modal>
-                  </>
+                        <Modal id="{top5}" size="lg" title="top5">
+                          <Col xs="12">
+                            {coInstitutionOf?.map((institution) => (
+                              <BarLink
+                                key={institution.structure}
+                                name={institution.label}
+                                count={institution.count}
+                                width={institution.normalizedCount}
+                                color="var(--artwork-minor-yellow-tournesol)"
+                                height={8}
+                                href={`/organizations/${institution.structure}`}
+                              />
+                            ))}
+                          </Col>
+                        </Modal>
+                      </div>
+
+                    )}
+                  </div>}
+
                   <OrganizationNetworks
                     data={data.institutions?.filter(
                       (institution) => !["établissement tutelle", "primary"].includes(institution.relationType)
@@ -283,36 +267,61 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.participate-to.title"
                     icon="building-line"
                   />
-                  <>
-                    <div className="fr-mb-3w" style={{ marginTop: '-1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <div style={{ flexGrow: 1 }} />
-                      <Button
-                        variant="text"
-                        icon="arrow-right-s-line"
-                        iconPosition="right"
-                        aria-controls="coParticipantsModal"
-                        data-fr-opened="false"
-                      >
-                        Voir les principales co-tutelles
-                      </Button>
-                    </div>
-                    <Modal id="coParticipantsModal" size="lg" title={`Top 15 des établissement partageant le plus de tutelles avec ${data.label.fr}`}>
-                      <Row verticalAlign="middle" gutters className="fr-mb-3w">
+                  {!!coParticipantsOf?.length && (
+                    <div className="fr-ml-2w fr-pl-2w fr-mb-3w fr-pb-2w" style={{ marginTop: "-1.5rem", borderLeft: "4px solid var(--artwork-minor-yellow-tournesol)" }}>
+                      <div style={{ marginTop: "-1.5rem" }}>
+                        <div className="fr-mb-1w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <div style={{ flexGrow: 1 }}>
+                            <Text bold className="fr-m-0">
+                              Top 5 des tutelles de ces laboratoires
+                              {/* {intl.formatMessage(
+                                { id: titleKey },
+                                { count: data.length }
+                              )} */}
+                            </Text>
+                          </div>
+                          <Button
+                            variant="text"
+                            icon="arrow-right-s-line"
+                            iconPosition="right"
+                            aria-controls="{top6}"
+                            data-fr-opened="false"
+                          >
+                            {/* {intl.formatMessage({ id: "organizations.section.networks.open-modal-button" })} */}
+                            Afficher plus de tutelles
+                          </Button>
+                        </div>
                         <Col xs="12">
-                          {coParticipantsOf?.map((institution) => (
+                          {coParticipantsOf?.slice(0, 5)?.map((institution) => (
                             <BarLink
                               key={institution.structure}
                               name={institution.label}
                               count={institution.count}
                               width={institution.normalizedCount}
                               color="var(--artwork-minor-yellow-tournesol)"
-                              height={6}
+                              height={8}
+                              href={`/organizations/${institution.structure}`}
                             />
                           ))}
                         </Col>
-                      </Row>
-                    </Modal>
-                  </>
+                        <Modal id="{top6}" size="lg" title="top5">
+                          <Col xs="12">
+                            {coParticipantsOf?.map((institution) => (
+                              <BarLink
+                                key={institution.structure}
+                                name={institution.label}
+                                count={institution.count}
+                                width={institution.normalizedCount}
+                                color="var(--artwork-minor-yellow-tournesol)"
+                                height={8}
+                                href={`/organizations/${institution.structure}`}
+                              />
+                            ))}
+                          </Col>
+                        </Modal>
+                      </div>
+                    </div>
+                  )}
                   <OrganizationNetworks
                     data={data.parents}
                     titleKey="organizations.section.networks.groups.title"
@@ -391,27 +400,6 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.badges.title"
                     icon="links-fill"
                   />
-                  <Text bold>
-                    Top 5 des établissement partageant le plus de tutelles avec {data.label.fr}
-                    {/* {intl.formatMessage(
-                      { id: titleKey },
-                      { count: data.length }
-                    )} */}
-                  </Text>
-                  <Row verticalAlign="middle" gutters className="fr-mb-3w">
-                    <Col xs="12">
-                      {allOf?.slice(0, 5)?.map((institution) => (
-                        <BarLink
-                          key={institution.structure}
-                          name={institution.label}
-                          count={institution.count}
-                          width={institution.normalizedCount}
-                          color="var(--artwork-minor-yellow-tournesol)"
-                          height={6}
-                        />
-                      ))}
-                    </Col>
-                  </Row>
                 </PageSection>
                 <PageSection
                   size="lead"
