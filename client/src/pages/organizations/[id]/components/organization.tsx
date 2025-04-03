@@ -7,7 +7,7 @@ import {
   Row,
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
-import { Organization, RelatedOrganizationData } from "../../../../types/organization";
+import { Organization } from "../../../../types/organization";
 import { PageContent, PageSection } from "../../../../components/page-content";
 import OrganizationPublications from "./publications";
 import OrganizationProjects from "./projects";
@@ -26,8 +26,6 @@ import getLangFieldValue from "../../../../utils/lang"
 import OrganizationAgreements from "./agreements";
 import OrganizationAwards from "./awards";
 import OrganizationNetwork from "./network"
-import BarLink from "../../../../components/bar-link";
-import Modal from "../../../../components/modal";
 import CoInstitutions from "./networks/co-institutions";
 
 const NETWORK_BADGES_CODES = [
@@ -41,55 +39,6 @@ const NETWORK_BADGES_CODES = [
   "polecompetitivite",
   "satt",
 ]
-
-type TutelleCountsType = {
-  structure: string,
-  count: number,
-  label: string,
-  relationType: string,
-  normalizedCount: number
-}
-
-type ForType = "participant" | "tutelle";
-
-const groupByIntitutions = (orgId: string, data: RelatedOrganizationData[], forWho: ForType) => {
-  const filterCallback = (element: RelatedOrganizationData) => {
-    if (forWho === "participant") return !["établissement tutelle", "primary"].includes(element.relationType);
-    if (forWho === "tutelle") return ["établissement tutelle", "primary"].includes(element.relationType);
-    return !!element;
-  };
-  const count = data
-    ?.filter((element) => filterCallback(element))
-    ?.flatMap(({ denormalized }) => denormalized.institutions)
-    ?.filter((institution) => institution.structure !== orgId)
-    ?.reduce((acc, current) => {
-      if (!["établissement tutelle", "primary"].includes(current.relationType)) return acc;
-      const existing = acc.find(item => item.structure === current.structure);
-
-      if (existing) {
-        existing.count += 1;
-      } else {
-        acc.push({
-          structure: current.structure,
-          count: 1,
-          label: current.label,
-          relationType: current.relationType,
-          normalizedCount: null,
-        });
-      }
-
-      return acc;
-    }, [] as TutelleCountsType[])
-  const maxCount = count?.length ? Math.max(...count.map(i => i.count)) : 0;
-  const res = count?.map((item) => ({
-    ...item,
-    normalizedCount: maxCount > 0 ? (item.count / maxCount) * 100 : 0
-  })).sort((a, b) => b.count - a.count);
-  return res ?? [];
-}
-
-
-
 
 export default function OrganizationPresentation({ data }: { data: Organization }) {
   const { locale } = useDSFRConfig()
