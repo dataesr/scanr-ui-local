@@ -5,7 +5,6 @@ import {
   Col,
   Container,
   Row,
-  Text,
   useDSFRConfig,
 } from "@dataesr/dsfr-plus";
 import { Organization, RelatedOrganizationData } from "../../../../types/organization";
@@ -29,6 +28,7 @@ import OrganizationAwards from "./awards";
 import OrganizationNetwork from "./network"
 import BarLink from "../../../../components/bar-link";
 import Modal from "../../../../components/modal";
+import CoInstitutions from "./networks/co-institutions";
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -97,9 +97,6 @@ export default function OrganizationPresentation({ data }: { data: Organization 
   const { publications, projects, patents, network } = data
   const { screen } = useScreenSize()
   const networkBadges = data.badges?.filter((b) => NETWORK_BADGES_CODES.includes(b.code.toLowerCase()))
-
-  const coInstitutionOf = groupByIntitutions(data.id, data.institutionOf, "tutelle")
-  const coParticipantsOf = groupByIntitutions(data.id, data.institutionOf, "participant")
 
   const propre = data?.institutionOf
     ?.filter((element) => ["établissement tutelle", "primary"].includes(element.relationType))
@@ -173,85 +170,20 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     icon="building-line"
                   />
                   <OrganizationNetworks
-                    data={data.institutionOf?.filter((institution) =>
-                      ["établissement tutelle", "primary"].includes(institution.relationType)
-                    )}
-                    titleKey="organizations.section.networks.supervise.title"
+                    data={propre}
+                    titleKey="organizations.section.networks.supervise.propre.title"
                     icon="building-line"
                   />
-                  {!!data?.institutionOf?.length && <div
-                    className="fr-ml-2w fr-pl-2w fr-mb-3w fr-pb-2w"
-                    style={{ marginTop: "-1.5rem", borderLeft: "4px solid var(--artwork-minor-yellow-tournesol)" }}
-                  >
-                    <div style={{ marginTop: "-1.5rem" }}>
-                      <OrganizationNetworks
-                        data={propre}
-                        titleKey="organizations.section.networks.supervise.propre.title"
-                        icon="building-line"
-                      />
-                    </div>
-                    <div style={{ marginTop: "-1.5rem" }}>
-                      <OrganizationNetworks
-                        data={notPropre}
-                        titleKey="organizations.section.networks.supervise.notPropre.title"
-                        icon="building-line"
-                      />
-                    </div>
-                    {!!coInstitutionOf?.length && (
-                      <div style={{ marginTop: "-1.5rem" }}>
-                        <div className="fr-mb-1w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <div style={{ flexGrow: 1 }}>
-                            <Text bold className="fr-m-0">
-                              Top 5 des cotutelles
-                              {/* {intl.formatMessage(
-                                { id: titleKey },
-                                { count: data.length }
-                              )} */}
-                            </Text>
-                          </div>
-                          <Button
-                            variant="text"
-                            icon="arrow-right-s-line"
-                            iconPosition="right"
-                            aria-controls="{top5}"
-                            data-fr-opened="false"
-                          >
-                            {/* {intl.formatMessage({ id: "organizations.section.networks.open-modal-button" })} */}
-                            Afficher plus de co-tutelles
-                          </Button>
-                        </div>
-                        <Col xs="12">
-                          {coInstitutionOf?.slice(0, 5)?.map((institution) => (
-                            <BarLink
-                              key={institution.structure}
-                              name={institution.label}
-                              count={institution.count}
-                              width={institution.normalizedCount}
-                              color="var(--artwork-minor-yellow-tournesol)"
-                              height={8}
-                              href={`/organizations/${institution.structure}`}
-                            />
-                          ))}
-                        </Col>
-                        <Modal id="{top5}" size="lg" title="top5">
-                          <Col xs="12">
-                            {coInstitutionOf?.map((institution) => (
-                              <BarLink
-                                key={institution.structure}
-                                name={institution.label}
-                                count={institution.count}
-                                width={institution.normalizedCount}
-                                color="var(--artwork-minor-yellow-tournesol)"
-                                height={8}
-                                href={`/organizations/${institution.structure}`}
-                              />
-                            ))}
-                          </Col>
-                        </Modal>
-                      </div>
-
-                    )}
-                  </div>}
+                  <OrganizationNetworks
+                    data={notPropre}
+                    titleKey="organizations.section.networks.supervise.notPropre.title"
+                    icon="building-line"
+                  />
+                  <CoInstitutions
+                    orgId={data.id}
+                    institutionOfData={data.institutionOf}
+                    forType="tutelle"
+                  />
 
                   <OrganizationNetworks
                     data={data.institutions?.filter(
@@ -267,61 +199,11 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.participate-to.title"
                     icon="building-line"
                   />
-                  {!!coParticipantsOf?.length && (
-                    <div className="fr-ml-2w fr-pl-2w fr-mb-3w fr-pb-2w" style={{ marginTop: "-1.5rem", borderLeft: "4px solid var(--artwork-minor-yellow-tournesol)" }}>
-                      <div style={{ marginTop: "-1.5rem" }}>
-                        <div className="fr-mb-1w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <div style={{ flexGrow: 1 }}>
-                            <Text bold className="fr-m-0">
-                              Top 5 des tutelles de ces laboratoires
-                              {/* {intl.formatMessage(
-                                { id: titleKey },
-                                { count: data.length }
-                              )} */}
-                            </Text>
-                          </div>
-                          <Button
-                            variant="text"
-                            icon="arrow-right-s-line"
-                            iconPosition="right"
-                            aria-controls="{top6}"
-                            data-fr-opened="false"
-                          >
-                            {/* {intl.formatMessage({ id: "organizations.section.networks.open-modal-button" })} */}
-                            Afficher plus de tutelles
-                          </Button>
-                        </div>
-                        <Col xs="12">
-                          {coParticipantsOf?.slice(0, 5)?.map((institution) => (
-                            <BarLink
-                              key={institution.structure}
-                              name={institution.label}
-                              count={institution.count}
-                              width={institution.normalizedCount}
-                              color="var(--artwork-minor-yellow-tournesol)"
-                              height={8}
-                              href={`/organizations/${institution.structure}`}
-                            />
-                          ))}
-                        </Col>
-                        <Modal id="{top6}" size="lg" title="top5">
-                          <Col xs="12">
-                            {coParticipantsOf?.map((institution) => (
-                              <BarLink
-                                key={institution.structure}
-                                name={institution.label}
-                                count={institution.count}
-                                width={institution.normalizedCount}
-                                color="var(--artwork-minor-yellow-tournesol)"
-                                height={8}
-                                href={`/organizations/${institution.structure}`}
-                              />
-                            ))}
-                          </Col>
-                        </Modal>
-                      </div>
-                    </div>
-                  )}
+                  <CoInstitutions
+                    orgId={data.id}
+                    institutionOfData={data.institutionOf}
+                    forType="participant"
+                  />
                   <OrganizationNetworks
                     data={data.parents}
                     titleKey="organizations.section.networks.groups.title"
