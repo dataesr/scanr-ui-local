@@ -18,7 +18,7 @@ export default function InputMaxComponents() {
       input !== maxComponents &&
         input >= defaultValues.min &&
         input <= defaultValues.max &&
-        handleParameterChange("maxTest", input)
+        handleParameterChange("maxComponents", input)
     }, 1000)
 
     return () => {
