@@ -16,7 +16,7 @@ export default function useSearchData(forceClusters?: boolean) {
   if (forceClusters !== undefined) parameters.clusters = forceClusters
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["network", currentSource, currentModel, currentQuery, filters, lang, parameters],
+    queryKey: ["network", "search", currentSource, currentModel, currentQuery, filters, lang, parameters],
     queryFn: () =>
       networkSearch({
         source: currentSource,

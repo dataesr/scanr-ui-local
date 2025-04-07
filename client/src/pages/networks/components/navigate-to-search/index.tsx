@@ -19,7 +19,7 @@ export default function NavigateToSearch() {
   }
 
   return (
-    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"} className="fr-mb-3w">
+    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"} className="fr-mb-3w fr-mr-1w">
       <Button
         size="md"
         variant="primary"

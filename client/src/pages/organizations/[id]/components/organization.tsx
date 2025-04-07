@@ -26,6 +26,7 @@ import getLangFieldValue from "../../../../utils/lang"
 import OrganizationAgreements from "./agreements";
 import OrganizationAwards from "./awards";
 import OrganizationNetwork from "./network"
+import CoInstitutions from "./networks/co-institutions";
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -45,6 +46,14 @@ export default function OrganizationPresentation({ data }: { data: Organization 
   const { publications, projects, patents, network } = data
   const { screen } = useScreenSize()
   const networkBadges = data.badges?.filter((b) => NETWORK_BADGES_CODES.includes(b.code.toLowerCase()))
+
+  const propre = data?.institutionOf
+    ?.filter((element) => ["établissement tutelle", "primary"].includes(element.relationType))
+    ?.filter((element) => element.denormalized.institutions.length === 1 && element.denormalized.institutions[0].structure === data.id)
+  const notPropre = data?.institutionOf
+    ?.filter((element) => ["établissement tutelle", "primary"].includes(element.relationType))
+    ?.filter((element) => !(element.denormalized.institutions.length === 1 && element.denormalized.institutions[0].structure === data.id))
+
 
   return (
     <>
@@ -110,12 +119,21 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     icon="building-line"
                   />
                   <OrganizationNetworks
-                    data={data.institutionOf?.filter((institution) =>
-                      ["établissement tutelle", "primary"].includes(institution.relationType)
-                    )}
-                    titleKey="organizations.section.networks.supervise.title"
+                    data={propre}
+                    titleKey="organizations.section.networks.supervise.propre.title"
                     icon="building-line"
                   />
+                  <OrganizationNetworks
+                    data={notPropre}
+                    titleKey="organizations.section.networks.supervise.notPropre.title"
+                    icon="building-line"
+                  />
+                  <CoInstitutions
+                    orgId={data.id}
+                    institutionOfData={data.institutionOf}
+                    forType="tutelle"
+                  />
+
                   <OrganizationNetworks
                     data={data.institutions?.filter(
                       (institution) => !["établissement tutelle", "primary"].includes(institution.relationType)
@@ -129,6 +147,11 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     )}
                     titleKey="organizations.section.networks.participate-to.title"
                     icon="building-line"
+                  />
+                  <CoInstitutions
+                    orgId={data.id}
+                    institutionOfData={data.institutionOf}
+                    forType="participant"
                   />
                   <OrganizationNetworks
                     data={data.parents}
@@ -185,7 +208,7 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     titleKey="organizations.section.networks.eat.title"
                     icon="community-fill"
                   />
-                  {/* 
+                  {/*
                   TODO: Uncomment when the data is available
                   <OrganizationNetworks
                     data={data.relations?.filter(

@@ -6,6 +6,8 @@ import {
   ElasticHits,
   NetworkSearchHitsArgs,
   NetworkSearchAggsArgs,
+  NetworkCountBody,
+  NetworkCountArgs,
 } from "../../../types/network"
 import { CONFIG } from "../network/config"
 import networkCreate from "../network/network"
@@ -18,6 +20,38 @@ const DEFAULT_YEARS = Array.from({ length: (2010 - CURRENT_YEAR) / -1 + 1 }, (_,
 
 const DEFAULT_SIZE = 2000
 const MAX_SIZE = 10000
+
+export async function networkCount({ source, model, query, filters }: NetworkCountArgs): Promise<number> {
+  const body: NetworkCountBody = {
+    query: {
+      bool: {
+        must: [
+          {
+            query_string: {
+              query: query || "*",
+              fields: CONFIG[source][model].search_fields,
+            },
+          },
+        ],
+      },
+    },
+  }
+  if (filters && filters.length > 0) body.query.bool.filter = filters
+
+  const res = await fetch(`${CONFIG[source][model].index}/_count`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: postHeaders,
+  })
+
+  if (res.status !== 200) {
+    throw new Error(`Elasticsearch error: ${res.status}`)
+  }
+  const json = await res.json()
+  const count: number = json?.count || null
+
+  return count
+}
 
 export async function networkSearch({
   source,
@@ -89,6 +123,7 @@ export async function networkSearch({
     network: network,
     config: config,
     info: info,
+    ...(parameters.sample && { count: json.aggregations?.sample?.doc_count }),
   }
 
   return data

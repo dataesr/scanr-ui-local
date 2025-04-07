@@ -7,7 +7,7 @@ import { DEFAULT_INTEGRATION } from "../integration/config"
 export default function useIntegration() {
   const [searchParams] = useSearchParams()
   const { pathname } = useLocation()
-  const isIntegration = pathname.split("/").includes("integration")
+  const isIntegration = pathname.split("/").includes("integration") || pathname.split("/").includes("studio")
   const integrationId = isIntegration ? searchParams.get("local") : undefined
   const integrationLang = searchParams.get("lang") || "fr"
 

@@ -7,6 +7,7 @@ export const ignoreIds = {
     "Q466", // www
     "Q823982", // MathML
     "Q142", // française
+    "Q1000371", // personnalisation
   ],
 }
 

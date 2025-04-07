@@ -8,8 +8,10 @@ export async function getStructureNetworkById(id: string, source: string, model:
     model: model,
     filters: [organizationFilter],
     lang: "fr",
-    parameters: { maxNodes: 300, maxComponents: 5, clusters: false, filterNode: "", sample: false },
+    parameters: { maxNodes: 300, maxComponents: 5, clusters: false, filterNode: "", sample: true },
   })
+    .then((data) => data)
+    .catch(() => undefined)
 
   return data
 }
