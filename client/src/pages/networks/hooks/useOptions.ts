@@ -29,6 +29,7 @@ export default function useOptions() {
   const handleSourceChange = useCallback(
     (source: string) => {
       searchParams.delete("model")
+      searchParams.delete("filters")
       searchParams.set("source", source)
       setSearchParams(searchParams)
     },

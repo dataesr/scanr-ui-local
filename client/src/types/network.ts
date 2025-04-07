@@ -67,6 +67,21 @@ export type NetworkInfo = {
   description?: string
 }
 
+export type NetworkCountBody = {
+  query: {
+    bool?: {
+      must?: Array<Record<string, unknown>>
+      filter?: Array<Record<string, unknown>>
+    }
+    function_score?: Record<string, unknown>
+  }
+}
+export type NetworkCountArgs = {
+  source: string
+  model: string
+  query?: string
+  filters?: NetworkFilters
+}
 export type NetworkSearchBody = {
   size: number
   query: {

@@ -1,10 +1,10 @@
-import { Spinner } from "@dataesr/dsfr-plus"
 import { VOSviewerOnline } from "vosviewer-online"
 import { useDSFRConfig } from "@dataesr/dsfr-plus"
 import useSearchData from "../../hooks/useSearchData"
 import Error204 from "../errors/error204"
 import { useNetworkContext } from "../../context"
 import useOptions from "../../hooks/useOptions"
+import NetworkSpinner from "../spinner"
 
 export default function NetworkGraph() {
   const { currentModel, parameters } = useOptions()
@@ -17,7 +17,7 @@ export default function NetworkGraph() {
   if (searchClusters.isFetching) parameters.clusters = false
   const data = parameters.clusters ? searchClusters?.data : search?.data
 
-  if (search.isFetching) return <Spinner />
+  if (search.isFetching) return <NetworkSpinner />
   if (!data?.network) return <Error204 />
 
   const key = JSON.stringify({ currentModel, currentQuery, filters, ...parameters, lang, theme, focusItem })
