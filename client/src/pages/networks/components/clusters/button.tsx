@@ -15,7 +15,7 @@ export default function ClustersButton() {
   if (integrationOptions.showClustersButton === false) return null
 
   return (
-    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"} className="fr-ml-1w">
+    <ButtonGroup size={["xs", "sm"].includes(screen) ? "sm" : "md"}>
       <Button
         title={intl.formatMessage({ id: "networks.clusters.button.description" })}
         iconPosition="right"
