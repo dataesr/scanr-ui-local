@@ -1,24 +1,34 @@
-import { Button, ButtonGroup } from "@dataesr/dsfr-plus"
+import { Button, Row, Title } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import useUrl from "../../hooks/useUrl"
 
 export default function NavigateToNetwork() {
   const intl = useIntl()
   const { api } = useUrl()
-  const location = useLocation()
-  const navigate = useNavigate()
+  const [searchParams] = useSearchParams();
 
-  const navigateToNetwork = () => {
-    const search = location?.search ? `&${location.search.slice(1)}` : ""
-    navigate(`/networks?source=${api}${search}`)
-  }
+  if (!["publications", "patents", "projects"].includes(api)) return null;
+
+  searchParams.set("source", api)
+  const url = `/networks?${searchParams.toString()}`
+
 
   return (
-    <ButtonGroup className="fr-mb-3w">
-      <Button size="md" variant="primary" icon="network-line" iconPosition="left" onClick={navigateToNetwork}>
-        {intl.formatMessage({ id: "search.navigate-to-network.label" })}
-      </Button>
-    </ButtonGroup>
+    <>
+      <Row className="fr-mb-3w">
+        <Title as="h2" className="fr-text--md fr-text--bold fr-m-0">
+          {intl.formatMessage({ id: "search.navigate-to-network.label" })}
+        </Title>
+        <p className="fr-text--xs fr-text-mention--grey fr-mb-1w">
+          {intl.formatMessage({ id: "search.navigate-to-network.desc" })}
+        </p>
+        <div style={{ display: 'flex', width: "100%", justifyContent: "flex-end" }}>
+          <Button size="sm" as="a" variant="text" icon="arrow-right-line" iconPosition="right" href={url}>
+            {intl.formatMessage({ id: "search.navigate-to-network.button" })}
+          </Button>
+        </div>
+      </Row>
+    </>
   )
 }

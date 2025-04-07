@@ -1,4 +1,4 @@
-import { Button, Container, Row, Text } from "@dataesr/dsfr-plus"
+import { Button, Container, Text } from "@dataesr/dsfr-plus"
 import { Network } from "../../../../../types/network"
 import { VOSviewerOnline } from "vosviewer-online"
 import { stringifySearchFiltersForURL } from "../../../../search/hooks/useUrl"
@@ -32,30 +32,32 @@ export default function OrganizationNetwork({ data: network, value, label }: Org
 
   return (
     <>
-      <Container
-        fluid
-        className="fr-mb-3w"
+      <div
+        className="fr-mb-1w"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Container fluid style={{ flexGrow: 1 }}>
-          <Text className="fr-m-0" size="lg" bold>
-            {intl.formatMessage({ id: "organizations.network.title" })}
-          </Text>
-        </Container>
-      </Container>
+        <Text style={{ flexGrow: 1 }} className="fr-m-0" size="lg" bold>
+          {intl.formatMessage({ id: "organizations.network.title" })}
+        </Text>
+        <Button as="a" variant="text" icon="arrow-right-s-line" iconPosition="right" href={networkUrl}>
+          {intl.formatMessage({ id: "organizations.network.search" })}
+        </Button>
+      </div>
+      <Text className="fr-m-0 fr-text-mention-grey" size="sm">
+        {intl.formatMessage({ id: "organizations.network.desc" })}
+        {intl.formatMessage({ id: "organizations.network.desc2" })}
+      </Text>
       <Container fluid className="fr-mt-2w" style={{ height: "400px" }}>
         <VOSviewerOnline key={[value, theme]} data={network} parameters={parameters} />
       </Container>
-      <Row horizontalAlign="right" className="fr-mb-2w">
-        <Button as="a" color="blue-ecume" variant="primary" icon="arrow-right-s-line" iconPosition="right" href={networkUrl}>
-          {intl.formatMessage({ id: "organizations.network.search" })}
-        </Button>
-      </Row>
-      <hr />
+      <Text className="fr-m-0 fr-text-mention-grey" size="xs">
+        {intl.formatMessage({ id: "organizations.network.desc3" })}
+      </Text>
+      <hr className="fr-mt-5w" />
     </>
   )
 }
