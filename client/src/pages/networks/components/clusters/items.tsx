@@ -34,7 +34,7 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
   const currentYear = new Date().getFullYear()
   const { currentSource } = useOptions()
   const [showNodesModal, setShowNodesModal] = useState(false)
-  const [showPublicationsModal, setShowPublicationsModal] = useState(false)
+  const [showDocumentsModal, setShowDocumentsModal] = useState(false)
   const { setFocusItem } = useNetworkContext()
 
   const oaColor = (percent: number) => (percent >= 40.0 ? (percent >= 70.0 ? "success" : "yellow-moutarde") : "warning")
@@ -56,7 +56,7 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
             </Badge>
             <Badge
               onClick={() => {
-                setShowPublicationsModal(true)
+                setShowDocumentsModal(true)
               }}
               style={{ cursor: "pointer" }}
               size="sm"
@@ -119,19 +119,27 @@ function ClusterItem({ currentModel, community }: ClusterItemArgs) {
         <ModalContent>
           {community?.nodes?.map((node) => (
             <li key={node.id}>
-              <Link key={node.id} href={node.url}>
-                {node.label}
-              </Link>
+              {node?.page ? (
+                <Link key={node.id} target="_blank" href={node.page}>
+                  {node.label}
+                </Link>
+              ) : (
+                node.label
+              )}
             </li>
           ))}
         </ModalContent>
       </Modal>
-      <Modal isOpen={showPublicationsModal} hide={() => setShowPublicationsModal(false)}>
+      <Modal isOpen={showDocumentsModal} hide={() => setShowDocumentsModal(false)}>
         <ModalTitle>{intl.formatMessage({ id: "networks.section.clusters.badge-publications" })}</ModalTitle>
         <ModalContent>
           {community?.documents?.map((publication) => (
             <li key={publication.id} className="fr-mt-1w">
-              <Link key={publication.id} href={window.location.origin + "/publications/" + encode(publication.id as string)}>
+              <Link
+                key={publication.id}
+                target="_blank"
+                href={window.location.origin + "/publications/" + encode(publication.id as string)}
+              >
                 {publication.title}
               </Link>
             </li>
