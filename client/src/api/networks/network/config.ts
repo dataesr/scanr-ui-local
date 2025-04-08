@@ -88,6 +88,7 @@ export const CONFIG = {
       source_fields: [...publicationsSourceFields, "domains.id_name"],
       aggregation: "domains.id_name.keyword",
       co_aggregation: "co_domains.keyword",
+      url_page: "https://www.wikidata.org/wiki",
       url_search: "/search/publications",
       terminology: {
         item: "topic",
@@ -293,22 +294,24 @@ export const CONFIG = {
 
 const configGetItemDescription = (source: string, model) =>
   `<div class='description_heading'>${
-    CONFIG?.[model]?.url_page
+    CONFIG[source][model]?.url_page
       ? "<a class='description_url' href={page}>{label}</a>"
       : "<span class='description_label'>{label}</span>"
   }<br /><a class='description_url' href={search}>associated ${source.toLowerCase()}</a></div>`
 const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
-export function configGetItemPage(model: string, key: string): string {
-  const targetUrl = CONFIG[model]?.url_page
+export function configGetItemPage(source: string, model: string, key: string): string {
+  const targetUrl = CONFIG[source][model]?.url_page
+  // special case for domains (link to wikidata)
+  if (model === "domains") return `${targetUrl}/${key}`
   return targetUrl ? window.location.origin + `${targetUrl}/${key}` : undefined
 }
 export function configGetItemSearch(query: string, source: string, model: string, key: string, integration: string): string {
   const itemField = CONFIG[source][model].field
   const targetUrl = CONFIG[source][model].url_search
   const itemFilter = `${itemField}:${key}`
-  const integrationFilter = integration ? ` AND bso_local_affiliations.keyword:${integration}` : ""
+  const integrationFilter = integration ? ` AND bso_local_affiliations:${integration}` : ""
 
   if (!query) return window.location.origin.concat(targetUrl, `?q=${itemFilter}`, integrationFilter)
   if (query.includes(itemFilter)) return window.location.origin.concat(targetUrl, `?q=${query}`, integrationFilter)

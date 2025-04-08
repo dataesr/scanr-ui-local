@@ -48,7 +48,7 @@ const communityGetNodes = (graph: Graph, community: number): Array<{ id: string;
     id: id,
     weight: graph.getNodeAttribute(id, "weight"),
     label: graph.getNodeAttribute(id, "label"),
-    page: configGetItemPage(graph.getAttribute("model"), id),
+    page: configGetItemPage(graph.getAttribute("source"), graph.getAttribute("model"), id),
   }))
   return nodes.sort((a, b) => b.weight - a.weight)
 }
