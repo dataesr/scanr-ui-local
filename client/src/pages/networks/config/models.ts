@@ -41,14 +41,10 @@ const NETWORK_MODELS_MAPPING = {
       label: "classes",
       icon: "folder-2-line",
     },
-    ...(!isInProduction()
-      ? [
-          {
-            label: "persons",
-            icon: "user-line",
-          },
-        ]
-      : []),
+    {
+      label: "persons",
+      icon: "user-line",
+    },
     {
       label: "organizations",
       icon: "building-line",
