@@ -1,5 +1,3 @@
-import { isInProduction } from "../../../utils/helpers"
-
 const NETWORK_MODELS_MAPPING = {
   publications: [
     {
