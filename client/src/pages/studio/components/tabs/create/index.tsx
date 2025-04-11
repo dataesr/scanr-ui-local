@@ -18,7 +18,7 @@ export default function StudioCreate() {
   const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()
   const { locale: currentLang } = useDSFRConfig()
-  const [local, setLocal] = useState("130015506") // University of Lorraine
+  const [local, setLocal] = useState(searchParams.get("local") || "130015506") // University of Lorraine
   const [tool, setTool] = useState("networks")
   const [lang, setLang] = useState(currentLang)
   const search = location?.search || ""
