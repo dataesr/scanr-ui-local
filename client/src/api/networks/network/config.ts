@@ -19,11 +19,11 @@ export const CONFIG = {
   publications: {
     authors: {
       index: publicationsIndex,
-      field: "authors.id_name",
+      field: "authors.person",
       topics: "domains.label.default.keyword",
       search_fields: publicationsFields,
-      source_fields: [...publicationsSourceFields, "authors.id_name"],
-      aggregation: "authors.id_name.keyword",
+      source_fields: [...publicationsSourceFields, "authors.person"],
+      aggregation: "authors.person.keyword",
       co_aggregation: "co_authors.keyword",
       url_page: "/authors",
       url_search: "/search/publications",
@@ -40,11 +40,11 @@ export const CONFIG = {
     },
     institutions: {
       index: publicationsIndex,
-      field: "affiliations.id_name",
+      field: "affiliations.id",
       topics: "domains.label.default.keyword",
       search_fields: publicationsFields,
-      source_fields: [...publicationsSourceFields, "affiliations.id_name"],
-      aggregation: "affiliations.id_name.keyword",
+      source_fields: [...publicationsSourceFields, "affiliations.id"],
+      aggregation: "affiliations.id.keyword",
       co_aggregation: "co_institutions.keyword",
       url_page: "/organizations",
       url_search: "/search/publications",
@@ -61,11 +61,11 @@ export const CONFIG = {
     },
     structures: {
       index: publicationsIndex,
-      field: "affiliations.id_name",
+      field: "affiliations.id",
       topics: "domains.label.default.keyword",
       search_fields: publicationsFields,
-      source_fields: [...publicationsSourceFields, "affiliations.id_name"],
-      aggregation: "affiliations.id_name.keyword",
+      source_fields: [...publicationsSourceFields, "affiliations.id"],
+      aggregation: "affiliations.id.keyword",
       co_aggregation: "co_structures.keyword",
       url_page: "/organizations",
       url_search: "/search/publications",
@@ -82,12 +82,13 @@ export const CONFIG = {
     },
     domains: {
       index: publicationsIndex,
-      field: "domains.id_name",
+      field: "domains.code",
       topics: "domains.label.default.keyword",
       search_fields: publicationsFields,
-      source_fields: [...publicationsSourceFields, "domains.id_name"],
-      aggregation: "domains.id_name.keyword",
+      source_fields: [...publicationsSourceFields, "domains.code"],
+      aggregation: "domains.code.keyword",
       co_aggregation: "co_domains.keyword",
+      url_page: "https://www.wikidata.org/wiki",
       url_search: "/search/publications",
       terminology: {
         item: "topic",
@@ -102,11 +103,11 @@ export const CONFIG = {
     },
     software: {
       index: publicationsIndex,
-      field: "software.id_name",
+      field: "software.softwareName",
       topics: "domains.label.default.keyword",
       search_fields: publicationsFields,
-      source_fields: [...publicationsSourceFields, "software.id_name"],
-      aggregation: "software.id_name.keyword",
+      source_fields: [...publicationsSourceFields, "software.softwareName"],
+      aggregation: "software.softwareName.keyword",
       co_aggregation: "co_software.keyword",
       url_search: "/search/publications",
       terminology: {
@@ -122,11 +123,11 @@ export const CONFIG = {
     },
     projects: {
       index: publicationsIndex,
-      field: "projects.id_name",
+      field: "projects.id",
       topics: "domains.label.default.keyword",
       search_fields: publicationsFields,
-      source_fields: [...publicationsSourceFields, "projects.id_name"],
-      aggregation: "projects.id_name.keyword",
+      source_fields: [...publicationsSourceFields, "projects.id"],
+      aggregation: "projects.id.keyword",
       co_aggregation: "co_projects.keyword",
       url_page: "/projects",
       url_search: "/search/publications",
@@ -165,11 +166,11 @@ export const CONFIG = {
   patents: {
     persons: {
       index: patentsIndex,
-      field: "applicants.id_name",
+      field: "applicants.name",
       topics: "cpc.groupe.label.keyword",
       search_fields: patentsFields,
-      source_fields: [...patentsSourceFields, "applicants.id_name"],
-      aggregation: "applicants.id_name.keyword",
+      source_fields: [...patentsSourceFields, "applicants.name"],
+      aggregation: "applicants.name.keyword",
       co_aggregation: "co_persons.keyword",
       url_search: "/search/patents",
       terminology: {
@@ -185,11 +186,11 @@ export const CONFIG = {
     },
     organizations: {
       index: patentsIndex,
-      field: "applicants.id_name",
+      field: "applicants.name",
       topics: "cpc.groupe.label.keyword",
       search_fields: patentsFields,
-      source_fields: [...patentsSourceFields, "applicants.id_name"],
-      aggregation: "applicants.id_name.keyword",
+      source_fields: [...patentsSourceFields, "applicants.name"],
+      aggregation: "applicants.name.keyword",
       co_aggregation: "co_organizations.keyword",
       url_page: "/organizations",
       url_search: "/search/patents",
@@ -206,11 +207,11 @@ export const CONFIG = {
     },
     subclasses: {
       index: patentsIndex,
-      field: "cpc.ss_classe.id_name",
+      field: "cpc.ss_classe.code",
       topics: "cpc.groupe.label.keyword",
       search_fields: patentsFields,
-      source_fields: [...patentsSourceFields, "cpc.ss_classe.id_name"],
-      aggregation: "cpc.ss_classe.id_name.keyword",
+      source_fields: [...patentsSourceFields, "cpc.ss_classe.code"],
+      aggregation: "cpc.ss_classe.code.keyword",
       co_aggregation: "co_cpc_ss_classe.keyword",
       url_search: "/search/patents",
       terminology: {
@@ -226,11 +227,11 @@ export const CONFIG = {
     },
     classes: {
       index: patentsIndex,
-      field: "cpc.classe.id_name",
+      field: "cpc.classe.code",
       topics: "cpc.groupe.label.keyword",
       search_fields: patentsFields,
-      source_fields: [...patentsSourceFields, "cpc.classe.id_name"],
-      aggregation: "cpc.classe.id_name.keyword",
+      source_fields: [...patentsSourceFields, "cpc.classe.code"],
+      aggregation: "cpc.classe.code.keyword",
       co_aggregation: "co_cpc_classe.keyword",
       url_search: "/search/patents",
       terminology: {
@@ -248,11 +249,11 @@ export const CONFIG = {
   projects: {
     institutions: {
       index: projectsIndex,
-      field: "participants.structure.id_name",
+      field: "participants.structure.id",
       topics: "domains.keyword",
       search_fields: projectsFields,
-      source_fields: [...projectsSourceFields, "participants.structure.id_name"],
-      aggregation: "participants.structure.id_name.keyword",
+      source_fields: [...projectsSourceFields, "participants.structure.id"],
+      aggregation: "participants.structure.id.keyword",
       co_aggregation: "co_institutions.keyword",
       url_page: "/organizations",
       url_search: "/search/projects",
@@ -269,11 +270,11 @@ export const CONFIG = {
     },
     structures: {
       index: projectsIndex,
-      field: "participants.structure.id_name",
+      field: "participants.structure.id",
       topics: "domains.keyword",
       search_fields: projectsFields,
-      source_fields: [...projectsSourceFields, "participants.structure.id_name"],
-      aggregation: "participants.structure.id_name.keyword",
+      source_fields: [...projectsSourceFields, "participants.structure.id"],
+      aggregation: "participants.structure.id.keyword",
       co_aggregation: "co_structures.keyword",
       url_page: "/organizations",
       url_search: "/search/projects",
@@ -293,22 +294,24 @@ export const CONFIG = {
 
 const configGetItemDescription = (source: string, model) =>
   `<div class='description_heading'>${
-    CONFIG?.[model]?.url_page
+    CONFIG[source][model]?.url_page
       ? "<a class='description_url' href={page}>{label}</a>"
       : "<span class='description_label'>{label}</span>"
   }<br /><a class='description_url' href={search}>associated ${source.toLowerCase()}</a></div>`
 const configGetLinkDescription = (model: string) =>
   `<div class='description_heading'>Co-${model} link</div><div class='description_label'>`
 
-export function configGetItemPage(model: string, key: string): string {
-  const targetUrl = CONFIG[model]?.url_page
+export function configGetItemPage(source: string, model: string, key: string): string {
+  const targetUrl = CONFIG[source][model]?.url_page
+  // special case for domains (link to wikidata)
+  if (model === "domains") return `${targetUrl}/${key}`
   return targetUrl ? window.location.origin + `${targetUrl}/${key}` : undefined
 }
 export function configGetItemSearch(query: string, source: string, model: string, key: string, integration: string): string {
-  const itemField = CONFIG[source][model].field
+  const itemField = CONFIG[source][model].field + ".keyword"
   const targetUrl = CONFIG[source][model].url_search
   const itemFilter = `${itemField}:${key}`
-  const integrationFilter = integration ? ` AND bso_local_affiliations.keyword:${integration}` : ""
+  const integrationFilter = integration ? ` AND bso_local_affiliations.keyword:${integration.toLowerCase()}` : ""
 
   if (!query) return window.location.origin.concat(targetUrl, `?q=${itemFilter}`, integrationFilter)
   if (query.includes(itemFilter)) return window.location.origin.concat(targetUrl, `?q=${query}`, integrationFilter)

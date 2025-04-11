@@ -11,7 +11,12 @@ export default function NetworkSpinner() {
   return (
     <>
       {!isFetching && count && (
-        <Text>{intl.formatMessage({ id: "networks.spinner.count" }, { count: parameters.sample ? 10000 : count })}</Text>
+        <Text>
+          {intl.formatMessage(
+            { id: "networks.spinner.count" },
+            { count: parameters.sample ? Math.min(10000, count) : count }
+          )}
+        </Text>
       )}
       <Spinner />
     </>

@@ -121,7 +121,7 @@ export default async function networkCreate(
         ...(clusters && { Citations: attr?.citationsCount || 0 }),
       },
       scores: { ...(attr?.maxYear && { "Last document": attr.maxYear }) },
-      page: configGetItemPage(model, key),
+      page: configGetItemPage(source, model, key),
       search: configGetItemSearch(query, source, model, key, integration),
       ...(attr?.documentsCount !== undefined && { documentsCount: attr?.documentsCount }),
       ...(attr?.citationsCount !== undefined && { citationsCount: attr?.citationsCount }),

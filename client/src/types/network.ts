@@ -43,7 +43,7 @@ export type NetworkCommunity = {
     id: string
     label: string
     weight?: number
-    url?: string
+    page?: string
   }>
   maxYear?: number
   documentsByYear?: Record<string, number>
