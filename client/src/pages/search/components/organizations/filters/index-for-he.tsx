@@ -40,11 +40,7 @@ export default function OrganizationFilters() {
                 )}
               </Text>) : <BaseSkeleton height="1.25rem" width="30%" />}
             </div>
-            <Button disabled={isFetching} onClick={() => {
-              const element = document.getElementById(id)
-              // @ts-expect-error dsfr does not have types
-              window.dsfr(element).modal.conceal()
-            }}>
+            <Button disabled={isFetching} aria-controls={id} >
               {intl.formatMessage({ id: "search.top.filters.display" })}
             </Button>
           </div>
