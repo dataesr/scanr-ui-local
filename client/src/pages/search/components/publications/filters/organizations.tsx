@@ -79,6 +79,7 @@ export default function PublicationOrganizationsFilter() {
           if (!item) return
           const [value, label] = item.toString().split("###")
           handleFilterChange({ field: "affiliations.id", value, label })
+          authorsAutocompletedList.setFilterText('')
         }}
       >
         {(item) => (

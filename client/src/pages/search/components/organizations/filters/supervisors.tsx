@@ -79,6 +79,7 @@ export default function OrganizationSupervisorsFilter() {
           if (!item) return
           const [value, label] = item.toString().split("###")
           handleFilterChange({ field: "institutions.structure", value, label })
+          authorsAutocompletedList.setFilterText('')
         }}
       >
         {(item) => (

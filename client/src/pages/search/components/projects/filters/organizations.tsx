@@ -84,6 +84,7 @@ export default function ProjectOrganizationsFilter() {
             value,
             label,
           })
+          authorsAutocompletedList.setFilterText('')
         }}
       >
         {(item) => (

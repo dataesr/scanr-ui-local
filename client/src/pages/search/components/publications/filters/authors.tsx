@@ -76,6 +76,7 @@ export default function PublicationAuthorFilter() {
           if (!item) return
           const [value, label] = item.toString().split("###")
           handleFilterChange({ field: "authors.person", value, label })
+          authorsAutocompletedList.setFilterText('')
         }}
       >
         {(item) => (

@@ -30,7 +30,7 @@ export default function ProjectLocalisationsFilter() {
 
   const filter =
     currentFilters?.[
-      "participants.structure.mainAddress.localisationSuggestions"
+    "participants.structure.mainAddress.localisationSuggestions"
     ];
   const operator = filter?.operator || "or";
 
@@ -89,6 +89,7 @@ export default function ProjectLocalisationsFilter() {
             field: "participants.structure.mainAddress.localisationSuggestions",
             value: item,
           })
+          localisationAutocompletedList.setFilterText('')
         }}
       >
         {({ autocompleted }) => <AutocompleteItem key={autocompleted?.[0]}>{autocompleted?.[0]}</AutocompleteItem>}
