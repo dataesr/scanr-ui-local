@@ -343,12 +343,8 @@ export default function Consent() {
                       <li>
                         <button
                           className="fr-btn"
-                          onClick={() => {
-                            setConsent(consent)
-                            const element = document.getElementById(dialogId)
-                            // @ts-expect-error dsfr does not have types
-                            window.dsfr(element).modal.conceal()
-                          }}
+                          aria-controls={dialogId}
+                          onClick={() => setConsent(consent)}
                         >
                           Confirmer mes choix
                         </button>

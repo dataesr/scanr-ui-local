@@ -36,11 +36,7 @@ export default function AuthorFilters() {
               )}
             </Text>) : <BaseSkeleton height="1.25rem" width="30%" />}
           </div>
-          <Button disabled={isFetching} onClick={() => {
-            const element = document.getElementById(id)
-            // @ts-expect-error dsfr does not have types
-            window.dsfr(element).modal.conceal()
-          }}>
+          <Button aria-controls={id} disabled={isFetching}>
             {intl.formatMessage({ id: "search.top.filters.display" })}
           </Button>
         </div>
