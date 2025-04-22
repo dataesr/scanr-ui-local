@@ -1,6 +1,5 @@
 import { Button, Container } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import useSearchData from "../../hooks/useSearchData"
 import useUrl from "../../../search/hooks/useUrl"
 import Modal from "../../../../components/modal"
 import PatentYearFilter from "../../../search/components/patents/filters/years"
@@ -10,9 +9,6 @@ import PatentOrganizationsFilter from "../../../search/components/patents/filter
 export default function NetworkFiltersPatentsModal() {
   const intl = useIntl()
   const { clearFilters } = useUrl()
-  const {
-    search: { isFetching },
-  } = useSearchData()
 
   const id = "networks-options-filters-modal"
 
@@ -34,16 +30,7 @@ export default function NetworkFiltersPatentsModal() {
               {intl.formatMessage({ id: "networks.filters.modal.clear" })}
             </Button>
           </div>
-          <Button
-            disabled={isFetching}
-            onClick={() => {
-              const element = document.getElementById(id)
-              // @ts-expect-error dsfr does not have types
-              window.dsfr(element).modal.conceal()
-            }}
-          >
-            {intl.formatMessage({ id: "networks.filters.modal.display" })}
-          </Button>
+          <Button aria-controls={id}>{intl.formatMessage({ id: "networks.filters.modal.display" })}</Button>
         </div>
       </Modal>
     </>

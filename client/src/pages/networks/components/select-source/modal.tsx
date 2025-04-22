@@ -1,4 +1,4 @@
-import { Container, Listbox, ListboxItem } from "@dataesr/dsfr-plus"
+import { Button, Container, Listbox, ListboxItem } from "@dataesr/dsfr-plus"
 import Modal from "../../../../components/modal"
 import { useIntl } from "react-intl"
 import { NETWORK_SOURCES } from "../../config/sources"
@@ -13,15 +13,13 @@ export default function NetworkSelectSourceModal() {
 
   return (
     <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.select-source.modal.title" })}>
-      <Container fluid className="fr-mb-4w">
+      <Container fluid className="fr-mb-4w fr-pb-4w">
         <Listbox
           selectedKeys={[currentSource]}
           selectionMode="single"
           onSelectionChange={(value) => {
             const selected = Object.values(value)[0]
             selected && handleSourceChange(selected)
-            // @ts-expect-error dsfr does not have types
-            window.dsfr(document.getElementById(id)).modal.conceal()
           }}
         >
           {integrationId ? (
@@ -47,6 +45,9 @@ export default function NetworkSelectSourceModal() {
           )}
         </Listbox>
       </Container>
+      <div className="fr-modal__footer fr-px-0" style={{ display: "flex", width: "100%", justifyContent: "right" }}>
+        <Button aria-controls={id}>{intl.formatMessage({ id: "networks.select-source.modal.display" })}</Button>
+      </div>
     </Modal>
   )
 }
