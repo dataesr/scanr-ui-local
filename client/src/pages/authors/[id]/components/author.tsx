@@ -114,7 +114,11 @@ export default function AuthorPage({ data }: { data: Author }) {
                   id: "authors.section.recent-affiliations.description",
                 })}
               >
-                <RecentAffiliations data={data.recentAffiliations} />
+                <RecentAffiliations
+                  data={data.recentAffiliations}
+                  authorId={data.id}
+                  authorName={data.fullName}
+                />
               </PageSection>
               <PageSection
                 icon="trophy-line"
