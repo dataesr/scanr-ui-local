@@ -12,6 +12,7 @@ import Wiki from "../../../../components/wiki";
 import LinkCard from "../../../../components/link-card";
 import getLangFieldValue from "../../../../utils/lang";
 import Author from "./author";
+import OngoingThesisHeader from "./header/ongoing";
 
 export default function These({ data }) {
   const { locale } = useDSFRConfig();
@@ -35,14 +36,14 @@ export default function These({ data }) {
       <Row gutters={!["sm", "xs"].includes(screen)}>
         <Col xs="12" md="8">
           <Container fluid className="fr-mb-6w">
-            <ThesisHeader data={data} />
+            {data?.id?.startsWith('nnts') ? <OngoingThesisHeader data={data} /> : <ThesisHeader data={data} />}
           </Container>
           <Container fluid>
             <PageContent>
               <PageSection
                 size="lead"
                 title={intl.formatMessage({ id: 'publications.section.author' })}
-                show
+                show={data.authors}
               >
                 <Author authors={data.authors} />
               </PageSection>

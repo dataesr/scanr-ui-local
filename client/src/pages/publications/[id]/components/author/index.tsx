@@ -5,7 +5,7 @@ import LinkCard from "../../../../../components/link-card";
 
 export default function Author({ authors }) {
   const queryClient = useQueryClient();
-  if (!authors.length) return null;
+  if (!authors?.length) return null;
   const author = authors?.filter((author) => author.role === "author")?.[0];
 
   function prefetch(id: string) {

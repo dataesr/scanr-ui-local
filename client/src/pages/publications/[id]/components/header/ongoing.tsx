@@ -12,12 +12,10 @@ import { useIntl } from "react-intl";
 import Truncate from "../../../../../components/truncate";
 import getLangFieldValue from "../../../../../utils/lang";
 
-export default function ThesisHeader({ data }) {
+export default function OngoingThesisHeader({ data }) {
   const intl = useIntl();
   const { locale } = useDSFRConfig();
   const summary = getLangFieldValue(locale)(data?.summary);
-  const hasDate = data.publicationDate;
-  const isOngoing = data?.id?.startsWith("nnts");
   const author = data.authors?.filter(
     (author) => author.role === "author"
   )?.[0] ?? {};
@@ -29,21 +27,13 @@ export default function ThesisHeader({ data }) {
       <div>
         <BadgeGroup>
           <Badge color="purple-glycine" noIcon>
-            {publicationTypeMapping[data.type]}
-          </Badge>
-          <Badge
-            color={data.isOa ? "green-emeraude" : "pink-macaron"}
-            icon={data.isOa ? "lock-unlock-line" : "lock-line"}
-          >
-            {intl.formatMessage({
-              id: `publications.header.oa.${data.isOa ? "true" : "false"}`,
-            })}
+            {publicationTypeMapping["ongoing-thesis"]}
           </Badge>
         </BadgeGroup>
         <Title className="fr-mb-1v" as="h1" look="h5">
           {getLangFieldValue(locale)(data.title)}
         </Title>
-        {isOngoing ? <Text className="fr-text-mention--grey" size="sm">En cours</Text> : <Text className="fr-text-mention--grey" size="sm">
+        {author?.fullName && <Text className="fr-text-mention--grey" size="sm">
           <em>
             {author.fullName &&
               intl.formatMessage({ id: "publications.header.thesis.by" })}
@@ -53,20 +43,6 @@ export default function ThesisHeader({ data }) {
               <span>{author.fullName}</span>
             )}{" "}
             {", "}
-            {hasDate
-              ? intl.formatMessage(
-                { id: "publications.header.thesis.date" },
-                {
-                  date: new Date(data.publicationDate).toLocaleDateString(
-                    "FR-fr",
-                    { year: "numeric", month: "long", day: "numeric" }
-                  ),
-                }
-              )
-              : intl.formatMessage(
-                { id: "publications.header.thesis.year" },
-                { year: data.year }
-              )}
             {!!directors.length &&
               intl.formatMessage({ id: "publications.header.thesis.directed" })}
             {directors.map((director, index) => (
@@ -84,6 +60,9 @@ export default function ThesisHeader({ data }) {
             ))}
           </em>
         </Text>}
+        <Text className="fr-text-mention--grey" size="sm">
+          {intl.formatMessage({ id: "publications.header.thesis.ongoing" })}
+        </Text>
       </div>
       {summary && (
         <Row>
