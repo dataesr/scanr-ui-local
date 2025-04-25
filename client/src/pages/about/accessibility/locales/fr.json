@@ -3,7 +3,7 @@
   "app.accessibility.breadcrumb.current": "Accessibilité",
   "app.accessibility.title": "Accessibilité",
   "app.accessibility.declaration": "Déclaration d'accessibilité",
-  "app.accessibility.declaration.text": "Le Ministère de l'Enseignement Supérieur et de la Recherche s’engage à rendre son site « scanR » accessible conformément à l’article 47 de la loi n° 2005-102 du 11 février 2005.",
+  "app.accessibility.declaration.text": "Le Ministère chargé de l'Enseignement Supérieur et de la Recherche s’engage à rendre son site « scanR » accessible conformément à l’article 47 de la loi n° 2005-102 du 11 février 2005.",
   "app.accessibility.compliance.title": "État de conformité",
   "app.accessibility.compliance.status": "Actuellement, scanR est en cours d'évaluation pour assurer sa conformité avec le référentiel général d'amélioration de l'accessibilité RGAA version 4.1. Nous reconnaissons qu'il peut exister des aspects où notre site n'est pas encore pleinement conforme. Les détails de non-conformité seront répertoriés dès que l'évaluation sera complète.",
   "app.accessibility.tech.title": "Technologies utilisées pour la réalisation du site",
