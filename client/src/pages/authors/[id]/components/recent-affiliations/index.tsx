@@ -1,4 +1,4 @@
-import { useDSFRConfig, Link, Text, Row, Col, Button } from "@dataesr/dsfr-plus";
+import { useDSFRConfig, Link, Text, Row, Col } from "@dataesr/dsfr-plus";
 import { RecentAffiliation } from "../../../../../types/author";
 import getLangFieldValue from "../../../../../utils/lang";
 import { getOrganizationById } from "../../../../../api/organizations/[id]";
