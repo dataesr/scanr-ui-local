@@ -101,6 +101,30 @@ export async function getAuthorById(id: string): Promise<Author> {
       label: el.label?.default,
       value: el.code,
       count: el.count,
-    })) || []
+    }))
+    ?.reduce((acc, curr) => {
+      const existingItemIndex = acc.findIndex((item) =>
+        item.label.toLowerCase() === curr.label.toLowerCase()
+      );
+      if (existingItemIndex !== -1) {
+        return [
+          ...acc.slice(0, existingItemIndex),
+          {
+            value: curr.value,
+            label: curr.label,
+            count: acc[existingItemIndex].count + curr.count
+          },
+          ...acc.slice(existingItemIndex + 1)
+        ];
+      }
+      return [
+        ...acc,
+        {
+          value: curr.value,
+          label: curr.label,
+          count: curr.count
+        }
+      ];
+    }, []) || [];
   return { ...authorData, wikis, _id, publications }
 }

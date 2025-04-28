@@ -46,14 +46,9 @@ async function getStructurePublicationsById(id: string): Promise<any> {
     sort: [{ year: { order: "desc" } }],
     aggs: {
       byWiki: {
-        filter: { term: { "domains.type.keyword": "wikidata" } },
-        aggs: {
-          wiki: {
-            terms: {
-              size: 40,
-              field: "domains.label.default.keyword",
-            }
-          }
+        terms: {
+          size: 40,
+          field: "domains.id_name.keyword",
         }
       },
       byYear: {
@@ -83,16 +78,38 @@ async function getStructurePublicationsById(id: string): Promise<any> {
   }
   const res = await fetch(`${publicationsIndex}/_search`, { method: 'POST', body: JSON.stringify(body), headers: postHeaders })
   const data = await res.json()
-
   const aggregations = data?.aggregations || {}
+  console.log("WIKIS", aggregations?.byWiki?.buckets)
   const publicationsCount = data?.hits?.total?.value || 0
-  const byWiki = aggregations?.byWiki?.wiki?.buckets?.map((element) => {
-    return {
-      value: element.key,
+  const byWiki = aggregations?.byWiki?.buckets
+    ?.map((element) => ({
+      value: element.key?.split('###')[0],
       count: element.doc_count,
-      label: element.key,
-    }
-  }) || [];
+      label: element.key?.split('###')[1]?.toLowerCase(),
+    }))
+    ?.filter((element) => element.value?.startsWith('Q'))
+    ?.reduce((acc, curr) => {
+      const existingItemIndex = acc.findIndex((item) => item.label === curr.label);
+      if (existingItemIndex !== -1) {
+        return [
+          ...acc.slice(0, existingItemIndex),
+          {
+            value: curr.value,
+            label: curr.label,
+            count: acc[existingItemIndex].count + curr.count
+          },
+          ...acc.slice(existingItemIndex + 1)
+        ];
+      }
+      return [
+        ...acc,
+        {
+          value: curr.value,
+          label: curr.label,
+          count: curr.count
+        }
+      ];
+    }, []) || [];
   const _100Year = aggregations?.byYear?.buckets && Math.max(...aggregations.byYear.buckets.map((el) => el.doc_count));
   const byYear = aggregations?.byYear?.buckets?.map((element) => {
     return {
