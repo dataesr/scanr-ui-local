@@ -94,7 +94,7 @@ async function getStructurePublicationsById(id: string): Promise<any> {
         return [
           ...acc.slice(0, existingItemIndex),
           {
-            value: curr.value,
+            value: curr.label,
             label: curr.label,
             count: acc[existingItemIndex].count + curr.count
           },
@@ -104,7 +104,7 @@ async function getStructurePublicationsById(id: string): Promise<any> {
       return [
         ...acc,
         {
-          value: curr.value,
+          value: curr.label,
           label: curr.label,
           count: curr.count
         }
