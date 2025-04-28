@@ -86,6 +86,7 @@ export default function OrganizationLocalisationsFilter() {
             field: "address.localisationSuggestions",
             value: item,
           })
+          localisationAutocompletedList.setFilterText('')
         }}
       >
         {({ autocompleted }) => <AutocompleteItem key={autocompleted?.[0]}>{autocompleted?.[0]}</AutocompleteItem>}

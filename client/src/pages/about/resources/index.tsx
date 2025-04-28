@@ -262,7 +262,7 @@ export default function Resources() {
               className="fr-footer__bottom-link"
               href="/about/resources/anr"
             >
-              <img src="/img/logo/logo-anr.svg" alt="Logo anr" />
+              <img src="/img/logo/logo-anr-20ans.png" alt="Logo anr" />
             </Link>
           </Col>
           <Col xs="3" lg="3" className="centered-col">

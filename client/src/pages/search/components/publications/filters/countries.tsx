@@ -67,6 +67,7 @@ export default function PublicationCountriesFilter() {
         onSelectionChange={(item) => {
           if (!item) return
           handleFilterChange({ field: "affiliations.country", value: item })
+          countriesAutocompletedList.setFilterText('')
         }}
       >
         {({ autocompleted }) => <AutocompleteItem key={autocompleted?.[0]}>{autocompleted?.[0]}</AutocompleteItem>}

@@ -43,7 +43,7 @@ function calculateAccomplishment(startDate, endDate) {
 }
 
 const typeLogoMapping = {
-  anr: "/img/logo/logo-anr.svg",
+  anr: "/img/logo/logo-anr-20ans.png",
   h2020: "/img/logo/logo-europe.svg",
   "horizon europe": "/img/logo/logo-europe.svg",
   fp7: "/img/logo/logo-fp7.svg",
@@ -178,7 +178,7 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                       height="auto"
                       src={logoUrl}
                       alt={`Logo ${data.type}`}
-                      className="fr-mr-1v"
+                      className="fr-mx-1v"
                     />
                   </div>
                 )}
@@ -365,12 +365,12 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                 description={
                   state
                     ? intl.formatMessage(
-                        { id: `projects.section.state.${state}` },
-                        { date: stateDate }
-                      )
+                      { id: `projects.section.state.${state}` },
+                      { date: stateDate }
+                    )
                     : intl.formatMessage({
-                        id: "projects.section.state.no-data",
-                      })
+                      id: "projects.section.state.no-data",
+                    })
                 }
               >
                 {accomplishment && (
@@ -534,8 +534,8 @@ export default function ProjectPresentation({ data }: { data: Project }) {
                                 fundingPercent > 80
                                   ? "end"
                                   : fundingPercent < 20
-                                  ? "start"
-                                  : "middle"
+                                    ? "start"
+                                    : "middle"
                               }
                               font-size=".75rem"
                             >

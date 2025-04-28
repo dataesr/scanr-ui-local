@@ -20,12 +20,7 @@ export default function SwitchLanguage({ languages }) {
                 return (
                   <li key={key}>
                     <button
-                      onClick={() => {
-                        setLocale(key)
-                        const element = document.getElementById(id)
-                        // @ts-expect-error dsfr does not have types
-                        window.dsfr(element).collapse.conceal()
-                      }}
+                      onClick={() => setLocale(key)}
                       className="fr-translate__language fr-nav__link"
                       lang={key}
                       aria-current={locale === key}

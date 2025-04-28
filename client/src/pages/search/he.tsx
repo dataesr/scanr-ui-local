@@ -78,11 +78,9 @@ function KeywordsManager({ tags = [], suggestedTags = [] }: { tags: string[], su
       <div className="fr-modal__footer fr-px-0">
         <ButtonGroup>
           <Button
+            aria-controls="add-keywords"
             onClick={() => {
               handleQueryChange(keywords?.join('|'))
-              const element = document.getElementById("add-keywords")
-              // @ts-expect-error dsfr does not have types
-              window.dsfr(element).modal.conceal()
             }}
             variant="primary"
           >

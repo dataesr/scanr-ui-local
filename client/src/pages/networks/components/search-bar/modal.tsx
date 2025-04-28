@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Container, SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
+import { Button, Container, SearchBar, Tag, TagGroup, Text } from "@dataesr/dsfr-plus"
 import Modal from "../../../../components/modal"
 import useUrl from "../../../search/hooks/useUrl"
 import useSearchExpansion from "../../hooks/useSearchExpansion"
@@ -27,7 +27,7 @@ export default function NetworkSearchBarModal() {
 
   return (
     <Modal id={id} size="lg" title={intl.formatMessage({ id: "networks.search-bar.modal.title" })}>
-      <Container fluid className="fr-mb-4w">
+      <Container fluid className="fr-mb-4w fr-pb-4w">
         <SearchBar
           key={currentQuery}
           buttonLabel={intl.formatMessage({ id: "networks.search-bar.button-label" })}
@@ -36,8 +36,6 @@ export default function NetworkSearchBarModal() {
           onChange={(event) => setQuery((event.target as HTMLInputElement).value)}
           onSearch={(value) => {
             handleQueryChange(networkQuery(value))
-            // @ts-expect-error dsfr does not have types
-            window.dsfr(document.getElementById(id)).modal.conceal()
           }}
         />
       </Container>
@@ -64,6 +62,9 @@ export default function NetworkSearchBarModal() {
           </TagGroup>
         </Container>
       )}
+      <div className="fr-modal__footer fr-px-0" style={{ display: "flex", width: "100%", justifyContent: "right" }}>
+        <Button aria-controls={id}>{intl.formatMessage({ id: "networks.search-bar.modal.display" })}</Button>
+      </div>
     </Modal>
   )
 }

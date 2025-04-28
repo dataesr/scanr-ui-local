@@ -79,6 +79,7 @@ export default function PatentOrganizationsFilter() {
           if (!item) return
           const [value, label] = item.toString().split("###")
           handleFilterChange({ field: "applicants.ids.id", value, label })
+          organizationsAutocompletedList.setFilterText('')
         }}
       >
         {(item) => (

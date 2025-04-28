@@ -21,7 +21,7 @@ export async function getPublicationsTrends({
     query: {
       bool: {
         must: [
-          { range: { year: { gte: years[0] } } },
+          { range: { year: { gte: years[0], lte: years[years.length - 1] } } },
           {
             query_string: {
               query: query || "*",

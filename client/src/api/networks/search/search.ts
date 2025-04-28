@@ -70,10 +70,10 @@ export async function networkSearch({
   }
   // if filters: use standard sampler (top MAX_SIZE documents that match the query)
   // if no filters: use random_sampler (random 10% of all documents)
+  const isFilters = Boolean(filters && filters.length > 0)
+  const isQuery = Boolean(query && query.length > 1)
   const sampler =
-    (filters && filters.length > 0) || (query && query.length > 1)
-      ? { sampler: { shard_size: MAX_SIZE } }
-      : { random_sampler: { probability: 0.1, seed: 42 } }
+    isFilters || isQuery ? { sampler: { shard_size: MAX_SIZE } } : { random_sampler: { probability: 0.1, seed: 42 } }
   const aggs = parameters.sample ? { sample: { ...sampler, aggs: modelAggregation } } : modelAggregation
   const body: NetworkSearchBody = {
     size: 0,
@@ -93,6 +93,8 @@ export async function networkSearch({
   }
 
   if (filters && filters.length > 0) body.query.bool.filter = filters
+  if (parameters.sample && isFilters && !isQuery)
+    body.query = { function_score: { query: body.query, random_score: { seed: 42, field: "_seq_no" } } }
 
   const res = await fetch(`${CONFIG[source][model].index}/_search`, {
     method: "POST",
