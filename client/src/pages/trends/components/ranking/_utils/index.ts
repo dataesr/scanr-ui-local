@@ -1,5 +1,4 @@
 import { DSFRColors } from "@dataesr/dsfr-plus"
-import { useIntl } from "react-intl"
 import { TrendsRankingItem } from "../../../../../types/trends"
 
 const DEFAULT_COLOR = "beige-gris-galet"
@@ -19,15 +18,14 @@ export function itemGetColor(item: TrendsRankingItem, field: "slope" | "norm_slo
 }
 
 export function itemGetTrendState(item: TrendsRankingItem, normalized: boolean) {
-  const intl = useIntl()
   const threshold = SLOPE_THRESHOLD(normalized)
 
   const slope = normalized ? item.norm_slope : item.slope
 
-  if (slope > threshold) return intl.formatMessage({ id: "trends.trending" })
-  if (slope < -threshold) return intl.formatMessage({ id: "trends.fading" })
+  if (slope > threshold) return "trends.trending"
+  if (slope < -threshold) return "trends.fading"
 
-  return intl.formatMessage({ id: "trends.stable" })
+  return "trends.stable"
 }
 
 export function itemGetTrendVariation(item: TrendsRankingItem) {
@@ -38,6 +36,19 @@ export function itemGetTrendVariation(item: TrendsRankingItem) {
 
   const prefix = variation >= 0 ? "+" : "-"
   return `(${prefix}${Math.abs(variation * 100).toFixed(0)}%)`
+}
+
+export function itemGetCategoryColor(openAlexField: string) {
+  switch (openAlexField) {
+    case "subfield":
+      return "green-emeraude"
+    case "field":
+      return "purple-glycine"
+    case "domain":
+      return "blue-cumulus"
+    default:
+      return "blue-cumulus"
+  }
 }
 
 export function formatItemVariation(variation: number): string {

@@ -1,10 +1,10 @@
-import { Badge, Link, Text } from "@dataesr/dsfr-plus"
+import { Badge, BadgeGroup, Link, Text } from "@dataesr/dsfr-plus"
 import { useTrendsContext } from "../../../context"
 import useTrends from "../../../hooks/useTrends"
 import useWikidata from "../../../hooks/useWikidata"
 import LineChart from "../../line-chart"
 import { TrendsRankingItem } from "../../../../../types/trends"
-import { formatItemVariation } from "../_utils"
+import { formatItemVariation, itemGetCategoryColor } from "../_utils"
 import LineChartMini from "../../line-chart/mini"
 import useOptions from "../../../hooks/useOptions"
 
@@ -56,7 +56,15 @@ export default function TrendsTableItem({ index, item }: TrendsTableItemProps) {
             </Text>
           </td>
         )}
-        {currentModel !== "entity-fishing" && <td></td>}
+        {currentModel !== "entity-fishing" && (
+          <td>
+            <BadgeGroup>
+              {Object.entries(item?.openAlexData).map(([key, value]) => (
+                <Badge color={itemGetCategoryColor(key)}>{value.label}</Badge>
+              ))}
+            </BadgeGroup>
+          </td>
+        )}
       </tr>
       {isFocused && (
         <tr className="no-hover">

@@ -17,12 +17,15 @@ td {
 
 th {
   font-weight: bold;
-  color: var(--text-default-grey);;
-  cursor: pointer;
-}
+  color: var(--text-default-grey);
+  cursor: default;
 
-th:hover {
-  background-color: var(--hover);
+  &.sort-button {
+    cursor: pointer;
+    &:hover {
+      background-color: var(--active);
+    }
+  }
 }
 
 // td {
@@ -50,6 +53,7 @@ td.description span {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   margin-bottom: 0;
 }
@@ -58,14 +62,15 @@ td.description span {
 //   background-color: #f9f9f9;
 // }
 
-tr:hover {
-  background-color: var(--hover);
-}
-  
-tr.no-hover:hover {
-  background-color: inherit;
-}
-  
-tr.open {
-  background-color: var(--active);
+tr {
+  cursor: pointer;
+  &:hover {
+    background-color: var(--hover);
+  }
+  &.no-hover:hover {
+    background-color: inherit;
+  }
+  &.open {
+    background-color: var(--active);
+  }
 }
