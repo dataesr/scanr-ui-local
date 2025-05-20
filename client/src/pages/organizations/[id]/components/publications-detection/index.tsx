@@ -1,6 +1,6 @@
 import { useIntl } from "react-intl";
 import { useId, useState } from "react";
-import { Button, Row, Col, Text, Badge } from "@dataesr/dsfr-plus";
+import { Row, Col, Text, Badge } from "@dataesr/dsfr-plus";
 import BarLink from "../../../../../components/bar-link";
 import { OrganizationPublicationsData } from "../../../../../types/organization";
 
@@ -23,13 +23,15 @@ export default function OrganizationPublicationsDetection({
 
   return (
     <>
+      <div className="fr-hr-or">
+        <Badge style={{ textWrap: "nowrap"}} noIcon color="success">
+          STAGING ONLY
+        </Badge>
+      </div>
       <div className="fr-mb-3w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ flexGrow: 1 }}>
           <Text size="lg" className="fr-m-0" bold>
             {intl.formatMessage({ id: "organizations.found-on-publications" })}
-          <Badge size="sm"noIcon color="success" className="fr-m-0 fr-ml-2w">
-            STAGING
-          </Badge>
           </Text>
         </div>
       </div>
