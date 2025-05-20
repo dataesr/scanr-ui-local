@@ -1,6 +1,6 @@
 import { useIntl } from "react-intl";
 import { useId, useState } from "react";
-import { Button, Row, Col, Text } from "@dataesr/dsfr-plus";
+import { Button, Row, Col, Text, Badge } from "@dataesr/dsfr-plus";
 import BarLink from "../../../../../components/bar-link";
 import { OrganizationPublicationsData } from "../../../../../types/organization";
 
@@ -12,13 +12,9 @@ type OrganizationPublicationsProps = {
 
 export default function OrganizationPublicationsDetection({
   data: publications,
-  value,
-  label = "",
 }: OrganizationPublicationsProps) {
   const intl = useIntl();
-  const searchFilter = { 'affiliations.id': { values: [{ value: value, label }], type: 'terms' } };
-  const publicationsFilterUrl = `/search/publications?filters=${encodeURIComponent(JSON.stringify(searchFilter))}`;
-  const [publicationGraph, setPublicationGraph] = useState("grants");
+  const [publicationGraph, setPublicationGraph] = useState("infra");
   const segmentId = useId();
 
   if (!publications.publicationsCount || publications.publicationsCount === 0) {
@@ -30,20 +26,12 @@ export default function OrganizationPublicationsDetection({
       <div className="fr-mb-3w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ flexGrow: 1 }}>
           <Text size="lg" className="fr-m-0" bold>
-            {publications.publicationsCount === 10000 ? "10 000+" : publications.publicationsCount}
-            {" "}
-            {intl.formatMessage({ id: "organizations.publications.count" })}
+            {intl.formatMessage({ id: "organizations.found-on-publications" })}
+          <Badge size="sm"noIcon color="success" className="fr-m-0 fr-ml-2w">
+            STAGING
+          </Badge>
           </Text>
         </div>
-        <Button
-          as="a"
-          variant="text"
-          icon="arrow-right-s-line"
-          iconPosition="right"
-          href={publicationsFilterUrl}
-        >
-          {intl.formatMessage({ id: "organizations.publications.search" })}
-        </Button>
       </div>
       <Row gutters>
         <Col xs="12">
@@ -52,21 +40,21 @@ export default function OrganizationPublicationsDetection({
               {intl.formatMessage({ id: "organizations.activity.fieldset.legend" })}
             </legend>
             <div className="fr-segmented__elements">
-
               <div className="fr-segmented__element">
                 <input
-                  checked={(publicationGraph === "support")}
-                  onClick={() => setPublicationGraph("support")}
+                  checked={(publicationGraph === "infra")}
+                  onClick={() => setPublicationGraph("infra")}
                   type="radio"
-                  id={`${segmentId}-support`}
+                  id={`${segmentId}-infra`}
                 />
                 <label
                   className="fr-label"
-                  htmlFor={`${segmentId}-support`}
+                  htmlFor={`${segmentId}-infra`}
                 >
-                  {intl.formatMessage({ id: "organizations.publications.nav.supports" })}
+                  {intl.formatMessage({ id: "organizations.publications.nav.infras" })}
                 </label>
               </div>
+
               <div className="fr-segmented__element">
                 <input
                   checked={(publicationGraph === "grants")}
@@ -83,16 +71,16 @@ export default function OrganizationPublicationsDetection({
               </div>
               <div className="fr-segmented__element">
                 <input
-                  checked={(publicationGraph === "infra")}
-                  onClick={() => setPublicationGraph("infra")}
+                  checked={(publicationGraph === "support")}
+                  onClick={() => setPublicationGraph("support")}
                   type="radio"
-                  id={`${segmentId}-infra`}
+                  id={`${segmentId}-support`}
                 />
                 <label
                   className="fr-label"
-                  htmlFor={`${segmentId}-infra`}
+                  htmlFor={`${segmentId}-support`}
                 >
-                  {intl.formatMessage({ id: "organizations.publications.nav.infras" })}
+                  {intl.formatMessage({ id: "organizations.publications.nav.supports" })}
                 </label>
               </div>
             </div>

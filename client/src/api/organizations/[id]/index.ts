@@ -66,19 +66,19 @@ async function getStructurePublicationsById(id: string): Promise<any> {
       byGrantsFunder: {
         terms: {
           field: "structured_acknowledgments.grants.funder.keyword",
-          size: 10,
+          size: 50,
         }
       },
       byInfrastructureName: {
         terms: {
           field: "structured_acknowledgments.infrastructure.name.keyword",
-          size: 10,
+          size: 50,
         }
       },
       bySupportEntity: {
         terms: {
           field: "structured_acknowledgments.support.entity.keyword",
-          size: 10,
+          size: 50,
         }
       },
       byPublicationType: {
