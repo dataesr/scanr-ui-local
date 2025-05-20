@@ -13,6 +13,9 @@ export type OrganizationPublicationsData = {
   byWiki: Aggregation[];
   bySource: Aggregation[];
   byOpenAlexFields: Aggregation[];
+  byGrantsFunder: Aggregation[];
+  byInfrastructureName: Aggregation[];
+  bySupportEntity: Aggregation[];
   publicationsCount: number;
 };
 export type OrganizationProjectsData = {
