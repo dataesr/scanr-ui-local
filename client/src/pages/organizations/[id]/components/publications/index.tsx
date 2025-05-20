@@ -98,48 +98,6 @@ export default function OrganizationPublications({
               </div>
               <div className="fr-segmented__element">
                 <input
-                  checked={(publicationGraph === "support")}
-                  onClick={() => setPublicationGraph("support")}
-                  type="radio"
-                  id={`${segmentId}-support`}
-                />
-                <label
-                  className="fr-label"
-                  htmlFor={`${segmentId}-support`}
-                >
-                  {intl.formatMessage({ id: "organizations.publications.nav.supports" })}
-                </label>
-              </div>
-              <div className="fr-segmented__element">
-                <input
-                  checked={(publicationGraph === "grants")}
-                  onClick={() => setPublicationGraph("grants")}
-                  type="radio"
-                  id={`${segmentId}-grants`}
-                />
-                <label
-                  className="fr-label"
-                  htmlFor={`${segmentId}-grants`}
-                >
-                  {intl.formatMessage({ id: "organizations.publications.nav.grants" })}
-                </label>
-              </div>
-              <div className="fr-segmented__element">
-                <input
-                  checked={(publicationGraph === "infra")}
-                  onClick={() => setPublicationGraph("infra")}
-                  type="radio"
-                  id={`${segmentId}-infra`}
-                />
-                <label
-                  className="fr-label"
-                  htmlFor={`${segmentId}-infra`}
-                >
-                  {intl.formatMessage({ id: "organizations.publications.nav.infras" })}
-                </label>
-              </div>
-              <div className="fr-segmented__element">
-                <input
                   checked={(publicationGraph === "wiki")}
                   onClick={() => setPublicationGraph("wiki")}
                   type="radio"
@@ -215,30 +173,6 @@ export default function OrganizationPublications({
             />
           ))}
           {(publicationGraph === "openalex") && publications.byOpenAlexFields?.map((a) => (
-            <BarLink
-              key={a.value}
-              name={a.label}
-              count={a.count}
-              width={a.normalizedCount}
-            />
-          ))}
-          {(publicationGraph === "support") && publications.bySupportEntity?.map((a) => (
-            <BarLink
-              key={a.value}
-              name={a.label}
-              count={a.count}
-              width={a.normalizedCount}
-            />
-          ))}
-          {(publicationGraph === "grants") && publications.byGrantsFunder?.map((a) => (
-            <BarLink
-              key={a.value}
-              name={a.label}
-              count={a.count}
-              width={a.normalizedCount}
-            />
-          ))}
-          {(publicationGraph === "infra") && publications.byInfrastructureName?.map((a) => (
             <BarLink
               key={a.value}
               name={a.label}
