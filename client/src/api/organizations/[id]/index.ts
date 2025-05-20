@@ -57,6 +57,12 @@ async function getStructurePublicationsById(id: string): Promise<any> {
           size: 30,
         }
       },
+      byOpenAlexFields: {
+        terms: {
+          field: "topics.field.display_name.keyword",
+          size: 10,
+        }
+      },
       byPublicationType: {
         terms: {
           field: "type.keyword",
@@ -146,8 +152,17 @@ async function getStructurePublicationsById(id: string): Promise<any> {
       normalizedCount: element.doc_count * 100 / _100Authors,
     }
   }).filter(el => el) || [];
+  const _100OpenAlexFields = aggregations?.byOpenAlexFields?.buckets && Math.max(...aggregations.byOpenAlexFields.buckets.map((el) => el.doc_count));
+  const byOpenAlexFields = aggregations?.byOpenAlexFields?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+      normalizedCount: element.doc_count * 100 / _100OpenAlexFields,
+    }
+  }).filter(el => el) || [];
 
-  return { publicationsCount, byYear, byType, bySource, byAuthors, byWiki } || {}
+  return { publicationsCount, byYear, byType, bySource, byAuthors, byWiki, byOpenAlexFields } || {}
 }
 
 async function getStructureProjectsById(id: string): Promise<any> {

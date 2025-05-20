@@ -75,6 +75,7 @@
   "organizations.publications.nav.year": "Distribution by year",
   "organizations.publications.nav.journals": "Top 10 journals",
   "organizations.publications.nav.authors": "Top 10 authors",
+  "organizations.publications.nav.openalex": "Fields of research - OpenAlex.",
   "organizations.publications.year-bars.name": "Publications",
   "organizations.networks.since": "since",
   "organizations.section.more-like-this": "Similar structures",

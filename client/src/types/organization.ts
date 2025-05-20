@@ -12,6 +12,7 @@ export type OrganizationPublicationsData = {
   byAuthors: Aggregation[];
   byWiki: Aggregation[];
   bySource: Aggregation[];
+  byOpenAlexFields: Aggregation[];
   publicationsCount: number;
 };
 export type OrganizationProjectsData = {
