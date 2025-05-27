@@ -12,6 +12,7 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
   const intl = useIntl();
   const shortLevel = data.level?.match(/\((.*?)\)/)?.[1] || data.level;
   const hasAcronym = getLangFieldValue(locale)(data.acronym);
+  const isClosed = data?.endDate && new Date(data.endDate) < new Date();
 
   return (
     <section>
@@ -39,14 +40,14 @@ export default function OrganizationHeader({ data }: { data: Organization }) {
             {hasAcronym && " – "}
             {getLangFieldValue(locale)(data.label)}
           </Title>
-          {data?.endDate && (
+          {(isClosed) && (
             <Text className="fr-card__detail" size="sm">
               <i>
                 {intl.formatMessage({ id: "organizations.header.until" })} {data.endDate.slice(0, 4)}
               </i>
             </Text>
           )}
-          {!data?.endDate && data?.creationYear && (
+          {!isClosed && data?.creationYear && (
             <Text className="fr-card__detail" size="sm">
               <i>
                 {intl.formatMessage({ id: "organizations.header.since" })} {data.creationYear}

@@ -57,6 +57,30 @@ async function getStructurePublicationsById(id: string): Promise<any> {
           size: 30,
         }
       },
+      byOpenAlexFields: {
+        terms: {
+          field: "topics.field.display_name.keyword",
+          size: 10,
+        }
+      },
+      byGrantsFunder: {
+        terms: {
+          field: "structured_acknowledgments.grants.funder.keyword",
+          size: 50,
+        }
+      },
+      byInfrastructureName: {
+        terms: {
+          field: "structured_acknowledgments.infrastructure.name.keyword",
+          size: 50,
+        }
+      },
+      bySupportEntity: {
+        terms: {
+          field: "structured_acknowledgments.support.entity.keyword",
+          size: 50,
+        }
+      },
       byPublicationType: {
         terms: {
           field: "type.keyword",
@@ -137,6 +161,34 @@ async function getStructurePublicationsById(id: string): Promise<any> {
       normalizedCount: element.doc_count * 100 / _100Source,
     }
   }).filter(el => el) || [];
+  const _100InfrastructureName = aggregations?.byInfrastructureName?.buckets && Math.max(...aggregations.byInfrastructureName.buckets.map((el) => el.doc_count));
+  const byInfrastructureName = aggregations?.byInfrastructureName?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+      normalizedCount: element.doc_count * 100 / _100InfrastructureName,
+    }
+  }).filter(el => el) || [];
+  const _100GrantsFunder = aggregations?.byGrantsFunder?.buckets && Math.max(...aggregations.byGrantsFunder.buckets.map((el) => el.doc_count));
+  const byGrantsFunder = aggregations?.byGrantsFunder?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+      normalizedCount: element.doc_count * 100 / _100GrantsFunder,
+    }
+  }).filter(el => el) || [];
+  console.log('GRANTS FUNDER', aggregations.byGrantsFunder)
+  const _100SupportEntity = aggregations?.bySupportEntity?.buckets && Math.max(...aggregations.bySupportEntity.buckets.map((el) => el.doc_count));
+  const bySupportEntity = aggregations?.bySupportEntity?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+      normalizedCount: element.doc_count * 100 / _100SupportEntity,
+    }
+  }).filter(el => el) || [];
   const _100Authors = aggregations?.byAuthors?.buckets && Math.max(...aggregations.byAuthors.buckets.map((el) => el.doc_count));
   const byAuthors = aggregations?.byAuthors?.buckets?.map((element) => {
     return {
@@ -146,8 +198,17 @@ async function getStructurePublicationsById(id: string): Promise<any> {
       normalizedCount: element.doc_count * 100 / _100Authors,
     }
   }).filter(el => el) || [];
+  const _100OpenAlexFields = aggregations?.byOpenAlexFields?.buckets && Math.max(...aggregations.byOpenAlexFields.buckets.map((el) => el.doc_count));
+  const byOpenAlexFields = aggregations?.byOpenAlexFields?.buckets?.map((element) => {
+    return {
+      value: element.key,
+      label: element.key,
+      count: element.doc_count,
+      normalizedCount: element.doc_count * 100 / _100OpenAlexFields,
+    }
+  }).filter(el => el) || [];
 
-  return { publicationsCount, byYear, byType, bySource, byAuthors, byWiki } || {}
+  return { publicationsCount, byYear, byType, bySource, byAuthors, byWiki, byOpenAlexFields, byInfrastructureName, byGrantsFunder, bySupportEntity } || {}
 }
 
 async function getStructureProjectsById(id: string): Promise<any> {

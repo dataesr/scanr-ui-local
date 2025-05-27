@@ -1,13 +1,21 @@
 import { ElasticAggregation, ElasticBucket, ElasticBuckets } from "../../types/commons"
 import { linearRegressionSlope } from "./_utils/regression"
 import variation from "./_utils/variation"
+import openAlexGetData from "./openalex"
 
 const EXCLUDE_WORDS = [""]
 const ITEMS_PER_PAGE = 25
 
 type TrendsAggregation = Array<ElasticBucket & { [x: string]: ElasticAggregation }>
 
-function computeTrends(data: Array<any>, page: number, years: Array<number>, normalized: boolean, includes: string) {
+function computeTrends(
+  model: string,
+  data: Array<any>,
+  page: number,
+  years: Array<number>,
+  normalized: boolean,
+  includes: string
+) {
   const maxYear = years[years.length - 1]
   const minYear = years[0]
   const minItems = (page - 1) * ITEMS_PER_PAGE
@@ -25,6 +33,15 @@ function computeTrends(data: Array<any>, page: number, years: Array<number>, nor
     item.r2 = r2
     item.variation = variation(item.count, item.sum, minYear, maxYear)
   })
+
+  // Add openalex data
+  if (model.startsWith("open-alex")) {
+    const openAlexField = model.split("-").pop().slice(0, -1)
+
+    items.forEach((item) => {
+      item.openAlexData = openAlexGetData(openAlexField, item.label)
+    })
+  }
 
   // Sort items by volume max year
   const sortedItems = items.sort((a, b) => (b?.count?.[maxYear] || 0) - (a?.count?.[maxYear] || 0))
@@ -59,6 +76,7 @@ function computeTrends(data: Array<any>, page: number, years: Array<number>, nor
 }
 
 export function publicationsTrends(
+  model: string,
   aggregation: TrendsAggregation,
   cursor: number,
   years: Array<number>,
@@ -82,11 +100,12 @@ export function publicationsTrends(
   }, {})
   const items = Object.values(_items)
 
-  const trends = computeTrends(items, cursor, years, normalized, includes)
+  const trends = computeTrends(model, items, cursor, years, normalized, includes)
   return trends
 }
 
 export function citationsTrends(
+  model: string,
   aggregation: ElasticBuckets,
   cursor: number,
   years: Array<number>,
@@ -111,6 +130,6 @@ export function citationsTrends(
   }, {})
   const items = Object.values(_items)
 
-  const trends = computeTrends(items, cursor, years, normalized, includes)
+  const trends = computeTrends(model, items, cursor, years, normalized, includes)
   return trends
 }

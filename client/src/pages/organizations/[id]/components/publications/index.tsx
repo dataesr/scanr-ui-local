@@ -22,7 +22,7 @@ export default function OrganizationPublications({
   const intl = useIntl();
   const searchFilter = { 'affiliations.id': { values: [{ value: value, label }], type: 'terms' } };
   const publicationsFilterUrl = `/search/publications?filters=${encodeURIComponent(JSON.stringify(searchFilter))}`;
-  const [publicationGraph, setPublicationGraph] = useState("wiki");
+  const [publicationGraph, setPublicationGraph] = useState("openalex");
   const segmentId = useId();
 
   if (!publications.publicationsCount || publications.publicationsCount === 0) {
@@ -77,11 +77,25 @@ export default function OrganizationPublications({
       </div>
       <Row gutters>
         <Col xs="12">
-          <fieldset id="publication-graph-selector" className="fr-segmented fr-segmented--sm">
+          <fieldset style={{ overflowX: "scroll"}} id="publication-graph-selector" className="fr-segmented fr-segmented--sm">
             <legend className="fr-segmented__legend">
               {intl.formatMessage({ id: "organizations.activity.fieldset.legend" })}
             </legend>
             <div className="fr-segmented__elements">
+              <div className="fr-segmented__element">
+                <input
+                  checked={(publicationGraph === "openalex")}
+                  onClick={() => setPublicationGraph("openalex")}
+                  type="radio"
+                  id={`${segmentId}-openalex`}
+                />
+                <label
+                  className="fr-label"
+                  htmlFor={`${segmentId}-openalex`}
+                >
+                  {intl.formatMessage({ id: "organizations.publications.nav.openalex" })}
+                </label>
+              </div>
               <div className="fr-segmented__element">
                 <input
                   checked={(publicationGraph === "wiki")}
@@ -156,6 +170,14 @@ export default function OrganizationPublications({
               count={a.count}
               width={a.normalizedCount}
               href={`/authors/${a.value}`}
+            />
+          ))}
+          {(publicationGraph === "openalex") && publications.byOpenAlexFields?.map((a) => (
+            <BarLink
+              key={a.value}
+              name={a.label}
+              count={a.count}
+              width={a.normalizedCount}
             />
           ))}
           {(publicationGraph === "journals") && publications.bySource?.map((a) => (

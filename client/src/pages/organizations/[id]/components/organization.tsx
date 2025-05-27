@@ -27,6 +27,8 @@ import OrganizationAgreements from "./agreements";
 import OrganizationAwards from "./awards";
 import OrganizationNetwork from "./network"
 import CoInstitutions from "./networks/co-institutions";
+import OrganizationPublicationsDetection from "./publications-detection";
+import { isInProduction } from "../../../../utils/helpers";
 
 const NETWORK_BADGES_CODES = [
   "carnot",
@@ -245,6 +247,11 @@ export default function OrganizationPresentation({ data }: { data: Organization 
                     value={data.id}
                     label={getLangFieldValue(locale)(data.label)}
                   />
+                  {!isInProduction() && <OrganizationPublicationsDetection
+                    data={publications}
+                    value={data.id}
+                    label={getLangFieldValue(locale)(data.label)}
+                  />}
                   <OrganizationNetwork data={network} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                   <OrganizationProjects data={projects} value={data.id} label={getLangFieldValue(locale)(data.label)} />
                   <OrganizationPatents data={patents} value={data.id} label={getLangFieldValue(locale)(data.label)} />

@@ -87,6 +87,7 @@ const getAPI = (pathname: string) => {
   )
     return "he";
   if (pathname.split("/")?.[1] === "networks") return "networks";
+  if (pathname.split("/")?.[1] === "studio") return "networks";
   if (pathname.split("/")?.[1] === "trends") return "trends";
   return api as ApiTypes;
 };
