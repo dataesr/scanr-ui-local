@@ -18,6 +18,7 @@ export type TrendsRankingItem = {
   r2: number
   sum: number
   variation: number
+  openAlexData?: Record<string, { label: string; id: string }>
 }
 
 export type TrendsRankingSorts = Array<TrendsRankingSort>

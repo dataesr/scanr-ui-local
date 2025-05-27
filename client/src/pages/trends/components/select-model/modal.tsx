@@ -1,4 +1,4 @@
-import { Container, Listbox, ListboxItem } from "@dataesr/dsfr-plus"
+import { Button, Container, Listbox, ListboxItem } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
 import Modal from "../../../../components/modal"
 import useOptions from "../../hooks/useOptions"
@@ -10,7 +10,7 @@ export default function TrendsSelectModelModal() {
 
   return (
     <Modal id={id} size="lg" title={intl.formatMessage({ id: "trends.select-model.modal.title" })}>
-      <Container fluid className="fr-mb-4w">
+      <Container fluid className="fr-mb-4w fr-pb-4w">
         <Listbox
           selectedKeys={[currentModel]}
           selectionMode="single"
@@ -58,6 +58,9 @@ export default function TrendsSelectModelModal() {
           </ListboxItem>
         </Listbox>
       </Container>
+      <div className="fr-modal__footer fr-px-0" style={{ display: "flex", width: "100%", justifyContent: "right" }}>
+        <Button aria-controls={id}>{intl.formatMessage({ id: "trends.select-model.modal.display" })}</Button>
+      </div>
     </Modal>
   )
 }
