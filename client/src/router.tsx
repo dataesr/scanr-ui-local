@@ -56,53 +56,54 @@ export default function Router() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/docs" element={<DocsLayout />}>
-            <Route path="objects/projects" element={<ProjectsDocs />} />
-            <Route path="objects/publications" element={<ScanrPublicationsDocs />} />
-            <Route path="objects/organizations" element={<OrganizationsDocs />} />
-            <Route path="objects/persons" element={<PersonsDocs />} />
-            <Route path="quick-start" element={<div>QuickStart</div>} />
-            <Route path="overview/" element={<Overview />} />
+          <Route path="/:local_id">
+            <Route path="" element={<Home />} />
+            <Route path="docs" element={<DocsLayout />}>
+              <Route path="objects/projects" element={<ProjectsDocs />} />
+              <Route path="objects/publications" element={<ScanrPublicationsDocs />} />
+              <Route path="objects/organizations" element={<OrganizationsDocs />} />
+              <Route path="objects/persons" element={<PersonsDocs />} />
+              <Route path="quick-start" element={<div>QuickStart</div>} />
+              <Route path="overview" element={<Overview />} />
+            </Route>
+            <Route path="about">
+              <Route path="legal-notices" element={<LegalNotices />} />
+              <Route path="accessibility" element={<Accessibility />} />
+              <Route path="faq" element={<FAQ />} />
+              <Route path="team" element={<Team />} />
+              <Route path="resources" element={<Resources />} />
+              <Route path="resources/:id" element={<ResourcesInformations />} />
+              <Route path="contact" element={<ContactPage />} />
+              <Route path="tutorials" element={<Tutorial />} />
+            </Route>
+            <Route path="bugs/:api/:id" element={<BugsReport />} />
+            <Route path="publications/:id" element={<Publication />} />
+            <Route path="publication/:id" element={<PublicationIdParser />} />
+            <Route path="authors/:id" element={<Author />} />
+            <Route path="person/:id" element={<Author />} />
+            <Route path="organizations/:id" element={<Organization />} />
+            <Route path="entite/:id" element={<Organization />} />
+            <Route path="projects/:id" element={<Project />} />
+            <Route path="project/:id" element={<Project />} />
+            <Route path="patents/:id" element={<Patents />} />
+            <Route path="suggest/:id" element={<Suggest />} />
+            <Route path="search">
+              <Route path="organizations" element={<Search />} />
+              <Route path="authors" element={<Search />} />
+              <Route path="projects" element={<Search />} />
+              <Route path="publications" element={<Search />} />
+              <Route path="patents" element={<Search />} />
+            </Route>
+            <Route path="networks" element={<Networks />} />
+            <Route path="networks/get-started" element={<NetworksGetStarted />} />
+            <Route path="trends" element={<Trends />} />
+            <Route path="studio" element={<Studio />} />
+            <Route path="trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
+            <Route path="*" element={<Error404 error={null} />} />
           </Route>
-          <Route path="/about/legal-notices" element={<LegalNotices />} />
-          <Route path="/about/accessibility" element={<Accessibility />} />
-          <Route path="/about/faq" element={<FAQ />} />
-          <Route path="/about/team" element={<Team />} />
-          <Route path="/about/resources" element={<Resources />} />
-          <Route path="/about/contact" element={<ContactPage />} />
-          <Route path="/about/tutorials" element={<Tutorial />} />
-          <Route path="/about/resources/:id" element={<ResourcesInformations />} />
-          {/* <Route path="/about/tutorial" element={<Tutorial />} /> */}
-          {/* <Route path="/about/glossary" element={<Glossary />} /> */}
-          <Route path="/bugs/:api/:id" element={<BugsReport />} />
-          <Route path="/publications/:id" element={<Publication />} />
-          <Route path="/publication/:id" element={<PublicationIdParser />} />
-          <Route path="/authors/:id" element={<Author />} />
-          <Route path="/person/:id" element={<Author />} />
-          <Route path="/organizations/:id" element={<Organization />} />
-          <Route path="/entite/:id" element={<Organization />} />
-          <Route path="/projects/:id" element={<Project />} />
-          <Route path="/project/:id" element={<Project />} />
-          <Route path="/patents/:id" element={<Patents />} />
-          <Route path="/suggest/:id" element={<Suggest />} />
-          <Route path="/search">
-            {/* <Route path="" element={<Navigate to="/search/organizations" replace />} /> */}
-            <Route path="organizations" element={<Search />} />
-            <Route path="authors" element={<Search />} />
-            <Route path="projects" element={<Search />} />
-            <Route path="publications" element={<Search />} />
-            <Route path="patents" element={<Search />} />
-          </Route>
-          <Route path="/networks" element={<Networks />} />
-          <Route path="/networks/get-started" element={<NetworksGetStarted />} />
-          <Route path="/trends" element={<Trends />} />
-          <Route path="/studio" element={<Studio />} />
-          <Route path="/trouver-des-partenaires-pour-horizon-europe/:id" element={<HEPartners />} />
-          <Route path="*" element={<Error404 error={null} />} />
         </Route>
-        <Route path="/networks/integration" element={<NetworksIntegration />} />
-        <Route path="/trends/integration" element={<TrendsIntegration />} />
-        {/* <Route path="/trends/integration" element={<TrendsIntegration />} /> */}
+        <Route path="/:local_id/networks/integration" element={<NetworksIntegration />} />
+        <Route path="/:local_id/trends/integration" element={<TrendsIntegration />} />
       </Routes>
     </>
   )

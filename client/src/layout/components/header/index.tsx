@@ -1,5 +1,5 @@
 // TODO: SearchBar is volontarly commented out, as it is not yet implemented but should be back in the future
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from "react-router-dom"
 import {
   Header as HeaderWrapper,
   Logo,
@@ -14,9 +14,9 @@ import {
   // AutocompleteItem,
   // useAutocompleteList,
   // useDSFRConfig,
-} from '@dataesr/dsfr-plus';
-import { createIntl } from 'react-intl';
-import SwitchLanguage from '../../../components/switch-language';
+} from "@dataesr/dsfr-plus"
+import { createIntl } from "react-intl"
+import SwitchLanguage from "../../../components/switch-language"
 import { isInProduction } from "../../../utils/helpers"
 // import { autocompleteOrganizations } from '../api/organizations/autocomplete';
 // import { LightOrganization } from '../types/organization';
@@ -43,6 +43,7 @@ export default function Header() {
   const { locale } = useDSFRConfig()
   const intl = createIntl({ locale, messages: messages[locale] })
   const { pathname } = useLocation()
+  const { local_id } = useParams()
 
   // const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
   //   async load({ filterText }) {
@@ -53,6 +54,10 @@ export default function Header() {
   //     return { items: res.data?.map((org) => org._source) };
   //   }
   // });
+
+  const getLocalPath = (path: string) => {
+    return local_id ? `/${local_id}${path}` : ""
+  }
 
   return (
     <HeaderWrapper>
@@ -88,26 +93,26 @@ export default function Header() {
         )}
       </Autocomplete> */}
       <Nav>
-        <Link current={pathname === "/"} href="/">
+        <Link current={pathname === "/" || pathname === `/${local_id}`} href={getLocalPath("/")}>
           {intl.formatMessage({ id: "layout.header.nav.home" })}
         </Link>
         <NavItem
           current={pathname.split("/").includes("search")}
           title={intl.formatMessage({ id: "layout.header.nav.search" })}
         >
-          <Link current={pathname.split("/").includes("organizations")} href="/search/organizations">
+          <Link current={pathname.split("/").includes("organizations")} href={getLocalPath("/search/organizations")}>
             {intl.formatMessage({ id: "layout.header.nav.search.organizations" })}
           </Link>
-          <Link current={pathname.split("/").includes("authors")} href="/search/authors">
+          <Link current={pathname.split("/").includes("authors")} href={getLocalPath("/search/authors")}>
             {intl.formatMessage({ id: "layout.header.nav.search.authors" })}
           </Link>
-          <Link current={pathname.split("/").includes("projects")} href="/search/projects">
+          <Link current={pathname.split("/").includes("projects")} href={getLocalPath("/search/projects")}>
             {intl.formatMessage({ id: "layout.header.nav.search.projects" })}
           </Link>
-          <Link current={pathname.split("/").includes("publications")} href="/search/publications">
+          <Link current={pathname.split("/").includes("publications")} href={getLocalPath("/search/publications")}>
             {intl.formatMessage({ id: "layout.header.nav.search.publications" })}
           </Link>
-          <Link current={pathname.split("/").includes("patents")} href="/search/patents">
+          <Link current={pathname.split("/").includes("patents")} href={getLocalPath("/search/patents")}>
             {intl.formatMessage({ id: "layout.header.nav.search.patents" })}
           </Link>
         </NavItem>
@@ -115,15 +120,15 @@ export default function Header() {
           current={pathname.split("/").includes("networks") || pathname.split("/").includes("trends")}
           title={intl.formatMessage({ id: "layout.header.nav.analyze" })}
         >
-          <Link current={pathname.split("/").includes("networks")} href="/networks/get-started">
+          <Link current={pathname.split("/").includes("networks")} href={getLocalPath("/networks/get-started")}>
             {intl.formatMessage({ id: "layout.header.nav.analyze.networks" })}
           </Link>
           {!isInProduction() && (
-            <Link current={pathname.split("/").includes("trends")} href="/trends">
+            <Link current={pathname.split("/").includes("trends")} href={getLocalPath("/trends")}>
               {intl.formatMessage({ id: "layout.header.nav.analyze.trends" })}
             </Link>
           )}
-          <Link current={pathname.split("/").includes("studio")} href="/studio">
+          <Link current={pathname.split("/").includes("studio")} href={getLocalPath("/studio")}>
             {intl.formatMessage({ id: "layout.header.nav.analyze.studio" })}
           </Link>
         </NavItem>
