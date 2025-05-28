@@ -1,6 +1,6 @@
 import { Button, ButtonGroup } from "@dataesr/dsfr-plus"
 import { useIntl } from "react-intl"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import useOptions from "../../hooks/useOptions"
 import useScreenSize from "../../../../hooks/useScreenSize"
 import { NETWORK_SOURCES } from "../../config/sources"
@@ -9,13 +9,14 @@ export default function NavigateToSearch() {
   const intl = useIntl()
   const { screen } = useScreenSize()
   const { currentSource } = useOptions()
+  const { local_id } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   const navigateToNetwork = () => {
     const searchQuery = searchParams.get("q") ? `q=${searchParams.get("q")}` : ""
     const searchFilters = searchParams.get("filters") ? `filters=${searchParams.get("filters")}` : ""
-    navigate(`/search/${currentSource}?${searchQuery}${searchQuery && searchFilters && "&"}${searchFilters}`)
+    navigate(`/${local_id}/search/${currentSource}?${searchQuery}${searchQuery && searchFilters && "&"}${searchFilters}`)
   }
 
   return (

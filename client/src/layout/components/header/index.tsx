@@ -4,7 +4,7 @@ import {
   Header as HeaderWrapper,
   Logo,
   Service,
-  NavItem,
+  // NavItem,
   Link,
   Nav,
   FastAccess,
@@ -17,7 +17,8 @@ import {
 } from "@dataesr/dsfr-plus"
 import { createIntl } from "react-intl"
 import SwitchLanguage from "../../../components/switch-language"
-import { isInProduction } from "../../../utils/helpers"
+import { useLocalConfig } from "../../../hooks/useLocalConfig"
+// import { isInProduction } from "../../../utils/helpers"
 // import { autocompleteOrganizations } from '../api/organizations/autocomplete';
 // import { LightOrganization } from '../types/organization';
 // import getLangFieldValue from '../utils/lang';
@@ -44,6 +45,7 @@ export default function Header() {
   const intl = createIntl({ locale, messages: messages[locale] })
   const { pathname } = useLocation()
   const { local_id } = useParams()
+  const localConfig = useLocalConfig(local_id)
 
   // const authorsAutocompletedList = useAutocompleteList<LightOrganization>({
   //   async load({ filterText }) {
@@ -62,7 +64,10 @@ export default function Header() {
   return (
     <HeaderWrapper>
       <Logo splitCharacter="|" text="Ministère|chargé|de l'enseignement|supérieur|et de la recherche" />
-      <Service name="scanR" tagline={intl.formatMessage({ id: "layout.header.tagline" })} />
+      <Service
+        name={`scanR - ${localConfig?.name || local_id}`}
+        tagline={intl.formatMessage({ id: "layout.header.tagline" })}
+      />
       <FastAccess>
         <Button className="fr-btn fr-icon-theme-fill" aria-controls="fr-theme-modal" data-fr-opened="false">
           {intl.formatMessage({ id: "layout.header.switch-theme" })}
@@ -96,7 +101,10 @@ export default function Header() {
         <Link current={pathname === "/" || pathname === `/${local_id}`} href={getLocalPath("/")}>
           {intl.formatMessage({ id: "layout.header.nav.home" })}
         </Link>
-        <NavItem
+        <Link current={pathname.split("/").includes("publications")} href={getLocalPath("/search/publications")}>
+          {intl.formatMessage({ id: "layout.header.nav.search.publications" })}
+        </Link>
+        {/* <NavItem
           current={pathname.split("/").includes("search")}
           title={intl.formatMessage({ id: "layout.header.nav.search" })}
         >
@@ -115,12 +123,18 @@ export default function Header() {
           <Link current={pathname.split("/").includes("patents")} href={getLocalPath("/search/patents")}>
             {intl.formatMessage({ id: "layout.header.nav.search.patents" })}
           </Link>
-        </NavItem>
-        <NavItem
+        </NavItem> */}
+        <Link current={pathname.split("/").includes("networks")} href={getLocalPath("/networks")}>
+          {intl.formatMessage({ id: "layout.header.nav.analyze.networks" })}
+        </Link>
+        <Link current={pathname.split("/").includes("trends")} href={getLocalPath("/trends")}>
+          {intl.formatMessage({ id: "layout.header.nav.analyze.trends" })}
+        </Link>
+        {/* <NavItem
           current={pathname.split("/").includes("networks") || pathname.split("/").includes("trends")}
           title={intl.formatMessage({ id: "layout.header.nav.analyze" })}
         >
-          <Link current={pathname.split("/").includes("networks")} href={getLocalPath("/networks/get-started")}>
+          <Link current={pathname.split("/").includes("networks")} href={getLocalPath("/networks")}>
             {intl.formatMessage({ id: "layout.header.nav.analyze.networks" })}
           </Link>
           {!isInProduction() && (
@@ -131,7 +145,7 @@ export default function Header() {
           <Link current={pathname.split("/").includes("studio")} href={getLocalPath("/studio")}>
             {intl.formatMessage({ id: "layout.header.nav.analyze.studio" })}
           </Link>
-        </NavItem>
+        </NavItem>*/}
       </Nav>
     </HeaderWrapper>
   )

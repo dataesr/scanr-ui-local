@@ -5,13 +5,13 @@ import useUrl from "../../hooks/useUrl"
 
 export default function NavigateToNetwork() {
   const intl = useIntl()
-  const { api } = useUrl()
-  const [searchParams] = useSearchParams();
+  const { api, local_id } = useUrl()
+  const [searchParams] = useSearchParams()
 
-  if (!["publications", "patents", "projects"].includes(api)) return null;
+  if (!["publications", "patents", "projects"].includes(api)) return null
 
   searchParams.set("source", api)
-  const url = `/networks?${searchParams.toString()}`
+  const url = `/${local_id}/networks?${searchParams.toString()}`
 
 
   return (

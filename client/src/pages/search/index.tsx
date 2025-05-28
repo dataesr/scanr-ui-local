@@ -92,6 +92,7 @@ export default function Search() {
   const { data, error, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = search
 
   const isMobile = screen === "sm" || screen === "xs"
+  console.log("api", api)
 
   const AnalyticsComponent = API_MAPPING[api]?.analytics
   const FilterComponent = API_MAPPING[api]?.filters
